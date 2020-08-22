@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RecommendationCell" id="gTV-IL-0wX" customClass="RecommendationCell" customModule="SocietyMangement" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="148" height="182"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="148" height="182"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w2f-Qx-SzI">
+                        <rect key="frame" x="8" y="8" width="132" height="166"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notice-1" translatesAutoresizingMaskIntoConstraints="NO" id="jEa-VB-SvX">
+                                <rect key="frame" x="0.0" y="0.0" width="132" height="108"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$ 2500" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4z-15-jtw">
+                                <rect key="frame" x="8" y="116" width="116" height="23"/>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For sell Bicycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pbp-mk-1Ea">
+                                <rect key="frame" x="8" y="139" width="116" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="cXl-UG-08A"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="jEa-VB-SvX" firstAttribute="height" secondItem="w2f-Qx-SzI" secondAttribute="height" multiplier="0.65" id="0tx-I5-v9z"/>
+                            <constraint firstItem="Pbp-mk-1Ea" firstAttribute="trailing" secondItem="a4z-15-jtw" secondAttribute="trailing" id="ITM-xi-C4I"/>
+                            <constraint firstItem="jEa-VB-SvX" firstAttribute="top" secondItem="w2f-Qx-SzI" secondAttribute="top" id="KqW-aB-VCa"/>
+                            <constraint firstItem="a4z-15-jtw" firstAttribute="top" secondItem="jEa-VB-SvX" secondAttribute="bottom" constant="8" id="S3e-fQ-3P7"/>
+                            <constraint firstAttribute="trailing" secondItem="jEa-VB-SvX" secondAttribute="trailing" id="WD3-Wa-6gB"/>
+                            <constraint firstAttribute="trailing" secondItem="a4z-15-jtw" secondAttribute="trailing" constant="8" id="byY-ks-1gf"/>
+                            <constraint firstItem="Pbp-mk-1Ea" firstAttribute="top" secondItem="a4z-15-jtw" secondAttribute="bottom" id="c3J-Ud-VZM"/>
+                            <constraint firstAttribute="bottom" secondItem="Pbp-mk-1Ea" secondAttribute="bottom" constant="6" id="pAk-1H-QzW"/>
+                            <constraint firstItem="jEa-VB-SvX" firstAttribute="leading" secondItem="w2f-Qx-SzI" secondAttribute="leading" id="pFN-ZF-6RI"/>
+                            <constraint firstItem="Pbp-mk-1Ea" firstAttribute="leading" secondItem="a4z-15-jtw" secondAttribute="leading" id="uaQ-3Z-r2X"/>
+                            <constraint firstItem="a4z-15-jtw" firstAttribute="leading" secondItem="w2f-Qx-SzI" secondAttribute="leading" constant="8" id="z0e-xq-fPL"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="w2f-Qx-SzI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="3JW-jH-lTK"/>
+                <constraint firstItem="w2f-Qx-SzI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="9IO-LY-liU"/>
+                <constraint firstAttribute="trailing" secondItem="w2f-Qx-SzI" secondAttribute="trailing" constant="8" id="ZCx-tn-xjj"/>
+                <constraint firstAttribute="bottom" secondItem="w2f-Qx-SzI" secondAttribute="bottom" constant="8" id="zS5-Uy-Ara"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="148" height="182"/>
+            <connections>
+                <outlet property="containerView" destination="w2f-Qx-SzI" id="Xpb-Hz-KvZ"/>
+                <outlet property="imgProduct" destination="jEa-VB-SvX" id="0pH-Ho-kxH"/>
+                <outlet property="lblDiscription" destination="Pbp-mk-1Ea" id="fcF-ph-ugv"/>
+                <outlet property="lblPrice" destination="a4z-15-jtw" id="mLw-Zs-rOo"/>
+            </connections>
+            <point key="canvasLocation" x="-10.144927536231885" y="-36.160714285714285"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="notice-1" width="170.5" height="170.5"/>
+    </resources>
+</document>
