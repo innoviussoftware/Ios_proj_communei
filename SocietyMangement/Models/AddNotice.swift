@@ -8,6 +8,74 @@
 
 import Foundation
 
+// MARK: - AddNoticeResponse
+struct AddNoticeResponse: Codable {
+    let status: Bool
+    let data: [addNoticeData]?
+    let message: String
+}
+
+// MARK: - addNoticeData
+struct addNoticeData: Codable {
+    let noticeID, noticeTypeID: Int
+    let title, dataDescription: String
+    let publishDate: String?
+    let visibleTill, createdBy, creationDate: String
+    let pollEnabled, multiPollEnable, societyID: Int
+    let attachments: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case noticeID = "NoticeID"
+        case noticeTypeID = "NoticeTypeID"
+        case title = "Title"
+        case dataDescription = "Description"
+        case publishDate = "PublishDate"
+        case visibleTill = "VisibleTill"
+        case createdBy = "CreatedBy"
+        case creationDate = "CreationDate"
+        case pollEnabled = "PollEnabled"
+        case multiPollEnable = "MultiPollEnable"
+        case societyID = "SocietyID"
+        case attachments
+    }
+}
+
+/*
+// MARK: - AddNoticeResponse
+struct AddNoticeResponse: Codable {
+    let status: Bool
+    let data: [addNoticeData]
+    let message: String
+}
+
+// MARK: - DataClass
+struct addNoticeData: Codable {
+    let noticeID, noticeTypeID: Int?
+    let title, dataDescription: String?
+    let publishDate: String?
+    let visibleTill, createdBy, creationDate: String?
+    let pollEnabled, multiPollEnable, societyID: Int?
+  //  let attachments: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case noticeID = "NoticeID"
+        case noticeTypeID = "NoticeTypeID"
+        case title = "Title"
+        case dataDescription = "Description"
+        case publishDate = "PublishDate"
+        case visibleTill = "VisibleTill"
+        case createdBy = "CreatedBy"
+        case creationDate = "CreationDate"
+        case pollEnabled = "PollEnabled"
+        case multiPollEnable = "MultiPollEnable"
+        case societyID = "SocietyID"
+      //  case attachments
+    }
+}
+ 
+ */
+
+/*
 
 // MARK: - AddNoticeResponse
 struct AddNoticeResponse: Codable {
@@ -37,7 +105,7 @@ struct addNoticeData: Codable {
     }
 }
 
-
+*/
 
 //// MARK: - AddNoticeResponse
 //struct AddNoticeResponse: Codable {

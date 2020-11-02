@@ -15,6 +15,23 @@ target 'SocietyMangement' do
   pod 'ScrollPager'
   pod 'FloatRatingView', '~> 4'
   pod 'IHProgressHUD', :git => 'https://github.com/Swiftify-Corp/IHProgressHUD.git'
+  
+  pod 'FSPagerView'
+   
+  pod 'FSCalendar'
+
+  pod 'SwiftHEXColors', :git => 'https://github.com/thii/SwiftHEXColors.git'
+
+  pod 'ZDCChat'
+  
+  pod 'JSQMessagesViewController'
+  
+  pod 'ZendeskSupportSDK'
+
+  pod 'ZendeskSupportProvidersSDK'
+
+  pod 'SwiftSVG', '~> 2.0'
+
 
   # Pods for SocietyMangement
 

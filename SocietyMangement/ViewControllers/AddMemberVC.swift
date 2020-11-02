@@ -8,6 +8,9 @@
 
 import UIKit
 import SDWebImage
+
+import Alamofire
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -446,7 +449,7 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(pickerview.tag == 1)
         {
-        return buildingary[row].name
+        return buildingary[row].PropertyName
         }
         else  if(pickerview.tag == 2)
         {
@@ -473,8 +476,8 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(pickerview.tag == 1)
         {
-        txtbuilding.text = buildingary[row].name
-        buildingid = String(buildingary[row].id)
+        txtbuilding.text = buildingary[row].PropertyName
+        buildingid = String(buildingary[row].PropertyID)
         }
         if(pickerview.tag == 2)
         {
@@ -503,7 +506,23 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:UserDefaults.standard.value(forKey:"societyid")! as! String) { JSON in
+           // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:UserDefaults.standard.value(forKey:"societyid")! as! String) { JSON in
+        
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+    
+        // not any use in this error societyid pass future time
+        
+        let societyid = UserDefaults.standard.value(forKey:"societyid")!
+        
+         let param : Parameters = [
+             "Phone" : mobile!,
+             "Secret" : secret,
+             "Society" : societyid
+         ]
+        
+                
+        Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
+           
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -515,8 +534,8 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
                         self.pickerview.reloadAllComponents()
                         if(resp.data.count > 0)
                         {
-                            self.txtbuilding.text = resp.data[0].name
-                            self.buildingid = String(resp.data[0].id)
+                            self.txtbuilding.text = resp.data[0].PropertyName
+                            self.buildingid = String(resp.data[0].PropertyID)
                             
                         }
                       var nameary = NSMutableArray()
@@ -525,10 +544,10 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
                         for new in resp.data
                         {
                            // if((self.dic?.buildingID.contains((new.id as NSNumber).stringValue))!)
-                         if self.dic?.buildingID == new.id
+                         if self.dic?.buildingID == new.PropertyID
                          {
-                            nameary.add(new.name)
-                            self.buildingid = String(new.id)
+                            nameary.add(new.PropertyName)
+                            self.buildingid = String(new.PropertyID)
                             }
                          }
                          self.txtbuilding.text =  nameary.componentsJoined(by:",")
@@ -585,8 +604,8 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
         {
             if(txtbuilding.text == "")
             {
-                txtbuilding.text = buildingary[0].name
-                buildingid = (buildingary[0].id as NSNumber).stringValue
+                txtbuilding.text = buildingary[0].PropertyName
+                buildingid = (buildingary[0].PropertyID as NSNumber).stringValue
                 //apicallGetMembers()
                 
             }

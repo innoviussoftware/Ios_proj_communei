@@ -51,6 +51,15 @@ class RatingReviewListVC: UIViewController {
            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
            
        }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
+
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+                
+    }
        
        @objc func AcceptRequest(notification: NSNotification) {
            
@@ -121,7 +130,7 @@ class RatingReviewListVC: UIViewController {
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                       avc?.titleStr = "Society Buddy"
+                       avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                        avc?.subtitleStr = "Are you sure you want to delete this review?"
                        avc?.yesAct = {
                               let str = "\(self.arrRatingReview[sender.tag].id!)"

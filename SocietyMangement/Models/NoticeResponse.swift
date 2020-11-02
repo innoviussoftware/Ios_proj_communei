@@ -66,9 +66,43 @@ import Foundation
 //    }
 //}
 
+// MARK: - NoticesResponse
+struct NoticesResponse: Codable {
+    let data: [Notice]
+    let status: Bool
+    let message: String
+}
+
+// MARK: - Datum
+struct Notice: Codable {
+    let noticeID, noticeTypeID: Int?
+    let title, datumDescription: String?
+    let publishDate: String?
+    let visibleTill, createdBy, creationDate: String?
+    let pollEnabled, multiPollEnable, societyID: Int?
+  //  let attachments: String?
+    let readAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case noticeID = "NoticeID"
+        case noticeTypeID = "NoticeTypeID"
+        case title = "Title"
+        case datumDescription = "Description"
+        case publishDate = "PublishDate"
+        case visibleTill = "VisibleTill"
+        case createdBy = "CreatedBy"
+        case creationDate = "CreationDate"
+        case pollEnabled = "PollEnabled"
+        case multiPollEnable = "MultiPollEnable"
+        case societyID = "SocietyID"
+       // case attachments
+        case readAt = "ReadAt"
+    }
+}
 
 
-// MARK: - GetFamilyMember
+/* // 27/10/20.
+// MARK: - NoticesResponse
 struct NoticesResponse: Codable {
     let data: [Notice]
     let status: Int
@@ -95,3 +129,5 @@ struct Notice: Codable {
         case updatedAt = "updated_at"
     }
 }
+
+*/

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import SWRevealViewController
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 class TabbarVC: UITabBarController, UITabBarControllerDelegate {
@@ -17,35 +19,32 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     var actionViewController: QuickActionVC!
     var thirdViewController: MyUnitVC!
     var fourthViewController: CommunityVC! */
+    var selectedtabindex :Int = 0
+    
+    var isfrom = 1
 
    // @available(iOS 13.0, *)
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.delegate = self
+        self.selectedIndex = selectedtabindex
+               
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        // You can replace the UINavigationController with your Setting's Navigation Controller class.
+        if (viewController is UINavigationController) {
+            let nav = viewController as? UINavigationController
+            nav?.popToRootViewController(animated: false)
+        }
 
-
-        // Do any additional setup after loading the view.
-        
-      //  self.tabBarItem.items[2].enabled = false
-        
-         // let items = tabBarController?.tabBar.items
-               //items.forEach { $2.isEnabled = false }
-         // items![2].isEnabled = false
-        
-       /* if let items = tabBar.items {
-          if items.count > 0 {
-            let itemToDisable = items[items.count - 3]
-           // itemToDisable.isEnabled = false
-            itemToDisable.accessibilityRespondsToUserInteraction = false
-          }
-        } */
-        
-
+        return true
     }
     
     
     // UITabBarDelegate
+    
     /* func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         print("Selected item")
         
@@ -61,7 +60,7 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     } */
     
 
-    // UITabBarControllerDelegate
+    // MARK: - UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         print("Selected view controller")
@@ -87,8 +86,11 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
             appDelegate.window?.makeKeyAndVisible() */
             
             if let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as? NewHomeVC {
-
+                
                    let navgitaionCon = UINavigationController(rootViewController: homeViewController)
+                
+               // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
                   navgitaionCon.popViewController(animated: true)
 
                  //  self.navigationController?.pushViewController(navgitaionCon, animated: true)
@@ -134,87 +136,6 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
 
     }
 
-      /*  let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-           let firstViewController = NewHomeVC()
-           let navigationController = UINavigationController(rootViewController: firstViewController)
-          viewControllers = [navigationController] */
-
-           
-      /*  if tabBarIndex == 0 {
-            
-            if viewController.isKind(of: NewHomeVC.self) {
-                let vc =  NewHomeVC()
-             //   vc.modalPresentationStyle = .overFullScreen
-             //   self.present(vc, animated: true, completion: nil)
-                
-                self.navigationController?.pushViewController(vc, animated: true)
-
-            }
-                
-          //  let vc = self.storyboard?.instantiateViewController(withIdentifier: NewHomeVC.id()) as! NewHomeVC
-          //  self.navigationController?.pushViewController(vc, animated: true)
-            print("Selected view controller 0")
-        }else if tabBarIndex == 1 {
-            
-            if viewController.isKind(of: ActivityTabVC.self) {
-                      let vc =  ActivityTabVC()
-                   //   vc.modalPresentationStyle = .overFullScreen
-                   //   self.present(vc, animated: true, completion: nil)
-                      
-                      self.navigationController?.pushViewController(vc, animated: true)
-
-                  }
-            
-           // let vc = self.storyboard?.instantiateViewController(withIdentifier: ActivityTabVC.id()) as! ActivityTabVC
-          //  self.navigationController?.pushViewController(vc, animated: true)
-            print("Selected view controller 1")
-        }else if tabBarIndex == 2 {
-            
-            if viewController.isKind(of: QuickActionVC.self) {
-                             let vc =  QuickActionVC()
-                          //   vc.modalPresentationStyle = .overFullScreen
-                          //   self.present(vc, animated: true, completion: nil)
-                             
-                             self.navigationController?.pushViewController(vc, animated: true)
-
-                         }
-         //   let vc = self.storyboard?.instantiateViewController(withIdentifier: QuickActionVC.id()) as! QuickActionVC
-         //   self.navigationController?.pushViewController(vc, animated: true)
-            print("Selected view controller 2")
-        }else if tabBarIndex == 3 {
-            
-            if viewController.isKind(of: MyUnitVC.self) {
-                    let vc =  MyUnitVC()
-                                     //   vc.modalPresentationStyle = .overFullScreen
-                                     //   self.present(vc, animated: true, completion: nil)
-                                        
-                    self.navigationController?.pushViewController(vc, animated: true)
-
-                }
-            
-           // let vc = self.storyboard?.instantiateViewController(withIdentifier: MyUnitVC.id()) as! MyUnitVC
-          //  self.navigationController?.pushViewController(vc, animated: true)
-            print("Selected view controller 3")
-        }else if tabBarIndex == 4 {
-            
-            if viewController.isKind(of: CommunityVC.self) {
-                               let vc =  CommunityVC()
-                                                //   vc.modalPresentationStyle = .overFullScreen
-                                                //   self.present(vc, animated: true, completion: nil)
-                                                   
-                               self.navigationController?.pushViewController(vc, animated: true)
-
-                           }
-          //  let vc = self.storyboard?.instantiateViewController(withIdentifier: CommunityVC.id()) as! CommunityVC
-          //  self.navigationController?.pushViewController(vc, animated: true)
-            print("Selected view controller 4")
-        }
-
-
-    } */
-
-  
   /*  func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
      // if viewController.isKind(of: QuickActionVC.self) {
          let vc =  QuickActionVC()

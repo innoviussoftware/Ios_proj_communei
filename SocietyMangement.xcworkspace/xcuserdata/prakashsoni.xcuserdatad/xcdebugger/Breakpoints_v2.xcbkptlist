@@ -7,32 +7,208 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D9D718F4-32D6-47C6-B018-B0A635698788"
+            uuid = "97984DD6-754D-4DE0-AEF1-4F778CBF3E2E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/HelpDeskVC.swift"
+            filePath = "SocietyMangement/ViewControllers/MobileNumberVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "actionCall(_:)"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "ApiCallLogin()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "97984DD6-754D-4DE0-AEF1-4F778CBF3E2E - 96f1dd33852dce23"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.MobileNumberVC.ApiCallLogin() -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/ViewControllers/MobileNumberVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
+                  offsetFromSymbolStart = "2687">
+               </Location>
+               <Location
+                  uuid = "97984DD6-754D-4DE0-AEF1-4F778CBF3E2E - c24eff73cf62d671"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.loginResponse&gt;) -&gt; () in Communei.MobileNumberVC.ApiCallLogin() -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/ViewControllers/MobileNumberVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "441">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6F1D8C33-B9D6-4A66-8E88-58C6E959F92B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/MobileNumberVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "ApiCallLogin()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "80401158-2013-44B6-B333-D6E512F95D88"
+            uuid = "1E01817D-1076-4273-B124-7E0B63B51F88"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/HelpDeskVC.swift"
+            filePath = "SocietyMangement/ViewControllers/MobileNumberVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "dialNumber(number:)"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "ApiCallLogin()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FCA3EF90-EAD3-478F-A957-2E93D2F47273"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1190"
+            endingLineNumber = "1190"
+            landmarkName = "ApiCallUserMe(URL:token:onCompletion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FCA3EF90-EAD3-478F-A957-2E93D2F47273 - b12b9a719c7be710"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.Apicallhandler.ApiCallUserMe(URL: Swift.String, token: Swift.String, onCompletion: (Alamofire.DataResponse&lt;Communei.UserMeResponse&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1190"
+                  endingLineNumber = "1190"
+                  offsetFromSymbolStart = "59">
+               </Location>
+               <Location
+                  uuid = "FCA3EF90-EAD3-478F-A957-2E93D2F47273 - bc54d32e1a4411d5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.UserMeResponse&gt;) -&gt; () in Communei.Apicallhandler.ApiCallUserMe(URL: Swift.String, token: Swift.String, onCompletion: (Alamofire.DataResponse&lt;Communei.UserMeResponse&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1192"
+                  endingLineNumber = "1192"
+                  offsetFromSymbolStart = "41">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C6E84FD0-6B94-4D03-A7BA-AC55EB0D1FBA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/SignUPStep2.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "631"
+            endingLineNumber = "631"
+            landmarkName = "ApiCallSignUp2()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "92076D2C-CB6B-44DF-858F-3987F2C4633A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "ApiCallSignUp2(URL:param:onCompletion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "92076D2C-CB6B-44DF-858F-3987F2C4633A - 1f055bf359840fa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.Apicallhandler.ApiCallSignUp2(URL: Swift.String, param: Swift.Dictionary&lt;Swift.String, Any&gt;, onCompletion: (Alamofire.DataResponse&lt;Communei.SignUpStep2Response&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "127"
+                  endingLineNumber = "127"
+                  offsetFromSymbolStart = "59">
+               </Location>
+               <Location
+                  uuid = "92076D2C-CB6B-44DF-858F-3987F2C4633A - a4a9020b6c2c89da"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.SignUpStep2Response&gt;) -&gt; () in Communei.Apicallhandler.ApiCallSignUp2(URL: Swift.String, param: Swift.Dictionary&lt;Swift.String, Any&gt;, onCompletion: (Alamofire.DataResponse&lt;Communei.SignUpStep2Response&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/prakashsoni/Desktop/innovius_project/Communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "41">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "865462BE-9C7E-421E-824A-F02E7A75E54F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "ApiCallSignUp2(URL:param:onCompletion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

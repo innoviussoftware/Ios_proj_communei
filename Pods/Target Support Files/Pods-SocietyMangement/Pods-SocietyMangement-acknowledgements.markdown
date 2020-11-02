@@ -24,6 +24,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## FSCalendar
+
+Copyright (c) 2013-2016 FSCalendar (https://github.com/WenchaoD/FSCalendar)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+## FSPagerView
+
+Copyright (c) 2017 FSPagerView (https://github.com/WenchaoD/FSPagerView)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
 ## Firebase
 
 Copyright 2019 Google
@@ -1964,6 +2010,54 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+## JSQMessagesViewController
+
+
+MIT License
+Copyright (c) 2013-present Jesse Squires
+
+http://www.jessesquires.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+## JSQSystemSoundPlayer
+
+
+MIT License
+Copyright (c) 2013 Jesse Squires
+
+http://www.hexedbits.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 ## PKHUD
 
 The MIT License (MIT)
@@ -2300,6 +2394,146 @@ THE SOFTWARE.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+## SwiftHEXColors
+
+Copyright (c) 2014 SwiftHEXColors contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+## SwiftSVG
+
+
+SwiftSVG
+
+Copyright (c) 2015 Michael Choe, Strauss LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+## ZDCChat
+
+ZDCChat
+
+Created by Zendesk on 25/03/2015.
+
+Copyright (c) 2017 Zendesk. All rights reserved.
+
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskCommonUISDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskCoreSDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskMessagingAPISDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskMessagingSDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskSDKConfigurationsSDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskSupportProvidersSDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
+
+
+## ZendeskSupportSDK
+
+ZendeskSDKs
+Created by Zendesk on  1/09/2020
+Copyright (c) 2020 Zendesk. All rights reserved.
+By downloading or using the Zendesk Mobile SDK, You agree to the Zendesk Master
+Subscription Agreement https://www.zendesk.com/company/customers-partners/#master-subscription-agreement and Application Developer and API License
+Agreement https://www.zendesk.com/company/customers-partners/#application-developer-api-license-agreement and
+acknowledge that such terms govern Your use of and access to the Mobile SDK.
 
 
 ## nanopb

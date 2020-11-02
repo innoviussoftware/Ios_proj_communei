@@ -10,10 +10,12 @@ import UIKit
 import SkyFloatingLabelTextField
 import SDWebImage
 import Alamofire
+import IQKeyboardManagerSwift
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDelegate , UIPickerViewDataSource{
+class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDelegate , UIPickerViewDataSource, addedOther{
     
     @IBOutlet weak var lblname: UILabel!
     
@@ -25,24 +27,77 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     
     
     var isfrom = 0
-    var strGender = "M"
+    var strGender = "Male"
     var strRelation = ""
     
+
     
+    @IBOutlet weak var txtprofession: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtProfessionOther: SkyFloatingLabelTextField!
+
+    @IBOutlet weak var txtViewProfessionDetail: IQTextView!
+
+    @IBOutlet weak var constraintHeightProfessionOther: NSLayoutConstraint!
+
+    @IBOutlet weak var constraintTopProfessionOther: NSLayoutConstraint!
     
-    var bloodgroupary = ["O+","O-","A-","A+","AB-","AB+","B-","B+"]
-    var arrGender = ["Male","Female"]
-    var arrRelation = ["Father","Mother","Son","Sister","Daughter","Brother","Spouse"]
+    var professionary = [Profession]()
+
+    // first solve blood group api
+
+    var bloodgroupary = [BloodGroup]()
+    //["O+","O-","A-","A+","AB-","AB+","B-","B+"]
+    var arrGender = ["Male","Female","Prefer not to say"]
+    var arrRelation = ["Father","Mother","Son","Sister","Daughter","Brother","Spouse","Mother In Law", "Father In Law","Co-tenant","Nephew","niece"]
     
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
     @IBOutlet weak var imguser: UIImageView!
     
-    @IBAction func ChangePhoto(_ sender: Any) {
+    @IBAction func ChangePhoto(_ sender: UIButton) {
         
         viewCamera.isHidden = false
+        
+        // 14/10/20.
+        
+    /*  viewCamera.isHidden = true
+        
+        let avc = storyboard?.instantiateViewController(withClass: AlertSelectCameraVC.self)
+
+        avc?.yesActCamera = { [self] in
+            print("camera open 1")
+            camera()
+            print("camera open 2")
+        }
+        
+        
+        avc?.yesActGallery = { [self] in
+            print("photoLibrary open 1")
+            photoLibrary()
+            print("photoLibrary open 2")
+        }
+        
+        avc?.noAct = {
+            print("no open")
+        }
+        
+        navigationController?.pushViewController(avc!, animated: true)
+        
+        
+      //  present(avc!, animated: true) */
+        
+       /* let showAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
+        showAlert.view.addSubview(viewCamera)
+        showAlert.addAction(UIAlertAction(title: "", style: .default, handler: { action in
+            
+            print("open")
+
+            // your actions here...
+        }))
+        self.present(showAlert, animated: true, completion: nil) */
 
       /*  let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
@@ -62,6 +117,16 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         
         
     }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+         let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+          vc.isfrom = 0
+       }
+      
+      @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+          let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+          vc.isfrom = 0
+      }
     
     @objc func tapviewCameraimage() {
         viewCamera.isHidden = true
@@ -83,15 +148,40 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
            
     }
     
-    @IBAction func SaveAction(_ sender: Any) {
+    // MARK: - Userdefilne function
+    
+    func isValidEmail(emailStr:String) -> Bool {
         
-        if(txtname.text == "")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: emailStr)
+    }
+    
+    
+    @IBAction func SaveAction(_ sender: UIButton) {
+        
+       /* if(self.imguser.image! == 0)
         {
-            
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select family member Image")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else */ if(txtname.text == "")
+        {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your family member name")
             self.present(alert, animated: true, completion: nil)
         }
-        else if(txtname.text == "")
+        else if(txtemail.text == "") {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your family member email")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if txtemail.hasText{
+            
+            if(isValidEmail(emailStr: txtemail.text!) == false) {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
+            self.present(alert, animated: true, completion: nil)
+            }
+        else if(txtnum.text == "")
         {
             
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number")
@@ -110,11 +200,20 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select gender")
             self.present(alert, animated: true, completion: nil)
+        }else if !txtprofession.hasText
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession")
+            self.present(alert, animated: true, completion: nil)
+        }else if !txtViewProfessionDetail.hasText{
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession details")
+            self.present(alert, animated: true, completion: nil)
+            
         }else if(txtRelation.text == "")
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select relation")
             self.present(alert, animated: true, completion: nil)
         }
+        
         else
         {
             if(isfrom == 0)
@@ -127,6 +226,7 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
             }
             
         }
+        }
     }
     
     
@@ -138,17 +238,25 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     
     @IBOutlet weak var txtname: SkyFloatingLabelTextField!
     
-    @IBOutlet weak var txtbirthdate: SkyFloatingLabelTextField!
+    @IBOutlet weak var txtemail: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtbirthdate: SkyFloatingLabelTextField!
     
     @IBOutlet weak var txtbloodgroup: SkyFloatingLabelTextField!
     
     var pickerview = UIPickerView()
+    
+    var pickerview1 = UIPickerView()
+
     var activeTextField : UITextField!
     var SelectedBlodGroup : Int! = 0
+    
+    var bloodgroupId = Int()
+    
+    var professiongroupId = Int()
+
     var SelectedGender : Int! = 0
     var SelectedRelation : Int! = 0
-    
     
     var member : FamilyMember?
     
@@ -161,6 +269,11 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         }
         
         viewCamera.isHidden = true
+        
+        txtProfessionOther.isHidden = true
+        constraintHeightProfessionOther.constant = 0
+        constraintTopProfessionOther.constant = 0
+        
 
         txtbloodgroup.addTarget(self, action: #selector(OpenPicker(txt:)), for: .editingDidBegin)
         txtbloodgroup.addDoneOnKeyboardWithTarget(self, action: #selector(DoneBlodGroup), shouldShowPlaceholder: true)
@@ -179,27 +292,38 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         if(isfrom == 1)
         {
             
-            btnsave.setTitle("UPDATE", for: .normal)
-            if member!.image != nil {
-                imguser.sd_setImage(with: URL(string:webservices().imgurl + member!.image!), placeholderImage: UIImage(named: "vendor profile"))
+            lblname.text = "Edit Family Member"
+            btnsave.setTitle("Update", for: .normal)
+            if member!.profilePhotoPath != nil {
+                imguser.sd_setImage(with: URL(string:webservices().imgurl + member!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
             }
             txtname.text = member?.name
             txtnum.text = member?.phone
             
+            let dateee = member?.dateOfBirth
+            
+            print("dateee : ",dateee!)
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
-            let strDate = formatter.date(from: (member?.dob!)!)
+            let strDate = formatter.date(from: (member?.dateOfBirth)!)
             formatter.dateFormat = "dd-MM-yyyy"
-            let str = formatter.string(from: strDate!)
-            txtbirthdate.text = str //member?.dob
-            txtbloodgroup.text = member?.bloodgroup
+            if strDate != nil {
+                let str = formatter.string(from: strDate!)
+                txtbirthdate.text = str //member?.dob
+            }
+//            let str = formatter.string(from: strDate!)
+//            txtbirthdate.text = str //member?.dob
+            txtbloodgroup.text = member?.bloodGroupName
             txtGender.text = member?.gender
             txtRelation.text = member?.relation
             
         }
         else
         {
-            btnsave.setTitle("SAVE", for: .normal)
+            lblname.text = "Add Family Member"
+
+            btnsave.setTitle("Save", for: .normal)
             
         }
        // setrightviewnew(textfield:txtbirthdate, image: #imageLiteral(resourceName: "ic-calender")) // Dropdown
@@ -210,8 +334,41 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         setrightviewnew(textfield:txtGender, image: #imageLiteral(resourceName: "ic_downarrow"))
         setrightviewnew(textfield:txtRelation, image: #imageLiteral(resourceName: "ic_downorange")) */
         
+        ApiCallGetProfession()
         
+        ApiCallGetBlood()
+
+        pickerview1.delegate = self
+        pickerview1.dataSource = self
+               
+
+        let toolBar1 = UIToolbar()
+        toolBar1.barStyle = .default
+        toolBar1.isTranslucent = true
+        toolBar1.tintColor = AppColor.appcolor
+        let doneButton1 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed1))
+        let cancelButton1 = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spaceButton1 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar1.setItems([cancelButton1, spaceButton1, doneButton1], animated: false)
+               
+               
+        toolBar1.isUserInteractionEnabled = true
+        toolBar1.sizeToFit()
+        txtprofession.inputAccessoryView = toolBar1
+        txtprofession.inputView = pickerview1
+               
+        // 21/10/20. temp comment
         
+      /*  if UsermeResponse?.data!.profession == "other"{
+            txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession_other)
+        }else{
+            txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession)
+        } */
+        
+        txtprofession.text = member?.professionName
+
+      //  txtViewProfessionDetail.text = setOptionalStr(value: UsermeResponse?.data!.professionDetail)
+
         showDatePicker()
         
         
@@ -287,7 +444,6 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
-        
     }
     
     
@@ -297,7 +453,7 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         if(txtbloodgroup.text == "")
         {
             
-            txtbloodgroup.text = bloodgroupary[0]
+            txtbloodgroup.text = bloodgroupary[0].name
             
             txtbloodgroup.resignFirstResponder()
         }
@@ -308,9 +464,62 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         }
     }
     @objc  func cancelPressed() {
-        view.endEditing(true) // or do something
+        view.endEditing(true) // or do something  // MembersDetailsVC
     }
     
+     @objc func donePressed1()
+            
+        {
+              if(txtprofession.text == "")
+                  {
+                      
+                    txtProfessionOther.isHidden = true
+                    constraintHeightProfessionOther.constant = 0
+                    constraintTopProfessionOther.constant = 0
+
+                    txtprofession.text = professionary[0].name
+                
+                professiongroupId = professionary[0].id
+
+                
+                      
+                      txtprofession.resignFirstResponder()
+                  }
+                  else
+                  {
+                      txtprofession.resignFirstResponder()
+                      
+                }
+                  
+            if(txtprofession.text == "other")
+            {
+                txtProfessionOther.isHidden = false
+                constraintHeightProfessionOther.constant = 50
+                constraintTopProfessionOther.constant = 10
+                
+                
+    //            let avc = storyboard?.instantiateViewController(withClass: ProfessionPopUP.self)
+    //            avc!.delegate = self
+    //            avc?.yesAct = {
+    //            }
+    //            avc?.noAct = {
+    //            }
+    //            present(avc!, animated: true)
+                
+            }else{
+                txtProfessionOther.isHidden = true
+                constraintHeightProfessionOther.constant = 0
+                constraintTopProfessionOther.constant = 0
+            }
+            
+            
+          
+        }
+    
+        func addOtherProfession(str: String) {
+           txtprofession.text = str
+           txtprofession.resignFirstResponder()
+        }
     
     //MARK:- openPicker
     
@@ -324,7 +533,7 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         pickerview = UIPickerView()
         pickerview.delegate = self
         pickerview.dataSource = self
-        
+       
         activeTextField.inputView = pickerview
         pickerview.backgroundColor = UIColor.white
         
@@ -332,7 +541,9 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     
     @objc func DoneBlodGroup() {
         activeTextField.resignFirstResponder()
-        txtbloodgroup.text = bloodgroupary[SelectedBlodGroup]
+        txtbloodgroup.text = bloodgroupary[SelectedBlodGroup].name
+        bloodgroupId = bloodgroupary[SelectedBlodGroup].id
+        
     }
     
     @objc func DoneGender()  {
@@ -340,9 +551,11 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         txtGender.text = arrGender[SelectedGender]
         
         if arrGender[SelectedGender] == "Male"{
-            strGender = "M"
+            strGender = "Male"
+        }else if arrGender[SelectedGender] == "Female"{
+            strGender = "Female"
         }else{
-            strGender = "F"
+            strGender = "Prefer not to say"
         }
     }
     
@@ -352,7 +565,12 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         
     }
     
-    
+    func setOptionalStr(value : Any?) -> String?{
+           guard let string = value as! String?, !string.isEmpty else {
+               return nil
+           }
+           return  value as? String
+       }
     
     // MARK: - pickerview delegate and data source methods
     // Number of columns of data
@@ -364,9 +582,11 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         if activeTextField == txtbloodgroup{
-            return bloodgroupary.count
+            return bloodgroupary.count //+ 1
         }else if activeTextField == txtGender{
             return arrGender.count
+        }else if(pickerView == pickerview1){
+            return professionary.count + 1
         }else{
             return arrRelation.count
         }
@@ -377,25 +597,50 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     // The data to return fopr the row and component (column) that's being passed in
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
-        if activeTextField == txtbloodgroup{
-            return bloodgroupary[row]
-        }else if activeTextField == txtGender{
-            return arrGender[row]
+        if(pickerView == pickerview1){
+            if(row == professionary.count){
+                    return "other"
+            }else{
+                return professionary[row].name
+                
+                // Fatal error: Index out of range: file Swift/ContiguousArrayBuffer.swift, line 444
+
+            }
         }else{
-            return arrRelation[row]
+            if activeTextField == txtbloodgroup{
+                return bloodgroupary[row].name
+            }else if activeTextField == txtGender{
+                return arrGender[row]
+            }else{
+                return arrRelation[row]
+            }
         }
-        
+       
         
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        if activeTextField == txtbloodgroup{
-            SelectedBlodGroup = row
-        }else if activeTextField == txtGender{
-            SelectedGender = row
+        if(pickerView == pickerview1)
+        {
+            if(row == professionary.count)
+            {
+                txtprofession.text =  "other"
+            }
+            else
+            {
+                txtprofession.text = professionary[row].name
+            }
         }else{
-            SelectedRelation = row
+            if activeTextField == txtbloodgroup{
+                txtbloodgroup.text = bloodgroupary[row].name
+                SelectedBlodGroup = row
+            }else if activeTextField == txtGender{
+                SelectedGender = row
+            }else{
+                SelectedRelation = row
+            }
+            
         }
         
     }
@@ -404,8 +649,20 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         //Formate Date
         datePicker.datePickerMode = .date
         
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+
+        
         //ToolBar
         let toolbar = UIToolbar();
+        
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.tintColor = UIColor.black
         toolbar.sizeToFit()
         
         //done button & cancel button
@@ -561,6 +818,16 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
         
+        var str1 = ""
+               if txtProfessionOther.text!.count > 0{
+                   str1 = txtProfessionOther.text!
+               }else{
+                   str1 = ""
+               }
+        
+        if txtprofession.text == "other" {
+            professiongroupId = 0
+        }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
@@ -574,13 +841,30 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
         }
         
         
-        let param : Parameters = [
+       /* let param : Parameters = [
             "family_member_name" : txtname.text!,
             "family_member_phone" : txtnum.text!,
             "family_member_gender" : strGender,
+            "profession":txtprofession.text!,
+            "profession_other" : str1,
+           // "profession_detail":txtViewProfessionDetail.text!,
             "family_member_dob" : str,
             "family_member_bloodgroup" : txtbloodgroup.text!,
             "family_member_relation" : txtRelation.text!
+        ] */
+        
+        let param : Parameters = [
+           // "ProfilePicture" : "",
+            "Name" : txtname.text!,
+            "Email" : txtemail.text!,
+            "Phone" : txtnum.text!,
+            "DateOfBirth" : str,
+            "BloodGroup" : bloodgroupId,
+            "Gender" : strGender,
+            "Profession":professiongroupId,
+            "ProfessionDetails" : str1,
+           // "profession_detail":txtViewProfessionDetail.text!,
+            "Relation" : txtRelation.text!
         ]
         
         webservices().StartSpinner()
@@ -593,12 +877,12 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
                 if(self.imguser.image != nil)
                 {
                     let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                    MultipartFormData.append(imgData!, withName: "family_member_photo", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                    MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
                 }
                 
                 
                 
-        }, to: webservices().baseurl + API_ADD_FAMILY_MEMBER,headers:["Accept": "application/json","Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
+        }, to: webservices().baseurl + API_ADD_FAMILY_MEMBER,headers:["Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
             print("Upload Progress: \(progress.fractionCompleted)")
@@ -669,7 +953,7 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
                      }
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
-        let strFamilyMemberID = String(format: "/%d", member!.id!)
+        let strFamilyMemberID = member!.guid // 24/10/20. //String(format: "/%d", member!.guid)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
@@ -682,14 +966,31 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
             str = txtbirthdate.text!
         }
         
-        
-        let param : Parameters = [
+        // 5/10/20.
+                
+       /* let param : Parameters = [
             "family_member_name" : txtname.text!,
             "family_member_phone" : txtnum.text!,
             "family_member_gender" : strGender,
             "family_member_dob" : str,
+           // "profession_detail":txtViewProfessionDetail.text!,
             "family_member_bloodgroup" : txtbloodgroup.text!,
             "family_member_relation" : txtRelation.text!
+        ] */
+        
+        let param : Parameters = [
+           // "ProfilePicture" : "",
+            "Name" : txtname.text!,
+            "Email" : txtemail.text!,
+            "Phone" : txtnum.text!,
+            "DateOfBirth" : str,
+            "BloodGroup" : bloodgroupId,
+            "Gender" : strGender,
+            "Profession":professiongroupId,
+            "ProfessionDetails" : txtViewProfessionDetail.text!, // str1,
+           // "profession_detail":txtViewProfessionDetail.text!,
+            "Relation" : txtRelation.text!,
+            "guid" : strFamilyMemberID!
         ]
         
         webservices().StartSpinner()
@@ -702,12 +1003,12 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
                 if(self.imguser.image != nil)
                 {
                     let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                    MultipartFormData.append(imgData!, withName: "family_member_photo", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                    MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
                 }
                 
                 
                 
-        }, to: webservices().baseurl + API_UPDATE_FAMILY_MEMBER + strFamilyMemberID,headers:["Accept": "application/json","Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
+            }, to: webservices().baseurl + API_UPDATE_FAMILY_MEMBER ,headers:["Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
             print("Upload Progress: \(progress.fractionCompleted)")
@@ -758,4 +1059,104 @@ class AddFamilyMemberVC: UIViewController , UIImagePickerControllerDelegate , UI
     }
     
     
+    // MARK: - get Professsion
+       
+       func ApiCallGetProfession()
+       {
+             if !NetworkState().isInternetAvailable {
+                            ShowNoInternetAlert()
+                            return
+                        }
+               webservices().StartSpinner()
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions", token: token as! String) { JSON in
+           
+        //ApiGetProfession(URL: webservices().baseurl + "communei/professions") { JSON in
+                   switch JSON.result{
+                   case .success(let resp):
+                       
+                       webservices().StopSpinner()
+                       if(JSON.response?.statusCode == 200)
+                       {
+                           
+                           self.professionary = resp.data
+                           self.pickerview.reloadAllComponents()
+                           
+                       }
+                       else
+                       {
+                           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                           self.present(alert, animated: true, completion: nil)
+                           
+                       }
+                       
+                       print(resp)
+                   case .failure(let err):
+                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       self.present(alert, animated: true, completion: nil)
+                       print(err.asAFError)
+                       webservices().StopSpinner()
+                       
+                   }
+                   
+               }
+               
+           
+       }
+    
+
+// MARK: - get Blood
+   
+   func ApiCallGetBlood()
+   {
+         if !NetworkState().isInternetAvailable {
+                        ShowNoInternetAlert()
+                        return
+                    }
+           webservices().StartSpinner()
+    
+    let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+    
+    print("token : ",token as! String)
+
+    Apicallhandler().ApiCallGetBlood(URL: webservices().baseurl + "communei/blood-groups", token: token as! String) { JSON in
+       
+               switch JSON.result{
+               case .success(let resp):
+                   
+                   webservices().StopSpinner()
+                   if(JSON.response?.statusCode == 200)
+                   {
+                       
+                       self.bloodgroupary = resp.data
+                       self.pickerview.reloadAllComponents()
+                       
+                   }
+                   else
+                   {
+                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                       self.present(alert, animated: true, completion: nil)
+                       
+                   }
+                   
+                   print(resp)
+               case .failure(let err):
+                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   self.present(alert, animated: true, completion: nil)
+                   print(err.asAFError)
+                   webservices().StopSpinner()
+                   
+               }
+               
+           }
+           
+       
+   }
+
 }
+
+

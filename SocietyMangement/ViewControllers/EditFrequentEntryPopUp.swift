@@ -29,6 +29,9 @@ class EditFrequentEntryPopUp: UIViewController {
     
     @IBOutlet weak var txtSelectDate: UITextField!
     
+    @IBOutlet weak var collectionHours: UICollectionView!
+
+    
     var strType = ""
     var strEntryLimit = ""
     
@@ -56,14 +59,14 @@ class EditFrequentEntryPopUp: UIViewController {
         
         if strType == "once"{
             viewSelectDate.isHidden = false
-            btnToday.setTitle("Today", for: .normal)
+          //  btnToday.setTitle("Today", for: .normal)
             
             lblStartDateStatic.text = "Start Time"
             lblEndDateStatic.text = "Valid for next"
             
         }else{
             viewSelectDate.isHidden = true
-            btnToday.setTitle(strEntryLimit, for: .normal)
+           // btnToday.setTitle(strEntryLimit, for: .normal)
             
             lblStartDateStatic.text = "Start Date"
             lblEndDateStatic.text = "End Date"
@@ -98,6 +101,25 @@ class EditFrequentEntryPopUp: UIViewController {
     }
     
     
+    @IBAction func btnClose_hour(_ sender: Any) {
+        self.viewBottom.isHidden = true
+    }
+    
+    @IBAction func btnApply(_ sender: Any) {
+        self.viewBottom.isHidden = true
+    }
+    
+    @IBAction func btnReset(_ sender: Any) {
+        
+        txtEndDate.text = hourary[0]
+
+        selectedindex = 0
+        
+        collectionHours.reloadData()
+
+        self.viewBottom.isHidden = true
+    }
+
     
     @IBAction func actionUpdate(_ sender: Any) {
         
@@ -260,7 +282,7 @@ extension EditFrequentEntryPopUp : UICollectionViewDelegate,UICollectionViewData
         txtEndDate.text = hourary[indexPath.row]
         
         selectedindex = indexPath.row
-        viewBottom.isHidden = true
+      //  viewBottom.isHidden = true
         //viewmain.backgroundColor = UIColor.white
         collectionView.reloadData()
     }

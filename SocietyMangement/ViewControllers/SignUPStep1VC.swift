@@ -58,12 +58,35 @@ class SignUPStep1VC: BaseVC {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter name")
             self.present(alert, animated: true, completion: nil)
         }
-        else if (txtemail.text != nil) {
+        else if (txtname.text == "") && (txtemail.text != nil) {
             if(isValidEmail(emailStr:txtemail.text!) == false) {
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
                 self.present(alert, animated: true, completion: nil)
+            }else if(cbagree.isChecked == false)
+            {
+               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please accept terms and conditions")
+               self.present(alert, animated: true, completion: nil)
+               
             }
-        }else{
+            else{
+                fullname = txtname.text!
+                email = txtemail.text!
+                mobile = strmobile
+                let nextVC = self.pushViewController(withName:SignUPStep2.id(), fromStoryboard: "Main") as! SignUPStep2
+                
+            }
+        }
+        else if (isValidEmail(emailStr:txtemail.text!) == false) {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
+                self.present(alert, animated: true, completion: nil)
+        }
+        else if(cbagree.isChecked == false)
+        {
+           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please accept terms and conditions")
+           self.present(alert, animated: true, completion: nil)
+           
+        }
+        else{
             fullname = txtname.text!
             email = txtemail.text!
             mobile = strmobile
@@ -77,15 +100,16 @@ class SignUPStep1VC: BaseVC {
     {
         cb.borderStyle = .square
         cb.checkmarkStyle = .tick
-        cb.uncheckedBorderColor = .black
-        cb.borderWidth = 1
-        cb.uncheckedBorderColor = .black
-        cb.checkedBorderColor = UIColor(named:"Orange")
-        cb.backgroundColor = .clear
+        cb.uncheckedBorderColor = .clear
+       // cb.borderWidth = 1
+        cb.uncheckedBorderColor = .clear
+        cb.checkedBorderColor = UIColor.orange//(named:"Orange")
+        cb.backgroundColor = UIColor.orange //.clear
         cb.checkboxBackgroundColor = UIColor.clear
-        cb.checkmarkColor = UIColor(named:"Orange")
+        cb.checkmarkColor = UIColor.white  //(named:"Orange")
         
     }
+    
     func isValidEmail(emailStr:String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -95,10 +119,10 @@ class SignUPStep1VC: BaseVC {
     }
     
     
-    
     @IBAction func BackAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -112,7 +136,7 @@ class SignUPStep1VC: BaseVC {
             NSAttributedStringKey.foregroundColor :UIColor(red: 0.51, green: 0.56, blue: 0.65, alpha: 1.00)]
         
         let combionation = NSMutableAttributedString()
-        let attributeString = NSMutableAttributedString(string: "I agree to the",attributes: yourAttributes1)
+        let attributeString = NSMutableAttributedString(string: "I agree to the ",attributes: yourAttributes1)
         let attributeString1 = NSMutableAttributedString(string: "Terms & Conditions",attributes: yourAttributes)
         combionation.append(attributeString)
         combionation.append(attributeString1)
@@ -162,14 +186,8 @@ class SignUPStep1VC: BaseVC {
         
         
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
+    // prakash.innovius@gmail.com
 }
+
+

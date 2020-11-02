@@ -25,9 +25,9 @@ class InvitePopUpVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
-        
       setUpView()
       self.navigationController?.navigationBar.isHidden = true
+        
     }
     
     func setUpView() {
@@ -50,9 +50,7 @@ class InvitePopUpVC: UIViewController {
         btnInvitation.layer.shadowRadius = 4.0
         // *** Set shadowOpacity to full (1) ***
         self.btnInvitation.layer.shadowOpacity = 1.0
-        
-        
-        
+                
     }
     
     @IBAction func actionShare(_ sender: Any) {

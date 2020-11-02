@@ -13,17 +13,64 @@ protocol addedVehicle {
     func addedNewVehicle()
 }
 
-class EntryVehicleDetailPopUpVC: UIViewController {
+class EntryVehicleDetailPopUpVC: BaseVC {
     var delegate : addedVehicle?
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var txtVehicleType: UITextField!
     @IBOutlet weak var txtVehicleNumber: UITextField!
     
-    var arrVehicleType = ["Two Wheeler","Four Wheeler"]
+    var arrVehicleType = [VehicleData]() //["Two Wheeler","Four Wheeler"]
     
     var activeTextField = UITextField()
     var picker : UIPickerView!
-    var selectedType : Int! = 0
+
+    var selectedType = Int()
+
+    //MARK:-  Vehicle List Type
+    
+    func apicallGetVehicleListType()
+    {
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+        Apicallhandler().GetVehicleList(URL: webservices().baseurl + API_GET_VEHICLELISTTYPE, token:token as! String) { [self] JSON in
+                switch JSON.result{
+                    
+                case .success(let resp):
+                    
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        self.arrVehicleType = resp.data
+                        if self.arrVehicleType.count > 0{
+                            txtVehicleType.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
+                            txtVehicleType.addDoneOnKeyboardWithTarget(self, action: #selector(DoneVehicleType), shouldShowPlaceholder: true)
+                        }else{
+                           
+                        }
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                   
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError ?? "")
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+     
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +79,13 @@ class EntryVehicleDetailPopUpVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
+        apicallGetVehicleListType()
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         self.showAnimate()
         
-        txtVehicleType.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
-        txtVehicleType.addDoneOnKeyboardWithTarget(self, action: #selector(DoneVehicleType), shouldShowPlaceholder: true)
+     //   txtVehicleType.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
+     //   txtVehicleType.addDoneOnKeyboardWithTarget(self, action: #selector(DoneVehicleType), shouldShowPlaceholder: true)
         
       //  setrightviewnew(textfield: txtVehicleType, image: UIImage(named:"ic_down_blue")!)
         
@@ -61,14 +109,22 @@ class EntryVehicleDetailPopUpVC: UIViewController {
         }else if !txtVehicleNumber.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vehcle number")
             self.present(alert, animated: true, completion: nil)
-        }else{
-            apicallAddVehicle()
+        }else if txtVehicleNumber.maxLength < 10 {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid vehicle number")
+            self.present(alert, animated: true, completion: nil)
         }
-        
+        else{
+            apicallAddVehicle()
+           // tabbarEnabled()
+        }
+
     }
     
     @IBAction func actionClose(_ sender: Any) {
         self.removeAnimate()
+        
+      //  tabbarEnabled()
+
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -91,21 +147,21 @@ class EntryVehicleDetailPopUpVC: UIViewController {
         picker.backgroundColor = UIColor.white
         
     }
-    
     @objc func DoneVehicleType() {
         activeTextField.resignFirstResponder()
-        txtVehicleType.text = arrVehicleType[selectedType]
+        let row = self.picker.selectedRow(inComponent: 0)
+        txtVehicleType.text! = arrVehicleType[row].type
+        selectedType = arrVehicleType[row].id
+        
+        
     }
-    
     
     func setborders(textfield:UITextField)
     {
-        
         textfield.layer.borderColor =  AppColor.lightgray.cgColor
         textfield.layer.borderWidth = 1.0
-        
-        
     }
+    
     func setrightviewnew(textfield: UITextField ,image:UIImage)
     {
         let imageView = UIImageView.init(image: image)
@@ -158,8 +214,8 @@ class EntryVehicleDetailPopUpVC: UIViewController {
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             let param : Parameters = [
-                "type":txtVehicleType.text!,
-                "number":txtVehicleNumber.text!
+                "VehicleTypeID": selectedType, //txtVehicleType.text!,
+                "Number":txtVehicleNumber.text!
             ]
             webservices().StartSpinner()
             
@@ -187,7 +243,7 @@ class EntryVehicleDetailPopUpVC: UIViewController {
                     webservices().StopSpinner()
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    print(err.asAFError!)
                     
                 }
             }
@@ -210,11 +266,11 @@ extension EntryVehicleDetailPopUpVC : UIPickerViewDelegate , UIPickerViewDataSou
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
-        return arrVehicleType[row]
+        return arrVehicleType[row].type
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedType = row
+        selectedType = arrVehicleType[row].id //row
     }
     
 }

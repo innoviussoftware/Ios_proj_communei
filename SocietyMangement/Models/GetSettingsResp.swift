@@ -22,6 +22,8 @@ struct getSettingData: Codable {
     let receiverID: String?
     let event, notice, circular, contactDetails: Int?
     let familyDetails: Int?
+    let mute_notification_status:Int?
+    let reason_to_mute_notification :String?
     let createdAt, updatedAt: String
 
     enum CodingKeys: String, CodingKey {
@@ -33,5 +35,7 @@ struct getSettingData: Codable {
         case familyDetails = "family_details"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case mute_notification_status
+        case reason_to_mute_notification
     }
 }

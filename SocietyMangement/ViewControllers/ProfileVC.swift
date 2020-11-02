@@ -15,15 +15,15 @@ import Alamofire
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
+class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
     var familymeberary = [FamilyMember]()
     
-    @IBOutlet weak var btnadd3: UIButton!
+  //  @IBOutlet weak var btnadd3: UIButton!
     
-    @IBOutlet weak var btnadd1: UIButton!
+  //  @IBOutlet weak var btnadd1: UIButton!
     
-    @IBOutlet weak var btnadd2: UIButton!
+  //  @IBOutlet weak var btnadd2: UIButton!
     
     @IBOutlet weak var btnNotification: UIButton!
     @IBOutlet weak var lblname: UILabel!
@@ -34,24 +34,55 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     @IBOutlet weak var lblflattype: UILabel!
     
-    @IBOutlet weak var viewcollection: UIView!
+    @IBOutlet weak var lblprofession: UILabel!
+
+    @IBOutlet weak var lblBloodGroup: UILabel!
+    
+    @IBOutlet weak var lblBloodGroupName: UILabel!
+    
+  //  @IBOutlet weak var viewcollection: UIView!
     @IBOutlet weak var viewmembers: UIView!
-    @IBOutlet weak var collectionmembers: UICollectionView!
+    @IBOutlet weak var viewVehiclemembers: UIView!
+
+    @IBOutlet weak var collectionVehicle: UICollectionView!
     @IBOutlet weak var menuaction: UIButton!
     
     @IBOutlet weak var lblNoDataFound: UILabel!
+    
+    @IBOutlet weak var tblview: UITableView!
+    
+   // @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+
+
     var member : Members?
     var isfrom = 0
+    
+    var arrVehicleList = [VehicleData]()
+
     
     @objc func backaction(sender:UIButton)
     {
         self.navigationController?.popViewController(animated:true)
-        
+
     }
+    
+    @IBAction func btn_backaction(_ sender: Any) {
+           
+           if isfrom == 0{
+               revealViewController()?.revealToggle(self)
+           }else{
+               
+               self.navigationController?.popViewController(animated: true)
+           }
+           
+           
+       }
     
     @IBAction func actionNotification(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
+
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     @IBAction func nextaction(_ sender: Any) {
@@ -87,24 +118,28 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         }
         
         
+        tblview.register(UINib(nibName: "ResidentFamilymembersCell", bundle: nil), forCellReuseIdentifier: "ResidentFamilymembersCell")
+               
+        tblview.separatorStyle = .none
+               
         
         if(isfrom == 0)
         {
             menuaction.setImage(UIImage(named:"menu"), for: .normal)
-            btnadd1.isHidden = false
-            btnadd2.isHidden = false
-            btnadd3.isHidden = false
+//            btnadd1.isHidden = false
+//            btnadd2.isHidden = false
+//            btnadd3.isHidden = false
             
         }
         else
         {
-            menuaction.setImage(UIImage(named:"ic_backbutton"), for: .normal)
+            menuaction.setImage(UIImage(named:"ic_back-1"), for: .normal)
             
-            menuaction.addTarget(revealViewController(), action: #selector(backaction), for: .touchUpInside)
+          //  menuaction.addTarget(revealViewController(), action: #selector(backaction), for: .touchUpInside)
             
-            btnadd1.isHidden = true
-            btnadd2.isHidden = true
-            btnadd3.isHidden = true
+//            btnadd1.isHidden = true
+//            btnadd2.isHidden = true
+//            btnadd3.isHidden = true
             
         }
         
@@ -119,23 +154,41 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             }
             else{
                 
-                menuaction.addTarget(revealViewController(), action: #selector(backaction), for: .touchUpInside)
+               // menuaction.addTarget(revealViewController(), action: #selector(backaction), for: .touchUpInside)
+                
             }
         }
+        
+        
         if(isfrom == 0)
         {
             lblname.text = UsermeResponse?.data!.name
-            if(UsermeResponse?.data!.image != nil)
+            if(UsermeResponse?.data!.profilePhotoPath != nil)
             {
-                imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
+                imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor profile"))
             }
             //lblflatno.text = "Flat no: \(UsermeResponse!.data.fla)"
-            self.lblflatno.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
-            lblflattype.text = "Contact no: \(UsermeResponse!.data!.phone!)"
+           // self.lblflatno.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+            // Orchid Block A - FLAT 105
             
+            // 22/10/20. temp comment
             
-            let strId = String(format: "%d", (UsermeResponse?.data?.id)!)
+          //  self.lblflatno.text = String(format: "%@ - Flat %@", UsermeResponse!.data!.PropertyID!,UsermeResponse!.data!.ParentProperty!)
+
+            lblflattype.text = (member!.flatType)
+               // "Contact no: \(UsermeResponse!.data!.phone!)"
+            
+            lblprofession.text = (member!.profession)
+
+            if member!.bloodgroup != nil{
+                lblBloodGroupName.text = (member!.bloodgroup)
+            }
+                        
+            let strId = String(format: "%d", (UsermeResponse?.data?.guid)!)
             apicallGetFamilyMembers(id:strId)
+            
+            apicallGetVehicleList(id:strId)
+
             
         }
         else
@@ -144,22 +197,62 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             
             if(member?.image != nil)
             {
-                imgview.sd_setImage(with: URL(string:webservices().imgurl + (member?.image)!), placeholderImage: UIImage(named: "vendor-1"))
+                imgview.sd_setImage(with: URL(string:webservices().imgurl + (member?.image)!), placeholderImage: UIImage(named: "vendor profile"))
             }
             
-            lblflatno.text = "Flat No: \(member!.buildingname!)-\(member!.flatname!)"
-            lblflattype.text = "Contact No: \(member!.phone)"
+            lblflatno.text = "\(member!.buildingname!) - FLAT \(member!.flatname!)"
+          //  lblflattype.text = "Contact No: \(member!.phone)"
             
+            lblflattype.text = (member!.flatType)
+
+            lblprofession.text = (member!.profession)
+            
+            if member!.bloodgroup != nil{
+                lblBloodGroupName.text = (member!.bloodgroup)
+            }
+                        
             let strId = String(format: "%d", (member?.userID)!)
              apicallGetFamilyMembers(id:strId)
+            
+            apicallGetVehicleList(id:strId)
+
             
         }
         
     }
     
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
+    }
+    
+    @IBAction func callmembers(_ sender: Any) {
+   
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+         if(self.isfrom == 0) {
+            avc?.subtitleStr = "Are you sure you want to call: \(UsermeResponse!.data!.phone)"
+         }else{
+            avc?.subtitleStr = "Are you sure you want to call: \(member!.phone)"
+        }
+        avc?.isfrom = 3
+
+                                avc?.yesAct = {
+                                        if(self.isfrom == 0) {
+                                            self.dialNumber(number:  UsermeResponse!.data!.phone!)
+
+                                        }else{
+                                            self.dialNumber(number:  self.member!.phone)
+                                        }
+
+                                    }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
     }
     
     @objc func AcceptRequest(notification: NSNotification) {
@@ -219,6 +312,11 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
     }
     
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+           let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+           vc.isfrom = 0
+       }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -226,42 +324,105 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
 
     }
     
+    //MARK:- tableview delegate
+          
+          
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return familymeberary.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ResidentFamilymembersCell") as! ResidentFamilymembersCell
+        
+        cell.selectionStyle = .none
+          //  webservices.sharedInstance.setShadow(view:cell.innerview)
+                   
+                   cell.lblname.text =  familymeberary[indexPath.row].name
+                   cell.lblmember.text = familymeberary[indexPath.row].relation
+                   cell.btncll.tag = indexPath.row
+                   if familymeberary[indexPath.row].profilePhotoPath != nil{
+                         cell.imgview.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                   }
+                   
+                
+        cell.btncll.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+        
+        return cell
+            
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.estimatedRowHeight
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+      //  return 100
+    }
+       
+
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("willDisplay :- ",cell.frame.size.height)
+       // self.tableViewHeight += cell.frame.size.height
+        
+       // self.tableViewHeight.constant += cell.frame.size.height
+
+    }
+    
+    
+    //MARK:- collectionView delegate
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return familymeberary.count
+        return arrVehicleList.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
-        let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
-        
-        
-        webservices.sharedInstance.setShadow(view:cell.innerview)
-        
-        cell.lblname.text =  familymeberary[indexPath.row].name
-        cell.lblcontact.text = familymeberary[indexPath.row].phone
-        cell.btnedit.tag = indexPath.row
-        cell.btncll.tag = indexPath.row
-        if familymeberary[indexPath.row].image != nil{
-              cell.imgview.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
-        }
-        
-        cell.btnedit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
-        
-        cell.btncll.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"VehicleCollectionCell", for: indexPath) as! VehicleCollectionCell
+                              
+                              if arrVehicleList[indexPath.row].type == "Two Wheeler"{
+                                  cell.imgVehicle.image = #imageLiteral(resourceName: "Group 271")
+                              }else{
+                              
+                             // if arrVehicleList[indexPath.row].type == "Four Wheeler"{
+                                  cell.imgVehicle.image = #imageLiteral(resourceName: "cab")
+                              }
+                              
+                              cell.lblVehicleType.text = arrVehicleList[indexPath.row].type
+                              cell.lblVehicleNumber.text = arrVehicleList[indexPath.row].dClass
+                              
+                              return cell
+      
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let collectionViewWidth = collectionView.bounds.width
-        return CGSize(width: 140, height:154)
+        
+        return CGSize(width: 145, height:135)
+
     }
     
     
     @objc func callmember(sender:UIButton)
     {
-        dialNumber(number:familymeberary[sender.tag].phone!)
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+        avc?.subtitleStr = "Are you sure you want to call: \(familymeberary[sender.tag].phone)"
+                        
+                        avc?.isfrom = 3
+
+                                   avc?.yesAct = {
+                                    self.dialNumber(number:  self.familymeberary[sender.tag].phone!)
+
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+      //  dialNumber(number:familymeberary[sender.tag].phone!)
     }
     @objc func editmember(sender:UIButton)
     {
@@ -286,6 +447,67 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         } else {
             // add error message here
         }
+    }
+    
+    // MARK: - get Vehicle
+
+    func apicallGetVehicleList(id:String)
+    {
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        let param : Parameters = [
+            "user_id" : id
+        ]
+        
+        // 8/9/20.
+        
+        Apicallhandler().GetVehicleList_1(URL: webservices().baseurl + API_GET_VEHICLELIST, param: param, token: token as! String) { JSON in
+
+            
+          //  Apicallhandler().GetVehicleList(URL: webservices().baseurl + API_GET_VEHICLELIST, token:token as! String) { JSON in
+                switch JSON.result{
+                    
+                case .success(let resp):
+                    
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        self.arrVehicleList = resp.data
+                        if self.arrVehicleList.count > 0{
+                            self.collectionVehicle.isHidden = false
+                            self.viewVehiclemembers.isHidden = true
+                            self.collectionVehicle.dataSource = self
+                            self.collectionVehicle.delegate = self
+                            self.collectionVehicle.reloadData()
+                        }else{
+                            self.viewVehiclemembers.isHidden = false
+                            self.collectionVehicle.isHidden = true
+                        }
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                    self.viewVehiclemembers.isHidden = false
+                    self.collectionVehicle.isHidden = true
+                    
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+     
     }
     
     // MARK: - get Members
@@ -316,20 +538,20 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                     {
                         self.familymeberary = resp.data!
                         
-                        self.collectionmembers.reloadData()
+                        self.tblview.reloadData()
                         if(resp.data!.count == 0)
                         {
-                            self.lblNoDataFound.isHidden = false
-                            self.viewcollection.isHidden = true
-                            self.viewmembers.isHidden = true
-                            self.view.bringSubview(toFront:self.viewmembers)
+                           // self.lblNoDataFound.isHidden = false
+                            self.tblview.isHidden = true
+                            self.viewmembers.isHidden = false
+                           // self.view.bringSubview(toFront:self.viewmembers)
                         }
                         else
                         {
-                            self.lblNoDataFound.isHidden = true
-                            self.viewcollection.isHidden = false
+                           // self.lblNoDataFound.isHidden = true
+                            self.tblview.isHidden = false
                             self.viewmembers.isHidden = true
-                            self.view.bringSubview(toFront:self.viewcollection)
+                           // self.view.bringSubview(toFront:self.tblview)
                             
                         }
                     }
@@ -338,15 +560,15 @@ class ProfileVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                     {
                         if(resp.data!.count == 0)
                         {
-                            self.viewcollection.isHidden = true
+                            self.tblview.isHidden = true
                             self.viewmembers.isHidden = false
-                            self.view.bringSubview(toFront:self.viewmembers)
+                           // self.view.bringSubview(toFront:self.viewmembers)
                         }
                         else
                         {
-                            self.viewcollection.isHidden = false
+                            self.tblview.isHidden = false
                             self.viewmembers.isHidden = true
-                            self.view.bringSubview(toFront:self.viewcollection)
+                          //  self.view.bringSubview(toFront:self.tblview)
                         }
                         
                     }

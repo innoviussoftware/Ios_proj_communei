@@ -76,7 +76,69 @@ class BaseVC: UIViewController {
     return viewController
   }
     
+    // MARK:- tabbarDisbale
+    func tabbarDisbale() {
+        
+        if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[0] as? UITabBarItem {
+                        tabBarItem.isEnabled = false
+
+                }
+                       
+                   if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[1] as? UITabBarItem {
+                                    tabBarItem.isEnabled = false
+                                    
+
+                               }
+                       if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[2] as? UITabBarItem {
+                                       tabBarItem.isEnabled = false
+                                       
+
+                                  }
+                                   
+                               if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[3] as? UITabBarItem {
+                                                tabBarItem.isEnabled = false
+                                                
+
+                                           }
+                       if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[4] as? UITabBarItem {
+                                       tabBarItem.isEnabled = false
+                                       
+
+                                  }
+                                   
+    }
     
+    
+    // MARK:- tabbarEnabled
+    func tabbarEnabled() {
+        if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[0] as? UITabBarItem {
+                        tabBarItem.isEnabled = true
+
+                }
+                       
+                   if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[1] as? UITabBarItem {
+                                    tabBarItem.isEnabled = true
+                                    
+
+                               }
+                       if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[2] as? UITabBarItem {
+                                       tabBarItem.isEnabled = true
+                                       
+
+                                  }
+                                   
+                               if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[3] as? UITabBarItem {
+                                                tabBarItem.isEnabled = true
+                                                
+
+                                           }
+                       if  let arrayOfTabBarItems = self.tabBarController!.tabBar.items as AnyObject as? NSArray,let tabBarItem = arrayOfTabBarItems[4] as? UITabBarItem {
+                                       tabBarItem.isEnabled = true
+                                       
+
+                                  }
+                                   
+    }
 
     func isConnectedToNetwork() -> Bool {
            

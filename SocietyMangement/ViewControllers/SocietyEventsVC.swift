@@ -16,7 +16,9 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewDataSource{
+class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
+
+    @IBOutlet weak var vwbtnadd: UIView!
 
     @IBOutlet weak var btnadd: UIButton!
     @IBOutlet weak var lblNoDataFound: UILabel!
@@ -80,8 +82,6 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
             btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
         }
         else{
-          //  btnMenu.setImage(UIImage(named: "ic_backbutton"), for: .normal)
-            
             btnMenu.setImage(UIImage(named: "menu"), for: .normal)
         }
         
@@ -105,16 +105,26 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
         if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
-            if(str.contains("Chairman")  || str.contains("Secretory"))
+           // if(str.contains("Chairman")  || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
+                self.toptblConstraint.constant = 0
+
                 btnadd.isHidden = false
+                vwbtnadd.isHidden = false
+
             }
             else{
                 
                 btnadd.isHidden = true
+                vwbtnadd.isHidden = true
+
 
             }
         }
+        
+        // 12/9/20.
+        // temparary
         
         //Update notification count
         APPDELEGATE.apicallUpdateNotificationCount(strType: "1")
@@ -208,6 +218,16 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
         
     }
     
+    @IBAction func actionNotification(_ sender: Any) {
+           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+            vc.isfrom = 0
+         }
+        
+        @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+            let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+            vc.isfrom = 0
+        }
+    
     
     // MARK: - Tableview delegate and data source methods
 
@@ -269,7 +289,8 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
             
-            if(str.contains("Chairman") || str.contains("Secretory"))
+            // if(str.contains("Chairman") || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
                 self.toptblConstraint.constant = 0
 
@@ -300,7 +321,7 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
         
                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                 let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                                                avc?.titleStr = "Society Buddy"
+                                                avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                                                 avc?.subtitleStr = "Are you sure you want to delete \(self.eventary[sender.tag].title!)?"
                                                 avc?.yesAct = {
                                                 
@@ -340,6 +361,12 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
          guard let url = URL(string:webservices().imgurl + pdffile!) else {
                return //be safe
            }
+        
+//            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+//            let downloadTask = urlSession.downloadTask(with: url)
+//            downloadTask.resume()
+//
+        
            
            if #available(iOS 10.0, *) {
                UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -429,11 +456,11 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
                             
                             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                                                                   
-                                                                  if(str.contains("Secretory") || str.contains("Chairman"))
+                            if(str.contains("society_admin"))
                                                                   {
                                                                     self.lblNoDataFound.isHidden = false
                                                                   }else{
-                                                                    self.lblNoDataFound.isHidden = true
+                                                                    self.lblNoDataFound.isHidden = false
                             }
                             
                             
@@ -455,11 +482,11 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
                             
                             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                                                                   
-                                                                  if(str.contains("Secretory") || str.contains("Chairman"))
+                            if(str.contains("society_admin"))
                                                                   {
                                                                     self.lblNoDataFound.isHidden = false
                                                                   }else{
-                                                                    self.lblNoDataFound.isHidden = true
+                                                                    self.lblNoDataFound.isHidden = false
                             }
                         }
                         else
@@ -571,4 +598,28 @@ class SocietyEventsVC: UIViewController  , UITableViewDelegate , UITableViewData
           }
        
 
+}
+
+
+@available(iOS 13.0, *)
+extension SocietyEventsVC : URLSessionDownloadDelegate {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("File Downloaded Location- ",  location)
+        
+        guard let url = downloadTask.originalRequest?.url else {
+            return
+        }
+        let docsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let destinationPath = docsPath.appendingPathComponent(url.lastPathComponent)
+        
+        try? FileManager.default.removeItem(at: destinationPath)
+        
+        do{
+            try FileManager.default.copyItem(at: location, to: destinationPath)
+           // self.pdfUrl = destinationPath
+           // print("File Downloaded Location- ",  self.pdfUrl ?? "NOT")
+        }catch let error {
+            print("Copy Error: \(error.localizedDescription)")
+        }
+    }
 }

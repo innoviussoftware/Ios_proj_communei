@@ -26,7 +26,11 @@ class OTPVC: UIViewController , UITextFieldDelegate {
     
     var strmobileno = ""
     var strotp : String!
-    var ismember = ""
+      
+    var ismembers = ""
+        
+    var ismember:Bool?
+
     var timer:Timer?
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -35,17 +39,20 @@ class OTPVC: UIViewController , UITextFieldDelegate {
     @IBAction func actionResendOtp(_ sender: Any) {
         ApiCallResendOTP()
     }
+    
     @IBAction func verifyaction(_ sender: Any) {
         
-        var otp = txt1.text! + txt2.text! +  txt3.text! + txt4.text!
+        //20/8/20.
+
+     //   var otp = txt1.text! + txt2.text! +  txt3.text! + txt4.text!
         
-        otp = "0000"
+       // otp = "0000"
         
-     // let otp = txt1.text! + txt2.text! +  txt3.text! + txt4.text!
+      let otp = txt1.text! + txt2.text! +  txt3.text! + txt4.text!
         
         if(strotp == "\(otp)" || otp == "0000") ///|| otp == "0000"
         {
-            if(ismember == "0")
+            if(ismember == false)
             {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: SignUPStep1VC.id()) as! SignUPStep1VC
@@ -56,7 +63,9 @@ class OTPVC: UIViewController , UITextFieldDelegate {
             else
             {
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+
                 navigationController?.pushViewController(nextViewController, animated: true)
                 
             }
@@ -79,16 +88,17 @@ class OTPVC: UIViewController , UITextFieldDelegate {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(update), userInfo: nil, repeats: true)
 
         if #available(iOS 13.0, *) {
-                               // Always adopt a light interface style.
-                    overrideUserInterfaceStyle = .light
-                  }
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
+        }
                 
-        lblnum.text = "We have sent you the 4-digit to you at \(strmobileno)"
+        lblnum.text = "We have sent you the 4-digit to you at +91  \(strmobileno)"
         
        // lblnum.text = "We have sent you a SMS with a code to the number \(strmobileno)"
         
         // Do any additional setup after loading the view.
     }
+    
     @objc func update() {
           if(count > 0) {
               count = count - 1
@@ -205,11 +215,19 @@ class OTPVC: UIViewController , UITextFieldDelegate {
           
                webservices().StartSpinner()
 
-               let param : Parameters = [
-                   "phone" : strmobileno
-               ]
+//               let param : Parameters = [
+//                   "phone" : strmobileno
+//               ]
+        
+                let param : Parameters = [
+                    "Phone" : strmobileno,
+                    "FCMToken" : strFCmToken
+                ]
 
-               Apicallhandler.sharedInstance.APISendOtp(URL: webservices().baseurl + API_SEND_OTP, param: param) { response in
+              // Apicallhandler.sharedInstance.APISendOtp(URL: webservices().baseurl + API_SEND_OTP, param: param) { response in
+                
+                Apicallhandler.sharedInstance.LoginNew(URL: webservices().baseurl + APILogin, param: param) { response in
+
                    webservices().StopSpinner()
                    switch(response.result) {
                    case .success(let resp):
@@ -220,10 +238,10 @@ class OTPVC: UIViewController , UITextFieldDelegate {
                         self.btnresendcode.isUserInteractionEnabled = true
 
                          let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"OTP send successfully")
-                        self.strotp = String.getString(((response.result.value! as! NSDictionary).value(forKey:"data") as! NSDictionary).value(forKey: "otp") as! NSNumber)
+                        self.strotp = resp.data!.otp! //String.getString(((response.result.value! as! NSDictionary).value(forKey:"data") as! NSDictionary).value(forKey: "otp") as! NSNumber)
                         self.present(alert, animated: true, completion: nil)
                        }else{
-                           let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"\(response.response?.statusCode)")
+                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"\(String(describing: response.response?.statusCode))")
                            self.present(alert, animated: true, completion: nil)
                        }
 
@@ -240,9 +258,5 @@ class OTPVC: UIViewController , UITextFieldDelegate {
                }
           
        }
-    
-    
-    
-    
     
 }

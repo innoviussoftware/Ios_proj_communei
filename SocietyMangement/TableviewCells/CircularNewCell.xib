@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -31,41 +32,82 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OXE-uB-3k1" customClass="RSViewCustomisation" customModule="Communei" customModuleProvider="target">
                         <rect key="frame" x="8" y="8" width="304" height="170"/>
                         <subviews>
+                            <label clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRg-Yd-L73" customClass="RSLabelCustomisation" customModule="Communei" customModuleProvider="target">
+                                <rect key="frame" x="15" y="15.5" width="10" height="10"/>
+                                <color key="backgroundColor" red="0.94901960780000005" green="0.3803921569" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="kgP-yh-KfB"/>
+                                    <constraint firstAttribute="width" secondItem="XRg-Yd-L73" secondAttribute="height" multiplier="1:1" id="peA-zl-VFN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Car parking sticker distribution" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaU-J5-C9H">
-                                <rect key="frame" x="8" y="10" width="261" height="21"/>
+                                <rect key="frame" x="30" y="10" width="241" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="dXL-G7-Yso"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Car parking sticker distribution policyCar parking sticker distribution policyCar parking " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCh-eF-MXi">
-                                <rect key="frame" x="8" y="60" width="288" height="42"/>
+                                <rect key="frame" x="30" y="60" width="266" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="j3b-wv-fq7"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="13"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10/08/2019" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9K4-QM-IIV">
-                                <rect key="frame" x="8" y="36" width="72.5" height="16"/>
+                                <rect key="frame" x="30" y="36" width="72.5" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="qxb-V6-IQp"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Gotham-Light" family="Gotham" pointSize="13"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.73333333333333328" green="0.73333333333333328" blue="0.73333333333333328" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:00 pm" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YaG-it-PrO">
-                                <rect key="frame" x="88.5" y="37" width="54.5" height="14"/>
+                                <rect key="frame" x="110.5" y="37" width="54.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Gotham-Light" family="Gotham" pointSize="13"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.73333333333333328" green="0.73333333333333328" blue="0.73333333333333328" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOL-SD-aSB">
+                                <rect key="frame" x="279" y="10" width="17" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="Qxe-Le-Ji6"/>
+                                    <constraint firstAttribute="width" constant="17" id="hmj-lo-jYY"/>
+                                </constraints>
+                                <state key="normal" image="ic_notice_admin"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iw5-HV-bT5">
+                                <rect key="frame" x="30" y="104" width="82" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Sba-CR-exe"/>
+                                </constraints>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Read More &gt;">
+                                            <attributes>
+                                                <color key="NSColor" red="0.94901960784313721" green="0.38039215686274508" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <font key="NSFont" size="13" name="Gotham-Book"/>
+                                                <integer key="NSUnderline" value="1"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="9tq-ST-LQE">
-                                <rect key="frame" x="8" y="137" width="55" height="25"/>
+                                <rect key="frame" x="30" y="137" width="55" height="25"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kka-Au-Vxb">
                                         <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
@@ -81,51 +123,28 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iw5-HV-bT5">
-                                <rect key="frame" x="8" y="104" width="82" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="pci-6j-pNU"/>
-                                </constraints>
-                                <state key="normal">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="Read More &gt;">
-                                            <attributes>
-                                                <color key="NSColor" red="0.94901960784313721" green="0.38039215686274508" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="13" name="Gotham-Book"/>
-                                                <integer key="NSUnderline" value="1"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOL-SD-aSB">
-                                <rect key="frame" x="277" y="5" width="22" height="28"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="Qxe-Le-Ji6"/>
-                                    <constraint firstAttribute="width" constant="22" id="hmj-lo-jYY"/>
-                                </constraints>
-                                <state key="normal" image="ic_notice_admin"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="GCh-eF-MXi" firstAttribute="top" secondItem="9K4-QM-IIV" secondAttribute="bottom" constant="8" id="2P2-xL-3Uu"/>
                             <constraint firstItem="9K4-QM-IIV" firstAttribute="leading" secondItem="JaU-J5-C9H" secondAttribute="leading" id="3IA-OH-IJI"/>
-                            <constraint firstAttribute="trailing" secondItem="dOL-SD-aSB" secondAttribute="trailing" constant="5" id="4ik-Hz-wgW"/>
-                            <constraint firstItem="9tq-ST-LQE" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="8" id="4zz-AM-i1p"/>
-                            <constraint firstItem="dOL-SD-aSB" firstAttribute="top" secondItem="OXE-uB-3k1" secondAttribute="top" constant="5" id="ELa-Ny-Pvc"/>
+                            <constraint firstAttribute="trailing" secondItem="dOL-SD-aSB" secondAttribute="trailing" constant="8" id="4ik-Hz-wgW"/>
+                            <constraint firstItem="9tq-ST-LQE" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="30" id="4zz-AM-i1p"/>
+                            <constraint firstItem="dOL-SD-aSB" firstAttribute="top" secondItem="OXE-uB-3k1" secondAttribute="top" constant="10" id="ELa-Ny-Pvc"/>
                             <constraint firstItem="dOL-SD-aSB" firstAttribute="leading" secondItem="JaU-J5-C9H" secondAttribute="trailing" constant="8" id="G3j-al-Og6"/>
-                            <constraint firstItem="JaU-J5-C9H" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="8" id="Mc7-Ob-a1T"/>
+                            <constraint firstItem="JaU-J5-C9H" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="30" id="Mc7-Ob-a1T"/>
                             <constraint firstItem="JaU-J5-C9H" firstAttribute="top" secondItem="OXE-uB-3k1" secondAttribute="top" constant="10" id="ORm-Fi-3hk"/>
                             <constraint firstItem="9tq-ST-LQE" firstAttribute="top" secondItem="iw5-HV-bT5" secondAttribute="bottom" constant="8" id="PZe-0m-Ym4"/>
                             <constraint firstItem="YaG-it-PrO" firstAttribute="leading" secondItem="9K4-QM-IIV" secondAttribute="trailing" constant="8" id="QGj-wJ-IPQ"/>
+                            <constraint firstItem="XRg-Yd-L73" firstAttribute="centerY" secondItem="JaU-J5-C9H" secondAttribute="centerY" id="SPx-rd-BU4"/>
                             <constraint firstItem="YaG-it-PrO" firstAttribute="centerY" secondItem="9K4-QM-IIV" secondAttribute="centerY" id="SeN-h6-4va"/>
                             <constraint firstAttribute="trailing" secondItem="GCh-eF-MXi" secondAttribute="trailing" constant="8" id="WGZ-tU-Gfp"/>
                             <constraint firstItem="GCh-eF-MXi" firstAttribute="leading" secondItem="9K4-QM-IIV" secondAttribute="leading" id="XEu-0D-OK5"/>
+                            <constraint firstItem="XRg-Yd-L73" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="15" id="Zi8-9b-pN1"/>
                             <constraint firstItem="9K4-QM-IIV" firstAttribute="top" secondItem="JaU-J5-C9H" secondAttribute="bottom" constant="5" id="bwH-hI-teQ"/>
                             <constraint firstAttribute="bottom" secondItem="9tq-ST-LQE" secondAttribute="bottom" constant="8" id="go2-Gi-xsS"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="130" id="kYl-jT-xMw"/>
-                            <constraint firstItem="iw5-HV-bT5" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="8" id="p8H-bV-Q9l"/>
+                            <constraint firstItem="iw5-HV-bT5" firstAttribute="leading" secondItem="OXE-uB-3k1" secondAttribute="leading" constant="30" id="p8H-bV-Q9l"/>
                             <constraint firstItem="iw5-HV-bT5" firstAttribute="top" secondItem="GCh-eF-MXi" secondAttribute="bottom" constant="2" id="t6M-zg-e0V"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -143,7 +162,7 @@
                         </constraints>
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                         <state key="normal" image="ic_download_new">
-                            <color key="titleColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="titleColor" systemColor="systemOrangeColor"/>
                         </state>
                     </button>
                 </subviews>
@@ -173,10 +192,16 @@
             <point key="canvasLocation" x="131.8840579710145" y="145.98214285714286"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="XRg-Yd-L73"/>
+    </designables>
     <resources>
         <image name="Group 90" width="22" height="19"/>
         <image name="delete 2" width="24" height="24"/>
         <image name="ic_download_new" width="56" height="56"/>
         <image name="ic_notice_admin" width="22" height="28"/>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

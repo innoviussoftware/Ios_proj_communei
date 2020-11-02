@@ -17,6 +17,8 @@ class HelperDeskCell: UICollectionViewCell {
     @IBOutlet weak var btnCall: UIButton!
     @IBOutlet weak var btndelete: UIButton!
     
+    @IBOutlet weak var btnCalenderAttend: UIButton!
+
     @IBOutlet weak var ratingView: FloatRatingView!
     override func awakeFromNib() {
         super.awakeFromNib()

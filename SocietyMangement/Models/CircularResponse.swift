@@ -45,8 +45,11 @@ struct CircularResponse: Codable {
 // MARK: - Datum
 struct Circular: Codable {
     let id, userID, societyID: Int?
-    let buildingID, title, datumDescription, pdffile: String?
+    let buildingID, title, datumDescription, pdffile, name: String?
     let createdAt, updatedAt: String?
+    // 1/9/20.
+   // let name: String
+
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -54,9 +57,11 @@ struct Circular: Codable {
         case societyID = "society_id"
         case buildingID = "building_id"
         case title
+        case name
         case datumDescription = "description"
         case pdffile
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+       // case name
     }
 }

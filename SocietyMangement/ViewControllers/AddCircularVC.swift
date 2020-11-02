@@ -14,7 +14,9 @@ import MobileCoreServices
 
 
 @available(iOS 13.0, *)
-class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImagePickerControllerDelegate , UINavigationControllerDelegate{
+class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerControllerDelegate , UINavigationControllerDelegate{
+    
+    
 
     @IBOutlet weak var menuaction: UIButton!
 
@@ -34,11 +36,28 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
     @IBOutlet weak var innerview: UIView!
 
     @IBOutlet weak var viewdocument: UIView!
+    
+    @IBOutlet weak var viewCamera: UIView!
+    
+    @IBOutlet weak var AttechemntView: UIView!
+    
+    @IBOutlet weak var AttechemntView_update: UIView!
+       
+    @IBOutlet weak var btnattechment_update: UIButton!
+
+
     var isfrom = 0
     var dic:Circular?
     var selectedary = NSMutableArray()
     
-    var imgData = Data()
+    var nameary = NSMutableArray()
+    
+    var buidilgsary = [Building]()
+
+    
+   // var imgData = Data()
+    var imgData : Data?
+
     var strPdfUrl : URL?
     
     @IBAction func backaction(_ sender: Any) {
@@ -62,6 +81,15 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             self.present(alert, animated: true, completion: nil)
             
         }
+        
+        else if (imgview.imageView!.image == nil) &&  (self.imgData == nil) {
+
+                  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:" Please select image")
+                  self.present(alert, animated: true, completion: nil)
+                  
+              }
+            
+            
 //        else if(imgview.backgroundImage(for: .normal) == nil)
 //        {
 //            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:" Please select image")
@@ -79,9 +107,13 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
         }
     }
     
-    func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray) {
+   // func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray) {
+        
+    func selectedbuildings(selectedary: NSMutableArray, nameary: NSMutableArray, selectedaryId: NSMutableArray) {
         
         self.selectedary =  selectedary
+        
+       // self.nameary = nameary
         self.txtsendto.text = nameary.componentsJoined(by:",")
     }
     
@@ -95,17 +127,64 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
                     overrideUserInterfaceStyle = .light
                   }
         
-        
+        menuaction.setImage(UIImage(named: "ic_back-1"), for: .normal)
+                
+        //  menuaction.setImage(UIImage(named: "menu"), for: .normal)
+
+        viewCamera.isHidden = true
+
         
         if(isfrom == 1)
         {
             lbltitle.text = "Update Circular"
             btnsave.setTitle("Update", for: .normal)
+            
+            AttechemntView.isHidden = true
+            AttechemntView_update.isHidden = false
+            
+            
+           // imgview.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.pdffile!), for: .normal)
+            
+            btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.pdffile!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
+                if ((error) != nil) {
+                    // set the placeholder image here
+                    
+                    self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+                    
+                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.pdffile!)!)
+                    self.imgData = testImage as Data?
+
+                } else {
+                    // success ... use the image
+                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.pdffile!), for: .normal)
+                    
+                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.pdffile!)!)
+                    self.imgData = testImage as Data?
+                }
+            })
+            
+
+            apicallGetBuildings()
             txttitle.text = dic?.title
             txtdes.text = dic?.datumDescription
-            txtsendto.text = dic?.buildingID
+            
+//
+//            if (imgview.imageView!.image == nil) {
+//                imgview.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+//            }
+        
+            
+           
+            
+            // 31/8/20.
+          //  txtsendto.text = dic?.buildingID
+                                    
+           // self.txtsendto.text = nameary.componentsJoined(by:",")
+
+            
+           // txtsendto.text = dic?.name
             txtdes.placeholder = ""
-           // apicallGetBuildings()
+          //  apicallGetBuildings()
             
         }
         else
@@ -113,25 +192,155 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             lbltitle.text = "Add Circular"
             btnsave.setTitle("Save", for: .normal)
             
+            AttechemntView.isHidden = false
+            AttechemntView_update.isHidden = true
+            
         }
         
-        setrightviewnew(textfield:txtsendto, image: #imageLiteral(resourceName: "ic_nxt_click"))
+       // setrightviewnew(textfield:txtsendto, image: #imageLiteral(resourceName: "ic_nxt_click"))
         
         
         //webservices().setShadow(view: innerview)
-        CircularView.layer.borderColor = AppColor.appcolor.cgColor
-        CircularView.layer.borderWidth = 2.0
-        CircularView.isUserInteractionEnabled = true
+     //   CircularView.layer.borderColor = AppColor.appcolor.cgColor
+     //   CircularView.layer.borderWidth = 2.0
+     //   CircularView.isUserInteractionEnabled = true
+        
+        // 12/9/20.
+        
+      //  let tap = UITapGestureRecognizer()
+      //  tap.addTarget(self, action: #selector(uploadImage))
+      //  CircularView.addGestureRecognizer(tap)
+        
+        // Do any additional setup after loading the view.
         
         let tap = UITapGestureRecognizer()
-        tap.addTarget(self, action: #selector(uploadImage1))
-        CircularView.addGestureRecognizer(tap)
-        // Do any additional setup after loading the view.
+        tap.addTarget(self, action: #selector(tapviewCameraimage))
+        viewCamera.addGestureRecognizer(tap)
+
     }
     
+    @objc func tapviewCameraimage() {
+        viewCamera.isHidden = true
+    }
+    
+    @IBAction func btnCameraClicked(_ sender: Any) {
+           
+        viewCamera.isHidden = false
+           
+    }
+
+    @IBAction func btnOpenCameraClicked(_ sender: Any) {
+              
+        viewCamera.isHidden = true
+           
+        camera()
+              
+    }
+       
+    @IBAction func btnOpenGalleryClicked(_ sender: Any) {
+            
+         viewCamera.isHidden = true
+         
+         photoLibrary()
+            
+     }
+    
+    
+    @IBAction func btnDocumentMenuClicked(_ sender: Any) {
+
+        viewCamera.isHidden = true
+
+        let types = [kUTTypePDF, kUTTypeText, kUTTypeRTF, kUTTypeSpreadsheet]
+
+      //  let types = [kUTTypePDF]
+
+        let importMenu = UIDocumentPickerViewController(documentTypes: types as [String], in: .import)
+//           if #available(iOS 11.0, *) {
+//               importMenu.allowsMultipleSelection = true
+//           }
+
+           importMenu.delegate = self
+           importMenu.modalPresentationStyle = .formSheet
+        
+          self.present(importMenu, animated: true, completion: nil)
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
+        
+    }
+    
+    // MARK: - get GetBuildings
+    
+    func isStringAnInt(string: String) -> Bool {
+        return Int(string) != nil
+    }
+    
+    
+    // MARK: - get GetBuildings
+    
+    func apicallGetBuildings()
+    {
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let strSocetyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+            
+            webservices().StartSpinner()
+          //  Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSocetyId) { JSON in
+                
+            
+                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+            
+                 let param : Parameters = [
+                     "Phone" : mobile!,
+                     "Secret" : secret,
+                     "Society" : strSocetyId
+                 ]
+                
+                        
+                Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
+                   
+                
+                
+                switch JSON.result{
+                case .success(let resp):
+                    
+                    webservices().StopSpinner()
+                    let nameary = NSMutableArray()
+                    if(resp.status == 1)
+                    {
+                        if(self.isfrom == 1)
+                        {
+                            for dic in resp.data
+                            {
+                                if(((self.dic?.buildingID!.contains((dic.PropertyID as NSNumber).stringValue))!))
+                                {
+                                    self.selectedary.add(dic.PropertyID)
+                                    nameary.add(dic.PropertyName)
+                                }
+                            }
+                            self.txtsendto.text = nameary.componentsJoined(by:",")
+                        }
+                    }
+                    else
+                    {
+                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
         
     }
     
@@ -191,6 +400,17 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
 
     }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+            vc.isfrom = 0
+         }
+        
+        @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+            let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+            vc.isfrom = 0
+        }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         if(textField == txtsendto)
@@ -201,7 +421,9 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             txtsendto.resignFirstResponder()
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SendtoPopUP") as! SendtoPopUP
             popOverConfirmVC.delegate = self
+            popOverConfirmVC.strlbl = "Send Circular to"
             popOverConfirmVC.selectedary = self.selectedary
+            popOverConfirmVC.nameary = self.nameary
             self.addChildViewController(popOverConfirmVC)
             popOverConfirmVC.view.frame = self.view.frame
             self.view.center = popOverConfirmVC.view.center
@@ -215,7 +437,7 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
     }
 
     
-    @objc func uploadImage1(sender: UITapGestureRecognizer)
+  /*  @objc func uploadImage(sender: UITapGestureRecognizer)
     {
 //        let importMenu = UIDocumentMenuViewController(documentTypes: [String(kUTTypePDF)], in: .import)
 //        importMenu.delegate = self
@@ -238,7 +460,7 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
 
         self.present(actionSheet, animated: true, completion: nil)
         
-    }
+    } */
     
     // MARK: - Image Picker delegate and datasource methods
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -251,8 +473,13 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             
             var image = info[UIImagePickerControllerEditedImage] as! UIImage
-            imgview.setBackgroundImage(image, for: .normal)
-            imgview.setTitle("", for: .normal)
+            
+            if(isfrom == 1){
+                btnattechment_update.setBackgroundImage(image, for: .normal)
+            }else{
+                imgview.setBackgroundImage(image, for: .normal)
+                imgview.setTitle("", for: .normal)
+            }
             
             imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
 
@@ -317,8 +544,11 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
         let param : Parameters = [
             "society_id" : strSocietyId,
             "building_id" : selectedary.componentsJoined(by: ","),
+//            "name" : nameary.componentsJoined(by: ","),
             "title" : txttitle.text!,
             "description" : txtdes.text!
+            
+
             //"pdffile" : ""
         ]
         
@@ -336,8 +566,11 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
                      MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
                 }
                 
-                if self.imgData.count != 0{
-                    MultipartFormData.append(self.imgData, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                if self.imgData!.count != 0{
+                  //  MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                    
+                    MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: strFileName, mimeType: "application/pdf")
+
                 }
                 
                 
@@ -347,7 +580,8 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             //Current upload progress of file
             
             
-            print("Upload Progress: \(progress.fractionCompleted)")
+            
+            print("Upload Progress addcircula : \(progress.fractionCompleted)")
         })
             .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                 
@@ -421,13 +655,17 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
             
             webservices().StartSpinner()
             
+        print("strCircularId : ",strCircularId)
+        
            let param:Parameters = [
-            "circular_id":strCircularId,
-            "society_id":strSocietyId,
-            "building_id":txtsendto.text!,
-            "title":txttitle.text!,
-            "description":txtdes.text!
+                "circular_id":strCircularId,
+                "society_id":strSocietyId,
+                "building_id":txtsendto.text!,
+              //  "name" : txtsendto.text!,
+                "title":txttitle.text!,
+                "description":txtdes.text!
             ]
+        
             
             AF.upload(
                 multipartFormData: { MultipartFormData in
@@ -442,15 +680,18 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
                     formatter.dateFormat = "yyyyMMddHH:mm:ss"
                     let strFileName = formatter.string(from: date)
                     
-                    MultipartFormData.append(self.imgData, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                    // 14/9/20.
                     
+                  //  MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                     
+                    MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: strFileName, mimeType: "application/pdf")
+
                     
                     
             }, to:  webservices().baseurl + API_EDIT_CIRCULAR,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
                 //Current upload progress of file
                 
-                print("Upload Progress: \(progress.fractionCompleted)")
+                print("Upload Progress Editcircular : \(progress.fractionCompleted)")
             })
                 .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                     
@@ -469,6 +710,16 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
                             // show the alert
                             self.present(alert, animated: true, completion: nil)
                             
+                            self.txtsendto.text = ""
+                                                   self.txttitle.text = ""
+                                                   self.txtdes.text = ""
+                                                 //  self.btnattechment.setTitle("+", for: .normal)
+                                                   if(self.isfrom == 1){
+                                                       self.btnattechment_update.setBackgroundImage(nil, for: .normal)
+                                                   }else{
+                                                       self.imgview.setBackgroundImage(nil, for: .normal)
+                                                   }
+                                                   
                             
                         }else{
                         }
@@ -507,22 +758,35 @@ class AddCircularVC: UIViewController , UITextFieldDelegate , Buildings , UIImag
 
 
 @available(iOS 13.0, *)
-extension AddCircularVC : UIDocumentMenuDelegate,UIDocumentPickerDelegate
+extension AddCircularVC : UIDocumentPickerDelegate // ,UIDocumentMenuDelegate
 {
-    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let myURL = urls.first else {
             return
         }
         print("import result : \(myURL)")
         
-        strPdfUrl = myURL
+      //  strPdfUrl = myURL
+                
+        if(isfrom == 1){
+            btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+        }else{
+            imgview.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+        }
+
+        do {
+             imgData = try Data(contentsOf: myURL as URL)
+        } catch {
+            print("Unable to load data: \(error)")
+        }
+        
     }
     
     
-    public func documentMenu(_ documentMenu:UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
-        documentPicker.delegate = self
-        present(documentPicker, animated: true, completion: nil)
-    }
+//    public func documentMenu(_ documentMenu:UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+//        documentPicker.delegate = self
+//        present(documentPicker, animated: true, completion: nil)
+//    }
     
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {

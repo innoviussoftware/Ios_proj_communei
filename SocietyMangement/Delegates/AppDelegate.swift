@@ -15,20 +15,41 @@ import SWRevealViewController
 
 import FirebaseMessaging
 
+import ZDCChat
+
+import SupportSDK
+import ZendeskCoreSDK
+
+//import ZendeskSDK
+
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate  {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, SWRevealViewControllerDelegate  {
 
     var window: UIWindow?
        class var shared : AppDelegate {
            return UIApplication.shared.delegate as! AppDelegate
        }
-       
+           
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        UINavigationBar.appearance().barStyle = .blackTranslucent        
+
+        Zendesk.initialize(appId: "4ea1392aac888121afe024b8597d9914d9729120dd2f4219", clientId: "mobile_sdk_client_9d81559f360d1c9fc80b", zendeskUrl: "https://communei.zendesk.com")
+        
+        let ident = Identity.createAnonymous()
+        Zendesk.instance?.setIdentity(ident)
+
+        Support.initialize(withZendesk: Zendesk.instance)
+
+        ZDCChat.initialize(withAccountKey: "vmJD9mg6iui0rWzxNcR5jfb1gLLEjBll")
+
+
         IQKeyboardManager.shared.enable = true
+        
         
         FirebaseApp.configure()
         if #available(iOS 10.0, *) {
@@ -54,11 +75,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
       //  Notification.Name.MessagingRegistrationTokenRefreshed
         //  6/8/20.
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.tokenRefreshNotification(notification:)), name: NSNotification.Name.MessagingRegistrationTokenRefreshed, object: nil)
-
-        
-
-        
+                
         let snoozeAction = UNNotificationAction(
             identifier: "snooze.action",
             title: "Accept",
@@ -79,7 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             [pizzaCategory])
         
         
-        if launchOptions != nil {
+         if launchOptions != nil {
             // opened from a push notification when the app is closed
             let userInfo = launchOptions![.remoteNotification] as? [AnyHashable: Any]
             if userInfo != nil {
@@ -146,15 +165,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
              if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
                            {
+                            
+                            
+                           /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            var rearNavigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                            
+                            let frontNavigationController:UINavigationController
+                             //  let rearNavigationController:UINavigationController
+                               let revealController = SWRevealViewController()
+                               var mainRevealController = SWRevealViewController()
+
+                               frontNavigationController =  UINavigationController(rootViewController: TabbarVC())
+                               rearNavigationController = UINavigationController(rootViewController: TabbarVC())
+
+                               frontNavigationController.navigationBar.isHidden = true
+                               rearNavigationController.navigationBar.isHidden = true
+
+                               revealController.frontViewController = frontNavigationController
+                               revealController.rearViewController = rearNavigationController
+                               revealController.delegate = self
+                               mainRevealController  = revealController
+
+                               window = UIWindow(frame: UIScreen.main.bounds)
+                               self.window?.rootViewController = mainRevealController
+                               self.window?.makeKeyAndVisible() */
+                            
+                            // in method
+                            
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            
+                            let navigationController:UINavigationController = storyBoard.instantiateInitialViewController() as! UINavigationController
+
+                                               
+                                               let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                               
+                                               navigationController.pushViewController(nextViewController, animated: true)
+                                               
+                            self.window?.rootViewController = navigationController
+                            self.window?.makeKeyAndVisible()
                 
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            //  26/8/20.
+
+                             /*  let storyboard = UIStoryboard(name: "Main", bundle: nil)
                                let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                            
                             let initialViewController = storyboard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
-                               navigationController.pushViewController(initialViewController, animated: true)
+                            
+                          //  let revealController = SWRevealViewController()
+
+                          //  revealController.pushFrontViewController(initialViewController, animated: true)
+                            
+                              navigationController.pushViewController(initialViewController, animated: true)
+                            
                                self.window?.rootViewController = navigationController
-                               self.window?.makeKeyAndVisible()
+                               self.window?.makeKeyAndVisible() */
           
-        }
+        } //
             else
              {
                 
@@ -370,18 +436,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if(webservices().isConnectedToNetwork())
         {
             
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
-            let userid = UserDefaults.standard.value(forKey: USER_ID) as! Int
-            let strUserId = (userid as NSNumber).stringValue
-            let pram : Parameters = [
-                "user_id" : strUserId
-            ]
-
+            print("Bearer token : ",token as! String)
             
-            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, param: pram) { response in
+            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { response in
                 switch(response.result) {
                 case .success(let resp):
-                    if resp.status == 1{
+                    if resp.status == true{
                         
                      onCompletion(1)
                         
@@ -392,7 +454,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         UserDefaults.standard.removeObject(forKey:USER_PHONE)
                         UserDefaults.standard.removeObject(forKey:USER_EMAIL)
                         UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        
                        
+
                         
                     }else{
                          print("\(resp.message)")
@@ -428,7 +493,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 //webservices().StartSpinner()
                 Apicallhandler.sharedInstance.GetUpdateNotifyCount(URL: webservices().baseurl + API_UPDATE_NOTIFY_COUNT, param: param, token: token as! String) { JSON in
 
-                      print("----->Update Notification Response\(JSON)")
+                      print("----->Update Notification Response \(JSON)")
                        let statusCode = JSON.response?.statusCode
                        switch JSON.result{
                        case .success(let resp):

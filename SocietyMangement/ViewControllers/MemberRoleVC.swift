@@ -23,6 +23,7 @@ class MemberRoleVC: UIViewController  , UITableViewDataSource , UITableViewDeleg
      var selectedrole = [String]()
     
     var delegate:memberrole?
+    
     @IBOutlet weak var tblview: UITableView!
     @IBOutlet weak var viewinner: UIView!
 

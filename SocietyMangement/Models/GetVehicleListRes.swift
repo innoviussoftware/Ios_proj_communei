@@ -18,6 +18,29 @@ struct GetVehicleList: Codable {
 
 // MARK: - Datum
 struct VehicleData: Codable {
+    let id: Int
+    let type: String
+    let dClass: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id = "VehicleTypeID"
+        case type = "Type"
+        case dClass = "Class"
+    }
+}
+
+/*
+ 
+// MARK: - GetVehicleList
+struct GetVehicleList: Codable {
+    let data: [VehicleData]
+    let status: Int
+    let message: String
+}
+
+// MARK: - Datum
+struct VehicleData: Codable {
     let id: Int?
     let number, type: String?
 }
+*/

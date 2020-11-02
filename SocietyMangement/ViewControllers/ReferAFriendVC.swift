@@ -31,7 +31,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ReferAFriendVC: UIViewController {
+class ReferAFriendVC: BaseVC {
     
     @IBOutlet weak var btnmenu: UIButton!
     @IBOutlet weak var lblprice: UILabel!
@@ -39,7 +39,13 @@ class ReferAFriendVC: UIViewController {
     @IBAction func NotificationAction(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
         self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
     }
     
     override func viewDidLoad() {

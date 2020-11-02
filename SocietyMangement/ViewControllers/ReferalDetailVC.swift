@@ -15,7 +15,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ReferalDetailVC: UIViewController {
+class ReferalDetailVC: BaseVC {
     
     @IBOutlet weak var imguser: UIImageView!
     @IBOutlet weak var lblflatno: UILabel!
@@ -77,20 +77,30 @@ class ReferalDetailVC: UIViewController {
         
         lblname.text = UsermeResponse?.data!.name
         
-        if UsermeResponse?.data!.image != nil{
-            imguser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.image)!), placeholderImage: UIImage(named: "img_default"))
+        if UsermeResponse?.data!.profilePhotoPath != nil{
+            imguser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
         }
         
         lblcontact.text = String(format: "Contact No: %@", (UsermeResponse?.data!.phone)!)   // "\(UsermeResponse?.data!.phone!)"
         
         //txtcontact.text = UsermeResponse?.data!.phone
-        let strbuilding =  UsermeResponse?.data!.building!
-        lblflatno.text =   String(format: "Flat No: %@-%@", strbuilding!,(UsermeResponse?.data!.flats)!)//strbuilding + "-" + (UsermeResponse?.data!.flats)!
+        let strbuilding =  UsermeResponse?.data!.society?.parentProperty
+        lblflatno.text =   String(format: "Flat No: %@-%@", strbuilding!,(UsermeResponse?.data!.society?.parentProperty)!)//strbuilding + "-" + (UsermeResponse?.data!.flats)!
         
         
     }
     
+    @IBAction func NotificationAction(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
     
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
+    }
     
     
     // MARK: -
@@ -121,22 +131,22 @@ class ReferalDetailVC: UIViewController {
                 webservices().StopSpinner()
                 if(resp.status == 1)
                 {
-                   
-//                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon")
-//                    self.present(alert, animated: true, completion: nil)
                     
-                                                let alert = UIAlertController(title: Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon", preferredStyle: UIAlertController.Style.alert)
-                                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                                                    
-                                                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                                                                                   let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                                                             self.navigationController?.pushViewController(nextViewController, animated: true)
-                                                    
-                                                    
-                                                    
-                                                }))
-                                                // show the alert
-                                                self.present(alert, animated: true, completion: nil)
+                    //                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon")
+                    //                    self.present(alert, animated: true, completion: nil)
+                    
+                    let alert = UIAlertController(title: Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
+                        
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                        self.navigationController?.pushViewController(nextViewController, animated: true)
+                        
+                        
+                        
+                    }))
+                    // show the alert
+                    self.present(alert, animated: true, completion: nil)
                     
                     self.txtname.text = ""
                     self.txtcontact.text = ""

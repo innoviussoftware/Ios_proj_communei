@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gotham Book Regular.otf">
+            <string>Gotham-Book</string>
+        </array>
+        <array key="Gotham Medium Regular.ttf">
+            <string>GothamMedium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResidentFamilymembersCell" rowHeight="100" id="Z0u-cp-fLB" customClass="ResidentFamilymembersCell" customModule="Communei" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Z0u-cp-fLB" id="D9K-Wd-Tlf">
+                <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="116-em-ESC" customClass="RSViewCustomisation" customModule="Communei" customModuleProvider="target">
+                        <rect key="frame" x="8" y="8" width="288" height="84"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vendor-1" translatesAutoresizingMaskIntoConstraints="NO" id="pz2-85-iVT" customClass="RSImageViewCustomisation" customModule="Communei" customModuleProvider="target">
+                                <rect key="frame" x="8" y="10" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="56J-c2-wQs"/>
+                                    <constraint firstAttribute="width" secondItem="pz2-85-iVT" secondAttribute="height" multiplier="1:1" id="bum-FB-9ax"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isCircle" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spp-w6-pgx">
+                                <rect key="frame" x="80" y="19" width="200" height="16.5"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="18"/>
+                                <color key="textColor" red="0.10196078431372549" green="0.21176470588235294" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePh-E6-5G7">
+                                <rect key="frame" x="80" y="37.5" width="168" height="15"/>
+                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="14"/>
+                                <color key="textColor" red="0.50980392156862742" green="0.55686274509803924" blue="0.6470588235294118" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Nc-OC-D33">
+                                <rect key="frame" x="256" y="52" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="2Nc-OC-D33" secondAttribute="height" multiplier="1:1" id="e3X-8F-iPq"/>
+                                    <constraint firstAttribute="width" constant="24" id="jMd-o1-9cM"/>
+                                </constraints>
+                                <state key="normal" image="ic_call"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="spp-w6-pgx" secondAttribute="trailing" constant="8" id="50S-gh-P9f"/>
+                            <constraint firstItem="spp-w6-pgx" firstAttribute="leading" secondItem="pz2-85-iVT" secondAttribute="trailing" constant="8" id="OlN-v2-p4o"/>
+                            <constraint firstAttribute="bottom" secondItem="2Nc-OC-D33" secondAttribute="bottom" constant="8" id="TSU-7Q-aId"/>
+                            <constraint firstItem="pz2-85-iVT" firstAttribute="centerY" secondItem="116-em-ESC" secondAttribute="centerY" id="WwA-2F-CYo"/>
+                            <constraint firstItem="spp-w6-pgx" firstAttribute="top" secondItem="116-em-ESC" secondAttribute="top" constant="19" id="ZPs-lm-YUu"/>
+                            <constraint firstItem="pz2-85-iVT" firstAttribute="leading" secondItem="116-em-ESC" secondAttribute="leading" constant="8" id="qhA-i3-pcO"/>
+                            <constraint firstItem="2Nc-OC-D33" firstAttribute="leading" secondItem="ePh-E6-5G7" secondAttribute="trailing" constant="8" id="rVg-VG-bJX"/>
+                            <constraint firstItem="ePh-E6-5G7" firstAttribute="leading" secondItem="pz2-85-iVT" secondAttribute="trailing" constant="8" id="un6-Um-oFu"/>
+                            <constraint firstItem="ePh-E6-5G7" firstAttribute="top" secondItem="spp-w6-pgx" secondAttribute="bottom" constant="2" id="xM5-Io-iHJ"/>
+                            <constraint firstAttribute="trailing" secondItem="2Nc-OC-D33" secondAttribute="trailing" constant="8" id="yZg-dQ-HrG"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.9137254901960784" green="0.89411764705882346" blue="0.89803921568627454" alpha="0.0" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="116-em-ESC" firstAttribute="leading" secondItem="D9K-Wd-Tlf" secondAttribute="leading" constant="8" id="EDi-2h-0xi"/>
+                    <constraint firstAttribute="bottom" secondItem="116-em-ESC" secondAttribute="bottom" constant="8" id="M0P-fT-0h3"/>
+                    <constraint firstAttribute="trailing" secondItem="116-em-ESC" secondAttribute="trailing" constant="8" id="Qkc-kZ-v96"/>
+                    <constraint firstItem="116-em-ESC" firstAttribute="top" secondItem="D9K-Wd-Tlf" secondAttribute="top" constant="8" id="fNj-Jj-5b1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.9137254901960784" green="0.89411764705882346" blue="0.89803921568627454" alpha="0.0" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="btncll" destination="2Nc-OC-D33" id="5QI-Km-fME"/>
+                <outlet property="imgview" destination="pz2-85-iVT" id="yqI-69-dic"/>
+                <outlet property="innerview" destination="116-em-ESC" id="JL8-76-oEv"/>
+                <outlet property="lblmember" destination="ePh-E6-5G7" id="mS1-iu-jxu"/>
+                <outlet property="lblname" destination="spp-w6-pgx" id="iFA-8T-jLf"/>
+            </connections>
+            <point key="canvasLocation" x="141" y="-12"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="pz2-85-iVT">
+            <size key="intrinsicContentSize" width="60" height="60"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="ic_call" width="24" height="24"/>
+        <image name="vendor-1" width="60" height="60"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

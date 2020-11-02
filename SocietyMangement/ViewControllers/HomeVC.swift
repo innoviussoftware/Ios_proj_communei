@@ -500,7 +500,6 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     @objc func DeleteFrequentEntry(sender:UIButton) {
         let strGuestId = arrFrequentGuestData[sender.tag].id
 
-           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
            avc?.titleStr = "Communei"
            avc?.subtitleStr = "Are you sure you want to delete this record?"
@@ -737,7 +736,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             }
             
             cell.lblVehicleType.text = arrVehicleList[indexPath.row].type
-            cell.lblVehicleNumber.text = arrVehicleList[indexPath.row].number
+            cell.lblVehicleNumber.text = arrVehicleList[indexPath.row].dClass
             
             cell.btndelete.tag = indexPath.row
             cell.btndelete.addTarget(self, action: #selector(deletevehicle), for:.touchUpInside)
@@ -835,9 +834,9 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.btnCall.tag = indexPath.row
             cell.btnDelete.tag = indexPath.row
             
-            if(familymeberary[indexPath.row].image != nil)
+            if(familymeberary[indexPath.row].profilePhotoPath != nil)
             {
-            cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor profile"))
+            cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
             }
             cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
             cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
@@ -1607,7 +1606,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                                          avc?.subtitleStr = "Are you sure you want to delete this vehicle?"
                                          avc?.yesAct = {
                                          
-                                        self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id!)
+                                            self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id)
 
                                              }
                                          avc?.noAct = {
@@ -1653,9 +1652,16 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
         
         webservices().StartSpinner()
 
+        let param : Parameters = [
+            "VehicleID" : id
+         ]
                          
                          let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-              Apicallhandler.sharedInstance.ApiCallDeleteVehicle(Vehicleid:(id as! NSNumber).stringValue, token: token as! String) { JSON in
+        // 26/10/20. know
+            //  Apicallhandler.sharedInstance.ApiCallDeleteVehicle(Vehicleid:(id as! NSNumber).stringValue, token: token as! String) { JSON in
+            
+                Apicallhandler.sharedInstance.ApiCallDeleteVehicle(Vehicleid:id , token: token as! String,param: param) { JSON in
+
                              
                              let statusCode = JSON.response?.statusCode
                              
@@ -1709,8 +1715,10 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             webservices().StartSpinner()
 
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-            Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
-                
+           // Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+             
+            Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+
                 let statusCode = JSON.response?.statusCode
                 
                 switch JSON.result{
@@ -1718,7 +1726,10 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                    webservices().StopSpinner()
                     
                     if statusCode == 200{
-                        UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
+                        
+                        // 21/10/20. temp comment
+
+                      /*  UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
                         UserDefaults.standard.set(resp.data!.id, forKey: USER_ID)
                         UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
                         UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
@@ -1729,7 +1740,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                         UsermeResponse = resp
                         self.lbltitle.text = "Welcome, \(resp.data!.name!)"
                         
-                        self.lblname.text = resp.data!.name
+                        self.lblname.text = "Hello, \(resp.data!.name)"
                         if(UsermeResponse?.data!.image != nil)
                         {
                             self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
@@ -1745,7 +1756,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                         }else{
                             self.btnAddFamily.isHidden = true
                             self.btnAddFamilyBottom.isHidden = true
-                        }
+                        } */
                         
                         print(resp)
                     }
@@ -2309,7 +2320,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             webservices().StartSpinner()
             
             
-            Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, param: [:], token: token as! String) { JSON in
+            Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{
@@ -2405,9 +2416,9 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     {
         
         
-             let id =  familymeberary[sender.tag].id
-             let strId = "\(id!)"
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+             let id =  familymeberary[sender.tag].guid
+        let strId = "\(id)"
+               // let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                 avc?.titleStr = "Communei"
                 avc?.subtitleStr = "Are you sure you want to delete this family member?"

@@ -36,6 +36,12 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
     @IBOutlet weak var lbldate: SkyFloatingLabelTextField!
     
     var selectedary = NSMutableArray()
+    
+    var selectedaryId = NSMutableArray()
+    
+    var selectedId = ""
+
+
     var datePicker = UIDatePicker()
     
     var isfrom = 0
@@ -101,19 +107,19 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
         
         if(isfrom == 1)
         {
-            lbltitle.text = "Update Notice"
-            btnsave.setTitle("UPDATE", for: .normal)
+            lbltitlename.text = "Update Notice"
+            btnsave.setTitle("Update", for: .normal)
             apicallGetBuildings()
             self.lbltitle.text = dic?.title
             self.lbldes.text = dic?.datumDescription
-            self.lbldate.text = dic?.viewTill
+            self.lbldate.text = dic?.visibleTill
             self.lbldes.placeholder = ""
             
         }
         else
         {
-           // lbltitle.text = "Add Notice"
-            btnsave.setTitle("SAVE", for: .normal)
+            lbltitlename.text = "Add Notice"
+            btnsave.setTitle("Save", for: .normal)
         }
         
         // 19/8/20.
@@ -203,10 +209,12 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
         
         if(textField == lblsendto)
         {
+            
             //self.view.endEditing(true)
             lblsendto.resignFirstResponder()
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SendtoPopUP") as! SendtoPopUP
             popOverConfirmVC.delegate = self
+            popOverConfirmVC.strlbl = "Send Notice to"
             popOverConfirmVC.selectedary = self.selectedary
             self.addChildViewController(popOverConfirmVC)
             popOverConfirmVC.view.frame = self.view.frame
@@ -214,25 +222,34 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
             self.view.addSubview(popOverConfirmVC.view)
             popOverConfirmVC.didMove(toParentViewController: self)
             
-
             return false
         }else{
             return true
-
         }
-    }
+        
+    }   
     
-   
-    
-    func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray) {
+    func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray,selectedaryId:NSMutableArray) {
         
         self.selectedary =  selectedary
-        self.lblsendto.text = nameary.componentsJoined(by:",")
+        self.lblsendto.text =  nameary.componentsJoined(by:",")
+        
+        self.selectedId = selectedaryId.componentsJoined(by: ",")
+        
+        print("self.selectedId : ",self.selectedId)
+        // selectedary.componentsJoined(by:",")
+        
     }
     
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .dateAndTime
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         
         //ToolBar
         let toolbar = UIToolbar();
@@ -285,17 +302,22 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
     {
         if(webservices().isConnectedToNetwork())
         {
-            let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+           // let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
             let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
             
             webservices().StartSpinner()
+            
             let param : Parameters = [
-                "society_id" : strSocietyId,
-                "building_id" : selectedary.componentsJoined(by: ","),
-                "title" : lbltitle.text!,
-                "description" : lbldes.text!,
-                "view_till" : lbldate.text!
+               // "society_id" : strSocietyId,
+                "Properties" : self.selectedId,
+                //selectedaryId.componentsJoined(by: ","),
+                "Title" : lbltitle.text!,
+                "Description" : lbldes.text!,
+                "VisibleTill" : lbldate.text!
             ]
+            
+            print("AddNotice Parameters : ",param)
+
             
             Apicallhandler.sharedInstance.AddNotice(URL:  webservices().baseurl + API_ADD_NOTICE, param: param,token:strtoken) { JSON  in
                 switch JSON.result{
@@ -361,19 +383,23 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
     {
         if(webservices().isConnectedToNetwork())
         {
-            let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+          //  let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
             let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
-            let strNoticeId = String(format: "%d", (dic?.id)!)
+            let strNoticeId = dic?.noticeID // String(format: "%d", (dic?.noticeID)!)
             
             webservices().StartSpinner()
             let param : Parameters = [
-                "society_id" : strSocietyId,
-                "building_id" : selectedary.componentsJoined(by: ","),
-                "title" : lbltitle.text!,
-                "description" : lbldes.text!,
-                "view_till" : lbldate.text!,
-                "notice_id":strNoticeId
+               // "NoticeID" : strSocietyId,
+                "Properties" : self.selectedId,
+                    //selectedaryId.componentsJoined(by: ","),
+                "Title" : lbltitle.text!,
+                "Description" : lbldes.text!,
+                "VisibleTill" : lbldate.text!,
+                "NoticeID":strNoticeId!
             ]
+            
+            print("Parameters edit : ",param)
+
             
             Apicallhandler.sharedInstance.EditNotice(URL:  webservices().baseurl + API_UPDATE_NOTICE, param: param,token:strtoken) { JSON  in
                 switch JSON.result{
@@ -455,10 +481,29 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
                          ShowNoInternetAlert()
                          return
                      }
-            let strSocetyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+          //  let strSocetyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+        
+          let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+
             
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSocetyId) { JSON in
+         
+        // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSocetyId) { JSON in
+                
+                                
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                         let param : Parameters = [
+                             "Society" : SociId,
+                            "Parent" : UsermeResponse!.data!.society!.societyID!
+                         ]
+                        
+                       print("Parameters : ",param)
+                                
+                     //   Apicallhandler.sharedInstance.GetAllBuidldingSociety(URL: webservices().baseurl + API_GET_BUILDING_SOCIETY,token: token as! String, param: param) { JSON in
+                            
+                    Apicallhandler.sharedInstance.GetAllBuidldingSociety(token: token as! String, param: param) { JSON in
+                       
                 
                 switch JSON.result{
                 case .success(let resp):
@@ -471,13 +516,24 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
                         {
                             for dic in resp.data
                             {
-                                if(((self.dic?.buildingID!.contains((dic.id as NSNumber).stringValue))!))
+                               /* if(((self.dic?.buildingID!.contains((dic.PropertyID as NSNumber).stringValue))!))
                                 {
-                                    self.selectedary.add(dic.id)
-                                    nameary.add(dic.name)
-                                }
+                                    self.selectedary.add(dic.PropertyID)
+                                    nameary.add(dic.PropertyName)
+                                } */
+                                
+                                // 27/10/20. temp comment
+                                
+                               // if(((self.dic?.buildingID.contains((dic.propertyID as NSNumber).stringValue))!))
+                              //  {
+                                    self.selectedary.add(dic.propertyFullName)
+                                    nameary.add(dic.propertyFullName)
+                                self.selectedaryId.add(dic.propertyName)// propertyID)
+                              //  }
                             }
-                            self.lblsendto.text = nameary.componentsJoined(by:",")
+                            self.lblsendto.text = self.selectedary.componentsJoined(by:",")
+                            
+                            self.selectedId = self.selectedaryId.componentsJoined(by: ",")
                         }
                     }
                     else

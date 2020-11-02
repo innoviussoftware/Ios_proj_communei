@@ -86,7 +86,7 @@ class VendorsVC: UIViewController, UITableViewDelegate , UITableViewDataSource {
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-        avc?.titleStr = "Society Buddy"
+        avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
         avc?.subtitleStr = "Are you sure you want to delete \(self.vendorsary[sender.tag].vendorName)?"
         avc?.yesAct = {
               

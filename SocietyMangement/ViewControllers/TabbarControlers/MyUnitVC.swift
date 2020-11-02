@@ -57,11 +57,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
 
     var refreshControl = UIRefreshControl()
 
-     var familymeberary = [FamilyMember]()
+    var familymeberary =  [FamilyMember]()
 
     var arrFrequentGuestData = [GetFrequentEntryListData]()
     
-    var arrVehicleList = [VehicleData]()
+    var arrVehicleList = [VehicleDataUser]() // [VehicleData]()
     
     var arrHelperList = [MyHelperListData]()
 
@@ -90,12 +90,22 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
            super.viewWillAppear(animated)
           // NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
-        let strId = String(format: "%d", (UsermeResponse?.data?.id)!)
+     //   let strId = String(format: "%d", (UsermeResponse?.data?.guid)!)
 
            
           // apicallNotificationCount()
           // apicallGuestList()
-           apicallGetFamilyMembers(id: strId)
+        
+         //  apicallGetFamilyMembers(id: strId)
+        
+        // 22/10/20. temp comment
+      
+        if UsermeResponse?.data?.guid != nil {
+            apicallGetFamilyMembers(id: (UsermeResponse?.data?.guid)!)
+        }
+
+        
+
            apicallGetFrequentGuestList()
            apicallGetMyHelperList()
            
@@ -113,6 +123,21 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
            } */
            
        }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+       let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+        vc.isfrom = 0
+     }
+    
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
+    }
+    
+    @IBAction func btnZendeskPressed(_ sender: Any) {
+        // let vc =
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+    }
     
       /* override func viewWillDisappear(_ animated: Bool) {
            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
@@ -190,7 +215,10 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             webservices().StartSpinner()
 
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-            Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+          //  Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+                
+                Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -199,10 +227,10 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                    webservices().StopSpinner()
                     
                     if statusCode == 200{
-                        UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
-                        UserDefaults.standard.set(resp.data!.id, forKey: USER_ID)
+                        UserDefaults.standard.set(resp.data!.society?.societyID, forKey: USER_SOCIETY_ID)
+                        UserDefaults.standard.set(resp.data!.guid, forKey: USER_ID)
                         UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
-                        UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
+                        UserDefaults.standard.set(resp.data!.professionID, forKey: USER_BUILDING_ID)
                         UserDefaults.standard.synchronize()
                         
                         self.apicallGetVehicleList()
@@ -210,16 +238,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         UsermeResponse = resp
                       //  self.lbltitle.text = "Welcome, \(resp.data!.name!)"
                         
-                        self.lbltitle.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+                        // 22/10/20. temp comment
+                      //  self.lbltitle.text = String(format: "%@-%@", UsermeResponse!.data!.society?.propertyID ,UsermeResponse!.data!.society?.parentProperty)
+                        
+                        self.lbltitle.text = "\(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
 
                         
                         self.lblname.text = resp.data!.name
-                        if(UsermeResponse?.data!.image != nil)
+                        if(UsermeResponse?.data!.profilePhotoPath != nil)
                         {
-                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
-                        self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+                        
+                        // 22/10/20. temp comment
+                       // self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.society?.propertyID!,UsermeResponse!.data!.society?.parentProperty as! CVarArg)
+                        
+                        self.lblflatno.text = "Flat No: \( UsermeResponse!.data!.society?.property ?? "")"
+                        
                         self.lblflattype.text = "Contact No: \(UsermeResponse!.data!.phone!)"
                         
                         
@@ -291,7 +327,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             webservices().StartSpinner()
             
             
-            Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, param: [:], token: token as! String) { JSON in
+        Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{
@@ -302,7 +338,6 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     if(JSON.response?.statusCode == 200)
                     {
                         self.familymeberary = resp.data!
-                        
                         //self.lblNoDataFound.isHidden = true
                         self.collectionfamily.reloadData()
                         if(resp.data!.count == 0)
@@ -353,7 +388,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         
     }
     
-    // vehicle
+    // MARK: - vehicle
     
     @IBAction func AddVehicleAction_view_btn(_ sender: Any) {
         addVehicleActionbtn()
@@ -372,11 +407,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         
         let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "EntryVehicleDetailPopUpVC") as! EntryVehicleDetailPopUpVC
         popOverConfirmVC.delegate = self
+       
         self.addChildViewController(popOverConfirmVC)
         popOverConfirmVC.view.frame = self.view.frame
         self.view.center = popOverConfirmVC.view.center
         self.view.addSubview(popOverConfirmVC.view)
         popOverConfirmVC.didMove(toParentViewController: self)
+
+       // tabbarDisbale()
+
         
     }
     
@@ -392,7 +431,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
-            Apicallhandler().GetVehicleList(URL: webservices().baseurl + API_GET_VEHICLELIST, token:token as! String) { JSON in
+            Apicallhandler().GetVehicleUserList(URL: webservices().baseurl + API_GET_VEHICLELIST, token:token as! String) { JSON in
                 switch JSON.result{
                     
                 case .success(let resp):
@@ -400,7 +439,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                        self.arrVehicleList = resp.data
+                        self.arrVehicleList = resp.data!
                         if self.arrVehicleList.count > 0{
                             self.collectionVehicle.isHidden = false
                             self.viewStaticAddVhicle.isHidden = true
@@ -437,16 +476,40 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
      
     }
     
+     // MARK: -  Add My Helper
+    
+    
+    func btnAddHelperAction() {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        vc.isfrom = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        print("btnAddHelperAction new")
+    }
+
+    @IBAction func AddHelperAction_view_btn(_ sender: Any) {
+         btnAddHelperAction()
+     }
+     
+     @IBAction func AddHelperAction(_ sender: Any) {
+         btnAddHelperAction()
+     }
+     
+     @IBAction func addHelperAction_btn(_ sender: Any) {
+         btnAddHelperAction()
+     }
+    
     // MARK: -  Get My Helper List
     
     func apicallGetMyHelperList()
-          {
+    {
               if !NetworkState().isInternetAvailable {
-                               ShowNoInternetAlert()
-                               return
-                           }
+                    ShowNoInternetAlert()
+                    return
+                }
                   
-               let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
               
                webservices().StartSpinner()
                 Apicallhandler.sharedInstance.ApiCallMyHelperList(token: token as! String) { JSON in
@@ -525,17 +588,26 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     func btnAddFrequentActionbtn() {
         let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddguestPopup") as! AddguestPopup
-                  popOverConfirmVC.delegate = self
-                  self.addChildViewController(popOverConfirmVC)
-                  popOverConfirmVC.view.frame = self.view.frame
-                  self.view.center = popOverConfirmVC.view.center
-                  self.view.addSubview(popOverConfirmVC.view)
-                  popOverConfirmVC.didMove(toParentViewController: self)
-                  
-                  
+            
+        popOverConfirmVC.delegate = self
+        
+        popOverConfirmVC.isfrom = 0
+        
+        self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+
+        
+//                  self.addChildViewController(popOverConfirmVC)
+//                  popOverConfirmVC.view.frame = self.view.frame
+//                  self.view.center = popOverConfirmVC.view.center
+//                  self.view.addSubview(popOverConfirmVC.view)
+//                  popOverConfirmVC.didMove(toParentViewController: self)
+//
+//                  tabbarDisbale()
+
     }
     
     // MARK: -  Get Add Frequent
+    
     
     @IBAction func AddFrequentAction(_ sender: Any) {
            btnAddFrequentActionbtn()
@@ -547,6 +619,27 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     @IBAction func AddFrequentAction_btn(_ sender: Any) {
               btnAddFrequentActionbtn()
+    }
+    
+    // MARK: -  Get Add Emergency Contact
+    
+    
+    func btnAddEmergencyAction() {
+        
+        print("btnAddEmergencyActionbtn new")
+        
+    }
+    
+    @IBAction func AddEmergencyConAction(_ sender: Any) {
+           btnAddEmergencyAction()
+    }
+    
+    @IBAction func AddEmergencyConAction_view_btn(_ sender: Any) {
+           btnAddEmergencyAction()
+    }
+    
+    @IBAction func AddEmergencyConAction_btn(_ sender: Any) {
+              btnAddEmergencyAction()
     }
     
     func inviteaction(from: String) {
@@ -653,11 +746,19 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  }
                 
                 cell.btnCall.tag = indexPath.row
+                cell.btnCalenderAttend.tag = indexPath.row
+
                 
                 cell.ratingView.rating = arrHelperList[indexPath.row].averageRating!
                 cell.lblName.text = arrHelperList[indexPath.row].name
                 cell.lblMaidType.text = arrHelperList[indexPath.row].typename
-                cell.lblCode.text = arrHelperList[indexPath.row].pin
+                
+                // 25/9/20.
+                
+              //  cell.lblCode.text = arrHelperList[indexPath.row].pin
+                
+                cell.lblCode.text = "Attendance"
+
                 cell.imgMaid.isUserInteractionEnabled = true
                 
          //   let tap = UITapGestureRecognizer()
@@ -666,6 +767,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 cell.imgMaid.tag = indexPath.row
                 
                 cell.btnCall.addTarget(self, action:#selector(callMaid(sender:)), for: .touchUpInside)
+                
+                cell.btnCalenderAttend.addTarget(self, action:#selector(calenderAttendanceMaid(sender:)), for: .touchUpInside)
+
                 
                 return cell
             }
@@ -676,13 +780,17 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                        
                        if arrVehicleList[indexPath.row].type == "Two Wheeler"{
                            cell.imgVehicle.image = #imageLiteral(resourceName: "Group 271")
-                       }
+                        
+                        cell.lblVehicleType.text = "2 Wheeler"
+                       }else{
                        
-                       if arrVehicleList[indexPath.row].type == "Four Wheeler"{
+                      // if arrVehicleList[indexPath.row].type == "Four Wheeler"{
                            cell.imgVehicle.image = #imageLiteral(resourceName: "cab")
+                        
+                        cell.lblVehicleType.text = "4 Wheeler"
                        }
                        
-                       cell.lblVehicleType.text = arrVehicleList[indexPath.row].type
+                     //  cell.lblVehicleType.text = arrVehicleList[indexPath.row].type
                        cell.lblVehicleNumber.text = arrVehicleList[indexPath.row].number
                        
                        cell.btndelete.tag = indexPath.row
@@ -712,9 +820,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  cell.btnCall.tag = indexPath.row
                  cell.btnDelete.tag = indexPath.row
                  
-                 if(familymeberary[indexPath.row].image != nil)
+                 if(familymeberary[indexPath.row].profilePhotoPath != nil)
                  {
-                 cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor profile"))
+                 cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
                  }
                  cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
                  cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
@@ -795,17 +903,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                      return arrData.count
                  }
                  
-                 
              }
+             
              else if collectionView == collectionVehicle{
-                 
                  return arrVehicleList.count
              }else if collectionView == collectionFrequentGuest{
                  return arrFrequentGuestData.count
              }else if collectionView == collectionHelper{
                  return arrHelperList.count
-             }
-             else{
+             }else{
                  return familymeberary.count
              } */
             
@@ -861,11 +967,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
              } */
              
             if(collectionView == collectionFrequentGuest){
-                return CGSize(width: 210, height:110)
+                return CGSize(width: 248, height:110)
             }else if(collectionView == collectionVehicle){
-                return CGSize(width: 160, height:150)
+                return CGSize(width: 130, height:150)
             }else if(collectionView == collectionHelper){
-                return CGSize(width: 220, height:150)
+                return CGSize(width: 230, height:158)
             }else{
                 return CGSize(width: 248, height:110)
             }
@@ -1019,11 +1125,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                                              avc?.subtitleStr = "Are you sure you want to delete this vehicle?"
                                              avc?.yesAct = {
                                              
-                                            self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id!)
+                                                self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id)
 
                                                  }
                                              avc?.noAct = {
-                                               
+                                               print("no delete")
                                              }
                                              present(avc!, animated: true)
                
@@ -1070,37 +1176,48 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
      @objc func callFrequentGuestmember(sender:UIButton)
         {
-            dialNumber(number:arrFrequentGuestData[sender.tag].contactNumber!)
-        }
+                
+                     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                    avc?.titleStr = "Call"//GeneralConstants.kAppName // "Society Buddy"
+                avc?.isfrom = 3
+
+                avc?.subtitleStr = "Are you sure you want to call: \(arrFrequentGuestData[sender.tag].contactNumber!)"
+                                    avc?.yesAct = {
+                                        
+                                        self.dialNumber(number:self.arrFrequentGuestData[sender.tag].contactNumber!)
+
+                                                 }
+                                    avc?.noAct = {
+                                      
+                                    }
+                                    present(avc!, animated: true)
+                    
+        
+                
+            }
+        
+        
+
     
     @objc func deleteFamilyMember(sender:UIButton)
     {
-            let id =  familymeberary[sender.tag].id
-            let strId = "\(id!)"
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            let id =  familymeberary[sender.tag].guid
+        //let strId = "\(id)"
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-            avc?.titleStr = "Communei"
-            avc?.subtitleStr = "Are you sure you want to delete this family member?"
+            avc?.titleStr = "Delete Contact"  // "Communei"
+            avc?.subtitleStr = "Are you sure you want to delete this contact?"
+                // "Are you sure you want to delete this family member?"
             avc?.yesAct = {
                     
-                self.apicallDeleteFamilyMember(strId: strId)
+                self.apicallDeleteFamilyMember(strId: id!)
+                
             }
             avc?.noAct = {
                       
             }
             present(avc!, animated: true)
                     
-            
-            
-            
-    //
-    //        let alert = UIAlertController(title: Alert_Titel, message:"Are you sure you want to delete this family member?" , preferredStyle: UIAlertController.Style.alert)
-    //        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { alert in
-    //            self.apicallDeleteFamilyMember(strId: strId)
-    //        }))
-    //        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-    //        self.present(alert, animated: true, completion: nil)
-            
             
     }
     
@@ -1111,7 +1228,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                            }
                 let token = UserDefaults.standard.value(forKey: USER_TOKEN)
                let param : Parameters = [
-                   "id" : strId
+                   "guid" : strId
                 ]
                
                webservices().StartSpinner()
@@ -1142,9 +1259,29 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
               
     }
     
-    @objc func callmember(sender:UIButton) {
-           dialNumber(number:familymeberary[sender.tag].phone!)
-    }
+    @objc func callmember(sender:UIButton)
+    {
+            
+                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+                avc?.isfrom = 3
+
+        avc?.subtitleStr = "Are you sure you want to call: \(familymeberary[sender.tag].phone ?? "")"
+                                avc?.yesAct = {
+
+                                    self.dialNumber(number:self.familymeberary[sender.tag].phone!)
+
+                                             }
+                                avc?.noAct = {
+                                  
+                                }
+                                present(avc!, animated: true)
+                
+    
+            
+        }
+    
+    
     
     @objc func editmember(sender:UIButton) {
            
@@ -1170,14 +1307,21 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         
         webservices().StartSpinner()
 
-                         
-                         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-              Apicallhandler.sharedInstance.ApiCallDeleteVehicle(Vehicleid:(id as! NSNumber).stringValue, token: token as! String) { JSON in
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        let param : Parameters = [
+            "VehicleID" : id
+         ]
+        
+        Apicallhandler.sharedInstance.ApiCallDeleteVehicle(Vehicleid:id, token: token as! String,param: param) { JSON in
                              
                              let statusCode = JSON.response?.statusCode
                              
                              switch JSON.result{
                              case .success(let resp):
+                                
+                                print(resp)
+
                                  webservices().StopSpinner()
                                  
                                  if statusCode == 200{
@@ -1215,11 +1359,40 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         
     }
     
-    @objc func callMaid(sender:UIButton)
+    @objc func calenderAttendanceMaid(sender:UIButton)
     {
-        dialNumber(number:arrHelperList[sender.tag].mobile!)
-
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DomesticHelperAttendanceVC") as! DomesticHelperAttendanceVC
+        nextViewController.strlbl = arrHelperList[sender.tag].name!
+       // nextViewController.isfrom = 0
+        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    
+    @objc func callMaid(sender:UIButton)
+      {
+                
+                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                    avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+                    avc?.isfrom = 3
+
+                                    avc?.subtitleStr = "Are you sure you want to call: \(arrHelperList[sender.tag].mobile!)"
+        
+                                    avc?.yesAct = {
+                                        
+                                        self.dialNumber(number:self.arrHelperList[sender.tag].mobile!)
+
+                                            }
+        
+                                    avc?.noAct = {
+                                      
+                                    }
+                                    present(avc!, animated: true)
+                    
+        
+                
+            }
+        
+        
     
     
     

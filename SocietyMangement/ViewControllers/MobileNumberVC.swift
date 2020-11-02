@@ -31,7 +31,7 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
         
         //20/8/20.
         
-        txtmobile.text! = "9998099631"
+       // txtmobile.text! = "9998099631"
 
         if(txtmobile.text == "")
         {
@@ -67,7 +67,7 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
            }
         
    let yourAttributes : [NSAttributedStringKey: Any] = [
-    NSAttributedStringKey.font : UIFont(name: "Gotham-Book", size:17.0),
+    NSAttributedStringKey.font : UIFont(name: "Gotham-Light", size:16.0) as Any,
    NSAttributedStringKey.foregroundColor : UIColor(red: 0.51, green: 0.56, blue: 0.65, alpha: 1.00),
    NSAttributedStringKey.underlineStyle : NSUnderlineStyle.styleSingle.rawValue]
         
@@ -101,8 +101,8 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
             webservices().StartSpinner()
 
             let param : Parameters = [
-                "phone" : txtmobile.text!,
-                "device_id" :strFCmToken
+                "Phone" : txtmobile.text!,
+                "FCMToken" :strFCmToken
             ]
 
             Apicallhandler.sharedInstance.LoginNew(URL: webservices().baseurl + APILogin, param: param) { response in
@@ -111,45 +111,64 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
                 case .success(let resp):
                     if resp.status == 1{
 
-                        print("OTP---------->\(resp.data?.otp)")
-                        print("login token---------->\(resp.data?.token)")
+                        print("OTP---------->\(resp.data?.otp ?? "")")
+                        print("login token---------->\(resp.data?.token ?? "")")
+                        
+                        /*
+                         if (response.body().getIsapporve() == 0 && !response.body().getData().isIs_exist()) {
+                                                            //new user
+                        ""User is not registered""
+
+
+                                                        }else if (response.body().getIsapporve() == 0 && response.body().getData().isIs_exist()) {
+                                                            // new user but not approved by admin
+                                                            String message = "Member is not approved from admin";
+                                                            openNotApprovedDialog(message);
+
+
+                                                        } else {
+                                                            //approved user
+                        goto otp then dashboard
+                         */
                         
                         
-                        if resp.isapporve == 0{
-                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Your account is not approved yet")
+                        if resp.isapporve == 0 && resp.data?.is_exist == false {
+                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"User is not registered")
                             self.present(alert, animated: true, completion: nil)
                             
-                        }else{
-                            if resp.data?.isExist != "0"{
-                                                       UserDefaults.standard.set(resp.data?.role, forKey: USER_ROLE)
-                                                       UserDefaults.standard.set(resp.data?.token, forKey: USER_TOKEN)
-                                                       UserDefaults.standard.synchronize()
-                                                   }
-
-                                                   let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                                   let nextViewController = storyBoard.instantiateViewController(withIdentifier: "OTPVC") as! OTPVC
-                                                   nextViewController.strmobileno = self.txtmobile.text!
-                                                   nextViewController.strotp = "\(resp.data!.otp!)"
-                                                   nextViewController.ismember = (resp.data?.isExist)!
-                                                   self.navigationController?.pushViewController(nextViewController, animated: true)
-
+                        }else if resp.isapporve == 0 &&  resp.data?.is_exist == true{
+                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Member is not approved from admin")
+                            self.present(alert, animated: true, completion: nil)
+                        
+                    }else{
+                        
+                        UserDefaults.standard.set(resp.data?.role, forKey: USER_ROLE)
+                        UserDefaults.standard.set(resp.data?.token, forKey: USER_TOKEN)
+                        UserDefaults.standard.synchronize()
+                
+                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "OTPVC") as! OTPVC
+                    nextViewController.strmobileno = self.txtmobile.text!
+                    nextViewController.strotp = "\(resp.data!.otp!)"
+                    nextViewController.ismember = (resp.data?.is_exist)!
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                      //  self.present(alert, animated: true, completion: nil)
                         }
                     }else{
                         let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
-                        self.present(alert, animated: true, completion: nil)
+                         self.present(alert, animated: true, completion: nil)
                     }
-
                     break
                 case .failure(let err):
                     webservices().StopSpinner()
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
                     print(err.asAFError)
-
                 }
 
-
-            }
+            
+        }
        
     }
     

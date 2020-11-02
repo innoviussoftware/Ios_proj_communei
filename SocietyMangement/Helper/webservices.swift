@@ -18,13 +18,30 @@ class webservices: NSObject {
     
  // Mark : Live base url
 
-   var baseurl =  "http://18.190.94.153/api/"
-   var imgurl = "http://18.190.94.153/storage/app/"
+  // var baseurl =  "http://18.190.94.153/api/"
+  // var imgurl = "http://18.190.94.153/storage/app/"
+   var BuySellImgUrl = "http://18.190.94.153/storage/app/icons/"
+    
+   
+    // Mark : Communei Live base url
+    
+   var baseurl =  "http://65.0.14.211/public/api/"
+    var imgurl = "http://65.0.14.211/storage/app/"
     
     
+
     // Mark : Local base url
    // var baseurl =  "http://3.15.184.91/api/"
     //let imgurl = "http://3.15.184.91/storage/app/"
+   // var BuySellImgUrl = "http://3.15.184.91/storage/app/icons/"
+    
+ 
+    // Mark : Client base url
+   // val baseurl = "http://13.234.110.224/api/"
+   // var imgurl = "http://13.234.110.224/storage/app/"
+   // var BuySellImgUrl = "http://13.234.110.224/storage/app/icons/"
+
+
     
     static let sharedInstance : webservices = {
         let instance = webservices()
@@ -186,6 +203,19 @@ struct AppColor {
     static let orangeColor = UIColor(red: 249.0/255.0, green: 164.0/255.0, blue: 49.0/255.0, alpha: 1)
     
     static let borderColor = UIColor(red: 242.0/255.0, green: 97.0/255.0, blue: 1.0/255.0, alpha: 1)
+    
+    static let introlineColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/255.0, alpha: 1)
+    
+    static let radioUncheckColor = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1)
+
+    static let lineSingleColor = UIColor(red: 130.0/255.0, green: 142.0/255.0, blue: 165.0/255.0, alpha: 1.0)
+
+    
+    static let lblFilterSelect =  UIColor(red: 26.0/255.0, green: 54.0/255.0, blue: 82.0/255.0, alpha: 1)
+    
+    static let lblFilterUnselect =  UIColor(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0, alpha: 1)
+
+
 
     // 828EA5
     static let ratingBorderColor = UIColor(red: 130.0/255.0, green: 142.0/255.0, blue: 165.0/255.0, alpha: 1)

@@ -46,6 +46,7 @@ class CategoryListVC: UIViewController {
     
 }
 
+
 extension CategoryListVC : UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -76,9 +77,17 @@ extension CategoryListVC : UICollectionViewDataSource,UICollectionViewDelegate,U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == collectionCategory{
-            let vc  = self.storyboard?.instantiateViewController(withIdentifier: "CategoryDetailsVC") as! CategoryDetailsVC
-            vc.strCategoryName = "Car"
-            self.navigationController?.pushViewController(vc, animated: true)
+            
+            if #available(iOS 13.0, *) {
+                   let vc = self.storyboard?.instantiateViewController(identifier: "CategoryDetailsVC") as! CategoryDetailsVC
+                    vc.strCategoryName = "Car"
+
+                   self.navigationController?.pushViewController(vc, animated: true)
+               } else {
+                   // Fallback on earlier versions
+               }
+            
+            
         }
     }
     
@@ -102,6 +111,7 @@ extension CategoryListVC : UICollectionViewDataSource,UICollectionViewDelegate,U
     
     
 }
+
 
 
 

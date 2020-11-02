@@ -127,7 +127,14 @@ class ProfessionPopUP: UIViewController {
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "professional") { JSON in
+           // Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions") { JSON in
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions", token: token as! String) { JSON in
+           
                 switch JSON.result{
                 case .success(let resp):
                     

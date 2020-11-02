@@ -9,7 +9,13 @@
 import UIKit
 import Alamofire
 import SDWebImage
+
+import SWRevealViewController
+
 var UsermeResponse:UserMeResponse?
+
+var BuidigResponse:BuidingResponse?
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -19,24 +25,58 @@ var UsermeResponse:UserMeResponse?
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ActivityTabVC: UIViewController {
+class ActivityTabVC: BaseVC {
     
     @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var tblview: UITableView!
     
+    @IBOutlet weak var menuaction: UIButton!
+
+    @IBOutlet weak var filtrview: UIView!
+
+    @IBOutlet weak var collectionActivity: UICollectionView!
+
+    var arrSelectionCheck = NSMutableArray()
+
+    var arrActivity = NSMutableArray()
+    
+    var activityGroupAry = ["Visitor","Delivery","Cab","Service Provider","Daily Helper","On Demand Help","Parcel Collection"]
+
     var arrGuestList = [guestData]()
-    var message = UILabel()
+    
+    @IBOutlet weak var message: UILabel!
+
+   // var message = UILabel()
     var refreshControl = UIRefreshControl()
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
-     tabBarItem = UITabBarItem(title: "Activityssss", image: UIImage(named: "ic_activity_selected"), selectedImage: UIImage(named: "ic_activity_unselected"))
+   //  tabBarItem = UITabBarItem(title: "Activity", image: UIImage(named: "ic_activity_selected"), selectedImage: UIImage(named: "ic_activity_unselected"))
+        
+        if(revealViewController() != nil) {
+            menuaction.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                   
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                   
+            print("revealViewController auto")
+
+        }
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
         tblview.addSubview(refreshControl)
         
+        filtrview.isHidden = true
         
+        setUpFilterActivityView()
+        
+        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
+               
+        collectionActivity.collectionViewLayout = alignedFlowLayout
+        
+        /*
         message.text = "No Data Found"
         message.translatesAutoresizingMaskIntoConstraints = false
         message.lineBreakMode = .byWordWrapping
@@ -48,18 +88,99 @@ class ActivityTabVC: UIViewController {
         
         message.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         message.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        message.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        message.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true */
         message.isHidden = false
         // Do any additional setup after loading the view.
     }
+    
     override func viewWillAppear(_ animated: Bool) {
+        filtrview.isHidden = true
+
         apicallUserMe()
         apicallGuestList()
-        
     }
+    
+    @IBAction func btnZendeskPressed(_ sender: Any) {
+        // let vc =
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+    }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+        let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+        vc.isfrom = 0
+    }
+              
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
+    }
+    
     @objc func refresh(sender:AnyObject) {
         apicallGuestList()
     }
+    
+    
+    func setUpFilterActivityView() {
+        
+        let dict = NSMutableDictionary()
+        dict.setValue("Visitor", forKey: "activity_grp")
+        dict.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict)
+        
+        let dict1 = NSMutableDictionary()
+        dict1.setValue("Delivery", forKey: "activity_grp")
+        dict1.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict1)
+        
+        let dict2 = NSMutableDictionary()
+        dict2.setValue("Cab", forKey: "activity_grp")
+        dict2.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict2)
+        
+        
+        let dict3 = NSMutableDictionary()
+        dict3.setValue("Service Provider", forKey: "activity_grp")
+        dict3.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict3)
+        
+        let dict4 = NSMutableDictionary()
+        dict4.setValue("Daily Helper", forKey: "activity_grp")
+        dict4.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict4)
+        
+        let dict5 = NSMutableDictionary()
+        dict5.setValue("On Demand Help", forKey: "activity_grp")
+        dict5.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict5)
+        
+        let dict6 = NSMutableDictionary()
+        dict6.setValue("Parcel Collection", forKey: "activity_grp")
+        dict6.setValue("0", forKey: "is_selected")
+        arrActivity.add(dict6)
+        
+    }
+    
+    @IBAction func btnFilterOpenView(_ sender: Any) {
+        filtrview.isHidden = false
+
+    }
+    
+    @IBAction func btnClosefilter(_ sender: UIButton) {
+        filtrview.isHidden = true
+    }
+    
+    @IBAction func btnApplyfilteraction(_ sender: Any) {
+        filtrview.isHidden = true
+    }
+    
+    @IBAction func btnResetaction(_ sender: Any) {
+        filtrview.isHidden = true
+    }
+    
+    @IBAction func btnDateOpenView(_ sender: Any) {
+        filtrview.isHidden = true
+    }
+           
     func apicallGuestList()
     {
         if !NetworkState().isInternetAvailable {
@@ -133,16 +254,15 @@ class ActivityTabVC: UIViewController {
             
         }
     }
+    
     @objc func aceeptRequest(sender:UIButton) {
         let strGuestId = arrGuestList[sender.tag].id
         ApiCallAccepGuest(type: 1, guestId: strGuestId!)
-        
     }
     
     @objc func DeclineRequest(sender:UIButton) {
         let strGuestId = arrGuestList[sender.tag].id
         
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
         avc?.titleStr =  GeneralConstants.kAppName   // "Society Buddy"
         avc?.subtitleStr = "Are you sure you want to decline entry request?"
@@ -161,8 +281,8 @@ class ActivityTabVC: UIViewController {
     }
     
     
-    
     // MARK: - Delete circulars
+    
     func ApiCallAccepGuest(type:Int,guestId : Int)
     {
         
@@ -173,6 +293,7 @@ class ActivityTabVC: UIViewController {
             ShowNoInternetAlert()
             return
         }
+        
         webservices().StartSpinner()
         Apicallhandler().ApiAcceptGuestRequest(URL: webservices().baseurl + API_ACCEPT_DECLINE, token: token as! String,type: type, guest_id: strGuestId) { JSON in
             switch JSON.result{
@@ -286,7 +407,11 @@ class ActivityTabVC: UIViewController {
         webservices().StartSpinner()
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-        Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+     
+        // Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+            
+            Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+
             
             let statusCode = JSON.response?.statusCode
             
@@ -295,19 +420,23 @@ class ActivityTabVC: UIViewController {
                 webservices().StopSpinner()
                 
                 if statusCode == 200{
-                    UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
-                    UserDefaults.standard.set(resp.data!.id, forKey: USER_ID)
+                    UserDefaults.standard.set(resp.data!.society?.societyID, forKey: USER_SOCIETY_ID)
+                    UserDefaults.standard.set(resp.data!.guid, forKey: USER_ID)
                     UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
-                    UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
+                   // UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
                     UserDefaults.standard.synchronize()
                     UsermeResponse = resp
-                    self.lblname.text = "Welcome, \(resp.data!.name!)"
+                    self.lblname.text = "Welcome, \(resp.data!.name)"
                     
-                    self.lblname.text = resp.data!.name
+                  //  self.lblname.text = resp.data!.name
                     
-                    self.lblname.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+                    // 22/10/20. temp comment
+                  //  self.lblname.text = String(format: "%@-%@", UsermeResponse!.data!.society!,UsermeResponse!.data!.society?.property!)
+                    
+                    self.lblname.text = "\(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
 
-                    if(UsermeResponse?.data!.image != nil)
+
+                    if(UsermeResponse?.data!.profilePhotoPath != nil)
                     {
                         
                     }
@@ -402,26 +531,116 @@ class ActivityTabVC: UIViewController {
         
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
+
+@available(iOS 13.0, *)
+extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return arrActivity.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+            let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
+            
+         
+            cell.lblname.text = (arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "activity_grp") as? String
+
+            
+            if((arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+            {
+                cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
+
+            }else{
+                cell.bgViw.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+            }
+            
+            return cell
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+        let contentNSString = activityGroupAry[indexPath.row]
+        let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+        
+        print("\(expectedLabelSize)")
+        return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12) //31
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+            arrSelectionCheck.removeAllObjects()
+           // collectionProfession.reloadData()
+            
+            if (arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
+                
+                let dict = arrActivity[indexPath.row] as! NSMutableDictionary
+                dict.setValue("1", forKey: "is_selected")
+                arrActivity.replaceObject(at: indexPath.row, with: dict)
+                
+            }else{
+                
+                let dict = arrActivity[indexPath.row] as! NSMutableDictionary
+                dict.setValue("0", forKey: "is_selected")
+                arrActivity.replaceObject(at: indexPath.row, with: dict)
+                
+            }
+            
+            //selectedbloodgrop = bloodgroupary[indexPath.row]
+            collectionActivity.reloadData()
+        
+    }
+    
+}
+
+
 @available(iOS 13.0, *)
 extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return self.arrGuestList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell:AcceptedRequestCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! AcceptedRequestCell
+        
+        cell.lblname.text = arrGuestList[indexPath.row].name
+        
+        cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+        
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
+        dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
+        cell.lblintime.text = dateFormatterGet.string(from: date!)
+
+      //  cell.lblapprovedby.text = "INVITED by \(String.getString(UsermeResponse?.data?.name!))"
+        
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("didSelectRowAt")
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension  // 345
+    }
+    
+    /* func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if arrGuestList[indexPath.row].type == "1"{
             if arrGuestList[indexPath.row].inOutFlag == 0{
@@ -430,11 +649,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
                 cell.lblouttime.isHidden = true
-                cell.lblouttime.isHidden = true
+               // cell.lblouttime.isHidden = true
                 cell.imgout.isHidden = true
                 cell.hightlblout.constant = 0
                 cell.lblouttime.isHidden = true
-                var dateFormatterGet = DateFormatter()
+                let dateFormatterGet = DateFormatter()
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
                 dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
@@ -715,7 +934,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgout.isHidden = true
                 cell.hightlblout.constant = 0
                 cell.lblouttime.isHidden = true
-                var dateFormatterGet = DateFormatter()
+                let dateFormatterGet = DateFormatter()
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
                 dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
@@ -983,7 +1202,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgout.isHidden = true
                 cell.hightlblout.constant = 0
                 cell.lblouttime.isHidden = true
-                var dateFormatterGet = DateFormatter()
+                let dateFormatterGet = DateFormatter()
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
                 dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
@@ -1041,9 +1260,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 let cell:AcceptedRequestCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! AcceptedRequestCell
                 
                 return cell
+                
+                
             }
         }
-    }
+    } */
     
     
     

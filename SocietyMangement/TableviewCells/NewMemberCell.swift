@@ -9,8 +9,10 @@
 import UIKit
 
 class NewMemberCell: UICollectionViewCell {
-    @IBOutlet weak var imgMember: UIImageView!
+    
     @IBOutlet weak var innerview: UIView!
+
+    @IBOutlet weak var imgMember: UIImageView!
 
     @IBOutlet weak var lblBloodGroup: UILabel!
     @IBOutlet weak var lblStatic: UILabel!

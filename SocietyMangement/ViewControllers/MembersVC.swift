@@ -9,6 +9,9 @@
 import UIKit
 import SWRevealViewController
 import SDWebImage
+
+import Alamofire
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -21,26 +24,75 @@ import SDWebImage
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate {
+class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate, UITableViewDelegate,UITableViewDataSource {
     
-    @IBOutlet weak var collectionmembers: UICollectionView!
     
+    @IBOutlet weak var tblMembers: UITableView!
+
+    @IBOutlet weak var searchbar: UISearchBar!
+        
     @IBOutlet weak var collectionbuildings: UICollectionView!
     
     @IBOutlet weak var lblnoproperty: UILabel!
     
+    @IBOutlet weak var lblTitleName: UILabel!
+
+    @IBOutlet weak var txtSearchbar: UITextField!
+
+    
     @IBOutlet weak var txtbuilding: GBTextField!
+    
     @IBOutlet var viewnoresult: UIView!
     
     @IBOutlet weak var btnadd: UIButton!
     
     @IBOutlet weak var btnMenu: UIButton!
+    
+    @IBOutlet weak var btnFilter: UIButton!
+
     var searchActive = false
     
-    var buildingary = [Building]()
+    var buildingary = [BuildingAdd]()
     var membersary =  [Members]()
     var allmembersary =  [Members]()
     var Finalallmembersary =  [Members]()
+    
+    var arrProfessionList = [Profession]()
+
+    var arrSelectionCheck = NSMutableArray()
+
+    
+    @IBOutlet weak var imgBlodUpDown: UIImageView!
+    @IBOutlet weak var imgUpDownProfession: UIImageView!
+    
+    @IBOutlet weak var imgUpDownAge: UIImageView!
+
+    
+    @IBOutlet weak var btnByProfession: UIButton!
+    
+    @IBOutlet weak var btnByBlod: UIButton!
+    
+    @IBOutlet weak var btnByAge: UIButton!
+
+
+    @IBOutlet weak var lblBlod: UILabel!
+    
+    @IBOutlet weak var lblProfession: UILabel!
+
+    @IBOutlet weak var lblAge: UILabel!
+    
+    @IBOutlet weak var lblBlodShow: UILabel!
+    
+    @IBOutlet weak var lblProfessionShow: UILabel!
+
+    @IBOutlet weak var lblAgeShow: UILabel!
+    
+    @IBOutlet weak var constraintHightlblBlodShow: NSLayoutConstraint!
+       
+    @IBOutlet weak var constraintHightlblProfessionShow: NSLayoutConstraint!
+    
+    @IBOutlet weak var constraintHightlblAgeShow: NSLayoutConstraint!
+
     
     var pickerview = UIPickerView()
     var buildingid:Int? = 1
@@ -48,44 +100,284 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     var isFromDash = 0
     var selectedbuilding = 0
     var selectedbloodgrop = ""
-    @IBOutlet weak var lblNoDataFound: UILabel!
+   // @IBOutlet weak var lblNoDataFound: UILabel!
     
     @IBOutlet weak var hightcollectionbuilding: NSLayoutConstraint!
     
+    @IBOutlet weak var constraintHightBLodGroupCollection: NSLayoutConstraint!
+       
+       @IBOutlet weak var constraintHightCollecProfession: NSLayoutConstraint!
+    
+    @IBOutlet weak var constraintHightAgeCollection: NSLayoutConstraint!
+
     
     @IBOutlet weak var filtrview: UIView!
     
     @IBOutlet weak var CollectionBloodGrp: UICollectionView!
     
+    @IBOutlet weak var collectionProfession: UICollectionView!
+
+    @IBOutlet weak var collectionAge: UICollectionView!
+
+    
     var arrBloodGrp = NSMutableArray()
     
-    @IBOutlet weak var tblview: UITableView!
+    var arrAge = NSMutableArray()
+
+    
+ //  @IBOutlet weak var tblview: UITableView!
+    
     @IBAction func backaction(_ sender: Any) {
         
         if isFromDash == 0{
             revealViewController()?.revealToggle(self)
         }else{
-            
             self.navigationController?.popViewController(animated: true)
         }
         
         
     }
     
+    @IBAction func actionBlodGroup(_ sender: UIButton) {
+           
+           if btnByBlod.isSelected == false{
+               btnByBlod.isSelected = true
+            
+            lblBlodShow.isHidden = false
+            lblProfessionShow.isHidden = true
+            lblAgeShow.isHidden = true
+
+              lblBlod.textColor = AppColor.lblFilterSelect
+              
+               imgBlodUpDown.image = UIImage(named: "ic_downarrow")
+            
+               imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+           
+               imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+               constraintHightBLodGroupCollection.constant = 100
+               constraintHightCollecProfession.constant = 0
+               constraintHightAgeCollection.constant = 0
+            
+            constraintHightlblBlodShow.constant = 25
+            constraintHightlblProfessionShow.constant = 0
+            constraintHightlblAgeShow.constant = 0
+
+           }else{
+               btnByBlod.isSelected = false
+            
+            lblBlodShow.isHidden = true
+            lblProfessionShow.isHidden = true
+            lblAgeShow.isHidden = true
+            
+                lblBlod.textColor = AppColor.lblFilterUnselect
+            
+                imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+
+               constraintHightBLodGroupCollection.constant = 0
+               constraintHightCollecProfession.constant = 0
+               constraintHightAgeCollection.constant = 0
+            
+            constraintHightlblBlodShow.constant = 0
+            constraintHightlblProfessionShow.constant = 0
+            constraintHightlblAgeShow.constant = 0
+
+
+           }
+           lblProfession.textColor = AppColor.lblFilterUnselect
+            lblAge.textColor = AppColor.lblFilterUnselect
+       }
+    
+    @IBAction func actionByProfession(_ sender: UIButton) {
+        
+        if btnByProfession.isSelected == false{
+            btnByProfession.isSelected = true
+            
+            lblBlodShow.isHidden = true
+            lblProfessionShow.isHidden = false
+            lblAgeShow.isHidden = true
+            
+            lblProfession.textColor = AppColor.lblFilterSelect
+            
+            imgUpDownProfession.image = UIImage(named: "ic_downarrow")
+            
+            imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+            
+            imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+            constraintHightBLodGroupCollection.constant = 0
+            constraintHightCollecProfession.constant = 100
+            constraintHightAgeCollection.constant = 0
+            
+            constraintHightlblBlodShow.constant = 0
+            constraintHightlblProfessionShow.constant = 25
+            constraintHightlblAgeShow.constant = 0
+
+
+        }else{
+            
+            btnByProfession.isSelected = false
+            
+            lblBlodShow.isHidden = true
+            lblProfessionShow.isHidden = true
+            lblAgeShow.isHidden = true
+            
+            lblProfession.textColor = AppColor.lblFilterUnselect
+            
+            imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+            
+            constraintHightBLodGroupCollection.constant = 0
+            constraintHightCollecProfession.constant = 0
+            constraintHightAgeCollection.constant = 0
+            
+            constraintHightlblBlodShow.constant = 0
+            constraintHightlblProfessionShow.constant = 0
+            constraintHightlblAgeShow.constant = 0
+
+        }
+        lblBlod.textColor = AppColor.lblFilterUnselect
+        lblAge.textColor = AppColor.lblFilterUnselect
+    }
+    
+    @IBAction func actionAge(_ sender: UIButton) {
+        
+        if btnByAge.isSelected == false{
+            btnByAge.isSelected = true
+            
+            lblBlodShow.isHidden = true
+            lblProfessionShow.isHidden = true
+            lblAgeShow.isHidden = false
+            
+            lblAge.textColor = AppColor.lblFilterSelect
+            
+            imgUpDownAge.image = UIImage(named: "ic_downarrow")
+            
+            imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+
+            imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+
+            constraintHightBLodGroupCollection.constant = 0
+            constraintHightCollecProfession.constant = 0
+
+            constraintHightAgeCollection.constant = 100
+            
+            constraintHightlblBlodShow.constant = 0
+            constraintHightlblProfessionShow.constant = 0
+            constraintHightlblAgeShow.constant = 25
+            
+        }else{
+            
+            btnByAge.isSelected = false
+            
+            lblBlodShow.isHidden = true
+            lblProfessionShow.isHidden = true
+            lblAgeShow.isHidden = true
+            
+            lblAge.textColor = AppColor.lblFilterUnselect
+            
+            imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+            constraintHightBLodGroupCollection.constant = 0
+            constraintHightCollecProfession.constant = 0
+            constraintHightAgeCollection.constant = 0
+            
+            constraintHightlblBlodShow.constant = 0
+            constraintHightlblProfessionShow.constant = 0
+            constraintHightlblAgeShow.constant = 0
+
+            
+        }
+        lblBlod.textColor = AppColor.lblFilterUnselect
+        lblProfession.textColor = AppColor.lblFilterUnselect
+    }
+    
+    @IBAction func btn_close_filter(_ sender: UIButton) {
+        
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightCollecProfession.constant = 0
+        constraintHightAgeCollection.constant = 0
+        
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+        
+        btnFilter.setImage(UIImage(named: "ic_filter"), for: .normal)
+        btnFilter.isSelected = false
+
+               imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+               imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+        imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+               arrBloodGrp.removeAllObjects()
+               arrSelectionCheck.removeAllObjects()
+               
+        arrAge.removeAllObjects()
+
+        clearlbl()
+
+        filtrview.isHidden = true
+
+        setUpView()
+        selectedbloodgrop = ""
+        
+        setUpAgeView()
+        searchActive = false
+        
+    }
+
+    
     @IBAction func filteraction(_ sender: Any) {
+       
         self.viewnoresult.isHidden = true
         setView(view: filtrview, hidden: false)
+        
+        clearlbl()
+        
+// 31/10/20. temp comment
+     //   searchbar.text = ""
+        
+      //  apicallGetAllMembers()
+
+        
+        if btnFilter.isSelected == false {
+            btnFilter.setImage(UIImage(named: "ic_filter_select"), for: .normal)
+            btnFilter.isSelected = true
+        }else{
+            btnFilter.setImage(UIImage(named: "ic_filter"), for: .normal)
+            btnFilter.isSelected = false
+            setView(view: filtrview, hidden: true)
+        }
+        
+        self.view.endEditing(true)
 
     }
     
     @IBAction func applyfilteraction(_ sender: Any) {
        
-      
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightCollecProfession.constant = 0
+        constraintHightAgeCollection.constant = 0
+
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+        
+      imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+      imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+        imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+        btnFilter.setImage(UIImage(named: "ic_filter"), for: .normal)
+        btnFilter.isSelected = false
+        clearlbl()
+
         filtrview.isHidden = false
-        self.collectionmembers.reloadData()
-        hightcollectionbuilding.constant = 0
+       // self.collectionmembers.reloadData()
+                
+        self.tblMembers.reloadData()
+
+       // hightcollectionbuilding.constant = 0
         self.collectionbuildings.isHidden = true
-            setView(view: filtrview, hidden: true)
+            
+        setView(view: filtrview, hidden: true)
 
         apicallGetAllMembers()
         self.searchActive = true
@@ -94,21 +386,63 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
     }
     
+    func clearlbl() {
+    
+        lblBlod.textColor = AppColor.lblFilterUnselect
+        lblProfession.textColor = AppColor.lblFilterUnselect
+        lblAge.textColor = AppColor.lblFilterUnselect
+        
+        lblBlodShow.isHidden = true
+        lblProfessionShow.isHidden = true
+        lblAgeShow.isHidden = true
+
+    }
+    
     @IBAction func clearaction(_ sender: Any) {
-        arrBloodGrp.removeAllObjects()
+    //    arrBloodGrp.removeAllObjects()
 //        for i in 0..<bloodgroupary.count{
 //            arrTemp.add("0")
 //        }
+        
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightCollecProfession.constant = 0
+        constraintHightAgeCollection.constant = 0
+        
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+
+        btnFilter.setImage(UIImage(named: "ic_filter"), for: .normal)
+        btnFilter.isSelected = false
+               imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+               imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+        imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+               arrBloodGrp.removeAllObjects()
+               arrSelectionCheck.removeAllObjects()
+               
+        arrAge.removeAllObjects()
+        
+        filtrview.isHidden = true
+        
+        clearlbl()
         setUpView()
         selectedbloodgrop = ""
+        setUpAgeView()
+
         searchActive = false
-        apicallGetBuildings()
-        CollectionBloodGrp.reloadData()
+
     }
     
     
     var bloodgroupary = ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
+    
+    var agegroupary = ["0-10 Age","10-20 Age","20-30 Age","30-40 Age","40-50 Age","60-70 Age","Above 70 Age"]
+    
+  
+
     var arrTemp = NSMutableArray()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -116,18 +450,25 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
 //            arrTemp.add("0")
 //        }
         
+        lblTitleName.text = "Community Residents"
+        
         setUpView()
+        setUpAgeView()
+
+        btnFilter.setImage(UIImage(named: "ic_filter"), for: .normal)
+        btnFilter.isSelected = false
         
         // 22/8/20.
         
-       // apicallGetAllMembers()
+        apicallGetAllMembers()
         apicallGetBuildings()
+        
+        ApiCallGetProfession()
+
         webservices.sharedInstance.setShadow(view: filtrview)
         setView(view: filtrview, hidden: true)
-        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
-                                                                verticalAlignment: .center)
         
-        collectionmembers.collectionViewLayout = alignedFlowLayout
+        
         //
         //        lblnoproperty.text = "No Member Result Found"
         //         lblnoproperty.font =  UIFont(name:"Lato-Regular", size:20.0)!
@@ -151,6 +492,20 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
         }
         
+        tblMembers.register(UINib(nibName: "MembersCell", bundle: nil), forCellReuseIdentifier: "MembersCell")
+        
+        tblMembers.separatorStyle = .none
+        
+        tblMembers.isHidden = true
+
+        lblBlodShow.isHidden = true
+        lblProfessionShow.isHidden = true
+        lblAgeShow.isHidden = true
+        
+        lblBlodShow.font = UIFont(name: "Gotham-Book", size: 16)
+        lblProfessionShow.font = UIFont(name: "Gotham-Book", size: 16)
+        lblAgeShow.font = UIFont(name: "Gotham-Book", size: 16)
+
         
         viewnoresult.center = self.view.center
         self.view.addSubview(viewnoresult)
@@ -168,11 +523,44 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
         
+        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
+                                                                verticalAlignment: .center)
+        
+        collectionProfession.collectionViewLayout = alignedFlowLayout
+        
+        
         let alignedFlowLayout1 = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
                                                                  verticalAlignment: .center)
         
         CollectionBloodGrp.collectionViewLayout = alignedFlowLayout1
+        
+        let alignedFlowLayout2 = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
+                                                                        verticalAlignment: .center)
+               
+       collectionAge.collectionViewLayout = alignedFlowLayout2
+               
+        txtSearchbar.layer.borderColor = UIColor.clear.cgColor
+        
+        txtSearchbar.borderStyle = .none
+
+
+        // 30/10/20.
+        
+       /* if let textfield = searchbar.value(forKey: "searchField") as? UITextField {
+            textfield.frame = CGRect(x: 0, y: 0, width: searchbar.frame.size.width, height: searchbar.frame.size.height)
+            textfield.backgroundColor = UIColor.white
+            textfield.attributedPlaceholder = NSAttributedString(string: textfield.placeholder ?? "Search by name or profession", attributes: [NSAttributedStringKey.foregroundColor : AppColor.lblFilterUnselect])
             
+            textfield.layer.cornerRadius = 10.0
+            textfield.layer.borderWidth = 1.0
+            textfield.layer.borderColor = AppColor.txtbgColor.cgColor
+
+            if let leftView = textfield.leftView as? UIImageView {
+                leftView.image = leftView.image?.withRenderingMode(.alwaysTemplate)
+                leftView.tintColor = AppColor.lblFilterSelect
+            }
+
+        } */
         
         // Do any additional setup after loading the view.
     }
@@ -191,6 +579,14 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     func setUpView() {
         
         
+        constraintHightCollecProfession.constant = 0
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightAgeCollection.constant = 0
+        
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+
         let dict = NSMutableDictionary()
         dict.setValue("A+", forKey: "blood_grp")
         dict.setValue("0", forKey: "is_selected")
@@ -238,6 +634,57 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
     }
     
+    func setUpAgeView() {
+        
+        
+        constraintHightCollecProfession.constant = 0
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightAgeCollection.constant = 0
+        
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+
+        let dict = NSMutableDictionary()
+        dict.setValue("0-10 Age", forKey: "age_grp")
+        dict.setValue("0", forKey: "is_selected")
+        arrAge.add(dict)
+        
+        let dict1 = NSMutableDictionary()
+        dict1.setValue("10-20 Age", forKey: "age_grp")
+        dict1.setValue("0", forKey: "is_selected")
+        arrAge.add(dict1)
+        
+        
+        let dict2 = NSMutableDictionary()
+        dict2.setValue("20-30 Age", forKey: "age_grp")
+        dict2.setValue("0", forKey: "is_selected")
+        arrAge.add(dict2)
+        
+        
+        let dict3 = NSMutableDictionary()
+        dict3.setValue("30-40 Age", forKey: "age_grp")
+        dict3.setValue("0", forKey: "is_selected")
+        arrAge.add(dict3)
+        
+        let dict4 = NSMutableDictionary()
+        dict4.setValue("40-50 Age", forKey: "age_grp")
+        dict4.setValue("0", forKey: "is_selected")
+        arrAge.add(dict4)
+        
+        let dict5 = NSMutableDictionary()
+        dict5.setValue("60-70 Age", forKey: "age_grp")
+        dict5.setValue("0", forKey: "is_selected")
+        arrAge.add(dict5)
+        
+        let dict6 = NSMutableDictionary()
+        dict6.setValue("Above 70 Age", forKey: "age_grp")
+        dict6.setValue("0", forKey: "is_selected")
+        arrAge.add(dict6)
+        
+        
+    }
+    
     
     @objc func AcceptRequest(notification: NSNotification) {
         
@@ -263,8 +710,9 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC
-                nextViewController.isFrormDashboard = 0
-                
+                nextViewController.isFrormDashboard = 1
+               // nextViewController.isfrom = 0
+
                 navigationController?.pushViewController(nextViewController, animated: true)
                 
                 
@@ -308,6 +756,66 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
     }
     
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
+    }
+    
+    // MARK: - get Professsion
+    
+    func ApiCallGetProfession()
+    {
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        // webservices().StartSpinner()
+       // Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions") { JSON in
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions", token: token as! String) { JSON in
+           
+            switch JSON.result{
+            case .success(let resp):
+                
+                // webservices().StopSpinner()
+                if(JSON.response?.statusCode == 200)
+                {
+                    self.arrProfessionList = resp.data
+                    
+                    if self.arrProfessionList.count > 0{
+                        self.collectionProfession.dataSource = self
+                        self.collectionProfession.delegate = self
+                        self.collectionProfession.reloadData()
+                        
+                    }else{
+                        
+                    }
+                    
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
+                
+                print(resp)
+            case .failure(let err):
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                print(err.asAFError)
+                webservices().StopSpinner()
+                
+            }
+            
+        }
+        
+        
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -323,175 +831,46 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView == collectionmembers)
-        {
-            if(searchActive == false)
-            {
-                return membersary.count
-            }
-            else
-            {
-                return allmembersary.count
-                
-            }
-        }
-        else if(collectionView == CollectionBloodGrp)
+        
+        if(collectionView == CollectionBloodGrp)
         {
             //return bloodgroupary.count
             return arrBloodGrp.count
             
+        } else if(collectionView == collectionProfession)
+        {
+            //return bloodgroupary.count
+            return arrProfessionList.count
+            
+        } else if(collectionView == collectionAge)
+        {
+            // return agegroupary.count
+            return arrAge.count
         }
         else
         {
             return buildingary.count
             
         }
+        
+      
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if(collectionView == collectionmembers)
-        {
-            if(searchActive == false)
-            {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
                 
-                if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
-                    //  cell.lblContact.isHidden = true
-                    cell.btnCall.isHidden = true
-                    // cell.lblStatic.isHidden = true
-                    
-                }else{
-                    // cell.lblContact.isHidden = false
-                    cell.btnCall.isHidden = false
-                    //  cell.lblStatic.isHidden = false
-                    
-                }
-                
-                webservices().setShadow(view: cell.innerview)
-                
-                print("------->>>>\(membersary[indexPath.item].name), \(membersary[indexPath.item].buildingname!)-\(membersary[indexPath.item].flatname!)")
-                
-                cell.lblStatic.text =  "\(membersary[indexPath.item].flatname!)" //\(membersary[indexPath.item].buildingname!)-
-                // cell.lblContact.text = membersary[indexPath.item].phone
-                // cell.btnedit.tag = indexPath.row
-                cell.btnCall.tag = indexPath.item
-                
-                if membersary[indexPath.row].image != nil{
-                    //  cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor-1"))
-                }
-                
-                cell.lblName.text = membersary[indexPath.item].name
-                cell.lblprofession.text = membersary[indexPath.item].profession
-                cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-                
-                if membersary[indexPath.item].bloodgroup != nil{
-                    cell.lblBloodGroup.isHidden = false
-                    cell.lblBloodGroup.text = String(format: "Blood Group: %@", membersary[indexPath.item].bloodgroup!)//"Blood Group: \(membersary[indexPath.item].bloodgroup!)"
-                    }else{
-                    cell.lblBloodGroup.isHidden = true
-                }
-                
-                
-                if(membersary[indexPath.row].flatType == "Renting the flat")
-                {
-                    
-                    cell.innerview.layer.borderWidth = 1.0
-                    cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
-                    cell.lblName.textColor = UIColor.orange
-                    cell.lblStatic.textColor = UIColor.orange
-                    
-                    
-                }
-                
-                if(membersary[indexPath.row].flatType == "Owner of flat")
-                {
-                    
-                    cell.innerview.layer.borderWidth = 1.0
-                    cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
-                    cell.lblName.textColor = UIColor.black
-                    cell.lblStatic.textColor =  UIColor.black
-                    
-                }
-                
-                
-                return cell
-            }
-            else
-            {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
-                
-                if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
-                    //  cell.lblContact.isHidden = true
-                    cell.btnCall.isHidden = true
-                    // cell.lblStatic.isHidden = true
-                    
-                }else{
-                    // cell.lblContact.isHidden = false
-                    cell.btnCall.isHidden = false
-                    //  cell.lblStatic.isHidden = false
-                    
-                }
-                
-                if allmembersary[indexPath.item].bloodgroup != nil{
-                                  cell.lblBloodGroup.isHidden = false
-                                  cell.lblBloodGroup.text = String(format: "Blood Group: %@", allmembersary[indexPath.item].bloodgroup!)
-                                   cell.lblBloodGroup.isHidden = false
-                               }else{
-                                   cell.lblBloodGroup.isHidden = true
-                               }
-                
-                
-                webservices().setShadow(view: cell.innerview)
-                
-                print("------->>>>\(allmembersary[indexPath.item].name), \(allmembersary[indexPath.item].buildingname!)-\(allmembersary[indexPath.item].flatname!)")
-                
-                cell.lblStatic.text =  "\(allmembersary[indexPath.item].flatname!)" //\(allmembersary[indexPath.item].buildingname!)-
-                // cell.lblContact.text = membersary[indexPath.item].phone
-                // cell.btnedit.tag = indexPath.row
-                cell.btnCall.tag = indexPath.item
-                
-                if allmembersary[indexPath.row].image != nil{
-                    //  cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor-1"))
-                }
-                
-                cell.lblName.text = allmembersary[indexPath.item].name
-                cell.lblprofession.text = allmembersary[indexPath.item].profession
-                
-                cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-                
-                if(allmembersary[indexPath.row].flatType == "Renting the flat")
-                {
-                    
-                    cell.innerview.layer.borderWidth = 1.0
-                    cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
-                    cell.lblName.textColor = UIColor.orange
-                    cell.lblStatic.textColor = UIColor.orange
-                    
-                }
-                
-                if(allmembersary[indexPath.row].flatType == "Owner of flat")
-                {
-                    
-                    
-                    cell.innerview.layer.borderWidth = 1.0
-                    cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
-                    cell.lblName.textColor = UIColor.black
-                    cell.lblStatic.textColor =  UIColor.black
-                }
-                
-                return cell
-               
-            }
-            
-        }
-        else  if(collectionView == CollectionBloodGrp)
+        if(collectionView == CollectionBloodGrp)
         {
             let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
             
-            checkbox(cb: cell.cb)
-            cell.cb.isUserInteractionEnabled = false
-           // cell.lblname.text = bloodgroupary[indexPath.row]
-            cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
+           // checkbox(cb: cell.cb)
+          //  cell.cb.isUserInteractionEnabled = false
             
+           // cell.lblname.text = bloodgroupary[indexPath.row]
+          //  cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
+            
+            cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
+
+            
+            //
 //            if(selectedbloodgrop == bloodgroupary[indexPath.row])
 //            {
 //                cell.cb.isChecked = true
@@ -504,36 +883,87 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             
             if((arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
             {
-                cell.cb.isChecked = true
-                
+                cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
+
             }else{
-                
-                cell.cb.isChecked = false
-                
+                cell.bgViw.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
             }
-            
-            
-            
             
             
             return cell
             
         }
+        else if(collectionView == collectionProfession) {
+            let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
+            
+          //  checkbox(cb: cell.cb)
+           // cell.cb.isUserInteractionEnabled = false
+            // cell.lblname.text = bloodgroupary[indexPath.row]
+            cell.lblname.text = arrProfessionList[indexPath.row].name
+            
+            if(arrSelectionCheck.contains(arrProfessionList[indexPath.row].name))
+            {
+                cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
+            }else{
+                cell.bgViw.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+            }
+            
+            
+            return cell
+            
+            
+        }
+        else if(collectionView == collectionAge)
+                {
+                    let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
+                    
+                   // checkbox(cb: cell.cb)
+                  //  cell.cb.isUserInteractionEnabled = false
+                    
+                   // cell.lblname.text = bloodgroupary[indexPath.row]
+                  //  cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
+                    
+                    cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "age_grp") as? String
+
+                    
+                    //
+        //            if(selectedbloodgrop == bloodgroupary[indexPath.row])
+        //            {
+        //                cell.cb.isChecked = true
+        //
+        //            }else{
+        //
+        //                cell.cb.isChecked = false
+        //
+        //            }
+                    
+                    if((arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+                    {
+                        cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
+
+                    }else{
+                        cell.bgViw.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+                    }
+                    
+                    
+                    return cell
+                    
+                }
         else
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
             
-            cell.lblName.text = buildingary[indexPath.row].name
-            if(buildingid == buildingary[indexPath.row].id)
+            cell.lblName.text = buildingary[indexPath.row].propertyFullName
+            if(buildingid == buildingary[indexPath.row].propertyID)
             {
-                cell.lblName.textColor = .white
-                cell.lblName.backgroundColor = AppColor.appcolor
+              //  cell.lblName.textColor = .white
+             //   cell.lblName.backgroundColor = AppColor.appcolor
                 
             }
             else
             {
-                cell.lblName.textColor = .white
-                cell.lblName.backgroundColor = UIColor(red:0.50, green:0.81, blue:0.89, alpha:1.0)
+              //  cell.lblName.textColor = .white
+             //   cell.lblName.backgroundColor = UIColor(red:0.50, green:0.81, blue:0.89, alpha:1.0)
                 
                 
             }
@@ -546,92 +976,83 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
        
-    /* if(collectionView == collectionmembers)
+    
+         if(collectionView == collectionProfession)
         {
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = arrProfessionList[indexPath.row].name
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
 
-            let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
-               let space: CGFloat = (flowayout?.minimumInteritemSpacing ?? 0.0) + (flowayout?.sectionInset.left ?? 0.0) + (flowayout?.sectionInset.right ?? 0.0)
-               let size:CGFloat = (collectionmembers.frame.size.width - space) / 2.0
-               return CGSize(width: size, height: size)
+            print("\(expectedLabelSize)")
             
-          /*  let numberOfSets = CGFloat(3.0)
-            
-            //let width = (self.view.frame.size.width - (numberOfSets * view.frame.size.width / 20))/numberOfSets
-             let width = self.view.frame.size.width/2 - 20
-            
-            return CGSize(width:width,height: 177); */
+            print("collectionProfession expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 35)")
+
+            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12)
             
         }
         else if(collectionView == CollectionBloodGrp)
         {
             let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-                 let contentNSString = bloodgroupary[indexPath.row]
-                 let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
-                 print("\(expectedLabelSize)")
-                 return CGSize(width:expectedLabelSize.size.width + 50, height: expectedLabelSize.size.height + 31)
+            let contentNSString = bloodgroupary[indexPath.row]
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:14.0)], context: nil)
             
+            print("expectedLabelSize :- \(expectedLabelSize)")
             
+            print("CollectionBloodGrp expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 25)")
+
+            return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
             
         }
-        else
-        { */
-            let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
-            let space: CGFloat = (flowayout?.minimumInteritemSpacing ?? 0.0) + (flowayout?.sectionInset.left ?? 0.0) + (flowayout?.sectionInset.right ?? 0.0)
-            let size:CGFloat = (collectionmembers.frame.size.width - space) / 2.0
-            return CGSize(width: size, height: size)
+            else if(collectionView == collectionAge)
+            {
+                let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+                let contentNSString = agegroupary[indexPath.row]
+                let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+                
+                print("\(expectedLabelSize)")
+                
+                print("collectionAge expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 25 width :- \(expectedLabelSize.size.width + 25)")
+
+                return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
+                
+            }
+         else {
+        
+            let collectionViewWidth = self.view.bounds.width
+                
+            return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2 + 2)
             
            // return CGSize(width: 59, height:59)
             
-      //  }
+        }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if(collectionView == collectionmembers)
-        {
-            if(searchActive == false)
-            {
-                if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
-                    
-                    let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
-                    popup.member = membersary[indexPath.item]
-                    let navigationController = UINavigationController(rootViewController: popup)
-                    navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-                    self.present(navigationController, animated: true)
-                    
-                    
-                }else{
-                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
-                    nextViewController.member = membersary[indexPath.item]
-                    nextViewController.isfrom = 1
-                    navigationController?.pushViewController(nextViewController, animated: true)
-                }
-            }
-            else
-            {
-                if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
-                    
-                    let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
-                    popup.member = allmembersary[indexPath.item]
-                    let navigationController = UINavigationController(rootViewController: popup)
-                    navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-                    self.present(navigationController, animated: true)
-                    
-                    
-                }else{
-                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
-                    nextViewController.member = allmembersary[indexPath.item]
-                    nextViewController.isfrom = 1
-                    navigationController?.pushViewController(nextViewController, animated: true)
-                }
-                
-            }
+        if (collectionView == collectionbuildings) {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MembersDetailsVC") as! MembersDetailsVC
+            
+            buildingid = buildingary[indexPath.item].propertyID
+
+            nextViewController.buildingid = buildingid
+            
+            let str = "Resident of \(buildingary[indexPath.row].propertyFullName)"
+            
+          //  lblTitleName.text = "Resident of \(buildingary[indexPath.row].name)"
+            
+            nextViewController.strlbl = str // lblTitleName.text!
+          //  nextViewController.guestdic = object
+            nextViewController.isFromDash = 1
+            navigationController?.pushViewController(nextViewController, animated: true)
+            
         }
         else if (collectionView == CollectionBloodGrp)
         {
+            arrSelectionCheck.removeAllObjects()
+            collectionProfession.reloadData()
             
             if (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                 
@@ -650,11 +1071,57 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             //selectedbloodgrop = bloodgroupary[indexPath.row]
             CollectionBloodGrp.reloadData()
         }
+        else if collectionView == collectionProfession{
             
+            for i in 0..<self.arrBloodGrp.count{
+                           if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                               let dict = arrBloodGrp[i] as! NSMutableDictionary
+                               dict.setValue("0", forKey: "is_selected")
+                               arrBloodGrp.replaceObject(at: i, with: dict)
+                           }
+                       }
+                       CollectionBloodGrp.reloadData()
+            
+            if arrSelectionCheck.contains(arrProfessionList[indexPath.row].name){
+                arrSelectionCheck.remove(arrProfessionList[indexPath.row].name)
+            }else{
+                arrSelectionCheck.add(arrProfessionList[indexPath.row].name)
+            }
+            collectionProfession.reloadData()
+        }
+         
+            else if (collectionView == collectionAge)
+            {
+                arrSelectionCheck.removeAllObjects()
+               // collectionProfession.reloadData()
+                
+                if (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
+                    
+                    let dict = arrAge[indexPath.row] as! NSMutableDictionary
+                    dict.setValue("1", forKey: "is_selected")
+                    arrAge.replaceObject(at: indexPath.row, with: dict)
+                    
+                }else{
+                    
+                    let dict = arrAge[indexPath.row] as! NSMutableDictionary
+                    dict.setValue("0", forKey: "is_selected")
+                    arrAge.replaceObject(at: indexPath.row, with: dict)
+                    
+                }
+                
+                //selectedbloodgrop = bloodgroupary[indexPath.row]
+                collectionAge.reloadData()
+            }
         else
         {
-            buildingid = buildingary[indexPath.item].id
-            collectionbuildings.reloadData()
+            buildingid = buildingary[indexPath.item].propertyID
+            
+           // lblTitleName.text = "Resident of \(buildingary[indexPath.row].name)"
+
+            // 3/9/20.
+            
+           // collectionbuildings.reloadData()
+            tblMembers.reloadData()
             apicallGetMembers()
             
             
@@ -679,18 +1146,313 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
 //    }
 
     
+    // 2/9/20.
     
+
+    
+    
+     //MARK:- tableview delegate
+        
+        
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            
+           // if(tableView == tblMembers)
+          //  {
+                if(searchActive == false)
+                {
+                    return membersary.count
+                }
+                else
+                {
+                    return allmembersary.count
+                    
+                }
+           // }
+            
+        }
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                
+                    if(searchActive == false)
+                    {
+                        
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "MembersCell") as! MembersCell
+
+                      //  let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
+                        
+                        if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
+                            //  cell.lblContact.isHidden = true
+                            cell.btnCall.isHidden = true
+                            // cell.lblStatic.isHidden = true
+                            
+                        }else{
+                            // cell.lblContact.isHidden = false
+                            cell.btnCall.isHidden = false
+                            //  cell.lblStatic.isHidden = false
+                            
+                        }
+                        
+                        webservices().setShadow(view: cell.innerview)
+                        
+                        print("------->>>>\(membersary[indexPath.item].name), \(membersary[indexPath.item].buildingname!)-\(membersary[indexPath.item].flatname!)")
+                        
+                        if membersary[indexPath.item].flatType == nil {
+                                    cell.lblSelfs.text = ""
+                        }else{
+                            cell.lblSelfs.text = "\(membersary[indexPath.item].flatType!)"
+                        }
+                        
+                        cell.lblStatic.text =   "\(membersary[indexPath.item].buildingname!) - \(membersary[indexPath.item].flatname!)"
+                        
+                      //  cell.lblStatic.text =  "\(membersary[indexPath.item].flatname!)" //\(membersary[indexPath.item].buildingname!)-
+                        // cell.lblContact.text = membersary[indexPath.item].phone
+                        // cell.btnedit.tag = indexPath.row
+                        cell.btnCall.tag = indexPath.item
+                        
+                        if membersary[indexPath.row].image != nil{
+                              cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor-1"))
+                        }
+                        
+                        cell.lblName.text = membersary[indexPath.item].name
+                        cell.lblprofession.text = membersary[indexPath.item].profession
+                        cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+                        
+                        if membersary[indexPath.item].bloodgroup != nil{
+                            cell.lblBloodGroup.isHidden = false
+                           // cell.lblBloodGroup.text = String(format: "Blood Group: %@", membersary[indexPath.item].bloodgroup!)//"Blood Group: \(membersary[indexPath.item].bloodgroup!)"
+                            cell.lblBloodGroupName.isHidden = false
+
+                            cell.lblBloodGroupName.text = membersary[indexPath.item].bloodgroup!
+                            }else{
+                            cell.lblBloodGroup.isHidden = true
+                            cell.lblBloodGroupName.isHidden = true
+
+                        }
+                        
+                        
+                     /*   if(membersary[indexPath.row].flatType == "Renting the flat")
+                        {
+                            
+                           // cell.innerview.layer.borderWidth = 1.0
+                          //  cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
+                            cell.lblName.textColor = UIColor.orange
+                            cell.lblStatic.textColor = UIColor.orange
+                            
+                            
+                        }
+                        
+                        if(membersary[indexPath.row].flatType == "Owner of flat")
+                        {
+                            
+                          //  cell.innerview.layer.borderWidth = 1.0
+                         //   cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
+                            cell.lblName.textColor = UIColor.black
+                            cell.lblStatic.textColor =  UIColor.black
+                            
+                        } */
+                        
+                        
+                        return cell
+                    }
+                    else
+                    {
+                       // let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
+                        
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "MembersCell") as! MembersCell
+
+                        
+                        if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
+                            //  cell.lblContact.isHidden = true
+                            cell.btnCall.isHidden = true
+                            // cell.lblStatic.isHidden = true
+                            
+                        }else{
+                            // cell.lblContact.isHidden = false
+                            cell.btnCall.isHidden = false
+                            //  cell.lblStatic.isHidden = false
+                            
+                        }
+                        
+                        if allmembersary[indexPath.item].bloodgroup != nil{
+                                          cell.lblBloodGroup.isHidden = false
+                                         // cell.lblBloodGroup.text = String(format: "Blood Group: %@", allmembersary[indexPath.item].bloodgroup!)
+                            
+                            cell.lblBloodGroupName.isHidden = false
+
+                            cell.lblBloodGroupName.text = allmembersary[indexPath.item].bloodgroup!
+                                       }else{
+                                           cell.lblBloodGroup.isHidden = true
+                                            cell.lblBloodGroupName.isHidden = true
+
+                                       }
+                        
+                        
+                        webservices().setShadow(view: cell.innerview)
+                        
+                        print("------->>>>\(allmembersary[indexPath.item].name), \(allmembersary[indexPath.item].buildingname!)-\(allmembersary[indexPath.item].flatname!)") //-\(allmembersary[indexPath.item].flatType!)")
+                        
+                        if allmembersary[indexPath.item].flatType == nil {
+                                                          cell.lblSelfs.text = ""
+                                              }else{
+                                                  cell.lblSelfs.text = "\(allmembersary[indexPath.item].flatType!)"
+                                              }
+                        
+                        cell.lblStatic.text = "\(allmembersary[indexPath.item].buildingname!) - \(allmembersary[indexPath.item].flatname!)"
+                      //  cell.lblStatic.text =  "\(allmembersary[indexPath.item].flatname!)" //\(allmembersary[indexPath.item].buildingname!)-
+                        // cell.lblContact.text = membersary[indexPath.item].phone
+                        // cell.btnedit.tag = indexPath.row
+                        cell.btnCall.tag = indexPath.item
+                        
+                        if allmembersary[indexPath.row].image != nil{
+                            // 3/9/20.
+                             // cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor profile"))
+                        }
+                        
+                        cell.lblName.text = allmembersary[indexPath.item].name
+                        cell.lblprofession.text = allmembersary[indexPath.item].profession
+                        
+                        cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+                        
+                        // 3/9/20.
+                      /*  if(allmembersary[indexPath.row].flatType == "Renting the flat")
+                        {
+                            
+                          //  cell.innerview.layer.borderWidth = 1.0
+                          //  cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
+                            cell.lblName.textColor = UIColor.orange
+                            cell.lblStatic.textColor = UIColor.orange
+                            
+                        }
+                        
+                        if(allmembersary[indexPath.row].flatType == "Owner of flat")
+                        {
+                            
+                            
+                           // cell.innerview.layer.borderWidth = 1.0
+                          //  cell.innerview.layer.borderColor = AppColor.appcolor.cgColor
+                            cell.lblName.textColor = UIColor.black
+                            cell.lblStatic.textColor =  UIColor.black
+                        } */
+                        
+                        return cell
+                       
+                    }
+                    
+                
+            
+        }
+        
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            
+              if tableView == tblMembers{
+                
+                print("dfvf")
+                
+                    if(searchActive == false)
+                    {
+                        if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
+                            
+                            let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
+                            popup.member = membersary[indexPath.item]
+                            let navigationController = UINavigationController(rootViewController: popup)
+                            navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+                            self.present(navigationController, animated: true)
+                            
+                            
+                        }else{
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
+                            nextViewController.member = membersary[indexPath.item]
+                            nextViewController.isfrom = 1
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                        }
+                    }
+                    else
+                    {
+                        if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
+                            
+                            let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
+                            popup.member = allmembersary[indexPath.item]
+                            let navigationController = UINavigationController(rootViewController: popup)
+                            navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+                            self.present(navigationController, animated: true)
+                            
+                            
+                        }else{
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
+                            nextViewController.member = allmembersary[indexPath.item]
+                            nextViewController.isfrom = 1
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                        }
+                        
+                    }
+                
+                
+              //  let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
+               // self.present(vc, animated: true, completion: nil)
+            }
+            
+        }
+        
+//        func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//           // return UITableViewAutomaticDimension
+//
+//            return tableView.estimatedRowHeight
+//
+//            // return 190
+//       }
+        
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+           // return UITableViewAutomaticDimension
+            return 190
+        }
+    
+    
+    
+    ////////////////////////////////// //////////
     
     
     @objc func callmember(sender:UIButton)
     {
+        
+       // let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                          
         if(searchActive == false)
         {
-            dialNumber(number:  membersary[sender.tag].phone)
+            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                       avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+                                       avc?.subtitleStr = "Are you sure you want to call: \(membersary[sender.tag].phone)"
+            avc?.isfrom = 3
+
+                                       avc?.yesAct = {
+                                         self.dialNumber(number:  self.membersary[sender.tag].phone)
+
+                                                }
+            
+                                       avc?.noAct = {
+                                         
+                                       }
+                                       present(avc!, animated: true)
+            
         }
         else{
             
-            dialNumber(number:  allmembersary[sender.tag].phone)
+            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                       avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+                                       avc?.subtitleStr = "Are you sure you want to call: \(allmembersary[sender.tag].phone)"
+            avc?.isfrom = 3
+
+                                       avc?.yesAct = {
+                                        
+                                        self.dialNumber(number:  self.allmembersary[sender.tag].phone)
+
+                                                }
+            
+                                       avc?.noAct = {
+                                         
+                                       }
+                                       present(avc!, animated: true)
             
         }
     }
@@ -729,25 +1491,48 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             return
         }
         let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        let strSociId  = (SociId as NSNumber).stringValue
+      //  let strSociId  = (SociId as NSNumber).stringValue
         
         webservices().StartSpinner()
-        Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSociId) { JSON in
+       // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSociId) { JSON in
+            
+          //  let secret = UserDefaults.standard.string(forKey: USER_SECRET)
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+             let param : Parameters = [
+                 "Society" : SociId,
+                "Parent" : UsermeResponse!.data!.society!.societyID!
+             ]
+            
+           print("Parameters : ",param)
+                    
+         //   Apicallhandler.sharedInstance.GetAllBuidldingSociety(URL: webservices().baseurl + API_GET_BUILDING_SOCIETY,token: token as! String, param: param) { JSON in
+                
+        Apicallhandler.sharedInstance.GetAllBuidldingSociety(token: token as! String, param: param) { JSON in
+            
             switch JSON.result{
             case .success(let resp):
                 
                 webservices().StopSpinner()
-                var nameary = NSMutableArray()
+              //  var nameary = NSMutableArray()
                 if(resp.status == 1)
                 {
+                    
                     self.buildingary = resp.data
+                    
                     self.pickerview.reloadAllComponents()
+                     
+                    // 27/10/20. temp comment
+                    
                     if(resp.data.count > 0)
                     {
                         self.collectionbuildings.reloadData()
                         self.lblnoproperty.isHidden = true
                         //self.txtbuilding.text = resp.data[0].name
-                        self.buildingid = resp.data[0].id
+                        self.buildingid = resp.data[0].propertyID
+                        
+                        self.viewnoresult.isHidden = true
                         
                         // 22/8/20.
                         
@@ -755,6 +1540,9 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                         
                     }else{
                         self.lblnoproperty.isHidden = false
+                        
+                        self.viewnoresult.isHidden = false
+
                     }
                 }
                     
@@ -763,11 +1551,11 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                     
                 }
                 
-                print(resp)
+                print("resp buildingary : ",resp)
             case .failure(let err):
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError ?? "")
                 webservices().StopSpinner()
                 
             }
@@ -803,27 +1591,38 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                     
                     if(resp.data.count == 0)
                     {
-                        self.collectionmembers.isHidden = true
+                       // self.collectionmembers.isHidden = true
+                        
+                        self.tblMembers.isHidden = true
+                        
+                        self.collectionbuildings.isHidden = true
+                        
                         self.viewnoresult.isHidden = false
                         
                         let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                         
                         if(str.contains("Secretory") || str.contains("Chairman"))
                         {
-                            self.lblNoDataFound.isHidden = false
+                           // self.lblNoDataFound.isHidden = false
                         }else{
-                            self.lblNoDataFound.isHidden = true
+                          //  self.lblNoDataFound.isHidden = true
                         }
                         
                         
                     }
                     else
                     {
-                        self.collectionmembers.delegate = self
-                        self.collectionmembers.dataSource = self
-                        self.collectionmembers.reloadData()
-                        self.collectionbuildings.reloadData()
-                        self.collectionmembers.isHidden = false
+//                        self.collectionmembers.delegate = self
+//                        self.collectionmembers.dataSource = self
+//                        self.collectionmembers.reloadData()
+                       self.collectionbuildings.reloadData()
+//                        self.collectionmembers.isHidden = false
+                        
+                        self.tblMembers.delegate = self
+                        self.tblMembers.dataSource = self
+                        self.tblMembers.reloadData()
+                        self.tblMembers.isHidden = false
+                        
                         self.viewnoresult.isHidden = true
                         
                         // self.buildingid = resp.data[0].id
@@ -848,12 +1647,18 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                 {
                     if(resp.data.count == 0)
                     {
-                        self.collectionmembers.isHidden = true
+                       // self.collectionmembers.isHidden = true
+                        
+                        self.tblMembers.isHidden = true
+
                         self.viewnoresult.isHidden = false
                     }
                     else
                     {
-                        self.collectionmembers.isHidden = false
+                        //self.collectionmembers.isHidden = false
+                        
+                        self.tblMembers.isHidden = false
+
                         self.viewnoresult.isHidden = true
                         
                     }
@@ -898,7 +1703,7 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             return
         }
         
-         for i in 0..<self.arrBloodGrp.count{
+        for i in 0..<self.arrBloodGrp.count{
             
             if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
                 self.selectedbloodgrop = ((arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String)!
@@ -921,12 +1726,12 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                 webservices().StopSpinner()
                 if(JSON.response?.statusCode == 200)
                 {
-                    if(self.selectedbloodgrop == "")
+                    if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
                     {
-                    self.allmembersary = resp.data
-                    self.Finalallmembersary = resp.data
+                        self.allmembersary = resp.data
+                        self.Finalallmembersary = resp.data
                         
-                        self.hightcollectionbuilding.constant = 60
+                      //  self.hightcollectionbuilding.constant = 60
                         self.collectionbuildings.isHidden = false
                         
                     }
@@ -937,45 +1742,61 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                         for dic in resp.data
                         {
                             
-                            for i in 0..<self.arrBloodGrp.count{
-                               
-                                if(dic.bloodgroup == (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "blood_grp") as? String && (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
-                                {
-                                    self.allmembersary.append(dic)
-                                    self.Finalallmembersary.append(dic)
-
+                            if self.selectedbloodgrop != ""{
+                                for i in 0..<self.arrBloodGrp.count{
+                                    
+                                    if(dic.bloodgroup == (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "blood_grp") as? String && (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+                                    {
+                                        self.allmembersary.append(dic)
+                                        self.Finalallmembersary.append(dic)
+                                        
+                                    }
                                 }
-                                
+                            }
+                            
+                            
+                            //for profession
+                            
+                            if self.arrSelectionCheck.count > 0{
+                                if dic.profession != nil {
+                                    if(self.arrSelectionCheck.contains(dic.profession!))
+                                    {
+                                        self.allmembersary.append(dic)
+                                        self.Finalallmembersary.append(dic)
+                                    }
+                                }
                                 
                             }
                             
                             
-                      //      self.allmembersary  = self.Finalallmembersary
-                        
-                              
+                            //      self.allmembersary  = self.Finalallmembersary
+                            
+                            
                             
                         }
-                        self.collectionmembers.reloadData()
-                                              self.hightcollectionbuilding.constant = 0
-                                                
-                                                
-                                                self.collectionbuildings.isHidden = true
-                    }
-                    if(self.allmembersary.count == 0)
-                    {
                         
-                        self.lblnoproperty.isHidden = true
-                        self.lblnoproperty.text  = "No Members Found"
+                        if(self.allmembersary.count == 0)
+                        {
+                            self.lblnoproperty.isHidden = false
+                            self.lblnoproperty.text  = "No Members Found"
+                            
+                        }
+                        else
+                        {
+                            self.lblnoproperty.isHidden = true
+                            self.lblnoproperty.text  = "No Members Found"
+                            
+                        }
                         
-                    }
-                    else
-                    {
-                        self.lblnoproperty.isHidden = true
-                        self.lblnoproperty.text  = "No Members Found"
+                        self.tblMembers.isHidden = false
+
+                        self.tblMembers.reloadData()
+                     //   self.hightcollectionbuilding.constant = 0
                         
+                        
+                        self.collectionbuildings.isHidden = true
                     }
-                    
-                    self.collectionmembers.reloadData()
+                  
                     
                 }
                     
@@ -983,12 +1804,12 @@ class MembersVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                 {
                     if(resp.data.count == 0)
                     {
-                        self.collectionmembers.isHidden = true
+                        self.tblMembers.isHidden = true
                         self.viewnoresult.isHidden = false
                     }
                     else
                     {
-                        self.collectionmembers.isHidden = false
+                        self.tblMembers.isHidden = false
                         self.viewnoresult.isHidden = true
                         
                     }
@@ -1032,28 +1853,80 @@ extension MembersVC : UISearchBarDelegate
 {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        constraintHightBLodGroupCollection.constant = 0
+        constraintHightCollecProfession.constant = 0
+        constraintHightAgeCollection.constant = 0
+        
+        constraintHightlblBlodShow.constant = 0
+        constraintHightlblProfessionShow.constant = 0
+        constraintHightlblAgeShow.constant = 0
+
+               imgUpDownProfession.image = UIImage(named: "ic_nxt_click")
+               imgBlodUpDown.image = UIImage(named: "ic_nxt_click")
+               
+        imgUpDownAge.image = UIImage(named: "ic_nxt_click")
+
+               arrSelectionCheck.removeAllObjects()
+               collectionProfession.reloadData()
+        
+               
+                
+               
+               for i in 0..<self.arrBloodGrp.count{
+                   if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                       let dict = arrBloodGrp[i] as! NSMutableDictionary
+                       dict.setValue("0", forKey: "is_selected")
+                       arrBloodGrp.replaceObject(at: i, with: dict)
+                   }
+               }
+               ////
+        
+              
+            CollectionBloodGrp.reloadData()
+        
+        self.collectionbuildings.isHidden = false
+        self.collectionbuildings.reloadData()
+        
+        
         searchActive = true
-        self.collectionmembers.reloadData()
-        hightcollectionbuilding.constant = 0
-        allmembersary  = Finalallmembersary
-        self.collectionmembers.reloadData()
-        self.collectionbuildings.isHidden = true
+//        self.collectionmembers.reloadData()
+//        hightcollectionbuilding.constant = 0
+//        allmembersary  = Finalallmembersary
+//        self.collectionmembers.reloadData()
+//        self.collectionbuildings.isHidden = true
+        
+       // self.tblMembers.reloadData()
+            //   hightcollectionbuilding.constant = 0
+               allmembersary  = Finalallmembersary
+        
+               self.tblMembers.reloadData()
+            //   self.collectionbuildings.isHidden = true
         
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+
         //searchActive = false
+       // searchBar.becomeFirstResponder()
+
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
         allmembersary  = Finalallmembersary
-        self.collectionmembers.reloadData()
-        hightcollectionbuilding.constant = 0
+       // self.collectionmembers.reloadData()
+        
+        self.tblMembers.reloadData()
+
+     //   hightcollectionbuilding.constant = 0
         
         
         self.collectionbuildings.isHidden = true
         
-        searchBar.resignFirstResponder()
+       // searchBar.resignFirstResponder()
+       
+        searchBar.becomeFirstResponder()
+
         
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -1088,7 +1961,8 @@ extension MembersVC : UISearchBarDelegate
                     // searchActive = false
                     
                     lblnoproperty.isHidden = false
-                    lblnoproperty.text  = "No Members Found for \(searchText)"
+                    
+                    lblnoproperty.text  = "Member List is empty \(searchText)"
                 }
                 else{
                     searchActive = true
@@ -1096,7 +1970,14 @@ extension MembersVC : UISearchBarDelegate
                     lblnoproperty.isHidden = true
                     
                 }
-                self.collectionmembers.reloadData()
+                
+                self.tblMembers.isHidden = false
+
+                self.tblMembers.reloadData()
+                
+                self.collectionbuildings.isHidden = true
+
+              //  self.collectionmembers.reloadData()
                 
             }
             
@@ -1112,23 +1993,60 @@ extension MembersVC : UISearchBarDelegate
             //            self.collectionbuildings.isHidden = true
             
             searchActive = false
-            collectionmembers.reloadData()
-            hightcollectionbuilding.constant = 60
             
+           // collectionmembers.reloadData()
+
+            // 6/10/20.
+            
+            // tblMembers.reloadData()  //
+            
+          //  hightcollectionbuilding.constant = 60
+            
+            tblMembers.isHidden = true
+
+            apicallGetBuildings()
+            
+
             self.collectionbuildings.isHidden = false
+            self.collectionbuildings.reloadData()
+
             searchBar.resignFirstResponder()
             lblnoproperty.isHidden = true
-            lblnoproperty.isHidden = true
-            
-            
-            
+                        
             
         }
         
         
-        
-        
-        
     }
+    
 }
 
+
+extension NSMutableAttributedString {
+        func attribute() {
+        
+                let yourAttributes : [NSAttributedStringKey: Any] = [
+                    NSAttributedStringKey.font : UIFont(name: "Gotham-Light", size:13.0) as Any,
+                NSAttributedStringKey.foregroundColor :UIColor(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0, alpha: 1.00)]
+                
+                let combionation = NSMutableAttributedString()
+                let attributeString = NSMutableAttributedString(string: "Blood Group:",attributes: yourAttributes)
+                
+                let yourAttributes1 : [NSAttributedStringKey: Any] = [
+                    NSAttributedStringKey.font : UIFont(name: "Gotham-Book", size:13.0) as Any,
+                NSAttributedStringKey.foregroundColor :UIColor(red: 246.0/255.0, green: 10.0/255.0, blue: 32.0/255.0, alpha: 1.00)]
+                
+                let attributeString1 = NSMutableAttributedString(string: "",attributes: yourAttributes1)
+                combionation.append(attributeString)
+                combionation.append(attributeString1)
+                
+        
+        }
+    
+    func setColor(color: UIColor, forText stringValue: String) {
+          let range: NSRange = self.mutableString.range(of: stringValue, options: .caseInsensitive)
+          self.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: range)
+       }
+    
+
+}

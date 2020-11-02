@@ -692,7 +692,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
 
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                           avc?.titleStr = "Society Buddy"
+                           avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                            avc?.subtitleStr = "Are you sure you want to decline entry request?"
                            avc?.yesAct = {
                                                           self.ApiCallAccepGuest(type: 2, guestId: strGuestId!)
@@ -728,9 +728,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             let strType = arrGuestList[sender.tag].type!
             let strId = String(format: "%d", arrGuestList[sender.tag].id!)
             
-            
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                           let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             
                             // 17/8/20.
             
@@ -778,7 +776,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             
                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                               let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                              avc?.titleStr = "Society Buddy"
+                              avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                               avc?.subtitleStr = "Are you sure you want to OUT this guest?"
                               avc?.yesAct = {
   self.apicallOutMember(strGaurdID: strGurdId, strRequestId: strId, outTime: outTime, userTye: strType, strbuildingID: strBuildingId, strflatID: strFlatId, strType: "")

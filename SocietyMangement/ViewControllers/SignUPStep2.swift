@@ -27,6 +27,11 @@ class SignUPStep2: BaseVC {
        var societyid = ""
        var buildingid = ""
        var Flatid = ""
+       var role = ""
+    var UserType = Int()
+    
+   // var mobile = ""
+
     @IBOutlet weak var btnaddfarmviall: RSButtonCustomisation!
     
     @IBOutlet weak var viewcheckbox: UIView!
@@ -102,7 +107,9 @@ class SignUPStep2: BaseVC {
         checkbox(cb: cbother)
         checkbox(cb: cbowner)
         checkbox(cb: cbrenter)
-  ApiCallGetCity()
+
+        ApiCallGetCity()
+        
         pickerview1.delegate = self
               pickerview1.dataSource = self
               pickerview2.delegate = self
@@ -164,10 +171,11 @@ class SignUPStep2: BaseVC {
         
         // Do any additional setup after loading the view.
     }
+    
     @IBAction func signup(_ sender: Any) {
           
           if cbowner.isChecked == false && cbrenter.isChecked == false{
-              let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"This flat is already booked.")
+              let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Select who you are")
               self.present(alert, animated: true, completion: nil)
           }else{
                ApiCallSignUp2()
@@ -176,20 +184,21 @@ class SignUPStep2: BaseVC {
       }
 
     
-  func setdefaultvalues()
-  {
-    btnaddfarmviall.isHidden = true
-    self.viewbottom.isHidden = true
-    self.hightbottomview.constant = 0
+          func setdefaultvalues()
+          {
+            btnaddfarmviall.isHidden = true
+            self.viewbottom.isHidden = true
+            self.hightbottomview.constant = 0
+            
+          }
     
-  }
-func checkbox(cb:Checkbox)
+        func checkbox(cb:Checkbox)
         {
             cb.borderStyle = .circle
             cb.checkmarkStyle = .circle
-            cb.uncheckedBorderColor = UIColor(named:"Orange")
+            cb.uncheckedBorderColor = AppColor.radioUncheckColor
+                //UIColor(named:"Orange")
             cb.borderWidth = 1
-            cb.uncheckedBorderColor = UIColor(named:"Orange")
             cb.checkedBorderColor = UIColor(named:"Orange")
             cb.backgroundColor = .clear
             cb.checkboxBackgroundColor = UIColor.clear
@@ -204,18 +213,16 @@ func checkbox(cb:Checkbox)
           if(txtcity.text == "")
           {
               let row = self.pickerview1.selectedRow(inComponent: 0)
-
-              txtcity.text = cityary[row].name
-              cityid = String(cityary[row].id)
+              txtcity.text = cityary[row].Name
+            cityid = String(cityary[row].CityID!)
               txtcity.resignFirstResponder()
               ApiCallGetArea()
           }
           else
           {
                let row = self.pickerview1.selectedRow(inComponent: 0)
-
-                           txtcity.text = cityary[row].name
-                           cityid = String(cityary[row].id)
+                           txtcity.text = cityary[row].Name
+            cityid = String(cityary[row].CityID!)
                            txtcity.resignFirstResponder()
                            ApiCallGetArea()
               
@@ -230,8 +237,8 @@ func checkbox(cb:Checkbox)
             let row = self.pickerview2.selectedRow(inComponent: 0)
 
               txtarea.resignFirstResponder()
-              areaid = String(arearary[row].id)
-              txtarea.text = arearary[row].name
+              areaid = String(arearary[row].AreaID)
+              txtarea.text = arearary[row].AreaName
               ApiCallGetSociety()
           }
           else
@@ -239,8 +246,8 @@ func checkbox(cb:Checkbox)
                let row = self.pickerview2.selectedRow(inComponent: 0)
 
                            txtarea.resignFirstResponder()
-                           areaid = String(arearary[row].id)
-                           txtarea.text = arearary[row].name
+                           areaid = String(arearary[row].AreaID)
+                           txtarea.text = arearary[row].AreaName
                            ApiCallGetSociety()
           }
       }
@@ -253,9 +260,9 @@ func checkbox(cb:Checkbox)
               if societyary.count > 0{
                 let row = self.pickerview3.selectedRow(inComponent: 0)
 
-                  self.txtcommunity.text = self.societyary[row].name
+                  self.txtcommunity.text = self.societyary[row].SocietyName
                   //self.txtcommunity.resignFirstResponder()
-                  self.societyid =  String(self.societyary[row].id)
+                  self.societyid =  String(self.societyary[row].SocietyID)
                   self.apicallGetBuildings()
               }
             self.viewbottom.isHidden = false
@@ -274,9 +281,9 @@ func checkbox(cb:Checkbox)
               if societyary.count > 0{
                 let row = self.pickerview3.selectedRow(inComponent: 0)
 
-                  self.txtcommunity.text = self.societyary[row].name
+                  self.txtcommunity.text = self.societyary[row].SocietyName
                   //self.txtcommunity.resignFirstResponder()
-                  self.societyid =  String(self.societyary[row].id)
+                  self.societyid =  String(self.societyary[row].SocietyID)
                   self.apicallGetBuildings()
                 
             self.viewbottom.isHidden = false
@@ -284,7 +291,7 @@ func checkbox(cb:Checkbox)
                 self.hightflat.constant = 0
                 self.highttxtfalt.constant = 0
                 self.imgflatserarch.isHidden = true
-                self.hightcheckboxview.constant = 0
+               self.hightcheckboxview.constant = 0
                 self.viewcheckbox.isHidden = true
                 self.hightbuilding.constant = 137
                 self.tblbuilding.isHidden = false
@@ -308,13 +315,29 @@ func checkbox(cb:Checkbox)
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY) { response in
+        
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)
+        
+        print("secret :- ",secret!)
+        print("mobile :- ",mobile!)
+        
+        let param : Parameters = [
+            "Phone" : mobile!,
+            "Secret" : secret!
+        ]
+        
+        print("param :- ",param)
+
+          //  Apicallhandler().ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY) { response in
+                
+            Apicallhandler.sharedInstance.ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY, param: param) { response in
                 
                 webservices().StopSpinner()
                 switch(response.result) {
                 case .success(let resp):
                     if resp.status == 1{
                         self.cityary = resp.data
+                        
                         self.txtarea.text = ""
                         self.txtcommunity.text = ""
                         self.pickerview1.reloadAllComponents()
@@ -349,7 +372,19 @@ func checkbox(cb:Checkbox)
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetArea(URL: webservices().baseurl + API_GET_AREA, city_id: cityid) { response in
+        
+            let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+        
+           // let intUserId = Int(cityid)
+           // print("intUserId : ",intUserId! as Int)
+             
+             let param : Parameters = [
+                 "Phone" : mobile!,
+                 "Secret" : secret,
+                 "City" : cityid
+             ]
+            
+            Apicallhandler.sharedInstance.ApiCallGetArea(URL: webservices().baseurl + API_GET_AREA, param: param) { response in
                 
                 switch response.result{
                 case .success(let resp):
@@ -357,7 +392,6 @@ func checkbox(cb:Checkbox)
                     webservices().StopSpinner()
                     if(resp.status == 1)
                     {
-                        
                         self.arearary = resp.data
                         self.txtarea.text = ""
                         self.txtcommunity.text = ""
@@ -392,7 +426,18 @@ func checkbox(cb:Checkbox)
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetSociety(URL: webservices().baseurl + API_GET_SOCIETY, city_id: cityid, area_id: areaid) { JSON in
+                
+                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+            
+                 let param : Parameters = [
+                     "Phone" : mobile!,
+                     "Secret" : secret,
+                     "City" : cityid,
+                     "Area" : areaid
+                 ]
+        
+                
+                Apicallhandler.sharedInstance.ApiCallGetSociety(URL: webservices().baseurl + API_GET_SOCIETY, param: param) { JSON in
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -432,7 +477,19 @@ func checkbox(cb:Checkbox)
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:societyid) { JSON in
+        
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+    
+         let param : Parameters = [
+             "Phone" : mobile!,
+             "Secret" : secret,
+             "Society" : societyid
+         ]
+        
+        
+           // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:societyid) { JSON in
+                
+                Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
                 
                 switch JSON.result{
                 case .success(let resp):
@@ -474,7 +531,19 @@ func checkbox(cb:Checkbox)
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, society_id:"", building_id: buildingid) { JSON in
+        
+          //  Apicallhandler().ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, society_id:"", building_id: buildingid) { JSON in
+        
+          let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+    
+             let param : Parameters = [
+                 "Phone" : mobile!,
+                 "Secret" : secret,
+                 "Society" : societyid,
+                "Parent" : buildingid
+             ]
+        
+            Apicallhandler.sharedInstance.ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, param: param) { JSON in
                 
                 let statusCode = JSON.response?.statusCode
                 switch JSON.result{
@@ -518,20 +587,20 @@ func checkbox(cb:Checkbox)
             webservices().StartSpinner()
                 
                 
-                var role = ""
-                
                 if(cbowner.isChecked)
                 {
                     role = "Owner of flat"
+                    UserType = 1
                 }
                 if(cbrenter.isChecked)
                 {
                     role = "Renting the flat"
+                    UserType = 3
                 }
-                if(cbother.isChecked)
-                {
-                    role = "Renting the flat with other tenants"
-                }
+//                if(cbother.isChecked)
+//                {
+//                    role = "Renting the flat with other tenants"
+//                }
                 
      
                  var strFCmToken = ""
@@ -541,7 +610,21 @@ func checkbox(cb:Checkbox)
                     strFCmToken = "abc"
                 }
             //NEW
-                let parameter:Parameters = ["phone":mobile!,"username":fullname!,"email":email!,"society_id":societyid,"building_id":buildingid,"flat_id":Flatid,"fcm_token":strFCmToken,"flatType" : role,"city_id":cityid,"area_id":areaid,"profession_detail":"","profession":""]
+              //  let parameter:Parameters = ["phone":mobile!,"username":fullname!,"email":email!,"society_id":societyid,"building_id":buildingid,"flat_id":Flatid,"fcm_token":strFCmToken,"flatType" : role,"city_id":cityid,"area_id":areaid,"profession_detail":"","profession":""]
+          
+            let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+
+            let parameter:Parameters = [
+                "Email": email!,
+                "Phone": mobile!,
+                "Secret": secret,
+                "Name": fullname!,
+                "Society": societyid,
+                "Building": buildingid,
+                "Flat": Flatid,
+                "UserType": UserType,
+                "FCMToken": strFCmToken
+            ]
                 
                 Apicallhandler().ApiCallSignUp2(URL: webservices().baseurl + APIRegister, param: parameter) { response in
                     
@@ -553,7 +636,7 @@ func checkbox(cb:Checkbox)
                         {
 
                             
-                            let alert = UIAlertController(title: Alert_Titel, message:"Thank you for registering. You can login once your society admin approve your account" , preferredStyle: UIAlertController.Style.alert)
+                            let alert = UIAlertController(title: Alert_Titel, message:"Thank you for registering. You can login once your Communie admin approve your account" , preferredStyle: UIAlertController.Style.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
                                 //self.navigationController?.popToRootViewController(animated: true)
                                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -564,13 +647,12 @@ func checkbox(cb:Checkbox)
                                                                                  self.appDelegate.window!.rootViewController  = navController
                             }))
                             self.present(alert, animated: true, completion: nil)
-                            
-                            
-                            
+                                                        
                         }
+                        
                         else
                         {
-                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
                             self.present(alert, animated: true, completion: nil)
                         }
                         
@@ -587,17 +669,10 @@ func checkbox(cb:Checkbox)
           
             
         }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }
+
 @available(iOS 13.0, *)
 extension SignUPStep2 :UITextFieldDelegate
 {
@@ -721,7 +796,7 @@ extension SignUPStep2 :UITextFieldDelegate
                    buildingary.removeAll()
                    for dic in newbuildingary
                    {
-                       var str = dic.name
+                    let str = dic.PropertyName
                        if(str.lowercased().contains(substring.lowercased()))
                        {
                            buildingary.append(dic)
@@ -746,7 +821,7 @@ extension SignUPStep2 :UITextFieldDelegate
                    Flatary.removeAll()
                    for dic in NewFlatary
                    {
-                       let str = dic.name
+                       let str = dic.PropertyName
                        if(str!.lowercased().contains(substring.lowercased()))
                        {
                            Flatary.append(dic)
@@ -796,15 +871,15 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(pickerView == pickerview1)
         {
-            return cityary[row].name
+            return cityary[row].Name
         }
         else if  (pickerView == pickerview2)
         {
-            return arearary[row].name
+            return arearary[row].AreaName
         }
         else
         {
-            return societyary[row].name
+            return societyary[row].SocietyName
             
             
         }
@@ -813,19 +888,19 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(pickerView == pickerview1)
         {
-            txtcity.text = cityary[row].name
-            cityid = String(cityary[row].id)
+            txtcity.text = cityary[row].Name
+            cityid = String(cityary[row].CityID!)
         }
         if(pickerView == pickerview2)
         {
-            txtarea.text = arearary[row].name
-            areaid = String(arearary[row].id)
+            txtarea.text = arearary[row].AreaName
+            areaid = String(arearary[row].AreaID)
             
         }
         if(pickerView == pickerview3)
         {
-            txtcommunity.text = societyary[row].name
-            societyid =  String(societyary[row].id)
+            txtcommunity.text = societyary[row].SocietyName
+            societyid =  String(societyary[row].SocietyID)
         }
     }
     
@@ -835,38 +910,37 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
 @available(iOS 13.0, *)
 extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
 {
-    // MARK: = tableview delegate and datasource mehthods
+    // MARK: = tableview delegate and datasource methods
        
        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
            
            
            if(tableView == tblbuilding)
            {
-               
                return buildingary.count
            }
            else
            {
                return Flatary.count
-               
            }
            
        }
        
+    
        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
            
            if(tableView == tblbuilding)
            {
             let cell: selectbuildingcelll = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! selectbuildingcelll
                
-               cell.lblname.text = buildingary[indexPath.row].name
+               cell.lblname.text = buildingary[indexPath.row].PropertyName
                return cell
            }
            else
            {
                let cell: selectbuildingcelll = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! selectbuildingcelll
                
-               cell.lblname.text = Flatary[indexPath.row].name
+               cell.lblname.text = Flatary[indexPath.row].PropertyName
                return cell
                
                
@@ -878,9 +952,9 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
            
            if(tableView == tblbuilding)
            {
-               txtblockname.text = buildingary[indexPath.row].name
+               txtblockname.text = buildingary[indexPath.row].PropertyName
                
-               buildingid =  String(buildingary[indexPath.row].id)
+               buildingid =  String(buildingary[indexPath.row].PropertyID)
                apicallGetFlat()
             self.txtblockname.resignFirstResponder()
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
@@ -890,7 +964,7 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
                        self.hightflat.constant = 137
                        self.highttxtfalt.constant = 50
                        self.imgflatserarch.isHidden = false
-                       self.hightcheckboxview.constant = 0
+                     self.hightcheckboxview.constant = 0
                        self.viewcheckbox.isHidden = true
                     self.hightbuilding.constant = 0
                     self.tblbuilding.isHidden = true
@@ -911,15 +985,15 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
 
             self.txtflats.resignFirstResponder()
 
-               self.txtflats.text = self.Flatary[indexPath.row].name
-               Flatid = String(self.Flatary[indexPath.row].id!)
+               self.txtflats.text = self.Flatary[indexPath.row].PropertyName
+               Flatid = String(self.Flatary[indexPath.row].PropertyID!)
             
             self.viewbottom.isHidden = false
                                   self.hightbottomview.constant = 200
                                   self.hightflat.constant = 0
                                   self.highttxtfalt.constant = 50
                                   self.imgflatserarch.isHidden = false
-                                  self.hightcheckboxview.constant = 110
+                                 self.hightcheckboxview.constant = 110
                                   self.viewcheckbox.isHidden = false
                                self.hightbuilding.constant = 0
                                self.hightbuilding.constant = 0
@@ -927,7 +1001,43 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
                                     self.hightflat.constant = 0
                                             self.tblflat.isHidden = true
                
-               if self.Flatary[indexPath.row].booked == "no" {
+            // 20/10/20. comments temp
+            
+            /*
+             
+             if IsActive = 1 and IsActiveTenant = 1 then show both options
+             if IsActive = 0 and IsActiveTenant = 1 then show tenant options
+             if IsActive = 0 and IsActiveTenant = 0 then show Flat is booked
+             if IsActive = 1 and IsActiveTenant = 0 then show owner options
+             
+             */
+            
+            if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 1 {
+                viewcheckbox.isHidden = false
+            }else if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 1 {
+                cbowner.isHidden = true
+                btnOwner.isHidden = true
+                
+                cbrenter.isHidden = false
+                btnRentingFlat.isHidden = false
+            }else if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 0 {
+                let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"This flat is already booked")
+                self.present(alert, animated: true, completion: nil)
+            }else if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 0 {
+                cbowner.isHidden = false
+                btnOwner.isHidden = false
+                
+                cbrenter.isHidden = true
+                btnRentingFlat.isHidden = true
+            }
+            
+           /* else{
+                viewcheckbox.isHidden = true
+                let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"This flat is already booked")
+                self.present(alert, animated: true, completion: nil)
+            } */
+
+             /*  if self.Flatary[indexPath.row].booked == "no" {
                    cbowner.isHidden = false
                    cbrenter.isHidden = false
                    btnOwner.isHidden = false
@@ -935,23 +1045,37 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
                }else{
                    
                    if self.Flatary[indexPath.row].bookType == "Owner of flat"{
-                       cbowner.isHidden = true
-                       cbrenter.isHidden = false
-                       btnOwner.isHidden = true
-                       btnRentingFlat.isHidden = false
+                    // 10/9/20.
+                    
+//                       cbowner.isHidden = true
+//                       cbrenter.isHidden = false
+//                       btnOwner.isHidden = true
+//                       btnRentingFlat.isHidden = false
+                    
+                     cbowner.isHidden = false
+                    cbrenter.isHidden = false
+                    btnOwner.isHidden = false
+                    btnRentingFlat.isHidden = false
                    }
                    
                    if self.Flatary[indexPath.row].bookType == "Renting the flat"{
+
                        cbowner.isHidden = true
                        cbrenter.isHidden = true
                        btnOwner.isHidden = true
                        btnRentingFlat.isHidden = true
+                    
+//                    cbowner.isHidden = false
+//                    cbrenter.isHidden = false
+//                    btnOwner.isHidden = false
+//                    btnRentingFlat.isHidden = false
+                    
                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"This flat is already booked")
                        self.present(alert, animated: true, completion: nil)
                        
                    }
                    
-               }
+               } */
                
                
                UIView.animate(withDuration: 0.3, delay: 0.2, options:

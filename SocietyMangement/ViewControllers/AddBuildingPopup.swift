@@ -108,8 +108,8 @@ class AddBuildingPopup: UIViewController {
         self.showAnimate()
         if(isfrom == 1)
         {
-            txtdes.text = dic?.name
-            txtname.text = dic?.name
+            txtdes.text = dic?.PropertyName
+            txtname.text = dic?.PropertyName
             txtdes.placeholder = ""
             
         }
@@ -197,7 +197,7 @@ class AddBuildingPopup: UIViewController {
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().EditBuidldings(URL: webservices().baseurl + "editBuilding", buildingid: (dic!.id as! NSNumber).stringValue, user_id: UserDefaults.standard.value(forKey:"id")! as! String, building_name: txtname.text!, building_description: txtdes.text) { JSON in
+        Apicallhandler().EditBuidldings(URL: webservices().baseurl + "editBuilding", buildingid: (dic!.PropertyID as NSNumber).stringValue, user_id: UserDefaults.standard.value(forKey:"id")! as! String, building_name: txtname.text!, building_description: txtdes.text) { JSON in
                 switch JSON.result{
                 case .success(let resp):
                     

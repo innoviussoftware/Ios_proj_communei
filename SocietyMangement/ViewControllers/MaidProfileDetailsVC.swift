@@ -90,11 +90,21 @@ class MaidProfileDetailsVC: UIViewController {
         
     }
     
+    @IBAction func btnAddHelperPressed(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
+        nextViewController.isfrom_entry = 1
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    
+    }
+    
+    
     //MARK:- action method
     
     @IBAction func actionNoti(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
@@ -103,7 +113,26 @@ class MaidProfileDetailsVC: UIViewController {
     }
     @IBAction func actionCall(_ sender: Any) {
         
-        dialNumber(number: dictHelperData.mobile!)
+      //  dialNumber(number: dictHelperData.mobile!)
+        
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                   let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Call Helper"
+            //GeneralConstants.kAppName // "Society Buddy"
+                avc?.isfrom = 3
+
+                               //    avc?.subtitleStr = "Are you sure you want to call?"
+                    avc?.subtitleStr = "Want to contact: \(dictHelperData.mobile!)"
+        
+                                   avc?.yesAct = {
+                                    self.dialNumber(number: self.dictHelperData.mobile!)
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
         
     }
     
@@ -140,6 +169,7 @@ class MaidProfileDetailsVC: UIViewController {
                    self.present(navigationController, animated: true)
         
     }
+    
     func dialNumber(number : String) {
         
         if let url = URL(string: "tel://\(number)"),
@@ -267,7 +297,7 @@ class MaidProfileDetailsVC: UIViewController {
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                   avc?.titleStr = "Society Buddy"
+                   avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                    avc?.subtitleStr = "Are you sure you want to delete this review?"
                    avc?.yesAct = {
                          

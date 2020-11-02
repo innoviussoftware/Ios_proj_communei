@@ -11,6 +11,7 @@ import SDWebImage
 import SkyFloatingLabelTextField
 import IQKeyboardManagerSwift
 import Alamofire
+import MobileCoreServices
 
 
 @available(iOS 13.0, *)
@@ -29,7 +30,7 @@ import Alamofire
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDataSource , UIPickerViewDelegate{
+class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDataSource , UIPickerViewDelegate{
     
     @IBOutlet weak var btnMenu: UIButton!
 
@@ -38,6 +39,9 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     @IBOutlet weak var lbltite: UILabel!
     
     @IBOutlet weak var AttechemntView: UIView!
+    
+    @IBOutlet weak var AttechemntView_update: UIView!
+    
     
     
     @IBAction func backaction(_ sender: Any) {
@@ -56,14 +60,22 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     
     @IBOutlet weak var btnattechment: UIButton!
     
-    var evenetary = ["Festival","AGM", "Committee","Entertainment"]
+    @IBOutlet weak var btnattechment_update: UIButton!
+
+    
+    @IBOutlet weak var viewCamera: UIView!
+
+    
+    var evenetary = [AddEventType]()
+    
+    //["Festival","AGM", "Committee","Entertainment"]
     
     var dic:Event?
     var isfrom = 0
     
     var imgData : Data?
     
-    @IBAction func chnagephoto(_ sender: Any) {
+  /*  @IBAction func chnagephoto(_ sender: Any) {
         
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
@@ -81,7 +93,7 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         
         self.present(actionSheet, animated: true, completion: nil)
         
-    }
+    } */
     
     @IBAction func SaveAction(_ sender: Any) {
         if(txttype.text == "")
@@ -113,8 +125,21 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
             self.present(alert, animated: true, completion: nil)
             
         }
-        else if(btnattechment.backgroundImage(for: .normal) == nil)
-        {
+            
+            // 3/9/20.
+            
+//        else if(btnattechment.backgroundImage(for: .normal) == nil)
+//        {
+//            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:" Please select image")
+//            self.present(alert, animated: true, completion: nil)
+//
+//        }
+//
+       // else if (btnattechment.imageView!.image == UIImage(named: "")) {
+      
+                
+        else if (btnattechment.imageView!.image == nil) &&  (self.imgData == nil) {
+
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:" Please select image")
             self.present(alert, animated: true, completion: nil)
             
@@ -130,6 +155,9 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     }
     
     var pickerview = UIPickerView()
+    
+    var selectedType = Int()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -138,18 +166,20 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                     overrideUserInterfaceStyle = .light
                   }
         
-        if isfrom == 0{
-                  btnMenu.setImage(UIImage(named: "menu"), for: .normal)
-                //  btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
-              }else{
                 //  btnMenu.setImage(UIImage(named: "menu"), for: .normal)
-                 btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
-              }
         
-        AttechemntView.layer.borderColor = AppColor.appcolor.cgColor
-        AttechemntView.layer.borderWidth = 2.0
+        btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
+              
+        
+        viewCamera.isHidden = true
+
+        
+      //  AttechemntView.layer.borderColor = AppColor.appcolor.cgColor
+      //  AttechemntView.layer.borderWidth = 2.0
         showDatePicker()
         showDatePicker1()
+        
+        apicallGetEventListType()
         
         pickerview.delegate = self
         pickerview.dataSource = self
@@ -172,7 +202,10 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         if(isfrom == 1)
         {
             lbltite.text = "Update Event"
-            btnsave.setTitle("UPDATE", for:.normal)
+            btnsave.setTitle("Update", for:.normal)
+            
+            AttechemntView.isHidden = true
+            AttechemntView_update.isHidden = false
             
             txttype.text = dic?.eventType
             txttitle.text = dic?.title
@@ -180,25 +213,66 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
             txtdes.placeholder = ""
             txtstartdate.text = "\(dic!.eventStartDate!) \(dic!.eventStartTime!)"
             txtenddate.text =  "\(dic!.eventEndDate!) \(dic!.eventEndTime!)"
-            btnattechment.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), for: .normal)
-            btnattechment.setTitle("", for:.normal)
+           
+            /* btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), for: .normal)
+           // btnattechment.setTitle("", for:.normal)
             
             let testImage = NSData(contentsOf: URL(string:webservices().imgurl + dic!.eventAttachment!)!)
-            imgData = testImage as Data?
+            imgData = testImage as Data? */
+            
+            webservices().StartSpinner()
+            
+            
+            btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
+                if ((error) != nil) {
+                    // set the placeholder image here
+                    
+                    self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+                    
+                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.eventAttachment!)!)
+                    self.imgData = testImage as Data?
+                    
+                    webservices().StopSpinner()
+
+
+                } else {
+                    // success ... use the image
+                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.eventAttachment!), for: .normal)
+                    
+                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.eventAttachment!)!)
+                    self.imgData = testImage as Data?
+                    
+                    webservices().StopSpinner()
+
+                }
+            })
+            
         }
         else
         {
             lbltite.text = "Add Event"
-            btnsave.setTitle("SAVE", for:.normal)
+            btnsave.setTitle("Save", for:.normal)
             
+            AttechemntView.isHidden = false
+            AttechemntView_update.isHidden = true
         }
+        
         setrightviewnew(textfield:txtenddate, image: #imageLiteral(resourceName: "ic-calender"))
         setrightviewnew(textfield:txtstartdate, image: #imageLiteral(resourceName: "ic-calender"))
-        setrightviewnew(textfield:txttype, image: #imageLiteral(resourceName: "ic_nxt_click"))
+        
+       // setrightviewnew(textfield:txttype, image: #imageLiteral(resourceName: "ic_nxt_click"))
+        
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(tapviewCameraimage))
+        viewCamera.addGestureRecognizer(tap)
 
         
         // Do any additional setup after loading the view.
     }
+    
+    @objc func tapviewCameraimage() {
+          viewCamera.isHidden = true
+      }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
@@ -263,6 +337,58 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         
     }
     
+    @IBAction func btnCameraClicked(_ sender: Any) {
+           
+           viewCamera.isHidden = false
+           
+    }
+
+       @IBAction func btnOpenCameraClicked(_ sender: Any) {
+              
+           viewCamera.isHidden = true
+           
+           camera()
+              
+       }
+       
+    @IBAction func btnOpenGalleryClicked(_ sender: Any) {
+            
+         viewCamera.isHidden = true
+         
+         photoLibrary()
+            
+     }
+    
+        @IBAction func btnDocumentMenuClicked(_ sender: Any) {
+
+            viewCamera.isHidden = true
+
+            let types = [kUTTypePDF, kUTTypeText, kUTTypeRTF, kUTTypeSpreadsheet]
+
+          //  let types = [kUTTypePDF]
+
+            let importMenu = UIDocumentPickerViewController(documentTypes: types as [String], in: .import)
+    //           if #available(iOS 11.0, *) {
+    //               importMenu.allowsMultipleSelection = true
+    //           }
+
+               importMenu.delegate = self
+               importMenu.modalPresentationStyle = .formSheet
+            
+              self.present(importMenu, animated: true, completion: nil)
+        }
+
+    
+    @IBAction func actionNotification(_ sender: Any) {
+           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+            vc.isfrom = 0
+         }
+        
+        @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+            let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+            vc.isfrom = 0
+        }
+    
     func setrightviewnew(textfield: UITextField ,image:UIImage)
     {
         var imageView = UIImageView.init(image: image)
@@ -277,12 +403,12 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     }
     
     @objc func donePressed() {
-        if(txttype.text == "")
-        {
-            self.txttype.text = evenetary[0]
-            self.txttype.resignFirstResponder()
             
-        }
+            self.txttype.resignFirstResponder()
+            let row = self.pickerview.selectedRow(inComponent: 0)
+            self.txttype.text = evenetary[row].name
+            selectedType = evenetary[row].eventTypeID
+            
         // tblview.reloadData()
         view.endEditing(true)
     }
@@ -291,6 +417,51 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         view.endEditing(true) // or do something
     }
     
+    //MARK:-  Event List Type
+    
+    func apicallGetEventListType()
+    {
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+        Apicallhandler().GetEventList(URL: webservices().baseurl + API_GET_EVENTLISTTYPE, token:token as! String) { [self] JSON in
+                switch JSON.result{
+                    
+                case .success(let resp):
+                    
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        self.evenetary = resp.data!
+                        if self.evenetary.count > 0{
+                           // txtVehicleType.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
+                          //  txtVehicleType.addDoneOnKeyboardWithTarget(self, action: #selector(DoneVehicleType), shouldShowPlaceholder: true)
+                        }else{
+                           
+                        }
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                   
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError ?? "")
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+     
+    }
     
     // MARK: - pickerview delegate and data source methods
     // Number of columns of data
@@ -305,12 +476,15 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     
     // The data to return fopr the row and component (column) that's being passed in
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return evenetary[row]
+        return evenetary[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        txttype.text = evenetary[row]
+       // txttype.text = evenetary[row].name
+        
+        selectedType = evenetary[row].eventTypeID //row
+
     }
     
     
@@ -325,8 +499,15 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         if (info[UIImagePickerControllerMediaType] as? String) != nil {
             
             let image = info[UIImagePickerControllerEditedImage] as! UIImage
-            btnattechment.setBackgroundImage(image, for: .normal)
-            btnattechment.setTitle("", for: .normal)
+            
+            if(isfrom == 1){
+                btnattechment_update.setBackgroundImage(image, for: .normal)
+               // btnattechment.setTitle("", for: .normal)
+            }else{
+                btnattechment.setBackgroundImage(image, for: .normal)
+                btnattechment.setTitle("", for: .normal)
+            }
+            
             
             imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
             
@@ -366,6 +547,12 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
         //Formate Date
         datePicker.datePickerMode = .dateAndTime
         
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+
         //ToolBar
         let toolbar = UIToolbar();
         toolbar.sizeToFit()
@@ -400,6 +587,13 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
     func showDatePicker1(){
         //Formate Date
         datePicker.datePickerMode = .dateAndTime
+        
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         
         //ToolBar
         let toolbar = UIToolbar();
@@ -442,22 +636,25 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                      }
         
         let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
-        let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
+      //  let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
         let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
         
         webservices().StartSpinner()
         let param : Parameters = [
-            "society_id" : strSocietyId,
-            "title" : txttitle.text!,
-            "description" : txtdes.text!,
-            "event_start_time":txtstartdate.text!.components(separatedBy:" ")[1],
-            "event_end_time":txtenddate.text!.components(separatedBy:" ")[1],
-            "event_start_date":txtstartdate.text!.components(separatedBy:" ")[0],
-            "event_end_date":txtenddate.text!.components(separatedBy:" ")[0],
-            "event_type":txttype.text!,
-            "building_id":strBuildingId
+           // "society_id" : strSocietyId,
+            "Title" : txttitle.text!,
+            "Description" : txtdes.text!,
+           // "event_start_time":txtstartdate.text!.components(separatedBy:" ")[1],
+          //  "event_end_time":txtenddate.text!.components(separatedBy:" ")[1],
+            "EventStartDate":txtstartdate.text!.components(separatedBy:" ")[0],
+            "EventEndDate":txtenddate.text!.components(separatedBy:" ")[0],
+            "EventTypeID": selectedType,//txttype.text!,
+            "Properties":strSocietyId
+           // "building_id":strBuildingId
             //"event_attachment":btnattechment.backgroundImage(for:.normal)!
         ]
+        
+        print("param add",param)
         
         AF.upload(
             multipartFormData: { MultipartFormData in
@@ -468,15 +665,21 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                 let strFileName = formatter.string(from: date)
                 
                 for (key, value) in param {
-                    MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
+                    // MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+
                 }
                 
                 if self.imgData!.count != 0{
-                    MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                   // MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                    
+                    MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "application/pdf")
+
                 }
                 
                 
-        }, to:  webservices().baseurl + API_ADD_EVENT,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+        }, to:  webservices().baseurl + API_ADD_EVENT,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
             
@@ -491,15 +694,26 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                     if statusCode == 200{
                         print(resp)
                         
-                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
+                        
+                        let alert = UIAlertController(title: Alert_Titel, message:((response.result.value as! NSDictionary).value(forKey:"message") as! String) , preferredStyle: UIAlertController.Style.alert)
+                                                     
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
+                                            self.navigationController?.popViewController(animated: true)
+                                }))
+                        
                         self.present(alert, animated: true, completion: nil)
                         self.txttype.text = ""
                         self.txttitle.text = ""
                         self.txtdes.text = ""
                         self.txtstartdate.text = ""
                         self.txtenddate.text = ""
-                        self.btnattechment.setTitle("+", for: .normal)
+                        // 3/9/20.
+                      //  self.btnattechment.setTitle("+", for: .normal)
                         self.btnattechment.setBackgroundImage(nil, for: .normal)
+                        
+                        self.navigationController?.popViewController(animated: true)
+
                         
                     }else{
                     }
@@ -553,7 +767,7 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
             "event_end_time":txtenddate.text!.components(separatedBy:" ")[1],
             "event_start_date":txtstartdate.text!.components(separatedBy:" ")[0],
             "event_end_date":txtenddate.text!.components(separatedBy:" ")[0],
-            "event_type":txttype.text!,
+            "EventTypeID":txttype.text!,
             "building_id":strBuildingId
             //"event_attachment":btnattechment.backgroundImage(for:.normal)!
         ]
@@ -571,11 +785,14 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                 }
                 
                 if self.imgData!.count != 0{
-                    MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                   // MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                  
+                    MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+
                 }
                 
                 
-        }, to:  webservices().baseurl + API_UPDATE_EVENT,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+        }, to:  webservices().baseurl + API_UPDATE_EVENT,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
             
@@ -590,15 +807,28 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                     if statusCode == 200{
                         print(resp)
                         
-                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
+                      //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
+
+                        let alert = UIAlertController(title: Alert_Titel, message:((response.result.value as! NSDictionary).value(forKey:"message") as! String) , preferredStyle: UIAlertController.Style.alert)
+                                
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
+                                    self.navigationController?.popViewController(animated: true)
+                                }))
                         self.present(alert, animated: true, completion: nil)
                         self.txttype.text = ""
                         self.txttitle.text = ""
                         self.txtdes.text = ""
                         self.txtstartdate.text = ""
                         self.txtenddate.text = ""
-                        self.btnattechment.setTitle("+", for: .normal)
-                        self.btnattechment.setBackgroundImage(nil, for: .normal)
+                      //  self.btnattechment.setTitle("+", for: .normal)
+                        if(self.isfrom == 1){
+                            self.btnattechment_update.setBackgroundImage(nil, for: .normal)
+                        }else{
+                            self.btnattechment.setBackgroundImage(nil, for: .normal)
+                        }
+                        
+                      //  self.navigationController?.popViewController(animated: true)
+
                         
                     }else{
                     }
@@ -627,6 +857,48 @@ class AddEventVC: UIViewController , UIImagePickerControllerDelegate , UINavigat
                 
             })
         
+    }
+    
+    
+    
+}
+
+
+@available(iOS 13.0, *)
+extension AddEventVC : UIDocumentPickerDelegate
+{
+     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let myURL = urls.first else {
+            return
+        }
+        print("import result : \(myURL)")
+        
+      //  strPdfUrl = myURL
+                        
+        if(isfrom == 1){
+            btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+        }else{
+            btnattechment.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+        }
+
+        do {
+             imgData = try Data(contentsOf: myURL as URL)
+        } catch {
+            print("Unable to load data: \(error)")
+        }
+        
+    }
+    
+    
+//    public func documentMenu(_ documentMenu:UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+//        documentPicker.delegate = self
+//        present(documentPicker, animated: true, completion: nil)
+//    }
+    
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
     }
     
     

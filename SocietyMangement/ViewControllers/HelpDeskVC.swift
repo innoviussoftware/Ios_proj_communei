@@ -65,12 +65,14 @@ class HelpDeskVC: UIViewController {
                 btnMenu.setImage(UIImage(named: "menu"), for: .normal)
         }
         
-        if(revealViewController() != nil)
-        {
-            btnMenu.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+        if isfrom == 0 {
+            if(revealViewController() != nil)
+            {
+                btnMenu.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            }
         }
         
        apicallGethelpDesk()
@@ -149,7 +151,6 @@ class HelpDeskVC: UIViewController {
          if isfrom == 1{
              self.navigationController?.popViewController(animated: true)
          }else{
-             revealViewController()?.revealToggle(self)
          }
          
      }
@@ -160,30 +161,70 @@ class HelpDeskVC: UIViewController {
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
+    @IBAction func actionQrCode(_ sender: Any) {
+          if #available(iOS 13.0, *) {
+                     let vc = self.storyboard?.instantiateViewController(identifier: "QRCodeVC") as! QRCodeVC
+            self.navigationController?.pushViewController(vc, animated: true)
+
+                 } else {
+                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "QRCodeVC") as! QRCodeVC
+                    self.navigationController?.pushViewController(vc, animated: true)
+
+                 }
+                 
+      }
     
     @IBAction func actionCall(_ sender: UIButton) {
         
         
-             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+          //   let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
-                            avc?.subtitleStr = "Are you sure you want to call?"
+           //  avc?.subtitleStr = "Are you sure you want to call?"
+     
+        avc?.isfrom = 3
+
+        if sender.tag == 1{
+               avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].societyPhone1!)"
+        }else if sender.tag == 2{ //society 2
+               avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].societyPhone2!)"
+        }else if sender.tag == 3{//Hospital
+                avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].hostipalPhone!)"
+        }else if sender.tag == 4{//ambulance
+           avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].ambulance!)"
+        }else if sender.tag == 5{//police
+              avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].policenumber!)"
+        }else if sender.tag == 6{//fire
+            avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].fire!)"
+        }
+
                             avc?.yesAct = {
                                        
                                          if sender.tag == 1{ // society 1
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone1!)
+
                                          }else if sender.tag == 2{ //society 2
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone2!)
+
                                          }else if sender.tag == 3{//Hospital
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].hostipalPhone!)
+
                                          }else if sender.tag == 4{//ambulance
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].ambulance!)
+
                                          }else if sender.tag == 5{//police
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].policenumber!)
                                          }else if sender.tag == 6{//fire
+
                                              self.dialNumber(number:self.arrDictDataHelpDesk[0].fire!)
                                          }
                                 }
+
                             avc?.noAct = {
                               
                             }

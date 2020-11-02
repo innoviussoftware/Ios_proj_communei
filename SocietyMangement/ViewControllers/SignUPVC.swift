@@ -111,8 +111,11 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
     
     var strmobile = ""
     
+    
     var cityary = [City]()
+
     var arearary = [Area]()
+    
     var societyary = [Society]()
     var buildingary = [Building]()
     var newbuildingary = [Building]()
@@ -577,7 +580,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                 buildingary.removeAll()
                 for dic in newbuildingary
                 {
-                    var str = dic.name
+                    let str = dic.PropertyName
                     if(str.lowercased().contains(substring.lowercased()))
                     {
                         buildingary.append(dic)
@@ -602,7 +605,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                 Flatary.removeAll()
                 for dic in NewFlatary
                 {
-                    let str = dic.name
+                    let str = dic.PropertyName
                     if(str!.lowercased().contains(substring.lowercased()))
                     {
                         Flatary.append(dic)
@@ -627,9 +630,8 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
     {
         if(txtcity.text == "")
         {
-            
-            txtcity.text = cityary[0].name
-            cityid = String(cityary[0].id)
+            txtcity.text = cityary[0].Name
+            cityid = String(cityary[0].CityID!)
             txtcity.resignFirstResponder()
             ApiCallGetArea()
         }
@@ -647,8 +649,8 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         if(txtarea.text == "")
         {
             txtarea.resignFirstResponder()
-            areaid = String(arearary[0].id)
-            txtarea.text = arearary[0].name
+            areaid = String(arearary[0].AreaID)
+            txtarea.text = arearary[0].AreaName
             ApiCallGetSociety()
         }
         else
@@ -664,9 +666,9 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         {
               self.txtcommunity.resignFirstResponder()
             if societyary.count > 0{
-                self.txtcommunity.text = self.societyary[0].name
+                self.txtcommunity.text = self.societyary[0].SocietyName
                 //self.txtcommunity.resignFirstResponder()
-                self.societyid =  String(self.societyary[0].id)
+                self.societyid =  String(self.societyary[0].SocietyID)
                 self.apicallGetBuildings()
             }
             
@@ -731,15 +733,15 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(pickerView == pickerview1)
         {
-            return cityary[row].name
+            return cityary[row].Name
         }
         else if  (pickerView == pickerview2)
         {
-            return arearary[row].name
+            return arearary[row].AreaName
         }
         else
         {
-            return societyary[row].name
+            return societyary[row].SocietyName
             
             
         }
@@ -748,19 +750,19 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(pickerView == pickerview1)
         {
-            txtcity.text = cityary[row].name
-            cityid = String(cityary[row].id)
+            txtcity.text = cityary[row].Name
+            cityid = String(cityary[row].CityID!)
         }
         if(pickerView == pickerview2)
         {
-            txtarea.text = arearary[row].name
-            areaid = String(arearary[row].id)
+            txtarea.text = arearary[row].AreaName
+            areaid = String(arearary[row].AreaID)
             
         }
         if(pickerView == pickerview3)
         {
-            txtcommunity.text = societyary[row].name
-            societyid =  String(societyary[row].id)
+            txtcommunity.text = societyary[row].SocietyName
+            societyid =  String(societyary[row].SocietyID)
         }
     }
     
@@ -824,14 +826,14 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         {
             let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath)
             
-            cell.textLabel?.text = buildingary[indexPath.row].name
+            cell.textLabel?.text = buildingary[indexPath.row].PropertyName
             return cell
         }
         else
         {
             let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath)
             
-            cell.textLabel?.text = Flatary[indexPath.row].name
+            cell.textLabel?.text = Flatary[indexPath.row].PropertyName
             return cell
             
             
@@ -844,9 +846,9 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         if(tableView == tblbuilding)
         {
             
-            txtblockname.text = buildingary[indexPath.row].name
+            txtblockname.text = buildingary[indexPath.row].PropertyName
             
-            buildingid =  String(buildingary[indexPath.row].id)
+            buildingid =  String(buildingary[indexPath.row].PropertyID)
             apicallGetFlat()
             
             UIView.animate(withDuration: 0.3, delay: 0.2, options:
@@ -872,10 +874,12 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         if(tableView == tblflat)
         {
             
-            self.txtflats.text = self.Flatary[indexPath.row].name
-            Flatid = String(self.Flatary[indexPath.row].id!)
+            self.txtflats.text = self.Flatary[indexPath.row].PropertyName
+            Flatid = String(self.Flatary[indexPath.row].PropertyID!)
             
+            // 20/10/20. comments temp
             
+            /*
             if self.Flatary[indexPath.row].booked == "no" {
                 cbowner.isHidden = false
                 cbrenter.isHidden = false
@@ -900,7 +904,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                     
                 }
                 
-            }
+            } */
             
             
             UIView.animate(withDuration: 0.3, delay: 0.2, options:
@@ -1057,7 +1061,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                     }
                     else
                     {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
                         self.present(alert, animated: true, completion: nil)
                     }
                     
@@ -1083,7 +1087,16 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY) { response in
+        
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+        
+        let param : Parameters = [
+            "Phone" : mobile!,
+            "Secret" : secret
+        ]
+                
+            Apicallhandler.sharedInstance.ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY, param: param) { response in
+          //  Apicallhandler().ApiCallGetCity(URL: webservices().baseurl + API_GET_CITY) { response in
                 
                 webservices().StopSpinner()
                 switch(response.result) {
@@ -1124,7 +1137,20 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetArea(URL: webservices().baseurl + API_GET_AREA, city_id: cityid) { response in
+        
+          //  Apicallhandler().ApiCallGetArea(URL: webservices().baseurl + API_GET_AREA, city_id: cityid) { response in
+           
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+                
+                let param : Parameters = [
+                    "Phone" : mobile!,
+                    "Secret" : secret,
+                    "City" : cityid
+                ]
+                        
+            
+            Apicallhandler.sharedInstance.ApiCallGetArea(URL: webservices().baseurl + API_GET_AREA, param: param) { response in
+                
                 
                 switch response.result{
                 case .success(let resp):
@@ -1132,7 +1158,6 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                     webservices().StopSpinner()
                     if(resp.status == 1)
                     {
-                        
                         self.arearary = resp.data
                         self.txtarea.text = ""
                         self.txtcommunity.text = ""
@@ -1167,7 +1192,20 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetSociety(URL: webservices().baseurl + API_GET_SOCIETY, city_id: cityid, area_id: areaid) { JSON in
+        
+          //  Apicallhandler().ApiCallGetSociety(URL: webservices().baseurl + API_GET_SOCIETY, city_id: cityid, area_id: areaid) { JSON in
+        
+            let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+        
+             let param : Parameters = [
+                 "Phone" : mobile!,
+                 "Secret" : secret,
+                 "City" : cityid,
+                 "Area" : areaid
+             ]
+            
+            Apicallhandler.sharedInstance.ApiCallGetSociety(URL: webservices().baseurl + API_GET_SOCIETY, param: param) { JSON in
+            
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -1207,7 +1245,19 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:societyid) { JSON in
+        
+          //  Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:societyid) { JSON in
+                
+                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+            
+                 let param : Parameters = [
+                     "Phone" : mobile!,
+                     "Secret" : secret,
+                     "Society" : societyid
+                 ]
+                        
+            Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
+                   
                 
                 switch JSON.result{
                 case .success(let resp):
@@ -1249,7 +1299,19 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, society_id:"", building_id: buildingid) { JSON in
+           // Apicallhandler().ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, society_id:"", building_id: buildingid) { JSON in
+                
+            let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+          
+            let param : Parameters = [
+                  "Phone" : mobile!,
+                   "Secret" : secret,
+                   "Society" : societyid,
+                   "Parent" : buildingid
+            ]
+              
+                  Apicallhandler.sharedInstance.ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, param: param) { JSON in
+                    
                 
                 let statusCode = JSON.response?.statusCode
                 switch JSON.result{

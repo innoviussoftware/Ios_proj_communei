@@ -13,25 +13,74 @@ class AlertBottomViewController: UIViewController {
    @IBOutlet var lblTitle: UIButton!
     @IBOutlet var lblSubtitle: UILabel!
     
+    @IBOutlet var lblSubtitle_sett: UILabel!
+
+    
     @IBOutlet var stckVw: UIStackView!
     
     @IBOutlet var lblline1: UILabel!
     @IBOutlet var lblline2: UILabel!
 
     @IBOutlet var btnOk: UIButton!
+    
+    @IBOutlet var btnCancel: UIButton!
+
+    @IBOutlet var btnYes: UIButton!
+
 
     var titleStr = ""
     var subtitleStr = ""
     var yesAct:(()->())?
     var noAct:(()->())?
 
+    var isfrom = 1
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isfrom == 1{
+        }else if isfrom == 0
+        {
+            stckVw.isHidden = true
+            lblline1.isHidden = true
+            lblline2.isHidden = true
+            btnOk.isHidden = false
+        }else if isfrom == 2 {
+            btnCancel.setTitle("Cancel", for: UIControl.State.normal)
+          //  btnYes.setTitle("Call", for: UIControl.State.normal)
+
+        }else if isfrom == 3 {
+            btnCancel.setTitle("Cancel", for: UIControl.State.normal)
+            btnYes.setTitle("Call", for: UIControl.State.normal)
+
+        }else if isfrom == 4
+        {
+            lblTitle.titleLabel?.textColor = UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+            stckVw.isHidden = true
+            lblline1.isHidden = true
+            lblline2.isHidden = true
+            btnOk.isHidden = false
+        }else if isfrom == 5 {
+            lblTitle.setTitleColor(UIColor(red: 246.0/255.0, green: 10.0/255.0, blue: 32.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+            lblSubtitle.isHidden = true
+            lblSubtitle_sett.isHidden = false
+            btnYes.setTitleColor(UIColor(red: 246.0/255.0, green: 10.0/255.0, blue: 32.0/255.0, alpha: 1.0), for: UIControl.State.normal)
+            btnCancel.setTitle("Cancel", for: UIControl.State.normal)
+        }
+        
+        
         lblTitle.setTitle(titleStr, for: .normal)
+
+        
+       // lblTitle.setTitle(titleStr, for:  UIControl.State.normal)
+        
         lblSubtitle.text = subtitleStr
+        
 //        let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(self.panGesture))
+        
 //        view.addGestureRecognizer(gesture)
+        
     }
 
     @IBAction func btnNoClicked(_ sender: UIButton) {

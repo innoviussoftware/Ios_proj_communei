@@ -17,13 +17,16 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource {
+class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     
     var selectedindexary = NSMutableArray()
     
     var isfrom = 1
     
     @IBOutlet weak var btnMenu: UIButton!
+    
+    @IBOutlet weak var vwbtnadd: UIView!
+
     @IBOutlet weak var btnadd: UIButton!
     @IBOutlet weak var tblcircular: UITableView!
     
@@ -95,12 +98,18 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
             
-            if(str.contains("Chairman")  || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
+                self.toptblConstraint.constant = 0
+
                 btnadd.isHidden = false
+                vwbtnadd.isHidden = false
+
             }
             else{
-                
+                self.toptblConstraint.constant = -60
+
+                vwbtnadd.isHidden = true
                 btnadd.isHidden = true //Manish
                 
             }
@@ -203,6 +212,15 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
         
     }
     
+    @IBAction func actionNotification(_ sender: Any) {
+           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+            vc.isfrom = 0
+         }
+        
+        @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+            let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+            vc.isfrom = 0
+        }
     
     // MARK: - Tableview delegate and data source methods
     
@@ -224,6 +242,9 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
         cell.lblTitel.text = Circularary[indexPath.row].title
         cell.lblDate.text = strChangeDateFormate(strDateeee: Circularary[indexPath.row].createdAt!)
         
+        // 4/9/20.
+      //  let str = Circularary[indexPath.row].name
+      //  print("4/9/20. str :- ",str as Any)
      
         let hight = getLabelHeight(text: Circularary[indexPath.row].datumDescription!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
         
@@ -241,7 +262,7 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
             cell.btnReadMore.setTitle("Read Less <", for:.normal)
             
         }else{
-            cell.lblDiscription.numberOfLines = 3
+            cell.lblDiscription.numberOfLines = 4
             cell.lblDiscription.lineBreakMode = .byTruncatingTail
             cell.lblDiscription.text = Circularary[indexPath.row].datumDescription
             cell.btnReadMore.setTitle("Read More >", for:.normal)
@@ -274,7 +295,7 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
             
-            if(str.contains("Chairman") || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
                 self.toptblConstraint.constant = 0
 
@@ -382,7 +403,7 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                       let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                                                      avc?.titleStr = "Society Buddy"
+                                                      avc?.titleStr = "Communei"
                                                       avc?.subtitleStr = "Are you sure you want to delete \(self.Circularary[sender.tag].title!)?"
                                                       avc?.yesAct = {
                                                             
@@ -471,7 +492,10 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
             webservices().StartSpinner()
-            Apicallhandler().GetAllCirculars(URL: webservices().baseurl + API_USER_GET_CIRCULAR, token: token) { JSON in
+          //  Apicallhandler().GetAllCirculars(URL: webservices().baseurl + API_USER_GET_CIRCULAR, token: token) { JSON in
+        
+        Apicallhandler().GetAllCirculars(URL: webservices().baseurl + API_USER_GET_CIRCULAR, token: token) { JSON in
+
                 switch JSON.result{
                 case .success(let resp):
                     self.refreshControl.endRefreshing()
@@ -493,11 +517,11 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
                             
                             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                                                                   
-                                                                  if(str.contains("Secretory") || str.contains("Chairman"))
+                            if(str.contains("society_admin"))
                                                                   {
                                                                     self.lblNoDataFound.isHidden = false
                                                                   }else{
-                                                                    self.lblNoDataFound.isHidden = true
+                                                                    self.lblNoDataFound.isHidden = false
                             }
                             
                             
@@ -519,11 +543,12 @@ class CircularVC: UIViewController ,UITableViewDelegate , UITableViewDataSource 
                             self.viewnoresult.isHidden = false
                             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                                                                                              
-                                                                                             if(str.contains("Secretory") || str.contains("Chairman"))
-                                                                                             {
+                                                                                             //if(str.contains("Secretory") || str.contains("Chairman"))
+                            if(str.contains("society_admin"))
+                                           {
                                                                                                self.lblNoDataFound.isHidden = false
                                                                                              }else{
-                                                                                               self.lblNoDataFound.isHidden = true
+                                                                                               self.lblNoDataFound.isHidden = false
                                                        }
                         }
                         else

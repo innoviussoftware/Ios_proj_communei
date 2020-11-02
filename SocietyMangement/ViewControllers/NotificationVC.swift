@@ -162,9 +162,9 @@ class NotificationVC: UIViewController {
         
         
     }
+    
     @IBAction func actionBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
-
     }
 
 
@@ -236,6 +236,35 @@ class NotificationVC: UIViewController {
 
 
       }
+    
+    
+    @objc func checkUnCheck(sender:UIButton)
+    {
+
+            if arrNotificationId.contains(arrNotiData[sender.tag].id!){
+                               //arrDummy.add("1")
+                                arrNotificationId.remove(arrNotiData[sender.tag].id!)
+
+                           }else{
+                                //arrDummy.add("0")
+                                 arrNotificationId.add(arrNotiData[sender.tag].id!)
+                           }
+            if arrNotificationId.count > 0{
+                 lbltotalSelected.text = String(format: "%d selected", arrNotificationId.count)
+                //viewDelete.heightAnchor.constraint(equalToConstant: 60).isActive = true
+    //            constraintHightDeleteview.constant = 0
+    //            viewDelete.isHidden = false
+                lbltotalSelected.isHidden = false
+                
+            }else{
+                lbltotalSelected.isHidden = true
+                btnSelectAll.setTitle("Select All", for: .normal)
+    //             constraintHightDeleteview.constant = 0
+    //            viewDelete.isHidden = true
+            }
+                           tblView.reloadData()
+
+        }
 
 
     @objc func readmore(sender:UIButton)
@@ -295,6 +324,22 @@ class NotificationVC: UIViewController {
           }
     
     
+    @IBAction func actionNotification(_ sender: Any) {
+              viewDidLoad()
+          }
+          
+          @IBAction func actionQrCode(_ sender: Any) {
+                if #available(iOS 13.0, *) {
+                           let vc = self.storyboard?.instantiateViewController(identifier: "QRCodeVC") as! QRCodeVC
+                   self.navigationController?.pushViewController(vc, animated: true)
+
+                       } else {
+                           let vc = self.storyboard?.instantiateViewController(withIdentifier: "QRCodeVC") as! QRCodeVC
+                   self.navigationController?.pushViewController(vc, animated: true)
+
+                       }
+                       
+            }
   
 
 }
@@ -338,6 +383,9 @@ extension NotificationVC : UITableViewDelegate , UITableViewDataSource{
           cell.btnReadMore.isHidden = true
         
            cell.lblDiscription.text = arrNotiData[indexPath.row].text
+        
+        cell.lblDate.isHidden = true
+
 
         let hight = getLabelHeight(text: arrNotiData[indexPath.row].text!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
         
@@ -369,6 +417,9 @@ extension NotificationVC : UITableViewDelegate , UITableViewDataSource{
         }else{
             cell.btnCheckUnCheck.setImage(UIImage(named: "ic_unchecked"), for: .normal)
         }
+        
+        cell.btnCheckUnCheck.addTarget(self, action:#selector(checkUnCheck(sender:)), for: .touchUpInside)
+
            cell.btnReadMore.addTarget(self, action:#selector(readmore(sender:)), for: .touchUpInside)
 
            return cell

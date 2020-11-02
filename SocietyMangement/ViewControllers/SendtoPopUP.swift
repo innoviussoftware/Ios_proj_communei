@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Alamofire
 
 protocol  Buildings {
     
-    func selectedbuildings(selectedary:NSMutableArray, nameary:NSMutableArray)
+    func selectedbuildings(selectedary:NSMutableArray, nameary:NSMutableArray,selectedaryId:NSMutableArray)
 }
 
 
@@ -18,9 +19,18 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
 
     @IBOutlet weak var tblview: UITableView!
     @IBOutlet weak var viewinner: UIView!
+    
+    @IBOutlet weak var lblTitel: UILabel!
 
-    var buidilgsary = [Building]()
+    var strlbl = String()
+
+    var buidilgsary = [BuildingAdd]() // [Building]()
     var selectedary = NSMutableArray()
+    
+    var nameary = NSMutableArray()
+    
+    var selectedaryId = NSMutableArray()
+
     var delegate:Buildings?
     @IBAction func cancelaction(_ sender: Any) {
         self.removeAnimate()
@@ -28,18 +38,20 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
     
     @IBAction func saveaction(_ sender: Any) {
         
-        var nameary = NSMutableArray()
+      //  var nameary = NSMutableArray()
         for dic in buidilgsary
         {
-            if(selectedary.contains(dic.id))
+            if(selectedary.contains(dic.propertyID))
             {
                 
-                nameary.add(dic.name)
+                nameary.add(dic.propertyFullName)
+                selectedaryId.add(dic.propertyName)
+
             }
             
         }
         
-        delegate?.selectedbuildings(selectedary: selectedary , nameary:nameary)
+        delegate?.selectedbuildings(selectedary: selectedary , nameary:nameary,selectedaryId: selectedaryId)
         self.removeAnimate()
 
     }
@@ -49,12 +61,14 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
         super.viewDidLoad()
         
         if #available(iOS 13.0, *) {
-                               // Always adopt a light interface style.
-                    overrideUserInterfaceStyle = .light
-                  }
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
+        }
         
+        lblTitel.text = strlbl
 
-   apicallGetBuildings()
+        apicallGetBuildings()
+        
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         self.showAnimate()
         // Do any additional setup after loading the view.
@@ -98,8 +112,8 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
         }
         else
         {
-        cell.lblname.text = buidilgsary[indexPath.row - 1].name
-        if(selectedary.contains(buidilgsary[indexPath.row - 1].id))
+        cell.lblname.text = buidilgsary[indexPath.row - 1].propertyFullName
+        if(selectedary.contains(buidilgsary[indexPath.row - 1].propertyID))
             {
                // cell.cb.isChecked = true
                 cell.imgview.image = UIImage(named: "ic_checked")
@@ -126,7 +140,7 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
             else{
                 for dic in buidilgsary
                 {
-                selectedary.add(dic.id)
+                    selectedary.add(dic.propertyID)
                 }
                 self.tblview.delegate = self
                 self.tblview.dataSource = self
@@ -140,17 +154,17 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
         {
             
             
-          if (selectedary.contains(buidilgsary[indexPath.row - 1].id))
+          if (selectedary.contains(buidilgsary[indexPath.row - 1].propertyID))
           {
             
-            selectedary.remove(buidilgsary[indexPath.row - 1].id)
+            selectedary.remove(buidilgsary[indexPath.row - 1].propertyID)
             self.tblview.reloadData()
 
             }
             else
             {
                 
-                selectedary.add(buidilgsary[indexPath.row - 1].id)
+                selectedary.add(buidilgsary[indexPath.row - 1].propertyID)
                 self.tblview.reloadData()
 
             }
@@ -198,10 +212,41 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
                          ShowNoInternetAlert()
                          return
                      }
-            let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+        
+           /* let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
             
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSocietyId) { JSON in
+        
+                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+            
+                 let param : Parameters = [
+                     "Phone" : mobile!,
+                     "Secret" : secret,
+                     "Society" : strSocietyId
+                 ]
+                
+                        
+                Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in */
+        
+            webservices().StartSpinner()
+
+                let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+
+                    let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                         let param : Parameters = [
+                            "Society" : SociId,
+                            "Parent" : UsermeResponse!.data!.society!.societyID!
+                         ]
+        
+
+                print("Parameters : ",param)
+                                
+                    //   Apicallhandler.sharedInstance.GetAllBuidldingSociety(URL: webservices().baseurl + API_GET_BUILDING,token: token as! String, param: param) { JSON in
+                        
+        Apicallhandler.sharedInstance.GetAllBuidldingSociety(token: token! as! String, param: param) { JSON in
+                            
+                                            
                 
                 switch JSON.result{
                 case .success(let resp):

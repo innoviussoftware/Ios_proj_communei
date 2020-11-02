@@ -25,9 +25,9 @@ protocol  Invite {
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate{
+class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate{
     
-    @IBOutlet weak var lbldays: UILabel!
+ //   @IBOutlet weak var lbldays: UILabel!
     
     @IBOutlet weak var lblonce: UIView!
     
@@ -35,6 +35,10 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
     
     @IBOutlet weak var lbllineonce: UILabel!
     
+    @IBOutlet weak var lbllineSingle: UILabel!
+
+    @IBOutlet weak var lbllineMulti: UILabel!
+
     
     @IBOutlet weak var lbllinefrequent: UILabel!
     
@@ -64,15 +68,20 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
     
     @IBOutlet weak var lblmanually: UILabel!
     
+    @IBOutlet weak var lblrecent: UILabel!
+
+    
     @IBOutlet weak var txtcontact1: UITextField!
        
-   // @IBOutlet weak var txtRecentally1: UITextField!
 
     @IBOutlet weak var txtmanually1: UITextField!
     
+    @IBOutlet weak var txtRecentally1: UITextField!
+
+    
     @IBOutlet weak var txtcontact12: UITextField!
           
-  //  @IBOutlet weak var txtRecentally12: UITextField!
+    @IBOutlet weak var txtRecentally12: UITextField!
 
     @IBOutlet weak var txtmanually12: UITextField!
     
@@ -80,17 +89,30 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
     
     @IBOutlet weak var lblfreemanually: UILabel!
     
-    var hourary = ["1 hour" , "2 hour" , "4 hour" , "8 hour" , "12 hour"  ,"24 hour"]
+    @IBOutlet weak var collectionHours: UICollectionView!
+
+    
+    var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
+    
+   // var hourary = ["1 hour" , "2 hour" , "4 hour" , "8 hour" , "12 hour"  ,"24 hour"]
+
+    
     var selectedindex : Int = 0
     
     var delegate:Invite?
     
+    var isfrom = 1
     
     
     @IBAction func AddFromcontact(_ sender: Any) {
         
         delegate?.inviteaction(from: "contact")
     }
+    
+    @IBAction func AddFromRecent(_ sender: Any) {
+          
+          delegate?.inviteaction(from: "recent")
+      }
     
     @IBAction func ManuallyAction(_ sender: Any) {
         
@@ -107,9 +129,34 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
     }
     
     @IBAction func CloseAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+
+//        removeAnimate()
+//
+//        if isfrom == 0 {
+//            tabbarEnabled()
+//        }
         
-        removeAnimate()
         
+    }
+    
+    @IBAction func btnClose_hour(_ sender: Any) {
+        self.viewbottom.isHidden = true
+    }
+    
+    @IBAction func btnApply(_ sender: Any) {
+        self.viewbottom.isHidden = true
+    }
+    
+    @IBAction func btnReset(_ sender: Any) {
+        
+        txtvaildtill.text = hourary[0]
+
+        selectedindex = 0
+        
+        collectionHours.reloadData()
+
+        self.viewbottom.isHidden = true
     }
     
     var textfield = UITextField()
@@ -121,8 +168,8 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
-                     // Always adopt a light interface style.
-          overrideUserInterfaceStyle = .light
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
         }
         
         viewstatic.isHidden = true
@@ -131,8 +178,8 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         
         
         frequencyType = "once"
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        self.showAnimate()
+      //  self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+    //    self.showAnimate()
         
         self.viewmain.bringSubview(toFront:viewonce)
         viewonce.isHidden = false
@@ -144,6 +191,10 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         //viewselection.isHidden = true
         lbllineonce.isHidden = false
         lbllinefrequent.isHidden = true
+        
+        lbllineSingle.textColor = AppColor.borderColor
+        lbllineMulti.textColor = AppColor.lineSingleColor
+
         
         let tap = UITapGestureRecognizer()
         tap.addTarget(self, action: #selector(taponce))
@@ -168,12 +219,12 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         setborders(textfield: txtenddate)
         
         setborders(textfield: txtcontact1)
+        setborders(textfield: txtRecentally1)
         setborders(textfield: txtmanually1)
-       // setborders(textfield: txtRecentally1)
 
         setborders(textfield: txtcontact12)
         setborders(textfield: txtmanually12)
-      //  setborders(textfield: txtRecentally12)
+        setborders(textfield: txtRecentally12)
         
         txtdate.delegate = self
         txttime.delegate = self
@@ -192,11 +243,11 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         
         webservices.sharedInstance.PaddingTextfiled(textfield: txtcontact1)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtmanually1)
-      //  webservices.sharedInstance.PaddingTextfiled(textfield: txtRecentally1)
+        webservices.sharedInstance.PaddingTextfiled(textfield: txtRecentally1)
         
         webservices.sharedInstance.PaddingTextfiled(textfield: txtcontact12)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtmanually12)
-      //  webservices.sharedInstance.PaddingTextfiled(textfield: txtRecentally12)
+        webservices.sharedInstance.PaddingTextfiled(textfield: txtRecentally12)
 
         showTimepPicker()
         showDatePicker()
@@ -211,6 +262,13 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         
         lblcontact.isUserInteractionEnabled = true
         lblfrecontact.isUserInteractionEnabled = true
+        
+        lblrecent.isUserInteractionEnabled = true
+
+        
+        let tap12 = UITapGestureRecognizer()
+        tap12.addTarget(self, action: #selector(taprecent))
+        lblrecent.addGestureRecognizer(tap12)
         
         
         let tap3 = UITapGestureRecognizer()
@@ -240,14 +298,15 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         time =  txttime.text!
         
     }
+    
     override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
          NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
          
      }
+    
      override func viewWillDisappear(_ animated: Bool) {
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
-         
          
      }
     
@@ -297,6 +356,70 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
                               
                                    
                                }
+        }
+        
+    }
+    
+    @objc func taprecent()
+    {
+        if(frequencyType == "once"){
+            if(txtdate.text!.isEmpty)
+            {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter date")
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            else if(txttime.text!.isEmpty)
+            {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter time")
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            else if(txtvaildtill.text!.isEmpty)
+            {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid entry hours")
+                self.present(alert, animated: true, completion: nil)
+                
+            }else
+            {
+                
+                date = txtdate.text!
+                time = txttime.text!
+                validtill = txtvaildtill.text!
+                startdate = txtstartdate.text!
+                enddate = txtenddate.text!
+                
+                
+                delegate?.inviteaction(from: "recent")
+                
+            }
+        }
+        else{
+            
+            if(txtstartdate.text!.isEmpty)
+            {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter start date")
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            else if(txtenddate.text!.isEmpty)
+            {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please end date")
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            else
+            {
+                
+                date = txtdate.text!
+                time = txttime.text!
+                validtill = txtvaildtill.text!
+                startdate = txtstartdate.text!
+                enddate = txtenddate.text!
+                delegate?.inviteaction(from: "recent")
+                
+            }
+            
         }
         
     }
@@ -432,6 +555,12 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         //Formate Date
         datePicker.datePickerMode = .date
         
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        
         //ToolBar
         let toolbar = UIToolbar();
         toolbar.sizeToFit()
@@ -516,8 +645,8 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
             
             if (components.day! >= 0)
             {
-                lbldays.text =  (components.day! as NSNumber).stringValue + "days"
-                days = lbldays.text!
+               // lbldays.text =  (components.day! as NSNumber).stringValue + "days"
+             //   days = lbldays.text!
             }
             else{
                 let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
@@ -551,7 +680,7 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
             viewbottom.isHidden = false
             txtvaildtill.resignFirstResponder()
             
-            // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+           // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
         if(textField == txtdate)
         {
@@ -575,7 +704,7 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
             let cal = NSCalendar.current
             
             let components = cal.dateComponents([.day], from: date1, to: date2)
-            lbldays.text =  (components.day! as NSNumber).stringValue
+          //  lbldays.text =  (components.day! as NSNumber).stringValue
             
         }
         
@@ -599,6 +728,11 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
 //        viewselection.isHidden = false
         lbllineonce.isHidden = false
         lbllinefrequent.isHidden = true
+        
+        lbllineSingle.textColor = AppColor.borderColor
+        lbllineMulti.textColor = AppColor.lineSingleColor
+
+        
     }
     
     
@@ -609,6 +743,10 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         
         lbllineonce.isHidden = true
         lbllinefrequent.isHidden = false
+        
+        lbllineSingle.textColor = AppColor.lineSingleColor
+        lbllineMulti.textColor = AppColor.borderColor
+
         self.viewmain.bringSubview(toFront:viewfrequent)
         viewonce.isHidden = true
         viewfrequent.isHidden = false
@@ -631,26 +769,25 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         if(selectedindex == indexPath.row)
         {
             
-           // cell.lblname.backgroundColor = AppColor.appcolor
+          //  cell.lblname.backgroundColor = AppColor.appcolor
             
-            cell.lblname.backgroundColor = AppColor.orangeColor
+            cell.lblname.backgroundColor = AppColor.borderColor
             cell.lblname.textColor = UIColor.white
-            cell.lblname.layer.borderWidth = 0.0
-            
+           // cell.lblname.layer.borderWidth = 0.0
         }
         else{
             
-            cell.lblname.backgroundColor = UIColor.white
-            cell.lblname.textColor = UIColor.darkGray
-            cell.lblname.layer.borderColor = UIColor.lightGray.cgColor
-            cell.lblname.layer.borderWidth = 1.0
+            cell.lblname.backgroundColor = AppColor.lblFilterUnselect
+            cell.lblname.textColor = UIColor.white
+           // cell.lblname.layer.borderColor = UIColor.lightGray.cgColor
+          //  cell.lblname.layer.borderWidth = 1.0
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let numberOfSets = CGFloat(3.0)
+        let numberOfSets = CGFloat(4.0)
         
         let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
         
@@ -663,9 +800,9 @@ class AddguestPopup: UIViewController  , UICollectionViewDelegate , UICollection
         txtvaildtill.text = hourary[indexPath.row]
         
         selectedindex = indexPath.row
-        viewbottom.isHidden = true
+       // viewbottom.isHidden = true
         viewmain.backgroundColor = UIColor.white
-        collectionView.reloadData()
+        collectionHours.reloadData()
     }
     
     func showAnimate()

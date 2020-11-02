@@ -44,13 +44,34 @@ struct loginResponse: Codable {
 
 // MARK: - DataClass
 struct dataType: Codable {
-    let isExist, role: String?
-    let otp: Int?
+    let is_exist: Bool?
+    let role: String?
     let token: String?
+    let otp: String? //Int?
+    let Secret: String?
 
     enum CodingKeys: String, CodingKey {
-        case isExist = "is_exist"
-        case role, otp, token
+        case is_exist
+        case role, otp, token,Secret
     }
 }
+
+
+/*
+ 
+ // 19/10/20.
+ 
+ {
+     "status": 1,
+     "data": {
+         "is_exist": false,
+         "token": "",
+         "otp": "3632",
+         "Secret": "eyJpdiI6IkpDMWhBYVB4ZDE2T3FCY25vU1JKblE9PSIsInZhbHVlIjoiTHUyZXlsdG9DbWtRRWNqYmlsYUhGVVdIcVZVSFY4UFB2TEpwMityVEpvOD0iLCJtYWMiOiJmZTdiZWJkMjk0NjBiMjAwYjFkNTgxNDYxNTA2MWE0OGNiMTQ4Y2E3M2FhNjc2Y2M2NDk2MDM3OTE5MGYxYTc3In0="
+     },
+     "message": "Signup OTP sent successfully",
+     "isapporve": 0
+ }
+ 
+ */
 

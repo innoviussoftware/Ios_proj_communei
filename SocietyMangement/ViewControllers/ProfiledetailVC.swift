@@ -39,25 +39,29 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource  ,UIImagePickerControllerDelegate , UINavigationControllerDelegate , UITextFieldDelegate,memberrole,addedOther{
+class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,UIImagePickerControllerDelegate , UINavigationControllerDelegate , UITextFieldDelegate,memberrole,addedOther{
    
     @IBOutlet weak var txtViewProfessionDetail: IQTextView!
     
-    
     @IBOutlet weak var btnNotification: UIButton!
+    
     var pickerview = UIPickerView()
     var pickerview1 = UIPickerView()
     var pickerview2 = UIPickerView()
     var pickerview3 = UIPickerView()
     
     var isfrom : Int? = 0
-    var imgData = Data()
     
-    @IBOutlet weak var btnBack: UIButton!
+    var imgData = Data()
+        
     var member : Members?
+    
     var professionary = [Profession]()
     
     var selectedary = NSMutableArray()
+    
+    @IBOutlet weak var btnBack: UIButton!
+    
     @IBOutlet weak var imgview: UIImageView!
     
     @IBOutlet weak var lblname: UILabel!
@@ -74,9 +78,11 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
     
     @IBOutlet weak var txtprofdetail: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtbirthDate: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtGender: SkyFloatingLabelTextField!
+
     @IBOutlet weak var txtflattype: SkyFloatingLabelTextField!
-    
     
     @IBOutlet weak var txtaddress: SkyFloatingLabelTextField!
     
@@ -89,13 +95,32 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
     @IBOutlet weak var viewCamera: UIView!
 
     @IBOutlet weak var constraintHeightProfessionOther: NSLayoutConstraint!
+    
     @IBOutlet weak var txtProfessionOther: SkyFloatingLabelTextField!
+    
     @IBOutlet weak var constraintTopProfessionOther: NSLayoutConstraint!
     
     var strFlatType = ""
     
+    var datePicker = UIDatePicker()
     
-    var bloodgroupary = ["O+","O-","A-","A+","AB-","AB+","B-","B+"]
+    var activeTextField : UITextField!
+    
+    var SelectedGender : Int! = 0
+    
+    var professiongroupId = Int()
+    
+    var strGender = "Male"
+
+    var arrGender = ["Male","Female","Prefer not to say"]
+    
+    var bloodgroupId = Int()
+
+    var SelectedBlodGroup : Int! = 0
+
+    var bloodgroupary = [BloodGroup]()
+   // ["O+","O-","A-","A+","AB-","AB+","B-","B+"]
+    
     var flatary = ["Owner" ,"Tenant"]
     var Roleary  = ["Member" ,"Comimitee member" ,"Secretory" ,"Join Secretory" ,"President" ,"Treasure"]
     
@@ -139,11 +164,22 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
             self.present(alert, animated: true, completion: nil)
             
-        }else if !txtcontact.hasText{
+        }/*else if !txtcontact.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter mobile number")
             self.present(alert, animated: true, completion: nil)
             
-        }else if !txtprofession.hasText{
+        }*/
+        else if(txtbirthDate.text == "")
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select birthdate")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if(txtbloodgroup.text == "")
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select bloodgroup")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if !txtprofession.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession")
             self.present(alert, animated: true, completion: nil)
             
@@ -152,7 +188,16 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             self.present(alert, animated: true, completion: nil)
             
         }
-         else if(UsermeResponse?.data!.flatType == "Owner of flat")
+        else if !txtprofession.hasText{
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession")
+            self.present(alert, animated: true, completion: nil)
+            
+        }else if !txtViewProfessionDetail.hasText{
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession details")
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+         else if(UsermeResponse?.data!.userTypeName == "Resident Owner")
          {
            if !txtflattype.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
@@ -165,10 +210,15 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                 return
                }
             }
+        
         }else if !txtcontact.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter mobile number")
             self.present(alert, animated: true, completion: nil)
             
+        }else if(txtbirthDate.text == "")
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select birthdate")
+            self.present(alert, animated: true, completion: nil)
         }else if !txtprofession.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession")
             self.present(alert, animated: true, completion: nil)
@@ -177,8 +227,8 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession details")
             self.present(alert, animated: true, completion: nil)
             
-        }
-        else if(UsermeResponse?.data!.flatType == "Owner of flat")
+        } // flatType = UserTypeName
+        else if(UsermeResponse?.data!.userTypeName == "Owner of flat")
                {
                  if !txtflattype.hasText{
                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
@@ -226,6 +276,8 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
       //  setrightviewnew(textfield:txtbloodgroup, image: #imageLiteral(resourceName: "icons8-chevron-down-30"))
         
         
+        ApiCallGetBlood()
+        
         pickerview.delegate = self
         pickerview.dataSource = self
         
@@ -238,7 +290,7 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         pickerview3.delegate = self
         pickerview3.dataSource = self
         
-        if(isfrom == 0)
+        if(isfrom == 0) || (isfrom == 1)
         {
             
               if(revealViewController() != nil)
@@ -279,18 +331,20 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                 }
             }
             
-        } else if isfrom == 2{
+        }else if isfrom == 2{
                       btnBack.setImage(UIImage(named:"ic_back-1"), for: .normal)
                        btnsave.isHidden = false
                        txtname.isUserInteractionEnabled = true
                        txtemail.isUserInteractionEnabled = true
-                       txtcontact.isUserInteractionEnabled = true
+                       txtcontact.isUserInteractionEnabled = false
                        txtprofession.isUserInteractionEnabled = true
                        txtprofdetail.isUserInteractionEnabled = true
                        txtflattype.isUserInteractionEnabled = true
                        txtbloodgroup.isUserInteractionEnabled = true
                        txtmember.isUserInteractionEnabled = true
                        txtaddress.isUserInteractionEnabled = true
+                        txtbirthDate.isUserInteractionEnabled = true
+                        txtGender.isUserInteractionEnabled = true
                        imgview.isUserInteractionEnabled = true
                        
                        if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
@@ -355,7 +409,8 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         toolBar.sizeToFit()
         txtbloodgroup.inputAccessoryView = toolBar
         txtbloodgroup.inputView = pickerview
-        
+        pickerview.backgroundColor = UIColor.white
+
         
         
         let toolBar1 = UIToolbar()
@@ -391,8 +446,7 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         txtflattype.inputView = pickerview2
         
         
-        
-        if(isfrom == 0)
+        if(isfrom == 0) || (isfrom == 1)
         {
             txtname.text = UsermeResponse?.data!.name
             
@@ -400,15 +454,17 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             
             lblname.text = UsermeResponse?.data!.name
             
-            if UsermeResponse?.data!.image != nil{
-                imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.image)!), placeholderImage: UIImage(named: "img_default"))
+            if UsermeResponse?.data!.profilePhotoPath != nil{
+                imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
             }
             
             lblcontact.text = UsermeResponse?.data!.phone
             
             txtemail.text = UsermeResponse?.data!.email
             
-            if UsermeResponse?.data!.profession == "other"{
+            // 21/10/20. temp comment
+            
+           /* if UsermeResponse?.data!.profession == "other"{
                  txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession_other)
             }else{
                 txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession)
@@ -427,22 +483,24 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                 txtflattype.heightAnchor.constraint(equalToConstant: 0).isActive = true
                 txtflattype.isHidden = true
                 
-            }
+            } */
             if(UsermeResponse != nil)
             {
-                if(UsermeResponse?.data!.flatType != nil)
+                if(UsermeResponse?.data!.userTypeName != nil)
                 {
-            strFlatType = setOptionalStr(value: UsermeResponse?.data!.flatType)!
+                    strFlatType = (UsermeResponse?.data!.userTypeName)!
                 }
-                if(UsermeResponse?.data!.occupancy != nil)
+//                if(UsermeResponse?.data!.occupancy != nil)
+//                {
+//                    txtflattype.text = setOptionalStr(value: UsermeResponse?.data!.occupancy)
+//                }
+                if(UsermeResponse?.data!.bloodGroupID != nil)
                 {
-            txtflattype.text = setOptionalStr(value: UsermeResponse?.data!.occupancy)
+                    txtbloodgroup.text = UsermeResponse?.data!.bloodGroupName
                 }
-                if(UsermeResponse?.data!.bloodgroup != nil)
-                             {
-            txtbloodgroup.text = setOptionalStr(value: UsermeResponse?.data!.bloodgroup)
-                }
+                
             }
+            
             // txtaddress.text = UsermeResponse?.data.address
             
             
@@ -454,15 +512,15 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                         
                         lblname.text = UsermeResponse?.data!.name
                         
-                        if UsermeResponse?.data!.image != nil{
-                            imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.image)!), placeholderImage: UIImage(named: "img_default"))
+                        if UsermeResponse?.data!.profilePhotoPath != nil{
+                            imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
                         }
                         
                         lblcontact.text = UsermeResponse?.data!.phone
                         
                         txtemail.text = UsermeResponse?.data!.email
                         
-                        if UsermeResponse?.data!.profession == "other"{
+                     /*   if UsermeResponse?.data!.profession == "other"{
                              txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession_other)
                         }else{
                             txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession)
@@ -481,20 +539,20 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                             txtflattype.heightAnchor.constraint(equalToConstant: 0).isActive = true
                             txtflattype.isHidden = true
                             
-                        }
+                        } */
                         if(UsermeResponse != nil)
                         {
-                            if(UsermeResponse?.data!.flatType != nil)
+                            if(UsermeResponse?.data!.userTypeName != nil)
                             {
-                        strFlatType = setOptionalStr(value: UsermeResponse?.data!.flatType)!
+                        strFlatType = (UsermeResponse?.data!.userTypeName)!
                             }
-                            if(UsermeResponse?.data!.occupancy != nil)
+                            if(UsermeResponse?.data!.userTypeName != nil)
                             {
-                        txtflattype.text = setOptionalStr(value: UsermeResponse?.data!.occupancy)
+                        txtflattype.text = UsermeResponse?.data!.userTypeName
                             }
-                            if(UsermeResponse?.data!.bloodgroup != nil)
+                            if(UsermeResponse?.data!.bloodGroupID != nil)
                                          {
-                        txtbloodgroup.text = setOptionalStr(value: UsermeResponse?.data!.bloodgroup)
+                        txtbloodgroup.text =  UsermeResponse?.data!.bloodGroupName
                             }
                         }
 
@@ -522,15 +580,24 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             txtViewProfessionDetail.text = member?.professionDetail
             //txtViewProfessionDetail.placeholder = ""
             
-            txtflattype.text = member?.flatType
+            // 22/10/20. temp comment
+          /*  txtflattype.text = member?.flatType
             strFlatType = (member?.flatType)!
-            txtbloodgroup.text = member?.bloodgroup
+            txtbloodgroup.text = member?.bloodgroup */
             // txtaddress.text = member?.ad
             
         }
         
-        
         txtcontact.isUserInteractionEnabled = false
+
+        
+        txtGender.addTarget(self, action: #selector(OpenPicker(txt:)), for: .editingDidBegin)
+        txtGender.addDoneOnKeyboardWithTarget(self, action: #selector(DoneGender), shouldShowPlaceholder: true)
+        
+        showDatePicker()
+
+      //  self.txtbirthDate.setInputViewDatePicker(target: self, selector: #selector(tapDone)) //1
+
         
         let tap = UITapGestureRecognizer()
         tap.addTarget(self, action: #selector(tapviewCameraimage))
@@ -543,6 +610,125 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         imgview.addGestureRecognizer(tap) */
         
     // imgview.isUserInteractionEnabled = true
+        
+    }
+    
+    
+   /* @objc func tapDone() {
+        if let datePicker = self.txtbirthDate.inputView as? UIDatePicker { // 2-1
+            let dateformatter = DateFormatter() // 2-2
+            dateformatter.dateStyle = .medium // 2-3
+            self.txtbirthDate.text = dateformatter.string(from: datePicker.date) //2-4
+        }
+        self.txtbirthDate.resignFirstResponder() // 2-5
+    } */
+    
+    func showDatePicker(){
+        //Formate Date
+        datePicker.datePickerMode = .date
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+
+        //ToolBar
+        let toolbar = UIToolbar();
+        
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.tintColor = UIColor.black
+        toolbar.sizeToFit()
+        
+        //done button & cancel button
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
+        datePicker.maximumDate = Date()
+        txtbirthDate.inputAccessoryView = toolbar
+        txtbirthDate.inputView = datePicker
+        
+    }
+    
+    @objc func donedatePicker(){
+        //For date formate
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        txtbirthDate.text = formatter.string(from: datePicker.date)
+        //dismiss date picker dialog
+        self.view.endEditing(true)
+    }
+    
+    @objc func cancelDatePicker(){
+        //cancel button dismiss datepicker dialog
+        self.view.endEditing(true)
+    }
+    
+    // MARK: - get Blood
+       
+       func ApiCallGetBlood()
+       {
+             if !NetworkState().isInternetAvailable {
+                            ShowNoInternetAlert()
+                            return
+                        }
+               webservices().StartSpinner()
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiCallGetBlood(URL: webservices().baseurl + "communei/blood-groups", token: token as! String) { JSON in
+           
+                   switch JSON.result{
+                   case .success(let resp):
+                       
+                       webservices().StopSpinner()
+                       if(JSON.response?.statusCode == 200)
+                       {
+                           
+                           self.bloodgroupary = resp.data
+                           self.pickerview.reloadAllComponents()
+                           
+                       }
+                       else
+                       {
+                           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                           self.present(alert, animated: true, completion: nil)
+                           
+                       }
+                       
+                       print(resp)
+                   case .failure(let err):
+                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       self.present(alert, animated: true, completion: nil)
+                       print(err.asAFError)
+                       webservices().StopSpinner()
+                       
+                   }
+                   
+               }
+               
+           
+       }
+    
+    //MARK:- openPicker
+    
+    @objc func OpenPicker(txt:UITextField) {
+        activeTextField = txt
+        
+        if pickerview != nil{
+            pickerview.removeFromSuperview()
+        }
+        
+        pickerview = UIPickerView()
+        pickerview.delegate = self
+        pickerview.dataSource = self
+       
+        activeTextField.inputView = pickerview
+        pickerview.backgroundColor = UIColor.white
         
     }
     
@@ -590,25 +776,26 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         
     } */
     
-    @objc func donePressed()
-        
-    {
-        if(txtbloodgroup.text == "")
-        {
-            txtbloodgroup.text = bloodgroupary[0]
+    @IBAction func actionNotification(_ sender: Any) {
+             let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+              vc.isfrom = 0
+           }
+          
+          @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+              let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+              vc.isfrom = 0
+          }
+    
+    @objc func donePressed() {
             txtbloodgroup.resignFirstResponder()
-        }
-        else
-        {
-            txtbloodgroup.resignFirstResponder()
-            
-        }
+            txtbloodgroup.text = bloodgroupary[SelectedBlodGroup].name
+            bloodgroupId = bloodgroupary[SelectedBlodGroup].id
     }
+    
     @objc func donePressed1()
-        
     {
-          if(txtprofession.text == "")
-              {
+//          if(txtprofession.text == "")
+//              {
                   
                 txtProfessionOther.isHidden = true
                 constraintHeightProfessionOther.constant = 0
@@ -616,19 +803,25 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                 
                 txtprofession.text = professionary[0].name
                   
+            professiongroupId = professionary[0].id
+
                   txtprofession.resignFirstResponder()
-              }
-              else
-              {
-                  txtprofession.resignFirstResponder()
-                  
-            }
+        
+ //             }
+//              else
+//              {
+//                  txtprofession.resignFirstResponder()
+//
+//            }
               
         if(txtprofession.text == "other")
         {
             txtProfessionOther.isHidden = false
             constraintHeightProfessionOther.constant = 50
             constraintTopProfessionOther.constant = 10
+            
+            professiongroupId = 0
+
             
 //            let avc = storyboard?.instantiateViewController(withClass: ProfessionPopUP.self)
 //            avc!.delegate = self
@@ -664,13 +857,26 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         }
     }
     
-    @IBAction func actionNotification(_ sender: Any) {
+    @objc func DoneGender()  {
+        activeTextField.resignFirstResponder()
+        txtGender.text = arrGender[SelectedGender]
+        
+        if arrGender[SelectedGender] == "Male"{
+            strGender = "Male"
+        }else if arrGender[SelectedGender] == "Female"{
+            strGender = "Female"
+        }else{
+            strGender = "Prefer not to say"
+        }
+    }
+    
+   /* @IBAction func actionNotification_clickbtn(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
         
-    }
+    } */
     
     @objc  func cancelPressed() {
         view.endEditing(true) // or do something
@@ -726,6 +932,9 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             return flatary.count
             
         }
+        else if activeTextField == txtGender{
+            return arrGender.count
+        }
         else{
             return bloodgroupary.count
         }
@@ -749,9 +958,12 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             return flatary[row]
             
         }
+        else if activeTextField == txtGender{
+            return arrGender[row]
+        }
         else
         {
-            return bloodgroupary[row]
+            return bloodgroupary[row].name
         }
         
     }
@@ -773,9 +985,14 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             txtflattype.text = flatary[row]
             
         }
+        else if activeTextField == txtGender{
+            SelectedGender = row
+        }
         else
         {
-            txtbloodgroup.text = bloodgroupary[row]
+            txtbloodgroup.text = bloodgroupary[row].name
+            SelectedBlodGroup = row
+
         }
         
     }
@@ -844,7 +1061,7 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
     //MARK:- Add Circilar API
     func apicallUpdateProfile() {
         
-        let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+        let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
         
         var str = ""
         if txtProfessionOther.text!.count > 0{
@@ -853,21 +1070,41 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             str = ""
         }
         
+        if txtprofession.text == "other" {
+            professiongroupId = 0
+        }
+        
         webservices().StartSpinner()
+//        let param : Parameters = [
+//            "name":txtname.text!,
+//            "email":txtemail.text!,
+//            "phone":txtcontact.text!,
+//            "profession":txtprofession.text!,
+//            "profession_detail":txtViewProfessionDetail.text!,
+//            "bloodgroup":txtbloodgroup.text!,
+//            "profession_other" : str,
+//            "flattype":strFlatType,
+//            "occupancy":txtflattype.text!
+//        ]
+        
+        
         let param : Parameters = [
-            "name":txtname.text!,
-            "email":txtemail.text!,
-            "phone":txtcontact.text!,
-            "profession":txtprofession.text!,
-            "profession_detail":txtViewProfessionDetail.text!,
-            "bloodgroup":txtbloodgroup.text!,
-            "profession_other" : str,
-            "flattype":strFlatType,
-            "occupancy":txtflattype.text!
-        ] 
+           // "ProfilePicture": imgData,
+            "Name":txtname.text!,
+            "Email":txtemail.text!,
+            "Phone":txtcontact.text!,
+            "DateOfBirth": txtbirthDate.text!,
+            "BloodGroup": bloodgroupId, //txtbloodgroup.text!,
+            "Gender": txtGender.text!,
+            "Profession": professiongroupId, //txtprofession.text!,
+            "ProfessionDetails":txtViewProfessionDetail.text!,
+            "UserType":txtflattype.text!
+        ]
+        
+        print("param : ",param)
         
         AF.upload(
-            multipartFormData: { MultipartFormData in
+            multipartFormData: { [self] MultipartFormData in
                 
                 let date = Date()
                 let formatter = DateFormatter()
@@ -875,21 +1112,26 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                 let strFileName = formatter.string(from: date)
                 
                 
-                
                 for (key, value) in param {
                     MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
                 }
                 
-                if self.imgData.count != 0{
-                    MultipartFormData.append(self.imgData, withName: "profile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+
+                if UsermeResponse?.data!.profilePhotoPath != nil
+                {
+                   // let imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)
+                    MultipartFormData.append(imgData, withName: "ProfilePicture", fileName: "\(strFileName).jpeg", mimeType: "image/jpeg")
                 }
                 
                 
-        }, to:  webservices().baseurl + API_UPDATE_PROFILE,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+                
+        }, to:  webservices().baseurl + API_UPDATE_PROFILE , headers:["Authorization": "Bearer "+token]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
-            
             print("Upload Progress: \(progress.fractionCompleted)")
+            
+            webservices().StopSpinner()
+
         })
             .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                 
@@ -929,8 +1171,9 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
             
             let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
             webservices().StartSpinner()
-            Apicallhandler.sharedInstance.ApiCallUserMe(token: token) { JSON in
-                
+           // Apicallhandler.sharedInstance.ApiCallUserMe(token: token) { JSON in
+             
+            Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token ) { JSON in
                 
                 switch JSON.result{
                 case .success(let resp):
@@ -939,17 +1182,34 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                     {
                         UsermeResponse = resp
                         
-                          let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                         //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                         
                         //  let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
                         
                        // let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
 
-                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
-                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                       // let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                         
-                    //self.navigationController?.popViewController(animated: true)
-                        
+                        if(self.isfrom == 1){
+                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                            
+                            self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+                            
+                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
+                        }else{
+                            
+                            self.navigationController?.popViewController(animated: true)
+
+//                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+//
+//                            self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+//
+//                            self.navigationController?.popViewController(animated: true)
+
+
+                        }
+                                
                     }
                     
                     print(resp)
@@ -1011,7 +1271,7 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                         for dic in resp.data
                         {
                             
-                            if(self.isfrom == 0)
+                            if(self.isfrom == 0) || (self.isfrom == 1)
                             {
                                 
                                 //                            if((UsermeResponse?.data.memberRole.contains(dic.id))!)
@@ -1066,7 +1326,14 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "professional") { JSON in
+           // Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions") { JSON in
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions", token: token as! String) { JSON in
+           
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -1102,5 +1369,30 @@ class ProfiledetailVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
     
     
     
+    
+}
+
+
+extension UITextField {
+    
+    func setInputViewDatePicker(target: Any, selector: Selector) {
+        // Create a UIDatePicker object and assign to inputView
+        let screenWidth = UIScreen.main.bounds.width
+        let datePicker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 216))//1
+        datePicker.datePickerMode = .date //2
+        self.inputView = datePicker //3
+        
+        // Create a toolbar and assign it to inputAccessoryView
+        let toolBar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: screenWidth, height: 44.0)) //4
+        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) //5
+        let cancel = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: #selector(tapCancel)) // 6
+        let barButton = UIBarButtonItem(title: "Done", style: .plain, target: target, action: selector) //7
+        toolBar.setItems([cancel, flexible, barButton], animated: false) //8
+        self.inputAccessoryView = toolBar //9
+    }
+    
+    @objc func tapCancel() {
+        self.resignFirstResponder()
+    }
     
 }

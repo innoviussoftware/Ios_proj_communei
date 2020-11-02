@@ -8,6 +8,9 @@
 
 import UIKit
 import SWRevealViewController
+
+import Alamofire
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -180,7 +183,7 @@ class BuildingsVC: UIViewController , UICollectionViewDelegate , UICollectionVie
         
        // webservices.sharedInstance.setShadow(view:cell.innerview)
         
-        cell.lblname.text =  self.buildingary[indexPath.row].name
+        cell.lblname.text =  self.buildingary[indexPath.row].PropertyName
         
         cell.btnedit.tag = indexPath.row
         cell.btndelete.tag = indexPath.row
@@ -225,11 +228,11 @@ class BuildingsVC: UIViewController , UICollectionViewDelegate , UICollectionVie
       
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                              let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                                                             avc?.titleStr = "Society Buddy"
-                                                             avc?.subtitleStr = "Are you sure you want to delete \(self.buildingary[sender.tag].name)?"
+                                                             avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
+                                                             avc?.subtitleStr = "Are you sure you want to delete \(self.buildingary[sender.tag].PropertyName)?"
                                                              avc?.yesAct = {
                                                                    
-                                                                      self.apicallDeleteBuilding(id: (self.buildingary[sender.tag].id as NSNumber).stringValue)
+                                                                      self.apicallDeleteBuilding(id: (self.buildingary[sender.tag].PropertyID as NSNumber).stringValue)
 
                                                                  }
                                                              avc?.noAct = {
@@ -269,7 +272,20 @@ class BuildingsVC: UIViewController , UICollectionViewDelegate , UICollectionVie
             let strSociId  = (SociId as NSNumber).stringValue
             
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSociId) { JSON in
+          
+        // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSociId) { JSON in
+                
+                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+            
+                 let param : Parameters = [
+                     "Phone" : mobile!,
+                     "Secret" : secret,
+                     "Society" : strSociId
+                 ]
+                
+                        
+                Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
+                   
                 switch JSON.result{
                 case .success(let resp):
                     

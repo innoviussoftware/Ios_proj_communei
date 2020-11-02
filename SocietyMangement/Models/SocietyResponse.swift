@@ -22,15 +22,22 @@ struct SocietyResponse: Codable {
 
 // MARK: - Datum
 struct Society: Codable {
-    let id: Int
-    let address: String
-    let areaID: Int
-    let name: String
+    let SocietyID: Int
+   // let AddressID: Int
+    let AreaID: Int
+    let SocietyName: String
+    
+//    let Logo: String
+//    let Latitude: String
+//    let Longitude: String
+//    let guid: String
     
     enum CodingKeys: String, CodingKey {
-        case id, address
-        case areaID = "area_id"
-        case name
+        case SocietyID //, AddressID
+        case AreaID
+        case SocietyName = "SocietyName"
+        
+      //  case Logo, Latitude, Longitude, guid
     }
 }
 
@@ -71,3 +78,28 @@ struct Society: Codable {
 //        case updateDate = "update_date"
 //    }
 //}
+
+
+
+/*
+ 
+ // 20/10/20.
+ 
+ {
+     "data": [
+         {
+             "SocietyID": 5,
+             "SocietyName": "Vasantha Valley",
+             "AreaID": 9,
+             "AddressID": null,
+             "Logo": null,
+             "Latitude": null,
+             "Longitude": null,
+             "guid": null
+         }
+     ],
+     "status": 1,
+     "message": "Get societies done"
+ }
+ 
+ */

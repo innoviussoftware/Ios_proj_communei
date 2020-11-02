@@ -15,6 +15,9 @@ import SWRevealViewController
 class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var tblView: UITableView!
+    
+    @IBOutlet weak var lblSigle_Multiple: UILabel!
+
     var arrInvitedmember = NSMutableArray()
     
     @IBOutlet weak var lblTodayFrequentDataShow: UILabel!
@@ -39,18 +42,28 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         var endDate = ""
             
             if frequencyType == "once"{
+                lblSigle_Multiple.text = "Allow Single Visit"
+
                 strDateee = strChangeDateFormate(strDateeee: date)
             }else{
+                
+                lblSigle_Multiple.text = "Allow Multiple Visits"
                 strDateee = strChangeDateFormate(strDateeee: startdate)
                 endDate = strChangeDateFormate(strDateeee: enddate)
             }
         
         if frequencyType == "once"{
+            lblSigle_Multiple.text = "Allow Single Visit"
+
             lblTodayFrequentDataShow.text = strDateee
 
            // lblTodayFrequentDataShow.text = date
         }else{
-            lblTodayFrequentDataShow.text = "\(strDateee) to \(endDate)"
+            lblSigle_Multiple.text = "Allow Multiple Visits"
+
+            lblTodayFrequentDataShow.text = "between \(strDateee) and \(endDate)"
+            
+            // Allow Multiple Visits between 25-08-2020 and 29-08-2020
 
           //  lblTodayFrequentDataShow.text = "\(startdate) to \(enddate)"
         }
@@ -92,12 +105,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             avc?.titleStr = "Frequent entry"
-            avc?.stckVw.isHidden = true
-            avc?.lblline1.isHidden = true
-            avc?.lblline2.isHidden = true
-            avc?.btnOk.isHidden = false
-            
-                    avc?.subtitleStr = "Frequent entry added successfully"
+            avc?.isfrom = 0
+
+            avc?.subtitleStr = "Frequent entry added successfully"
                             avc?.yesAct = {
                                                             
                                             self.apicallFrequentEntry(id: "")
@@ -220,10 +230,14 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                      //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                      //  let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                        
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+                        let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+                                                
+                        self.navigationController?.pushViewController(initialViewController, animated: true)
+
+                        
+                     /*   let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         
                         let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
                         
@@ -234,24 +248,8 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                         self.appDelegate.window?.rootViewController = navigationController
                         
                         self.appDelegate.window?.makeKeyAndVisible()
-                        
-                      //  let nextViewController = self.pushViewController(withName:NewHomeVC.id(), fromStoryboard: "Main") as! NewHomeVC
-
-                        
-                      //  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
-                    // self.navigationController?.pushViewController(nextViewController, animated: true)
-
-                        
-                        //                        // create the alert
-                        //                        let alert = UIAlertController(title: Alert_Titel, message:"Entry Successfully." , preferredStyle: UIAlertController.Style.alert)
-                        //                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                        //                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                        //                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                        //                            self.navigationController?.pushViewController(nextViewController, animated: true)
-                        //                        }))
-                        //                        // show the alert
-                        //                        self.present(alert, animated: true, completion: nil)
-                        
+                     
+                        */
                     }
                     else
                     {

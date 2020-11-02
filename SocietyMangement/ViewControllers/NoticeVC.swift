@@ -19,10 +19,13 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate ,UITextFieldDelegate{
+class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFieldDelegate{
     
     @IBOutlet weak var btnMenu: UIButton!
     @IBOutlet weak var txttype: UITextField!
+    
+    @IBOutlet weak var vwbtnadd: UIView!
+
     @IBOutlet weak var btnadd: UIButton!
     
     @IBOutlet weak var lblTitel: UILabel!
@@ -110,15 +113,17 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
             
-            if(str.contains("Chairman")  || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
                 btnadd.isHidden = false
+                vwbtnadd.isHidden = false
                 
                 self.toptblConstraint.constant = 0
 
             }
-            else{
+            else{ // resident
                 self.toptblConstraint.constant = -60
+                vwbtnadd.isHidden = true
 
                 btnadd.isHidden = true
                 
@@ -140,6 +145,9 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
         //        }
         // Do any additional setup after loading the view.
         
+        // 12/9/20.
+        // temparary
+        
         APPDELEGATE.apicallUpdateNotificationCount(strType: "2")
         
     }
@@ -150,12 +158,20 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
     }
     //Mark: Pull to refresh action
 
-        @objc func refresh(sender:AnyObject) {
+    @objc func refresh(sender:AnyObject) {
             
-            apicallGetNotices()
-           }
+        apicallGetNotices()
+    }
            
-    
+    @IBAction func actionNotification(_ sender: Any) {
+         let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+          vc.isfrom = 0
+       }
+      
+      @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+          let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+          vc.isfrom = 0
+      }
     
     @objc func AcceptRequest(notification: NSNotification) {
         
@@ -234,7 +250,7 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
     }
     
     @objc  func sendNotification(sender:UIButton) {
-        let strId = "\(noticeary[sender.tag].id!)"
+        let strId = "\(noticeary[sender.tag].noticeID!)"
         APPDELEGATE.apicallReminder(strType: "1", id: strId)
         
     }
@@ -270,26 +286,27 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
          cell!.btnNotification.tag = indexPath.row
         
         cell?.lblTitel.text = noticeary[indexPath.row].title
-        cell?.lblDate.text = strChangeDateFormate(strDateeee: noticeary[indexPath.row].createdAt!)
+        cell?.lblDate.text = strChangeDateFormate(strDateeee: noticeary[indexPath.row].visibleTill!)
         cell?.btnDownload.isHidden = true
        
-        let hight = getLabelHeight(text: noticeary[indexPath.row].datumDescription!, width:(cell?.bounds.width)! - 32 , font: UIFont(name:"Gotham-Light", size: 14)!)
+      //  let hight = getLabelHeight(text: noticeary[indexPath.row].datumDescription, width:(cell?.bounds.width)! - 32 , font: UIFont(name:"Gotham-Light", size: 14)!)
         
-           if hight >  34{
-            cell?.btnReadMore.isHidden = false
-           }else{
-               cell?.btnReadMore.isHidden = true
-           }
+// 28/10/20.
+//           if hight >  34{
+//            cell?.btnReadMore.isHidden = false
+//           }else{
+//               cell?.btnReadMore.isHidden = true
+//           }
 
         
-        if arrReadMore.contains(noticeary[indexPath.row].id){
+        if arrReadMore.contains(noticeary[indexPath.row].noticeID!){
             cell?.lblDiscription.numberOfLines = 0
             cell!.lblDiscription.lineBreakMode = .byWordWrapping
             cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
             cell?.btnReadMore.setTitle("Read Less <", for:.normal)
             
         }else{
-            cell!.lblDiscription.numberOfLines = 3
+            cell!.lblDiscription.numberOfLines = 4
             cell!.lblDiscription.lineBreakMode = .byTruncatingTail
             cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
             cell?.btnReadMore.setTitle("Read More >", for:.normal)
@@ -324,7 +341,8 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
             
-            if(str.contains("Chairman") || str.contains("Secretory"))
+            // if(str.contains("Chairman") || str.contains("Secretory"))
+            if(str.contains("society_admin"))
             {
                 cell?.btnEdit.isHidden = false
                 cell?.btnDelete.isHidden = false
@@ -366,13 +384,13 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
     @objc func deletebuilding(sender:UIButton)
     {
         
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+      //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-            avc?.titleStr = "Society Buddy"
-            avc?.subtitleStr = "Are you sure you want to delete \(self.noticeary[sender.tag].title!)?"
+            avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
+        avc?.subtitleStr = "Are you sure you want to delete \(self.noticeary[sender.tag].title ?? "")?"
             avc?.yesAct = {
                   
-                     self.apicallDeleteNotice(id: String(format: "%d",  self.noticeary[sender.tag].id!))
+                self.apicallDeleteNotice(id: String(format: "%d",  self.noticeary[sender.tag].noticeID!))
 
                 }
             avc?.noAct = {
@@ -401,16 +419,16 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
     
     @objc func readmore(sender:UIButton)
     {
-        if arrReadMore.contains(noticeary[sender.tag].id) {
-            arrReadMore.remove(noticeary[sender.tag].id)
+        if arrReadMore.contains(noticeary[sender.tag].noticeID) {
+            arrReadMore.remove(noticeary[sender.tag].noticeID)
         }else{
-            arrReadMore.add(noticeary[sender.tag].id)
+            arrReadMore.add(noticeary[sender.tag].noticeID)
         }
         
         vwReadMore.isHidden = false
         
         lblTitel.text = noticeary[sender.tag].title
-        lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].createdAt!)
+        lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].visibleTill!)
         txtvwDiscription.text = noticeary[sender.tag].datumDescription
 
        // tblview.reloadData()
@@ -446,13 +464,21 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
                              ShowNoInternetAlert()
                              return
                          }
+        let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
+
             webservices().StartSpinner()
-            Apicallhandler().GetAllNotice(URL: webservices().baseurl + API_GET_NOTICE, token:UserDefaults.standard.value(forKey: USER_TOKEN)! as! String) { JSON in
+            Apicallhandler().GetAllNotice(URL: webservices().baseurl + API_GET_NOTICE, token:strToken) { JSON in
+                
+                let statusCode = JSON.response?.statusCode
+
                 switch JSON.result{
                 case .success(let resp):
                     self.refreshControl.endRefreshing()
                     webservices().StopSpinner()
-                    if(resp.status == 1)
+                   // if(resp.status == 1)
+                    
+                   // if(resp.status == true)
+                    if statusCode == 200
                     {
                         self.noticeary = resp.data
                         self.lblnoproperty.isHidden = true
@@ -506,11 +532,11 @@ class NoticeVC: UIViewController  , UITableViewDataSource , UITableViewDelegate 
                         
                         return
                     }
-                    
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
-                    
+                    // 28/10/20. temp comment
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                   
+                    print(err.asAFError!)
                     
                 }
                 

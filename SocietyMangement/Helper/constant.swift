@@ -37,17 +37,20 @@ struct AlertConstants {
   static let OK = "Ok"
   static let CANCEL = "Cancel"
   static let DONE = "Done"
-    static let SUBMIT = "Submit"
+  static let SUBMIT = "Submit"
     
 }
 
 let USER_ROLE = "role"
-let USER_TOKEN = "user_token"
+
+let USER_SECRET = "Secret"
+
+let USER_TOKEN = "token"
 let USER_ID = "user_id"
 let USER_NAME = "user_name"
 let USER_EMAIL = "user_email"
 let USER_PHONE = "user_phone"
-let USER_SOCIETY_ID = "user_societyid"
+let USER_SOCIETY_ID =  "Society"   // "user_societyid" // "SocietyID" //
 let USER_PROFILE_PIC = "profile_img"
 
 let USER_BUILDING_ID = "building_id"
@@ -67,56 +70,64 @@ let USER_MEMBER_SHOW = "user_member_show"
 
 //API Name
 
+// post
 
-
-let APILogin = "loginotp"
-let APIRegister = "register"
-let API_GET_CITY = "get/city"
-let API_GET_AREA = "get/area"
-let API_GET_SOCIETY = "get/society"
-let API_GET_BUILDING = "get/building"
-let API_GET_FLAT = "get/flat"
+let APILogin =  "user/signin/otp"      //"loginotp"
+let APIRegister = "user/register"      //"register"
+let API_GET_CITY = "communei/cities"   //"get/city"
+let API_GET_AREA = "communei/areas"    //"get/area"
+let API_GET_SOCIETY = "communei/societies"     //"get/society"
+let API_GET_BUILDING = "communei/properties"  //"get/building"
+let API_GET_FLAT = "communei/properties"   //"get/flat"
 let API_EMAIL_VERIFY = "verifyemail"
-let API_USER_ME = "user/me"
+let API_USER_ME = "user"   //  "user/me"
+
+let API_GET_BUILDING_SOCIETY = "society/properties"  //"get/building"
+
 
 let API_USER_GET_CIRCULAR = "user/getcircular"
-let API_ADD_NOTICE = "user/addnotice"
-let API_GET_NOTICE = "user/getnotice"
+let API_ADD_NOTICE = "society/notices/1/add"  // "user/addnotice"
+let API_GET_NOTICE = "user/getnotice"  // "society/notices/1" // 
 let API_ACCEPT_DECLINE = "user/acceptreject"
-let API_LOGOUT = "logout"
+let API_LOGOUT = "user/signout" //"logout"
 let API_GUEST_LIST = "user/guestlist"
 let API_IN_OUT = "InOut"
 
 
 let API_ADD_CIRCULAR = "user/addcircular"
-let API_ADD_EVENT = "user/addevent"
-let API_ADD_FAMILY_MEMBER = "user/addfamilymember"
+let API_ADD_EVENT = "society/notices/3/add" // "user/addevent"
+let API_ADD_FAMILY_MEMBER = "user/family/add"  // "user/addfamilymember"
 
-let API_GET_EVENT = "user/getevent"
-let API_GET_FAMAILY_MEMBER = "user/getfamilymember"
+let API_GET_EVENT = "society/notices/3/add" //"user/getevent"
+let API_GET_FAMAILY_MEMBER = "user/family"  // "user/getfamilymember"
 let API_MEMBER_LIST = "user/memberlist"
 
 let API_DELETE_EVENT = "user/deleteevent"
 let API_DELETE_CIRCULAR = "user/deletecircular"
-let API_DELETE_NOTICE = "user/deletenotice"
+let API_DELETE_NOTICE = "society/notices/1/delete"  //"user/deletenotice"
 
 let API_EDIT_CIRCULAR = "user/editcircular"
 let API_EDIT_NOTICE = "user/editnotice"
 let API_EDIT_EVENT = "user/editevent"
 
 
-let API_UPDATE_FAMILY_MEMBER = "user/updatefamilymember"
-let API_UPDATE_NOTICE = "user/editnotice"
+let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"
+let API_UPDATE_NOTICE = "society/notices/1/edit" // "user/editnotice"
 let API_UPDATE_EVENT = "user/editevent"
 
 
 
-let API_GET_VEHICLELIST = "user/vehicles/get"
-let API_ADD_VEHICLE = "user/vehicles/store"
+let API_GET_VEHICLELIST = "user/vehicles"   // "user/vehicles/get"
+
+let API_GET_VEHICLELISTTYPE = "communei/vehicles/types"
+
+let API_ADD_VEHICLE = "user/vehicle/add" // "user/vehicles/store"
+
+let API_GET_EVENTLISTTYPE = "society/notices/3/types"
 
 
 
-let API_UPDATE_PROFILE = "user/updateprofile"
+let API_UPDATE_PROFILE = "user/profile"  // "user/updateprofile"
 
 
 let API_ADD_SETTING = "user/addsettings"
@@ -162,7 +173,7 @@ let API_NOTIFICATION_LIST = "user/notificationlist"
 let API_REMINDER = "user/reminder"
 
 
-let API_DELETE_FAMILY_MEMBER = "user/deletefamilymember"
+let API_DELETE_FAMILY_MEMBER =  "user/family/delete" // "user/deletefamilymember"
 
 
 
@@ -170,8 +181,36 @@ let API_SEND_OTP = "send_otp"
 
 let API_DELETE_NOTIFICATION = "user/deletenotify"
 
-let API_DELETE_VEHICLE = "user/vehicles/delete/"
+let API_DELETE_VEHICLE = "user/vehicles/delete"
 
 
 let API_REFER_FRIEND = "sendref"
 
+
+// 25/8/20.
+
+let API_BUY_SELL_LIST = "categorieslist"
+
+let API_BUY_SELL_PRODUCT = "user/getproduct"
+
+let API_BUY_SELL_PRODUCT_DELETE = "user/deleteproduct"
+
+let API_BUY_SELL_PRODUCT_EDIT = "user/editproduct"
+
+
+let API_RELATED_PRODUCT = "user/relatedproduct"
+
+
+
+let API_ADD_PRODUCT = "user/addproduct"
+
+
+
+
+let API_GET_POLL_LIST = "user/pollslist"
+
+
+let API_POLL_DETAIL = "user/pollsresult"
+
+
+let API_GET_AMENITIES_LIST = "amenties"

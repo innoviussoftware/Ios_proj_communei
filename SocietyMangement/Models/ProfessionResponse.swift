@@ -8,6 +8,32 @@
 
 import Foundation
 
+
+// MARK: - ProfessionResponse
+struct ProfessionResponse: Codable {
+    let data: [Profession]
+    let status: Bool
+    let message: String
+}
+
+// MARK: - Datum
+struct Profession: Codable {
+    let id: Int
+    let name: String
+    let datumDescription: String?
+    let isPublic: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id = "ProfessionID"
+        case name = "Name"
+        case datumDescription = "Description"
+        case isPublic = "IsPublic"
+    }
+}
+
+
+/*
+
 // MARK: - ProfessionResponse
 struct ProfessionResponse: Codable {
     let data: [Profession]
@@ -20,3 +46,6 @@ struct Profession: Codable {
     let id: Int
     let name: String
 }
+
+ */
+

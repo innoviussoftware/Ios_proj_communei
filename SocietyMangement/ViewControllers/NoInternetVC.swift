@@ -24,7 +24,7 @@ class NoInternetVC: UIViewController {
         let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(self.panGesture))
            view.addGestureRecognizer(gesture)
         btntragain.layer.borderWidth = 1.0
-        btntragain.layer.borderColor = AppColor.appcolor.cgColor
+      //  btntragain.layer.borderColor = AppColor.appcolor.cgColor
         // Do any additional setup after loading the view.
     }
     
@@ -41,6 +41,7 @@ class NoInternetVC: UIViewController {
                 self.removeFromParentViewController()
               }
     }
+    
     @objc func panGesture(recognizer: UIPanGestureRecognizer){
           let translation = recognizer.translation(in: self.view)
           let y = self.view.frame.minY
@@ -77,15 +78,5 @@ class NoInternetVC: UIViewController {
       
     
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

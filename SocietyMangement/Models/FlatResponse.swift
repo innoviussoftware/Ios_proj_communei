@@ -28,6 +28,55 @@ import Foundation
 //}
 
 
+
+
+// MARK: - FlatResponse
+struct FlatResponse: Codable {
+    let data: [Flat]?
+    let status: Int
+    let message: String
+}
+
+// MARK: - Flat
+struct Flat: Codable {
+    let PropertyID: Int?
+    let propertyFullName, PropertyName: String?
+    let societyID, parentPropertyID, isCommercial, isActiveOwner: Int?
+    let isActiveTenant: Int?
+    let type: TypeProperty?
+
+    enum CodingKeys: String, CodingKey {
+        case PropertyID = "PropertyID"
+        case propertyFullName = "PropertyFullName"
+        case PropertyName = "PropertyName"
+        case societyID = "SocietyID"
+        case parentPropertyID = "ParentPropertyID"
+        case isCommercial = "IsCommercial"
+        case isActiveOwner = "IsActiveOwner"
+        case isActiveTenant = "IsActiveTenant"
+        case type = "Type"
+    }
+}
+
+// MARK: - TypeClass
+struct TypeProperty: Codable {
+    let propertyTypeID: Int?
+    let propertyTypeName: String? //PropertyTypeName
+    let logo: String?
+
+    enum CodingKeys: String, CodingKey {
+        case propertyTypeID = "PropertyTypeID"
+        case propertyTypeName = "PropertyTypeName"
+        case logo
+    }
+}
+
+
+
+// 2/11/20.
+
+/*
+
 // MARK: - AddRatingReviewResponse
 struct FlatResponse: Codable {
     let data: [Flat]?
@@ -35,6 +84,36 @@ struct FlatResponse: Codable {
     let message: String
 }
 
+// MARK: - Datum
+struct Flat: Codable {
+    let PropertyID: Int?
+    let PropertyName: String?
+    let SocietyID: Int?
+    let ParentPropertyID: Int?
+    let PropertyTypeID: Int?
+    let PropertyTypeName: String?
+    let isCommercial: Int?
+    let isActiveOwner, isActiveTenant: Int?
+    //, isActive: Int
+
+
+    enum CodingKeys: String, CodingKey {
+        case PropertyID, SocietyID, ParentPropertyID
+        case PropertyName = "PropertyName"
+        case PropertyTypeID
+        case PropertyTypeName = "PropertyTypeName"
+        case isCommercial = "IsCommercial"
+        case isActiveOwner = "IsActiveOwner"
+        case isActiveTenant = "IsActiveTenant"
+       // case isActive = "IsActive"
+    }
+}
+
+*/
+
+
+/*
+ 
 // MARK: - Datum
 struct Flat: Codable {
     let id: Int?
@@ -50,6 +129,6 @@ struct Flat: Codable {
     }
 }
 
-
+*/
 
 

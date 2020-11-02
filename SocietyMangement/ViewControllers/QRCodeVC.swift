@@ -8,6 +8,10 @@
 
 import UIKit
 
+import SwiftSVG
+
+import SDWebImage
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -29,6 +33,9 @@ class QRCodeVC: BaseVC {
     
     @IBOutlet weak var imgvwScaner: UIImageView!
     
+    @IBOutlet weak var viewQrCode: UIView!
+
+    
     var isfrom = 1
 
     override func viewDidLoad() {
@@ -36,11 +43,11 @@ class QRCodeVC: BaseVC {
         
         apicallUserMe()
         
-        if isfrom == 0 {
+//        if isfrom == 0 {
             btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
-        }else{
-            btnMenu.setImage(UIImage(named: "menu"), for: .normal)
-        }
+//        }else{
+          //  btnMenu.setImage(UIImage(named: "menu"), for: .normal)
+       // }
 
         // Do any additional setup after loading the view.
     }
@@ -55,12 +62,7 @@ class QRCodeVC: BaseVC {
     }
        
     @IBAction func btnOpenQRCodePressed(_ sender: Any) {
-                
         viewDidLoad()
-        
-       // let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
-      //  vc.isfrom = 0
-        
     }
        
        
@@ -75,7 +77,10 @@ class QRCodeVC: BaseVC {
             webservices().StartSpinner()
 
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-            Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+            //Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+             
+        Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { [self] JSON in
+
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -84,10 +89,10 @@ class QRCodeVC: BaseVC {
                    webservices().StopSpinner()
                     
                     if statusCode == 200{
-                        UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
-                        UserDefaults.standard.set(resp.data!.id, forKey: USER_ID)
+                        UserDefaults.standard.set(resp.data!.society?.societyID, forKey: USER_SOCIETY_ID)
+                        UserDefaults.standard.set(resp.data!.guid, forKey: USER_ID)
                         UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
-                        UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
+                        UserDefaults.standard.set(resp.data!.society?.parentProperty, forKey: USER_BUILDING_ID)
                         UserDefaults.standard.synchronize()
                         
                         
@@ -98,18 +103,37 @@ class QRCodeVC: BaseVC {
 
                         
                         self.lblname.text = resp.data!.name
-                        if(UsermeResponse?.data!.image != nil)
+                        if(UsermeResponse?.data!.profilePhotoPath != nil)
                         {
-                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         
-                        if(UsermeResponse?.data!.qrcode != nil)
+                        
+                        if(UsermeResponse?.data!.qr != nil)
                         {
-                            self.imgvwScaner.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.qrcode)!), placeholderImage: UIImage(named: ""))
+                           // self.imgvwScaner.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.qr)), placeholderImage: UIImage(named: ""))
+                            
+                          //  let svg = URL(string: webservices().imgurl + (UsermeResponse!.data!.qr))!
+                           // imgvwScaner.sd_setImage(with: svg, completed: nil)
+                           // print("svg : ",svg)
+                            
+                            let svgURL = URL(string: webservices().imgurl + (UsermeResponse!.data!.qr!))!
+                            print("svgURL : ",svgURL)
+                            let hammock = UIView(SVGURL: svgURL) { (svgLayer) in
+                               // svgLayer.fillColor = UIColor(red:0.52, green:0.16, blue:0.32, alpha:1.00).cgColor
+                               // svgLayer.resizeToFit(self.view.bounds)
+                                
+                                svgLayer.resizeToFit(self.viewQrCode.bounds)
+                            }
+                            self.imgvwScaner.addSubview(hammock)
+                        
+                          //  self.view.addSubview(hammock)
                         }
                         
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
-                        self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+                        
+                        // 22/10/20. temp comment
+                      //  self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.PropertyID!,UsermeResponse!.data!.ParentProperty!)
                         self.lblflattype.text = "Contact No: \(UsermeResponse!.data!.phone!)"
                         
                         
@@ -151,3 +175,4 @@ class QRCodeVC: BaseVC {
     }
 
 }
+

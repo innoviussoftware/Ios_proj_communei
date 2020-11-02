@@ -1,23 +1,23 @@
 {
   "images" : [
     {
+      "filename" : "Group 17064.png",
       "idiom" : "universal",
-      "filename" : "ic_residents.png",
       "scale" : "1x"
     },
     {
+      "filename" : "Group 17064@2x.png",
       "idiom" : "universal",
-      "filename" : "ic_residents@2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "Group 17064@3x.png",
       "idiom" : "universal",
-      "filename" : "ic_residents@3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }

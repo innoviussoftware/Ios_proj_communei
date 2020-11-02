@@ -15,6 +15,11 @@ class RecommendationCell: UICollectionViewCell {
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var lblDiscription: UILabel!
     
+    @IBOutlet weak var viewEdit: UIView!
+    @IBOutlet weak var ViewDelete: UIView!
+    @IBOutlet weak var btnEdit: UIButton!
+    @IBOutlet weak var btnDelete: UIButton!
+    @IBOutlet weak var lblSeprater: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -203,6 +204,7 @@ class AddAnnounceVC: UIViewController , UITextFieldDelegate,Buildings {
             lblsendto.resignFirstResponder()
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SendtoPopUP") as! SendtoPopUP
             popOverConfirmVC.delegate = self
+            popOverConfirmVC.strlbl = "Send Announce to"
             popOverConfirmVC.selectedary = self.selectedary
             self.addChildViewController(popOverConfirmVC)
             popOverConfirmVC.view.frame = self.view.frame
@@ -213,14 +215,23 @@ class AddAnnounceVC: UIViewController , UITextFieldDelegate,Buildings {
         return true
     }
     
-    func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray) {
+   // func selectedbuildings(selectedary: NSMutableArray,nameary:NSMutableArray) {
+        
+    func selectedbuildings(selectedary: NSMutableArray, nameary: NSMutableArray, selectedaryId: NSMutableArray) {
         
         self.selectedary =  selectedary
         self.lblsendto.text = nameary.componentsJoined(by:",")
     }
+    
     func showDatePicker(){
         //Formate Date
         datePicker.datePickerMode = .dateAndTime
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         
         //ToolBar
         let toolbar = UIToolbar();
@@ -305,7 +316,23 @@ class AddAnnounceVC: UIViewController , UITextFieldDelegate,Buildings {
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + "Auth/getBuildingList", societyid:UserDefaults.standard.value(forKey:"societyid")! as! String) { JSON in
+           // Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + "Auth/getBuildingList", societyid:UserDefaults.standard.value(forKey:"societyid")! as! String) { JSON in
+        
+        let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
+    
+        // 20/10/20. temp not sure
+        
+        let societyid = UserDefaults.standard.value(forKey:"societyid")!
+        
+         let param : Parameters = [
+             "Phone" : mobile!,
+             "Secret" : secret,
+             "Society" : societyid
+         ]
+        
+                
+        Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
+           
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -320,9 +347,9 @@ class AddAnnounceVC: UIViewController , UITextFieldDelegate,Buildings {
                         for dic in resp.data
                         {
                             
-                            if(((self.dic?.buildingID.contains((dic.id as NSNumber).stringValue))!)) {
-                                self.selectedary.add(dic.id)
-                                nameary.add(dic.name)
+                            if(((self.dic?.buildingID.contains((dic.PropertyID as NSNumber).stringValue))!)) {
+                                self.selectedary.add(dic.PropertyID)
+                                nameary.add(dic.PropertyName)
                            }
                         }
                            

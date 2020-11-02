@@ -6,15 +6,35 @@
 //  Copyright © 1941 MacMini. All rights reserved.
 //
 
+
+
+ 
 import UIKit
 import Alamofire
 import SWRevealViewController
-
+ 
 class UserCell: UICollectionViewCell {
     
     @IBOutlet weak var lblname: UILabel!
     
     @IBOutlet weak var cb: Checkbox!
+        
+    @IBOutlet weak var btncheckself: UIButton!
+    
+    @IBOutlet weak var bgViw: UIView!
+
+}
+
+
+class UserCell1: UICollectionViewCell {
+    
+    @IBOutlet weak var lblname: UILabel!
+    
+    @IBOutlet weak var cb: Checkbox!
+        
+    @IBOutlet weak var btncheckself: UIButton!
+
+
 }
 
 
@@ -45,12 +65,18 @@ class UserCell: UICollectionViewCell {
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class UserSettingsVC: UIViewController {
+class UserSettingsVC: BaseVC {
     
     @IBOutlet weak var highcollection: NSLayoutConstraint!
     @IBOutlet weak var collectionmember: UICollectionView!
     
     @IBOutlet weak var cbself: Checkbox!
+    
+    @IBOutlet weak var btncbself: UIButton!
+
+        
+   // @IBOutlet weak var imgviewcheckself: UIImageView!
+
     
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblFlatNo: UILabel!
@@ -77,14 +103,44 @@ class UserSettingsVC: UIViewController {
     
     @IBOutlet weak var btnMenu: UIButton!
     
-    @IBOutlet weak var switchNotice: PVSwitch!
-    @IBOutlet weak var switchEvent: PVSwitch!
-    @IBOutlet weak var switchcircular: PVSwitch!
+   // @IBOutlet weak var DNDSwitch: PVSwitch!
+
+   // @IBOutlet weak var switchNotice: PVSwitch!
+   // @IBOutlet weak var switchEvent: PVSwitch!
+  //  @IBOutlet weak var switchcircular: PVSwitch!
     
-    @IBOutlet weak var switchContactDetails: PVSwitch!
+   // @IBOutlet weak var switchContactDetails: PVSwitch!
     
-    @IBOutlet weak var switchFamily: PVSwitch!
+  //  @IBOutlet weak var switchFamily: PVSwitch!
     
+    @IBOutlet weak var DNDSwitch: UISwitch!
+    
+    @IBOutlet weak var switchNotice: UISwitch!
+
+    @IBOutlet weak var switchEvent: UISwitch!
+    
+    @IBOutlet weak var switchcircular: UISwitch!
+
+    @IBOutlet weak var switchContactDetails: UISwitch!
+    
+    @IBOutlet weak var switchFamily: UISwitch!
+
+    @IBOutlet weak var lblDnd: UILabel!
+
+    @IBOutlet weak var viewPopUp: UIView!
+    
+    @IBOutlet weak var viewMainPopUp: UIView!
+    @IBOutlet weak var textViewReasion: UITextView!
+    @IBOutlet weak var viewDND: UIView!
+    
+
+    @IBOutlet weak var lblDNDStaic: UIButton!
+
+    @IBOutlet weak var constraintHeightDND: NSLayoutConstraint!
+
+    
+    var strDNDStatus = "1"
+
     
     var isSelf : Bool!
     
@@ -101,7 +157,10 @@ class UserSettingsVC: UIViewController {
             }
             
             
-            cbself.isChecked = false
+           // cbself.isChecked = false
+            
+
+            btncbself.setImage(UIImage(named: "ic_radiobutton"), for: UIControlState.normal)
             
             let strUserId = (userId as NSNumber).stringValue
             
@@ -122,7 +181,11 @@ class UserSettingsVC: UIViewController {
             
         }else{
             isSelf = true
-            cbself.isChecked = true
+            //cbself.isChecked = true
+            
+            btncbself.setImage(UIImage(named: "ic_radiobuttonselect"), for: UIControlState.normal)
+
+
             if arrMemberID.count < 4{
                 let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
                 arrMemberID.add((userId as NSNumber).stringValue)
@@ -146,6 +209,14 @@ class UserSettingsVC: UIViewController {
                      // Always adopt a light interface style.
           overrideUserInterfaceStyle = .light
         }
+        
+        viewPopUp.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        self.view.addSubview(viewPopUp)
+        viewPopUp.isHidden = true
+        
+        textViewReasion.layer.borderWidth = 1.0
+        textViewReasion.layer.borderColor = AppColor.ratingBorderColor.cgColor // #828EA5
+        textViewReasion.layer.cornerRadius = 8.0
      
         if(revealViewController() != nil)
         {
@@ -154,24 +225,29 @@ class UserSettingsVC: UIViewController {
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
         
+        // 31/10/20. temp comment
         
-        let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
+       /* let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
         arrMemberID.add((userId as NSNumber).stringValue)
         let strUserId = (userId as NSNumber).stringValue
-        strRecieverId = strUserId
+        strRecieverId = strUserId */
         
         lblName.text = UsermeResponse?.data!.name
-        if(UsermeResponse?.data!.image != nil)
+        if(UsermeResponse?.data!.profilePhotoPath != nil)
         {
-            imgUser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
+            imgUser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
         }
-        self.lblFlatNo.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
-        lblFlatType.text = "Contact no: \(UsermeResponse!.data!.phone!)"
+        // 22/10/20 temp comment
+        
+      //  self.lblFlatNo.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.society?.propertyID!,UsermeResponse!.data!.society?.parentProperty!)
+        lblFlatType.text = "Contact no: \(UsermeResponse!.data!.phone ?? "")"
         
         
         isSelf = true
-        cbself.isChecked = true
-        
+       // cbself.isChecked = true
+
+        btncbself.setImage(UIImage(named: "ic_radiobutton"), for: UIControlState.normal)
+
         
         apicallGetFamilyMembers(id: "")
         //apicallGetSettings()
@@ -182,9 +258,22 @@ class UserSettingsVC: UIViewController {
         collectionmember.collectionViewLayout = alignedFlowLayout
         self.collectionmember.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
         
-        checkbox(cb: cbself)
+       // checkbox(cb: cbself)
         
+        // 31/10/20. Temp Comment
         
+      /*  if UsermeResponse?.data?.role == "self"{
+                constraintHeightDND.constant = 45
+                lblDNDStaic.isHidden = false
+                DNDSwitch.isHidden = false
+            lblDnd.isHidden = false
+        }else{
+                constraintHeightDND.constant = 0
+                lblDNDStaic.isHidden = true
+                DNDSwitch.isHidden = true
+            lblDnd.isHidden = true
+
+        } */
         
         
     }
@@ -279,7 +368,18 @@ class UserSettingsVC: UIViewController {
         cb.checkmarkColor = AppColor.appcolor
         
     }
-    @IBAction func actionSwitchContact(_ sender: Any) {
+    
+    @IBAction func actionNotification(_ sender: Any) {
+          let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+           vc.isfrom = 0
+    }
+       
+    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+           let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+           vc.isfrom = 0
+    }
+       
+    @IBAction func actionSwitchContact(_ sender: UISwitch!) {
         
         if switchContactDetails.isOn == true
         {
@@ -292,7 +392,7 @@ class UserSettingsVC: UIViewController {
         
     }
     
-    @IBAction func actiuonNotice(_ sender: Any) {
+    @IBAction func actiuonNotice(_ sender: UISwitch!) {
         if switchNotice.isOn == true
         {
             strNoticeShow = "1"
@@ -302,11 +402,15 @@ class UserSettingsVC: UIViewController {
         
         apicallAddSettings()
         
+        print("strNoticeShow Notice :- ",strNoticeShow)
+        
     }
     
-    @IBAction func actionEvent(_ sender: Any) {
+    
+    @IBAction func actionEvent(_ sender: UISwitch!) {
         
         if switchEvent.isOn == true
+            //isOn == true
         {
             strEventShow = "1"
         }else{
@@ -316,7 +420,7 @@ class UserSettingsVC: UIViewController {
         apicallAddSettings()
     }
     
-    @IBAction func actioncircular(_ sender: Any) {
+    @IBAction func actioncircular(_ sender: UISwitch!) {
         
         if switchcircular.isOn == true
         {
@@ -328,7 +432,7 @@ class UserSettingsVC: UIViewController {
         apicallAddSettings()
     }
     
-    @IBAction func actionfamily(_ sender: Any) {
+    @IBAction func actionfamily(_ sender: UISwitch!) {
         
         if switchFamily.isOn == true
         {
@@ -340,6 +444,66 @@ class UserSettingsVC: UIViewController {
         apicallAddSettings()
     }
     
+    // 25/8/20.
+    
+    @IBAction func actionSubmitPopUp(_ sender: Any) {
+           if !textViewReasion.hasText {
+               let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Please write reason")
+               self.present(alert, animated: true, completion: nil)
+           }else{
+               DNDSwitch.isOn = true
+
+               strDNDStatus = "2"
+               apicallAddSettings()
+           }
+           
+           
+       }
+       @IBAction func actionClosePopUp(_ sender: Any) {
+           
+           if !textViewReasion.hasText{
+               DNDSwitch.isOn = false
+
+           }
+           
+           viewPopUp.isHidden = true
+       }
+       
+       @IBAction func actionDNDSwitch(_ sender: UISwitch!) {
+           
+           if DNDSwitch.isOn == true{
+               viewPopUp.isHidden = false
+               strDNDStatus = "2" // Off
+           }else{
+               viewPopUp.isHidden = true
+               strDNDStatus = "1" // ON
+               apicallAddSettings()
+           }
+           
+       }
+    
+
+    @IBAction func btnDeactivateMyFlat(_ sender: UIButton!) {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr = "Delete My Account"
+        
+        avc?.isfrom = 5
+        
+       // avc?.subtitleStr = "Do you want to delete your account? If Yes, your account deletion process will be initiated."
+        
+        avc?.yesAct = {
+
+        }
+        avc?.noAct = {
+          
+        }
+        present(avc!, animated: true)
+
+
+    }
+
+    
+    //  /////////////  //
     
     // MARK: - Add Settings
     
@@ -349,6 +513,10 @@ class UserSettingsVC: UIViewController {
                          ShowNoInternetAlert()
                          return
                      }
+        
+               if !textViewReasion.hasText {
+                   textViewReasion.text = ""
+               }
             
              print(arrMemberID)
             
@@ -366,7 +534,10 @@ class UserSettingsVC: UIViewController {
                 "notice" : strNoticeShow,
                 "circular" : strCircularShow,
                 "contact_details" : strContactDetailShow,
-                "family_details" : strFamilyDetailShow
+                "family_details" : strFamilyDetailShow,
+                "mute_notification_status":strDNDStatus,
+                "reason_to_mute_notification":textViewReasion.text!
+
             ]
             
             
@@ -387,6 +558,12 @@ class UserSettingsVC: UIViewController {
                         UserDefaults.standard.set(resp.data.notice, forKey: USER_SETTING_NOTICE_SHOW)
                         UserDefaults.standard.set(resp.data.event, forKey: USER_SETTING_EVENT_SHOW)
                         UserDefaults.standard.synchronize()
+                        
+                        // 2/9/20.
+                        
+                        self.viewPopUp.isHidden = true
+                        
+
                         
                     }
                     
@@ -423,119 +600,126 @@ class UserSettingsVC: UIViewController {
     
     func apicallGetSettings()
     {
-         if !NetworkState().isInternetAvailable {
-                         ShowNoInternetAlert()
-                         return
-                     }
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
         
-            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-            //            1 = show detal
-            //            0 = hide detail
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        //            1 = show detal
+        //            0 = hide detail
+        
+        webservices().StartSpinner()
+        Apicallhandler.sharedInstance.ApiCallGetSettings(token: token as! String) { JSON in
             
-            webservices().StartSpinner()
-            Apicallhandler.sharedInstance.ApiCallGetSettings(token: token as! String) { JSON in
-                
-                let statusCode = JSON.response?.statusCode
-                
-                switch JSON.result{
-                case .success(let resp):
-                    webservices().StopSpinner()
-                    if statusCode == 200{
-                        self.arrGetSetting = resp.data
-                        
-//                        "receiver_id" : strId,
-//                                       "event" : strEventShow,
-//                                       "notice" : strNoticeShow,
-//                                       "circular" : strCircularShow,
-//                                       "contact_details" : strContactDetailShow,
-//                                       "family_details" : strFamilyDetailShow
-//
-                        
-                        if self.arrGetSetting.count > 0{
-                            if self.arrGetSetting[0].notice == 1{
-                                self.switchNotice.isOn = true
-                                self.strNoticeShow = "1"
-                            }else{
-                                self.switchNotice.isOn = false
-                            }
+            let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                webservices().StopSpinner()
+                if statusCode == 200{
+                    self.arrGetSetting = resp.data
+                    
+                    
+                    if self.arrGetSetting.count > 0{
+                        if self.arrGetSetting[0].notice == 1{
+                            self.switchNotice.isOn = true
                             
-                            
-                            if self.arrGetSetting[0].event == 1{
-                                self.switchEvent.isOn = true
-                                self.strEventShow = "1"
-                            }else{
-                                self.switchEvent.isOn = false
-                            }
-                            
-                            
-                            if self.arrGetSetting[0].circular == 1{
-                                self.switchcircular.isOn = true
-                                self.strCircularShow = "1"
-                            }else{
-                                self.switchcircular.isOn = false
-                            }
-                            
-                            
-                            if self.arrGetSetting[0].contactDetails == 1{
-                                self.switchContactDetails.isOn = true
-                            }else{
-                                self.switchContactDetails.isOn = false
-                            }
-                            
-                            
-                            if self.arrGetSetting[0].familyDetails == 1{
-                                self.switchFamily.isOn = true
-                            }else{
-                                self.switchFamily.isOn = false
-                            }
-                            
-                            //self.selectedCell = self.arrGetSetting[0].receiverID!
-                            self.arrMemberID.removeAllObjects()
-                            let strId = self.arrGetSetting[0].receiverID!
-                            let arr = strId.components(separatedBy: ",")
-                            for i in 0..<arr.count{
-                                self.arrMemberID.add(arr[i])
-                            }
-                             let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
-                            if(self.arrMemberID.contains((userId as NSNumber).stringValue))
-                            {
-                                self.isSelf = true
-                                self.cbself.isChecked = true
-                            }else
-                            {
-                                self.isSelf = false
-                                self.cbself.isChecked = false
-
-                            }
-                            self.collectionmember.reloadData()
+                            self.strNoticeShow = "1"
+                        }else{
+                            self.switchNotice.isOn = false
                         }
-                    }
-                    
-                case .failure(let err):
-                    webservices().StopSpinner()
-                    if statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
-                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
-                                                                           let navController = UINavigationController(rootViewController: aVC)
-                                                                           navController.isNavigationBarHidden = true
-                                                              self.appDelegate.window!.rootViewController  = navController
-                                                              
-                            }
-                        })
+                        if self.arrGetSetting[0].mute_notification_status == 1{
+                            self.DNDSwitch.isOn = false
+
+                            self.strNoticeShow = "1"
+                        }else{
+                            self.DNDSwitch.isOn = true
+
+                            self.strNoticeShow = "2"
+                        }
                         
-                        return
+                        
+                        if self.arrGetSetting[0].event == 1{
+                            self.switchEvent.isOn = true
+                            self.strEventShow = "1"
+                        }else{
+                            self.switchEvent.isOn = false
+                        }
+                        
+                        
+                        if self.arrGetSetting[0].circular == 1{
+                            self.switchcircular.isOn = true
+                            self.strCircularShow = "1"
+                        }else{
+                            self.switchcircular.isOn = false
+                        }
+                        
+                        
+                        if self.arrGetSetting[0].contactDetails == 1{
+                            self.switchContactDetails.isOn = true
+                        }else{
+                            self.switchContactDetails.isOn = false
+                        }
+                        
+                        
+                        if self.arrGetSetting[0].familyDetails == 1{
+                            self.switchFamily.isOn = true
+                        }else{
+                            self.switchFamily.isOn = false
+                        }
+                        
+                        //self.selectedCell = self.arrGetSetting[0].receiverID!
+                        self.arrMemberID.removeAllObjects()
+                        let strId = self.arrGetSetting[0].receiverID!
+                        let arr = strId.components(separatedBy: ",")
+                        for i in 0..<arr.count{
+                            self.arrMemberID.add(arr[i])
+                        }
+                        let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
+                        if(self.arrMemberID.contains((userId as NSNumber).stringValue))
+                        {
+                            self.isSelf = true
+                           // self.cbself.isChecked = true
+                            self.btncbself.isSelected = true
+
+                        }else
+                        {
+                            self.isSelf = false
+                           // self.cbself.isChecked = false
+                            self.btncbself.isSelected = false
+
+                            
+                        }
+                        self.collectionmember.reloadData()
                     }
-                    
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError as Any)
-                    
                 }
+                
+            case .failure(let err):
+                webservices().StopSpinner()
+                if statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                print(err.asAFError as Any)
+                
             }
-            
-       
+        }
+        
+        
         
     }
     
@@ -552,7 +736,7 @@ class UserSettingsVC: UIViewController {
             webservices().StartSpinner()
             
             
-            Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, param: [:], token: token as! String) { JSON in
+            Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{
@@ -612,19 +796,20 @@ class UserSettingsVC: UIViewController {
     }
     
     
-    @objc func getIndexSelectedCell(sender:Checkbox) {
+   // @objc func getIndexSelectedCell(sender:Checkbox) {
         
+    @objc func getIndexSelectedCell(sender:UIButton) {
+
         
-        
-        if arrMemberID.contains((arrMemberSelected[sender.tag].id! as NSNumber).stringValue){
+        if arrMemberID.contains(arrMemberSelected[sender.tag].guid){
                    //arrDummy.add("1")
-                    arrMemberID.remove((arrMemberSelected[sender.tag].id! as NSNumber).stringValue)
+                    arrMemberID.remove(arrMemberSelected[sender.tag].guid)
 
                }else{
                     //arrDummy.add("0")
             
             if arrMemberID.count < 4{
-                 arrMemberID.add((arrMemberSelected[sender.tag].id! as NSNumber).stringValue)
+                 arrMemberID.add(arrMemberSelected[sender.tag].guid)
             }else{
                 let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"You can select maximum 4 person as notification receiver")
                 self.present(alert, animated: true, completion: nil)
@@ -675,21 +860,32 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
     
 {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
+        let cell:UserCell1 = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell1
         
         cell.lblname.sizeToFit()
-        cell.cb.tag = indexPath.row
+       // cell.cb.tag = indexPath.row
+        cell.btncheckself.tag = indexPath.row
         
         let tag = arrMemberSelected[indexPath.row].name
         cell.lblname.text = tag
-        checkbox(cb: cell.cb)
+      //  checkbox(cb: cell.cb)
+        
         //New
-        if arrMemberID.contains((arrMemberSelected[indexPath.row].id! as NSNumber).stringValue){
-             cell.cb.isChecked = true
+        if arrMemberID.contains(arrMemberSelected[indexPath.row].guid){
+            // cell.cb.isChecked = true
+            cell.btncheckself.setImage(UIImage(named: "ic_radiobuttonselect"), for: UIControlState.normal)
+
+
         }else{
-            cell.cb.isChecked = false
+           // cell.cb.isChecked = false
+           // cell.btncheckself.image = UIImage(named: "ic_unchecked")
+            cell.btncheckself.setImage(UIImage(named: "ic_radiobutton"), for: UIControlState.normal)
+
         }
-        cell.cb.isUserInteractionEnabled = false
+       // cell.cb.isUserInteractionEnabled = false
+        
+        cell.btncheckself.isUserInteractionEnabled = false
+
         
 //        if  selectedCell == arrMemberSelected[indexPath.row].id{
 //            cell.cb.isChecked = true
@@ -698,7 +894,10 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
 //            cell.cb.isChecked = false
 //        }
         
-        cell.cb.addTarget(self, action: #selector(getIndexSelectedCell(sender:)), for: .valueChanged)
+       // cell.cb.addTarget(self, action: #selector(getIndexSelectedCell(sender:)), for: .valueChanged)
+                
+        cell.btncheckself.addTarget(self, action: #selector(getIndexSelectedCell(sender:)), for: .valueChanged)
+
         return cell
     }
     
@@ -712,15 +911,20 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
                
-        if arrMemberID.contains((arrMemberSelected[indexPath.row].id! as NSNumber).stringValue){
+      //  if arrMemberID.contains((arrMemberSelected[indexPath.row].guid as NSNumber).stringValue){
                           //arrDummy.add("1")
-                           arrMemberID.remove((arrMemberSelected[indexPath.row].id! as NSNumber).stringValue)
+                          // arrMemberID.remove((arrMemberSelected[indexPath.row].guid! as NSNumber).stringValue)
+            if arrMemberID.contains(arrMemberSelected[indexPath.row].guid)
+            {
+
+            arrMemberID.remove(arrMemberSelected[indexPath.row].guid)
+
 
                       }else{
                            //arrDummy.add("0")
                    
                    if arrMemberID.count < 4{
-                        arrMemberID.add((arrMemberSelected[indexPath.row].id! as NSNumber).stringValue)
+                        arrMemberID.add(arrMemberSelected[indexPath.row].guid)
                    }else{
                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"You can select maximum 4 person as notification receiver")
                        self.present(alert, animated: true, completion: nil)
@@ -748,8 +952,8 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-        let contentNSString = arrMemberSelected[indexPath.row].name!
-        let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+        let contentNSString = arrMemberSelected[indexPath.row].name
+        let expectedLabelSize = contentNSString!.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
         print("\(expectedLabelSize)")
         return CGSize(width:expectedLabelSize.size.width + 50, height: expectedLabelSize.size.height + 20)
         //return CGSize(width:collectionView.frame.size.width/3, height: expectedLabelSize.size.height + 20)
@@ -757,3 +961,6 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
     
     
 }
+
+
+

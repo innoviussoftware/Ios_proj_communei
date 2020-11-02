@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - BuidingResponse
 struct BuidingResponse: Codable {
-    let data: [AddBuilding]
+    let data: AddBuilding?
     let errorCode: Int
     let message: String
     

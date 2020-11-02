@@ -8,9 +8,6 @@
 
 import Foundation
 
-import Foundation
-
-
 
 // MARK: - City
 struct AreaResponse: Codable {
@@ -21,16 +18,15 @@ struct AreaResponse: Codable {
 
 // MARK: - Datum
 struct Area: Codable {
-    let id, cityID: Int
-    let name: String
+    let AreaID, CityID: Int
+    let AreaName: String
     
     enum CodingKeys: String, CodingKey {
-        case id
-        case cityID = "city_id"
-        case name
+        case AreaID
+        case CityID    // = "city_id"
+        case AreaName
     }
 }
-
 
 
 //// MARK: - AreaResponse

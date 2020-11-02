@@ -17,6 +17,7 @@ import SWRevealViewController
 import Alamofire
 
 
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -31,6 +32,9 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
     @IBOutlet weak var collectionmenu: UICollectionView!
 
     @IBOutlet weak var lblname: UILabel!
+    
+    @IBOutlet weak var menuaction: UIButton!
+
 
     var titieary = ["Activity","Household","Community"]
   //  var menuary = ["Buildings","Members","Notices","Events","Circulars"]//,"Vendors"]
@@ -39,8 +43,8 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
   //  var arrData = ["Members","Notices","Events","Circulars"]//,"Vendors"]
    // var arrImage = ["ic_member","ic_notice","ic_event","ic_circular"]//,"ic_vendor"]
     
-     var arrData = ["Residents","Notices","Events","Circulars","Emergency No's","Local Services"]//,"Vendors"]
-       var arrImage = ["ic_residents","ic_notice","ic_event","ic_circular","ic_emergency_no","ic_local_services"]//,"ic_vendor"]
+     var arrData = ["Residents","Notices","Events","Circulars","Emergency No's","Domestic Helper"]//,"Vendors"]
+       var arrImage = ["ic_residents","ic_notice","ic_event","ic_circular","ic_emergency_no","ic_domestic_help"]//,"ic_vendor"]
        
     
     var arrNotificationCountData = [NotificationCountData]()
@@ -51,10 +55,105 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
 
         // Do any additional setup after loading the view.
         
-        lblname.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+        if(revealViewController() != nil)
+            {
+                menuaction.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                
+                print("revealViewController auto")
+
+            }
+                
+        apicallUserMe()
+        
+        
+       // lblname.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
 
     }
     
+    // MARK: - User me
+    
+    func apicallUserMe()
+    {
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            webservices().StartSpinner()
+
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+          //  Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+            
+        Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+
+                let statusCode = JSON.response?.statusCode
+                
+                switch JSON.result{
+                case .success(let resp):
+                   webservices().StopSpinner()
+                    
+                    if statusCode == 200{
+                        UserDefaults.standard.set(resp.data!.society?.societyID, forKey: USER_SOCIETY_ID)
+                        UserDefaults.standard.set(resp.data!.guid, forKey: USER_ID)
+                        UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
+                        UserDefaults.standard.set(resp.data!.society?.propertyID, forKey: USER_BUILDING_ID)
+                        UserDefaults.standard.synchronize()
+                        
+                        UsermeResponse = resp
+                      //  self.lbltitle.text = "Welcome, \(resp.data!.name!)"
+                        
+                        // 21/10/20. temp comment
+                        
+                        self.lblname.text = "\(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
+
+
+                      //  self.lblname.text = String(format: "%@-%@", UsermeResponse!.data!.society?.propertyID!,UsermeResponse!.data!.society?.society!)
+
+                        print(resp)
+                    }
+                    
+                case .failure(let err):
+                    webservices().StopSpinner()
+                    if statusCode == 401{
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        return
+                    }
+                    
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError as Any)
+                    
+                }
+            }
+        
+    }
+    
+    @IBAction func btnZendeskPressed(_ sender: Any) {
+        // let vc =
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+    }
+    
+    @IBAction func actionNotification(_ sender: Any) {
+              let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+               vc.isfrom = 0
+            }
+           
+           @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+               let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+               vc.isfrom = 0
+           }
 
      //MARK:- collection view delegate
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -63,7 +162,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                  
                 let cell : Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
             
-              //  cell.lblname.font = UIFont(name: "Gotham-Black", size: 18)
+                cell.lblname.font = UIFont(name: "Gotham-Book", size: 16)
 
                 
                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
@@ -203,7 +302,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
             
             if(collectionView == collectionmenu)
             {
-                let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
+              //  let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
               /*  if(str.contains("Secretory") || str.contains("Chairman")){
                     if indexPath.item == 0{//Buildings
                         
@@ -284,27 +383,19 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
             
             
         }
-        
-        
-    /* func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
-                let collectionViewWidth = self.view.bounds.width
-                return CGSize(width: collectionViewWidth/2 - 10, height: collectionViewWidth/2 + 10)
-            
-        
-            } */
-    
-   /* func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          return CGSize(width: (collectionmenu.frame.size.width - 10) / 2, height: (collectionmenu.frame.size.width - 10) / 2)
 
-      } */
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-           let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
+        /*   let flowayout = collectionViewLayout as? UICollectionViewFlowLayout
            let space: CGFloat = (flowayout?.minimumInteritemSpacing ?? 0.0) + (flowayout?.sectionInset.left ?? 0.0) + (flowayout?.sectionInset.right ?? 0.0)
            let size:CGFloat = (collectionmenu.frame.size.width - space) / 2.0
-           return CGSize(width: size, height: size)
+           return CGSize(width: size, height: size) */
+        
+        
+            let collectionViewWidth = self.view.bounds.width
+            return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2
+                       + 2)
         
            // let collectionWidth = collectionView.bounds.width
 

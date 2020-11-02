@@ -20,8 +20,8 @@ class manuallycell:UITableViewCell
     
     @IBOutlet weak var btndelete: UIButton!
     
-    
 }
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -44,10 +44,10 @@ class manuallycell:UITableViewCell
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
+
 class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource , UISearchBarDelegate,ScrollPagerDelegate {
     
 //Manish
-    
     
     var contacts = [CNContact]()
     var contactsWithSections = [[CNContact]]()
@@ -57,7 +57,13 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     
     @IBOutlet weak var lblTodayData: UILabel!
     @IBOutlet weak var lbltodayContact: UILabel!
+    @IBOutlet weak var lbltodayrecent: UILabel!
+
     @IBOutlet weak var hightcontactview: NSLayoutConstraint!
+    
+    @IBOutlet weak var hightcontactview1: NSLayoutConstraint!
+    @IBOutlet weak var hightcontactview2: NSLayoutConstraint!
+
     
     @IBOutlet weak var lblStaticAllowUser: UILabel!
     @IBOutlet weak var txtcontact: UITextField!
@@ -67,15 +73,31 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     
     @IBOutlet weak var tblcontact: UITableView!
     
+    @IBOutlet weak var tblrecent: UITableView!
+
+    
     @IBOutlet weak var lblname: UILabel!
     
+    @IBOutlet weak var lblnamerec: UILabel!
+    @IBOutlet weak var lblnamemanu: UILabel!
+
+    
     @IBOutlet weak var viewbottom: UIView!
+    
+    @IBOutlet weak var viewbottom1: UIView!
+    @IBOutlet weak var viewbottom2: UIView!
+
     
     @IBOutlet var ViewContact: UIView!
     
     @IBOutlet var viewmanual: UIView!
     
-    @IBOutlet weak var btncancel: UIButton!
+    @IBOutlet var Viewrecent: UIView!
+
+    @IBOutlet weak var txtSearchbar: UITextField!
+
+    
+   // @IBOutlet weak var btncancel: UIButton!
     
     var selectedindex = NSMutableArray()
     
@@ -165,7 +187,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         
                         nameary.add(namenew)
                         lblname.text = nameary.componentsJoined(by:", ")
-                        
+                        lblnamerec.text = nameary.componentsJoined(by:", ")
+                        lblnamemanu.text = nameary.componentsJoined(by:", ")
+
                         arrContactName.add(dict)
                         
                     }
@@ -181,7 +205,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     let dic = manuallyary.object(at:i) as! NSMutableDictionary
                     nameary.add(dic.value(forKey:"name") as! String)
                     lblname.text = nameary.componentsJoined(by:", ")
-                 
+                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                    lblnamemanu.text = nameary.componentsJoined(by:", ")
+
                     let dict = NSMutableDictionary()
                     dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
                      dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
@@ -194,11 +220,16 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
            if(nameary.count > 6)
                  {
                       hightcontactview.constant = 202
+                    hightcontactview1.constant = 202
+                    hightcontactview2.constant = 202
+
                       
                  }
                   else if(nameary.count > 3)
                  {
                      hightcontactview.constant = 152
+                    hightcontactview1.constant = 152
+                    hightcontactview2.constant = 152
 
                      
                  }
@@ -211,33 +242,46 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                          // self.container is your view that you want to animate
                          self.viewbottom.transform = top
                          self.viewbottom.isHidden = false
+                        
+                        self.viewbottom1.transform = top
+                        self.viewbottom1.isHidden = false
+                        
+                        self.viewbottom2.transform = top
+                        self.viewbottom2.isHidden = false
+                        
                      }, completion: nil)
-                     hightcontactview.constant = 102
+                        hightcontactview.constant = 102
+                        hightcontactview1.constant = 102
+                        hightcontactview2.constant = 102
+
                  }
                 
                  else{
                      self.viewbottom.isHidden = true
+                    self.viewbottom1.isHidden = true
+                    self.viewbottom2.isHidden = true
                      
                  }
+            
                  pager.setSelectedIndex(index: 0, animated: true)
                  txtname.text = ""
                  txtcontact.text = ""
             
             if arrContactName.count > 1{
-                lblStaticAllowUser.text = "Allow to enter"
+                lblStaticAllowUser.text = "Allow to Visit"
             }else{
-                lblStaticAllowUser.text = "Allow to enter"
+                lblStaticAllowUser.text = "Allow to Visit"
             }
             
         }
 
     }
     
-    @IBAction func cancelaction(_ sender: Any) {
-        
-        txtname.text = ""
-        txtcontact.text = ""
-    }
+//    @IBAction func cancelaction(_ sender: Any) {
+//
+//        txtname.text = ""
+//        txtcontact.text = ""
+//    }
     
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -292,6 +336,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                                
                                                nameary.add(namenew)
                                                lblname.text = nameary.componentsJoined(by:", ")
+                                            
+                                            lblnamerec.text = nameary.componentsJoined(by:", ")
+                                                                   lblnamemanu.text = nameary.componentsJoined(by:", ")
+
                                                
                                                arrContactName.add(dict)
                                                
@@ -309,6 +357,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                             let dic = manuallyary.object(at:i) as! NSMutableDictionary
                             nameary.add(dic.value(forKey:"name") as! String)
                             lblname.text = nameary.componentsJoined(by:", ")
+                            
+                            lblnamerec.text = nameary.componentsJoined(by:", ")
+                            lblnamemanu.text = nameary.componentsJoined(by:", ")
+
                          
                             let dict = NSMutableDictionary()
                             dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
@@ -348,7 +400,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
           overrideUserInterfaceStyle = .light
         }
         
+        txtSearchbar.layer.borderColor = UIColor.clear.cgColor
         
+        txtSearchbar.borderStyle = .none
+
         
         self.fetchContacts()
         
@@ -365,20 +420,29 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         if frequencyType == "once"{
              lblTodayData.text = "\(date),\(time),\(validtill)"
              lbltodayContact.text = "\(date),\(time),\(validtill)"
+            lbltodayrecent.text = "\(date),\(time),\(validtill)"
         }else{
             
             lblTodayData.text = "\(strDateee) to \(endDate)"
             lbltodayContact.text = "\(strDateee) to \(endDate)"
+            lbltodayrecent.text = "\(strDateee) to \(endDate)"
 
            // lblTodayData.text = "\(startdate) to \(enddate)"
            // lbltodayContact.text = "\(startdate) to \(enddate)"
         }
         
-        btncancel.layer.borderColor = AppColor.borderColor.cgColor
-        btncancel.layer.borderWidth = 1.0
+        // 17/10/20.
+
+       // btncancel.layer.borderColor = AppColor.borderColor.cgColor
+       // btncancel.layer.borderWidth = 1.0
         
         viewbottom.isHidden = true
-        webservices.sharedInstance.setShadow(view: viewbottom)
+        viewbottom1.isHidden = true
+        viewbottom2.isHidden = true
+
+        // 17/9/20.
+        
+     //   webservices.sharedInstance.setShadow(view: viewbottom)
         let contactStore = CNContactStore()
         let keys = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
@@ -423,8 +487,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Contact", ViewContact),
+            ("Recent", Viewrecent),
             ("Manual",viewmanual)
         ])
+        
         if(isfrom == "")
         {
             
@@ -432,19 +498,42 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         }
         if(isfrom == "conatct")
         {
-            
             pager.setSelectedIndex(index: 0, animated: true)
+        }
+        if(isfrom == "recent")
+        {
+            pager.setSelectedIndex(index: 0, animated: true) // 1
         }
         if(isfrom == "manually")
         {
-            
-            pager.setSelectedIndex(index: 1, animated: false)
+            pager.setSelectedIndex(index: 0, animated: false) // 2
         }
         
     }
+    
+    
+    @IBAction func actionNotification(_ sender: Any) {
+           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+           let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+           self.navigationController?.pushViewController(nextViewController, animated: true)
+       }
+       
+       @IBAction func actionQrCode(_ sender: Any) {
+             if #available(iOS 13.0, *) {
+                        let vc = self.storyboard?.instantiateViewController(identifier: "QRCodeVC") as! QRCodeVC
+                self.navigationController?.pushViewController(vc, animated: true)
+
+                    } else {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "QRCodeVC") as! QRCodeVC
+                self.navigationController?.pushViewController(vc, animated: true)
+
+                    }
+                    
+         }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(tableView == tblcontact)
+        if(tableView == tblcontact) ||  (tableView == tblrecent)
         {
             return arrCotact.count
         }
@@ -457,7 +546,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(tableView == tblcontact)
+        if(tableView == tblcontact) ||  (tableView == tblrecent)
         {
             let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! SidemenuCell
             
@@ -518,6 +607,29 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             
             
             return cell
+        }else if (tableView == tblrecent)
+        {
+                    
+            let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! SidemenuCell
+            
+            tblrecent.separatorStyle = .none
+            
+                    
+            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "mobile") as? String
+            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+                    
+            // Get The Name
+            let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+            print(name)
+            if(selectedindex.contains(name)) {
+                cell.imagview.image = #imageLiteral(resourceName: "ic_checked")
+            }
+            else{
+                cell.imagview.image = #imageLiteral(resourceName: "ic_unchecked")
+            }
+                    
+            return cell
+                    
         }
         else
         {
@@ -573,6 +685,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 {
                  nameary.add(namenew)
                  lblname.text = nameary.componentsJoined(by:", ")
+                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                    lblnamemanu.text = nameary.componentsJoined(by:", ")
+
                 }
                 
             }
@@ -590,7 +705,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 let dic = manuallyary.object(at:i) as! NSMutableDictionary
                 nameary.add(dic.value(forKey:"name") as! String)
                 lblname.text = nameary.componentsJoined(by:", ")
-                
+                lblnamerec.text = nameary.componentsJoined(by:", ")
+                lblnamemanu.text = nameary.componentsJoined(by:", ")
+
             }
             
             
@@ -598,12 +715,16 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         if(nameary.count > 6)
         {
              hightcontactview.constant = 202
+            hightcontactview1.constant = 202
+            hightcontactview2.constant = 202
 
              
         }
          else if(nameary.count > 3)
         {
             hightcontactview.constant = 152
+            hightcontactview1.constant = 152
+            hightcontactview2.constant = 152
 
             
         }
@@ -616,25 +737,46 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 // self.container is your view that you want to animate
                 self.viewbottom.transform = top
                 self.viewbottom.isHidden = false
+                
+                self.viewbottom1.transform = top
+                self.viewbottom1.isHidden = false
+                
+                self.viewbottom2.transform = top
+                self.viewbottom2.isHidden = false
+                
             }, completion: nil)
             hightcontactview.constant = 102
+            hightcontactview1.constant = 102
+            hightcontactview2.constant = 102
+
         }
        
         else{
             self.viewbottom.isHidden = true
-            
+            self.viewbottom1.isHidden = true
+            self.viewbottom2.isHidden = true
+
         }
         
         if nameary.count > 1{
-            lblStaticAllowUser.text = "Allow to enter"
+            lblStaticAllowUser.text = "Allow to Visit"
         }else{
-            lblStaticAllowUser.text = "Allow to enter"
+            lblStaticAllowUser.text = "Allow to Visit"
         }
         
         tableView.reloadData()
         
         
     }
+    
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
     
     // MARK: - ScrollPagerDelegate -
     
@@ -650,98 +792,134 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 
     }
     
+    
+    
     @objc func deleteaction(sender:UIButton)
     {
         
-        manuallyary.removeObject(at: sender.tag)
-        
-        let nameary = NSMutableArray()
-                   
-                   
-                   if(selectedindex.count > 0)
-                   {
-                       for i in 0...selectedindex.count-1
-                       {
-                           
-//                           let new = finalresults[i]
-//                           let name = new.givenName + " " + new.familyName
-                         
-                          let dict = arrFinal[i] as! NSMutableDictionary
-                          let name = dict.value(forKey: "name") as! String
-                          let mobile = dict.value(forKey: "mobile") as! String
-                        
-                           nameary.add(name)
-                           
-                           let dic = NSMutableDictionary()
-                           dic.setValue(name, forKey: "name")
-                           dic.setValue(mobile, forKey: "contact")
-                           
-//                           for phoneNumber in new.phoneNumbers {
-//                                          if let number = phoneNumber.value as? CNPhoneNumber, let label = phoneNumber.label {
-//                                              let localizedLabel = CNLabeledValue<CNPhoneNumber>.localizedString(forLabel: label)
-//                                              var mobile = number.stringValue
-//                                              mobile = mobile.replacingOccurrences(of: " ", with: "")
-//                                             dict.setValue(mobile, forKey: "contact")
-//
-//                                          }
-//                                      }
-                                      
-                          // arrContactName.add(dic)
-                           arrContactName.add(dic)
-                       }
-                       
-                       
-                   }
-                   
-                   if(manuallyary.count > 0)
-                   {
-                       for i in 0...manuallyary.count-1
-                       {
-                           let dic = manuallyary.object(at:i) as! NSMutableDictionary
-                           nameary.add(dic.value(forKey:"name") as! String)
-                           lblname.text = nameary.componentsJoined(by:", ")
-                        
-                           let dict = NSMutableDictionary()
-                           dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
-                            dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
-                           arrContactName.add(dict)
-                           
-                       }
-                       
-                       
-                   }
-                     if(nameary.count > 6)
-                           {
-                                hightcontactview.constant = 202
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr =  GeneralConstants.kAppName // "Society Buddy"
+            avc?.subtitleStr = "Are you sure you want to delete this contact?"
+            avc?.isfrom = 1
 
-                                
-                           }
-                            else if(nameary.count > 3)
-                           {
-                               hightcontactview.constant = 152
+                avc?.yesAct = {
+                    self.manuallyary.removeObject(at: sender.tag)
+                            
+                            let nameary = NSMutableArray()
+                                       
+                                       
+                                       if(self.selectedindex.count > 0)
+                                       {
+                                           for i in 0...self.selectedindex.count-1
+                                           {
+                                               
+                    //                           let new = finalresults[i]
+                    //                           let name = new.givenName + " " + new.familyName
+                                             
+                                              let dict = self.arrFinal[i] as! NSMutableDictionary
+                                              let name = dict.value(forKey: "name") as! String
+                                              let mobile = dict.value(forKey: "mobile") as! String
+                                            
+                                               nameary.add(name)
+                                               
+                                               let dic = NSMutableDictionary()
+                                               dic.setValue(name, forKey: "name")
+                                               dic.setValue(mobile, forKey: "contact")
+                                               
+                    //                           for phoneNumber in new.phoneNumbers {
+                    //                                          if let number = phoneNumber.value as? CNPhoneNumber, let label = phoneNumber.label {
+                    //                                              let localizedLabel = CNLabeledValue<CNPhoneNumber>.localizedString(forLabel: label)
+                    //                                              var mobile = number.stringValue
+                    //                                              mobile = mobile.replacingOccurrences(of: " ", with: "")
+                    //                                             dict.setValue(mobile, forKey: "contact")
+                    //
+                    //                                          }
+                    //                                      }
+                                                          
+                                              // arrContactName.add(dic)
+                                               self.arrContactName.add(dic)
+                                           }
+                                           
+                                           
+                                       }
+                                       
+                                       if(self.manuallyary.count > 0)
+                                       {
+                                           for i in 0...self.manuallyary.count-1
+                                           {
+                                               let dic = self.manuallyary.object(at:i) as! NSMutableDictionary
+                                               nameary.add(dic.value(forKey:"name") as! String)
+                                               self.lblname.text = nameary.componentsJoined(by:", ")
+                                            
+                                            self.lblnamerec.text = nameary.componentsJoined(by:", ")
+                                            
+                                            self.lblnamemanu.text = nameary.componentsJoined(by:", ")
 
-                               
-                           }
-                           else if(nameary.count > 0)
-                           {
-                               let top = CGAffineTransform(translationX: 0, y: 0)
-                               
-                               UIView.animate(withDuration: 0.7, delay: 0.0, options: [], animations: {
-                                   // Add the transformation in this block
-                                   // self.container is your view that you want to animate
-                                   self.viewbottom.transform = top
-                                   self.viewbottom.isHidden = false
-                               }, completion: nil)
-                               hightcontactview.constant = 102
-                           }
-                          
-                           else{
-                               self.viewbottom.isHidden = true
-                               
-                           }
-                           
-        
-        tblmanually.reloadData()
+                                               let dict = NSMutableDictionary()
+                                               dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
+                                                dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
+                                               self.arrContactName.add(dict)
+                                               
+                                           }
+                                           
+                                           
+                                       }
+                                         if(nameary.count > 6)
+                                               {
+                                                    self.hightcontactview.constant = 202
+                                                        self.hightcontactview1.constant = 202
+                                                    self.hightcontactview2.constant = 202
+
+                                                    
+                                               }
+                                                else if(nameary.count > 3)
+                                               {
+                                                   self.hightcontactview.constant = 152
+                                                self.hightcontactview1.constant = 152
+                                                self.hightcontactview2.constant = 152
+
+                                                   
+                                               }
+                                               else if(nameary.count > 0)
+                                               {
+                                                   let top = CGAffineTransform(translationX: 0, y: 0)
+                                                   
+                                                   UIView.animate(withDuration: 0.7, delay: 0.0, options: [], animations: {
+                                                       // Add the transformation in this block
+                                                       // self.container is your view that you want to animate
+                                                       self.viewbottom.transform = top
+                                                       self.viewbottom.isHidden = false
+                                                    
+                                                      self.viewbottom1.transform = top
+                                                      self.viewbottom1.isHidden = false
+                                                    
+                                                    self.viewbottom2.transform = top
+                                                    self.viewbottom2.isHidden = false
+                                                    
+                                                   }, completion: nil)
+                                                    self.hightcontactview.constant = 102
+                                                    self.hightcontactview1.constant = 102
+                                                    self.hightcontactview2.constant = 102
+
+                                               }
+                                              
+                                               else{
+                                                   self.viewbottom.isHidden = true
+                                                   self.viewbottom1.isHidden = true
+                                                   self.viewbottom2.isHidden = true
+
+                                               }
+                                               
+                            
+                            self.tblmanually.reloadData()
+
+                }
+            
+                        avc?.noAct = {
+                                         
+                }
+            present(avc!, animated: true)
+            
         
     }
     
@@ -848,6 +1026,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     
                     DispatchQueue.main.async {
                         self.tblcontact.reloadData()
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tblrecent.reloadData()
                     }
                 }
                 catch let error as NSError {

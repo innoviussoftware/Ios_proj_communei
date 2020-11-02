@@ -8,6 +8,8 @@
 
 import UIKit
 import SWRevealViewController
+import ScrollPager
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -18,25 +20,76 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class DomesticHelpVC: UIViewController,UISearchBarDelegate {
+class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate {
+        
     @IBOutlet weak var btnNotification: UIButton!
     
     @IBOutlet weak var lblNoDataFound: UILabel!
     @IBOutlet weak var tblView: UITableView!
+    
+    @IBOutlet weak var tblView_OnDemand: UITableView!
+
     @IBOutlet weak var searchbar: UISearchBar!
+    
+    @IBOutlet weak var txtSearchbar: UITextField!
+
+    @IBOutlet weak var txtSearchbar1: UITextField!
+
     @IBOutlet weak var btnMenu: UIButton!
     
+    @IBOutlet weak var pager: ScrollPager!
+    
+    @IBOutlet var viewDaily: UIView!
+    
+    @IBOutlet var ViewOnDemand: UIView!
+
     var arrHelper = [HelperListData]()
     var arrFinal = [HelperListData]()
     
     var isfrom = 1
 
-    
+    var isfromStr = ""
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
                      // Always adopt a light interface style.
           overrideUserInterfaceStyle = .light
+        }
+        
+        self.navigationController?.isNavigationBarHidden = true
+        
+        pager.delegate = self
+        pager.tintColor  = AppColor.appcolor
+        
+        txtSearchbar.layer.borderColor = UIColor.clear.cgColor
+        
+        txtSearchbar.borderStyle = .none
+        
+        txtSearchbar1.layer.borderColor = UIColor.clear.cgColor
+        
+        txtSearchbar1.borderStyle = .none
+              
+       // pager.frame = view.frame
+       
+        pager.addSegmentsWithTitlesAndViews(segments: [
+            ("Daily", viewDaily),("On Demand", ViewOnDemand)
+        ])
+            
+        if(isfromStr == ""){  // Daily
+            pager.setSelectedIndex(index: 0, animated: true)
+            pager.frame = CGRect(x: 0, y: 59, width: view.frame.size.width, height: 60)
+        }
+              
+        if(isfromStr == "Daily"){  // Daily
+            pager.setSelectedIndex(index: 0, animated: true)
+            pager.frame = CGRect(x: 0, y: 59, width: view.frame.size.width, height: 60)
+        }
+              
+        if(isfromStr == "On Demand"){  // On Demand
+            pager.setSelectedIndex(index: 1, animated: true)
+            pager.frame = CGRect(x: view.frame.size.width, y: 59, width: view.frame.size.width, height: 60)
         }
         
         if isfrom == 1{
@@ -48,15 +101,28 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
         lblNoDataFound.isHidden = true
         tblView.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellReuseIdentifier: "DomesticHelpCell")
         tblView.separatorStyle = .none
+        tblView.frame = CGRect(x: 0, y: 86, width: view.frame.size.width, height: tblView.frame.size.height)
+        
+        tblView_OnDemand.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellReuseIdentifier: "DomesticHelpCell")
+        tblView_OnDemand.separatorStyle = .none
+        tblView_OnDemand.frame = CGRect(x: view.frame.size.width, y: 86, width: view.frame.size.width, height: tblView_OnDemand.frame.size.height)
+
+        viewDaily.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: viewDaily.frame.size.height)
+               
+        ViewOnDemand.frame = CGRect(x: view.frame.size.width, y: 0, width: view.frame.size.width, height: ViewOnDemand.frame.size.height)
+        
         setUpView()
         apicallGetDomestichelperList()
         
-        if(revealViewController() != nil)
+        /*
+         if(revealViewController() != nil)
         {
             btnMenu.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
-        }
+            
+            print("fvdf")
+        } */
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +134,21 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
            
        }
+    
+    
+    //MARK:- ScrollPager delegate
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        
+        if changedIndex == 0{//Daily
+            
+            self.tblView.reloadData()
+
+        }else{
+            self.tblView_OnDemand.reloadData()
+            
+        }
+        
+    }
        
     @available(iOS 13.0, *)
     @objc func AcceptRequest(notification: NSNotification) {
@@ -151,10 +232,24 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
     @IBAction func actionNotification(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationVC
+        nextViewController.isfrom = 0
+
         self.navigationController?.pushViewController(nextViewController, animated: true)
                 
     }
     
+    @IBAction func actionQrCode(_ sender: Any) {
+          if #available(iOS 13.0, *) {
+                     let vc = self.storyboard?.instantiateViewController(identifier: "QRCodeVC") as! QRCodeVC
+            self.navigationController?.pushViewController(vc, animated: true)
+
+                 } else {
+                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "QRCodeVC") as! QRCodeVC
+            self.navigationController?.pushViewController(vc, animated: true)
+
+                 }
+                 
+      }
     
     // MARK: - get Maid List
     
@@ -183,8 +278,14 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
                             self.tblView.dataSource = self
                             self.tblView.reloadData()
                             
+                            self.tblView_OnDemand.delegate = self
+                            self.tblView_OnDemand.dataSource = self
+                            self.tblView_OnDemand.reloadData()
                         }else{
                             self.tblView.isHidden = true
+                            
+                            self.tblView_OnDemand.isHidden = true
+                            
                             self.lblNoDataFound.isHidden = false
                             
                         }
@@ -240,18 +341,29 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
 
                     }
                             tblView.reloadData()
+                   
+                            tblView_OnDemand.reloadData()
                 }
                 
                 if self.arrHelper.count > 0{
                     self.tblView.isHidden = false
-
+                    
                     self.lblNoDataFound.isHidden = true
                     self.tblView.reloadData()
+                    
+                    self.tblView_OnDemand.isHidden = false
+                    self.tblView_OnDemand.reloadData()
+
                 }else{
                     self.tblView.isHidden = true
                     self.lblNoDataFound.isHidden = false
+                    
+                    self.tblView_OnDemand.isHidden = true
+
                 }
                 tblView.reloadData()
+
+                self.tblView_OnDemand.reloadData()
 
             }
             else
@@ -262,8 +374,15 @@ class DomesticHelpVC: UIViewController,UISearchBarDelegate {
 
                 tblView.reloadData()
                 
+                self.tblView_OnDemand.isHidden = false
+                self.tblView_OnDemand.reloadData()
+
+                
             }
             self.tblView.reloadData()
+            
+            self.tblView_OnDemand.reloadData()
+
         }
         
       
@@ -278,6 +397,13 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+//        if tableView == tblView {
+//            
+//        }else{
+//
+//        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "DomesticHelpCell") as! DomesticHelpCell
         
         cell.selectionStyle = .none

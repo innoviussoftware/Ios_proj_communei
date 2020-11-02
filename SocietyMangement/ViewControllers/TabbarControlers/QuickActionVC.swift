@@ -17,157 +17,121 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class QuickActionVC: UIViewController , UICollectionViewDelegate ,UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+class QuickActionVC: BaseVC ,Invite {
     
     
     @IBOutlet weak var menuaction: UIButton!
     
-    @IBOutlet weak var collectionAddEntry: UICollectionView!
     
-    @IBOutlet weak var collectionGuard: UICollectionView!
-    
-    @IBOutlet weak var collectionUpcomingServices: UICollectionView!
-
-    
-       var shortcutary = ["Add Visitor","Buy/Sell","Help Desk","Amenities Booking","Domestic Helper"]
-    
-       var iconary =
-           [UIImage(named:"ic_user"),UIImage (named:"ic_buysell"),UIImage (named:"ic_helpdesk"),UIImage (named:"ic_aminities"),UIImage (named:"ic_domestic")]
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionAddEntry.layer.shadowColor = UIColor.lightGray.cgColor
-               collectionAddEntry.layer.shadowOffset = CGSize(width:0, height: 1)
-               collectionAddEntry.layer.shadowOpacity = 1
-               collectionAddEntry.layer.shadowRadius = 1.0
-               collectionAddEntry.clipsToBounds = false
-               collectionAddEntry.layer.masksToBounds = false
-        
-        if(revealViewController() != nil)
-               {
+           if(revealViewController() != nil) {
                    menuaction.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
                    
                    self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
                    self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
-               }
+            }
                
 
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func btnMenuActionPressed(_ sender: Any) {
-        revealViewController()?.revealToggle(self)
-    }
-      
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if(collectionView == collectionAddEntry)
-        
-        {
-            
-            let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
-            cell.imgview.image = iconary[indexPath.row]
-            cell.lblname.text = shortcutary[indexPath.row]
-            
-            return cell
-            
-        }
-        else if(collectionView == collectionGuard){
-
-            let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
-            cell.imgview.image = iconary[indexPath.row]
-            cell.lblname.text = shortcutary[indexPath.row]
-                   
-            return cell
-        }
-        else
-        {
-           // let cell:UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath)
-            
-            let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
-            cell.imgview.image = iconary[indexPath.row]
-            cell.lblname.text = shortcutary[indexPath.row]
-            
-            return cell
-        }
-        
-        
-        
+    @IBAction func btnZendeskPressed(_ sender: UIButton) {
+        // let vc =
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView == collectionAddEntry){
-            return shortcutary.count
-        }else if(collectionView == collectionGuard){
-            return shortcutary.count
-        }else{
-            return shortcutary.count
-        }
+    @IBAction func btnMenuActionPressed(_ sender: UIButton) {
+       // revealViewController()?.revealToggle(self)
+        print("revealViewController")
+    }
+     
+    @IBAction func actionNotification(_ sender: UIButton) {
+       let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
+        vc.isfrom = 0
+     }
+    
+    @IBAction func btnOpenQRCodePressed(_ sender: UIButton) {
+        let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
+        vc.isfrom = 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if(collectionView == collectionAddEntry)
-        {
-            if indexPath.item == 0{ // "Add Visitor"
-                
-              /*  let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddguestPopup") as! AddguestPopup
-                popOverConfirmVC.delegate = self
-                self.addChildViewController(popOverConfirmVC)
-                popOverConfirmVC.view.frame = self.view.frame
-                self.view.center = popOverConfirmVC.view.center
-                self.view.addSubview(popOverConfirmVC.view)
-                popOverConfirmVC.didMove(toParentViewController: self) */
-                print("Add Visitor")
-
-            }else if indexPath.item == 1 { // "Buy/Sell"
-                
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "BuySellVC") as! BuySellVC
-                vc.isfrom = 1
-                self.navigationController?.pushViewController(vc, animated: true)
-                print("Buy/Sell")
-                
-            }else if indexPath.item == 2 { // "Help Desk"
-                
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
-                vc.isfrom = 1
-                self.navigationController?.pushViewController(vc, animated: true)
-                print("Help Desk")
-                
-            }else if indexPath.item == 3 { // "Amenities Booking"
-                print("Amenities Booking")
-            }else if indexPath.item == 4 { // "Domestic Helper"
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
-                vc.isfrom = 1
-                self.navigationController?.pushViewController(vc, animated: true)
-                print("Domestic Helper")
-            }
-            
-            
-        }
-        else if(collectionView == collectionGuard){
-            print("collection Guard")
-        }
-        else
-        {
-            print("collection Upcoming Services")
-        }
-
+    @IBAction func btnVisitorPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddguestPopup") as! AddguestPopup
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Visitor")
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    @IBAction func btnDeliveryPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryEntryVC") as! DeliveryEntryVC
+       // vc.isfrom = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Delivery")
+    }
+    
+    @IBAction func btnCabPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
+        // vc.isfrom = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Cab")
+    }
+    
+    @IBAction func btnServiceProviderPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ServiceProviderEntryVC") as! ServiceProviderEntryVC
+        // vc.isfrom = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Service Provider")
+    }
+    
+    @IBAction func btnDailyHelperPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        vc.isfrom = 1
+        vc.isfromStr  = "Daily"
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Domestic Helper")
+    }
+    
+    @IBAction func btnOnDemandHelperPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        vc.isfrom = 1
+       // vc.isfromStr  = "On Demand"
+        vc.isfromStr  = "Daily"
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("On Demand Helper")
+    }
         
+    @IBAction func btnParcelPickupPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Parcel Pickup")
+    }
+    
+    @IBAction func btnEmergencyAlertsPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "EmergencyAlertVC") as! EmergencyAlertVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Emergency Alerts")
+    }
+    
+    @IBAction func btnMessageGuardPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MessageGuardVC") as! MessageGuardVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Message Guard")
+    }
+    
+    @IBAction func btnComplaintManagementPressed(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ComplaintManagementVC") as! ComplaintManagementVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("Complaint Management")
+    }
+    
+    func inviteaction(from: String) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        if(collectionView == collectionAddEntry){
-            return CGSize(width: 84, height: 92)
-        }else if(collectionView == collectionGuard){
-            return CGSize(width: 84, height: 92)
-        }else{
-            return CGSize(width: 84, height: 92)
-        }
-                
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "InviteVC") as! InviteVC
+        nextViewController.isfrom = from
+        navigationController?.pushViewController(nextViewController, animated: true)
     }
     
     

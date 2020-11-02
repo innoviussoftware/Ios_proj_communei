@@ -63,7 +63,11 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
                         // Always adopt a light interface style.
              overrideUserInterfaceStyle = .light
            }
+    
         
+        /*   //////// 31/8/20.
+         
+         
    let yourAttributes : [NSAttributedStringKey: Any] = [
     NSAttributedStringKey.font : UIFont(name: "Gotham-Book", size:17.0),
    NSAttributedStringKey.foregroundColor : UIColor(named:"Orange"),
@@ -71,7 +75,7 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
         
         let yourAttributes1 : [NSAttributedStringKey: Any] = [
          NSAttributedStringKey.font : UIFont(name: "Gotham-Book", size:17.0),
-        NSAttributedStringKey.foregroundColor :UIColor(red: 0.51, green: 0.56, blue: 0.65, alpha: 1.00)]
+         NSAttributedStringKey.foregroundColor :UIColor(red: 26.0, green: 54.0, blue: 82.0, alpha: 1.00)]
         
         let combionation = NSMutableAttributedString()
         let attributeString = NSMutableAttributedString(string: "Already have an account?",attributes: yourAttributes1)
@@ -80,6 +84,8 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
         combionation.append(attributeString1)
         
         btncreatenew.setAttributedTitle(combionation, for: .normal)
+        
+        */
 
         
       //.styleDouble.rawValue, .styleThick.rawValue, .styleNone.rawValue
@@ -100,7 +106,7 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
             strFCmToken = "abc"
         }
         
-        print("FCM Token-------->\(strFCmToken)")
+        print("FCM Token --------> \(strFCmToken)")
         if !NetworkState().isInternetAvailable {
                    ShowNoInternetAlert()
                    return
@@ -109,36 +115,46 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
             webservices().StartSpinner()
 
             let param : Parameters = [
-                "phone" : txtmobile.text!,
-                "device_id" :strFCmToken
+                "Phone" : txtmobile.text!,
+                "FCMToken" : strFCmToken
             ]
 
             Apicallhandler.sharedInstance.LoginNew(URL: webservices().baseurl + APILogin, param: param) { response in
+                
                 webservices().StopSpinner()
                 switch(response.result) {
                 case .success(let resp):
                     if resp.status == 1{
 
-                        print("OTP---------->\(resp.data?.otp)")
-                        print("login token---------->\(resp.data?.token)")
+                        print("OTP---------->\(resp.data?.otp ?? "")")
+                        print("login token---------->\(resp.data?.token ?? "")")
                         
+                        /*
+                         
+                         isapprove = 0 and is_exist = true means new but not approve by admin
+                         isapprove = 1 and is_exist = true means user is approve by admin
+                         isapprove = 0 and is_exist = false means new user
+                         
+                         */
                         
-                        if resp.isapporve == 0{
-                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Your account is not approved yet")
+                        if resp.isapporve == 0 &&  resp.data?.is_exist == true {
+                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Your account is not approved by admin")
                             self.present(alert, animated: true, completion: nil)
                             
-                        }else{
-                            if resp.data?.isExist != "0"{
-                                                       UserDefaults.standard.set(resp.data?.role, forKey: USER_ROLE)
-                                                       UserDefaults.standard.set(resp.data?.token, forKey: USER_TOKEN)
-                                                       UserDefaults.standard.synchronize()
-                                                   }
-                         if resp.data?.isExist == "0"{
+                        }else if resp.isapporve == 1 &&  resp.data?.is_exist == true {
+                            
+                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"User is already exist")
+                            self.present(alert, animated: true, completion: nil)
+                           
+                        }else if resp.isapporve == 0 && resp.data?.is_exist == false {
+                            
+                            UserDefaults.standard.set(resp.data?.Secret, forKey: USER_SECRET)
+                            
                                                    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                    let nextViewController = storyBoard.instantiateViewController(withIdentifier: "OTPVC") as! OTPVC
                                                    nextViewController.strmobileno = self.txtmobile.text!
                                                    nextViewController.strotp = "\(resp.data!.otp!)"
-                                                   nextViewController.ismember = (resp.data?.isExist)!
+                                                   nextViewController.ismember = (resp.data?.is_exist)
                                                    self.navigationController?.pushViewController(nextViewController, animated: true)
                             }
                             else
@@ -148,7 +164,7 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
                             }
 
                         }
-                    }else{
+                    else{
                         let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
                         self.present(alert, animated: true, completion: nil)
                     }

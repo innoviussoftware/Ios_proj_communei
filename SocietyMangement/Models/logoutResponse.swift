@@ -9,8 +9,8 @@
 import Foundation
 
 // MARK: - Acce
+
 struct logout: Codable {
-    let data: String?
-    let status: Int
+    let status: Bool
     let message: String
 }

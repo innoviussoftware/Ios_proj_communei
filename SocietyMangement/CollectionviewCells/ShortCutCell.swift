@@ -14,6 +14,11 @@ class ShortCutCell: UICollectionViewCell {
 
 }
 
+class ShortCutCells: UICollectionViewCell {
+    @IBOutlet weak var lblname: UILabel!
+    @IBOutlet weak var imgview: UIImageView!
+
+}
 
 class LatestActivityCell: UICollectionViewCell {
     @IBOutlet weak var lblname: UILabel!

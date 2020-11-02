@@ -277,6 +277,13 @@ class HourlyEntryPermissionPopUpVC: UIViewController {
         
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .dateAndTime
+        
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        
         datePicker.minimumDate = Date()
         activeTextField.inputView = datePicker
         
@@ -291,6 +298,13 @@ class HourlyEntryPermissionPopUpVC: UIViewController {
         //Formate Date
         timePicker = UIDatePicker()
         timePicker.datePickerMode = .time
+        
+        if #available(iOS 13.4, *) {
+            timePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        
         timePicker.minimumDate = Date()
         txtSelectTime.inputView = timePicker
         

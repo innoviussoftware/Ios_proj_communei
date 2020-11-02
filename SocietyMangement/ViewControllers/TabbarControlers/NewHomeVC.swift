@@ -14,7 +14,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class NewHomeVC: BaseVC, Invite {
+class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var lblflatno: UILabel!
     
@@ -27,44 +27,98 @@ class NewHomeVC: BaseVC, Invite {
     @IBOutlet weak var collectionactivity: UICollectionView!
     
     @IBOutlet weak var collectionshortcut: UICollectionView!
-    var shortcutary = ["Add Visitor","Buy/Sell","Help Desk","Amenities Booking","Domestic Helper"]
-    var iconary =
-        [UIImage(named:"ic_user"),UIImage (named:"ic_buysell"),UIImage (named:"ic_helpdesk"),UIImage (named:"ic_aminities"),UIImage (named:"ic_domestic")]
+    
+    var shortcutary = ["Invite Visitor","Delivery","Cab","Domestic Helper","Help Desk"]
+    
+    var iconary = [UIImage(named:"ic_user"),UIImage (named:"ic_delivery"),UIImage (named:"ic_cab"),UIImage (named:"ic_domestic_helper"),UIImage (named:"ic_helpdesk")] // ic_domestic
+
+    
+    //   [UIImage(named:"ic_user"),UIImage (named:"ic_buysell"),UIImage (named:"ic_helpdesk"),UIImage (named:"ic_aminities"),UIImage (named:"ic_domestic_helper")] // ic_domestic
     
     var arrGuestList = [guestData]()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionshortcut.layer.shadowColor = UIColor.lightGray.cgColor
+        /*  collectionshortcut.layer.shadowColor = UIColor.lightGray.cgColor
         collectionshortcut.layer.shadowOffset = CGSize(width:0, height: 1)
         collectionshortcut.layer.shadowOpacity = 1
         collectionshortcut.layer.shadowRadius = 1.0
         collectionshortcut.clipsToBounds = false
         collectionshortcut.layer.masksToBounds = false
-        
+        */
+      
         if(revealViewController() != nil)
         {
             menuaction.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
             
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            
+            print("revealViewController auto")
+
         }
         
+       // collectionshortcut.layer.borderColor =  UIColor(red: 125/255.0, green: 125/255.0, blue: 125/255.0, alpha: 1.0).cgColor
         
-        
+        collectionshortcut.layer.shadowColor = UIColor(red: 125/255.0, green: 125/255.0, blue: 125/255.0, alpha: 1.0).cgColor
+      //  collectionshortcut.layer.shadowOffset = CGSize(width: 1, height: 1)
+        collectionshortcut.layer.shadowOpacity = 1
+        collectionshortcut.layer.shadowRadius = 1.0
+      //  collectionshortcut.clipsToBounds = false
+     //   collectionshortcut.layer.masksToBounds = false
+
+        print("viewDidLoad NewHomeVC")
+         
         // Do any additional setup after loading the view.
+        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         apicallUserMe()
-        apicallGuestList()
+        // 28/10/20. temp comment
+     //   apicallGuestList()
+       
+        self.navigationController?.isNavigationBarHidden = true
+
+        print("viewWillAppear true NewHomeVC")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+               
+        print("viewDidAppear NewHomeVC")
+    }
     
+    @IBAction func btnZendeskPressed(_ sender: Any) {
+        // let vc =
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+    }
     
     @IBAction func btnMenuActionPressed(_ sender: Any) {
-        revealViewController()?.revealToggle(self)
+                
+        print("revealViewController click")
+        
+       // let revealController = self.revealViewController()!
+       // revealController.revealToggle(sender)//reveal(sender: sender)
+        
+        
+//        let mainST = UIStoryboard(name: "Main", bundle: Bundle.main)
+//        let VC = mainST.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//        present(VC, animated: true, completion: nil)
+        
+      /*  let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let vc = storyboard.instantiateViewController(withIdentifier: "idTabBar") as! TabBarController
+      //  vc.index = 0
+        let rvc:SWRevealViewController = self.revealViewController() as SWRevealViewController
+        rvc.pushFrontViewController(vc, animated: true) */
+        
+        
+      /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+        present(nextViewController, animated: true, completion: nil) */
+        
+     //   navigationController?.pushViewController(nextViewController, animated: true)
+        
     }
     
     @IBAction func actionNotification(_ sender: Any) {
@@ -78,6 +132,9 @@ class NewHomeVC: BaseVC, Invite {
     }
     
     @IBAction func btnViewAllPressed(_ sender: Any) {
+        
+      //  _ = self.pushViewController(withName:HomeVC.id(), fromStoryboard: "Main") as! HomeVC
+
         _ = self.pushViewController(withName:ActivityTabVC.id(), fromStoryboard: "Main") as! ActivityTabVC
 
     }
@@ -94,7 +151,13 @@ class NewHomeVC: BaseVC, Invite {
         webservices().StartSpinner()
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-        Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+        
+        print("apicallUserMe token : ",token!)
+       
+      //  Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
+            
+        Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + API_USER_ME, token: token as! String) { JSON in
+
             
             let statusCode = JSON.response?.statusCode
             
@@ -103,21 +166,26 @@ class NewHomeVC: BaseVC, Invite {
                 webservices().StopSpinner()
                 
                 if statusCode == 200{
-                    UserDefaults.standard.set(resp.data!.societyID, forKey: USER_SOCIETY_ID)
-                    UserDefaults.standard.set(resp.data!.id, forKey: USER_ID)
+                    UserDefaults.standard.set(resp.data!.society?.societyID, forKey: USER_SOCIETY_ID)
+                    UserDefaults.standard.set(resp.data!.guid, forKey: USER_ID)
                     UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
-                    UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
+                    UserDefaults.standard.set(resp.data!.society?.propertyID, forKey: USER_BUILDING_ID)
                     UserDefaults.standard.synchronize()
                     UsermeResponse = resp
-                    self.lblname.text = "Welcome, \(resp.data!.name!)"
+                    self.lblname.text = "Hello, \(resp.data!.name ?? "")\("!")"
                     
-                    self.lblname.text = resp.data!.name
-                    if(UsermeResponse?.data!.image != nil)
+                 //   self.lblname.text = resp.data!.name
+                    if(UsermeResponse?.data!.profilePhotoPath != nil)
                     {
                         
                     }
                     //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
-                    self.lblflatno.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+                    
+                    // 22/10/20. temp comment
+                    
+                    self.lblflatno.text = "\(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
+                    
+                    //String(format: "Flat No: %@-%@", UsermeResponse!.data!.society?.parentProperty,UsermeResponse!.data!.society?.property)
                     
                     
                 }
@@ -227,6 +295,7 @@ class NewHomeVC: BaseVC, Invite {
     }
     
     
+    
     func inviteaction(from: String) {
           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
           
@@ -235,21 +304,25 @@ class NewHomeVC: BaseVC, Invite {
           navigationController?.pushViewController(nextViewController, animated: true)
       }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+   
 }
 @available(iOS 13.0, *)
 extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICollectionViewDelegateFlowLayout
     
 {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+           if(collectionView == collectionactivity)
+           {
+               return arrGuestList.count
+             //  return 10
+           }
+           else
+           {
+               return shortcutary.count
+           }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if(collectionView == collectionactivity)
@@ -277,6 +350,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
         {
             
             let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
+
             cell.imgview.image = iconary[indexPath.row]
             cell.lblname.text = shortcutary[indexPath.row]
             
@@ -287,59 +361,71 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView == collectionactivity)
-        {
-            return arrGuestList.count
-          //  return 10
-        }
-        else
-        {
-            return shortcutary.count
-        }
-    }
+    
+//    func hideContentController(content: UIViewController) {
+//        content.willMove(toParentViewController: nil)
+//        content.view.removeFromSuperview()
+//        content.removeFromParentViewController()
+//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if(collectionView == collectionactivity)
-        {
+        if(collectionView == collectionactivity) {
             print("Latest Activity")
-        }else
-        {
-            if indexPath.item == 0{ // "Add Visitor"
+        }else{
+            if indexPath.item == 0{ // "Invite Visitor"
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddguestPopup") as! AddguestPopup
                 popOverConfirmVC.delegate = self
-                self.addChildViewController(popOverConfirmVC)
-                popOverConfirmVC.view.frame = self.view.frame
-                self.view.center = popOverConfirmVC.view.center
-                self.view.addSubview(popOverConfirmVC.view)
-                popOverConfirmVC.didMove(toParentViewController: self)
-                print("Add Visitor")
+                popOverConfirmVC.isfrom = 0
+              //  self.addChildViewController(popOverConfirmVC)
+              //  popOverConfirmVC.view.frame = self.view.frame
+              //  self.view.center = popOverConfirmVC.view.center
+              //  self.view.addSubview(popOverConfirmVC.view)
 
-            }else if indexPath.item == 1 { // "Buy/Sell"
+              //  popOverConfirmVC.didMove(toParentViewController: self)
                 
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "BuySellVC") as! BuySellVC
+                self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+              
+             //  tabbarDisbale()
+                
+               // view.isUserInteractionEnabled = false;
+
+                print("Invite Visitor")
+
+            }else if indexPath.item == 1 {  // "Delivery"
+                
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryEntryVC") as! DeliveryEntryVC
+                // vc.isfrom = 1
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+                print("Delivery")
+                
+            }else if indexPath.item == 2{ // "Cab"
+               
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
+                // vc.isfrom = 1
+                self.navigationController?.pushViewController(vc, animated: true)
+                               
+                print("Cab")
+                
+            }else if indexPath.item == 3 { // "Domestic Helper"
+               
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
                 vc.isfrom = 1
                 self.navigationController?.pushViewController(vc, animated: true)
-                print("Buy/Sell")
                 
-            }else if indexPath.item == 2 { // "Help Desk"
+                print("Domestic Helper")
+                
+            }else if indexPath.item == 4 { // "Help Desk"
                 
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
                 vc.isfrom = 1
                 self.navigationController?.pushViewController(vc, animated: true)
+                
                 print("Help Desk")
                 
-            }else if indexPath.item == 3 { // "Amenities Booking"
-                print("Amenities Booking")
-            }else if indexPath.item == 4 { // "Domestic Helper"
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
-                vc.isfrom = 1
-                self.navigationController?.pushViewController(vc, animated: true)
-                print("Domestic Helper")
             }
-            
             
         }
 
@@ -347,16 +433,10 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        
-        if(collectionView == collectionactivity)
-        {
+        if(collectionView == collectionactivity) {
             return CGSize(width: 196, height: 86)
-            
-        }
-        else
-        {
+        }else{
             return CGSize(width: 84, height: 92)
-            
         }
                 
     }
