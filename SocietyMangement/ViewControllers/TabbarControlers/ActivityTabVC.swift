@@ -426,7 +426,7 @@ class ActivityTabVC: BaseVC {
                    // UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
                     UserDefaults.standard.synchronize()
                     UsermeResponse = resp
-                    self.lblname.text = "Welcome, \(resp.data!.name)"
+                    self.lblname.text = "Welcome, \(resp.data!.name ?? "")"
                     
                   //  self.lblname.text = resp.data!.name
                     

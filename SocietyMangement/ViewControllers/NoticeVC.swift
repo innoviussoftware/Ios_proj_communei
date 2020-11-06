@@ -38,10 +38,13 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
 
     @IBOutlet weak var toptblConstraint: NSLayoutConstraint!
     
-    var noticeary = [Notice]()
+    var noticeary = [Notice]()  // Notice? // // 3/11/20. temp comment
     var announcementary = [Announcement]()
     var eventary = [Event]()
     var circularary = [Circular]()
+    
+//  var noticeary = [Notice]()  // 3/11/20. temp comment
+//  var noticearytype = NSMutableArray()
     
     @IBOutlet var viewnoresult: UIView!
     
@@ -250,7 +253,8 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
     }
     
     @objc  func sendNotification(sender:UIButton) {
-        let strId = "\(noticeary[sender.tag].noticeID!)"
+        let strId = "\(noticeary[sender.tag].noticeID)"
+
         APPDELEGATE.apicallReminder(strType: "1", id: strId)
         
     }
@@ -285,8 +289,10 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
         
          cell!.btnNotification.tag = indexPath.row
         
+        cell
+        
         cell?.lblTitel.text = noticeary[indexPath.row].title
-        cell?.lblDate.text = strChangeDateFormate(strDateeee: noticeary[indexPath.row].visibleTill!)
+        cell?.lblDate.text = strChangeDateFormate(strDateeee: noticeary[indexPath.row].visibleTill)
         cell?.btnDownload.isHidden = true
        
       //  let hight = getLabelHeight(text: noticeary[indexPath.row].datumDescription, width:(cell?.bounds.width)! - 32 , font: UIFont(name:"Gotham-Light", size: 14)!)
@@ -299,16 +305,18 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
 //           }
 
         
-        if arrReadMore.contains(noticeary[indexPath.row].noticeID!){
+        if arrReadMore.contains(noticeary[indexPath.row].noticeID){
             cell?.lblDiscription.numberOfLines = 0
             cell!.lblDiscription.lineBreakMode = .byWordWrapping
             cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
+
             cell?.btnReadMore.setTitle("Read Less <", for:.normal)
             
         }else{
             cell!.lblDiscription.numberOfLines = 4
             cell!.lblDiscription.lineBreakMode = .byTruncatingTail
             cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
+
             cell?.btnReadMore.setTitle("Read More >", for:.normal)
 
         }
@@ -387,10 +395,11 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
       //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
-        avc?.subtitleStr = "Are you sure you want to delete \(self.noticeary[sender.tag].title ?? "")?"
+        avc?.subtitleStr = "Are you sure you want to delete \(self.noticeary[sender.tag].title)?"
+
             avc?.yesAct = {
                   
-                self.apicallDeleteNotice(id: String(format: "%d",  self.noticeary[sender.tag].noticeID!))
+                self.apicallDeleteNotice(id: String(format: "%d",  self.noticeary[sender.tag].noticeID))
 
                 }
             avc?.noAct = {
@@ -428,7 +437,7 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
         vwReadMore.isHidden = false
         
         lblTitel.text = noticeary[sender.tag].title
-        lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].visibleTill!)
+        lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].creationDate)
         txtvwDiscription.text = noticeary[sender.tag].datumDescription
 
        // tblview.reloadData()
@@ -480,11 +489,12 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
                    // if(resp.status == true)
                     if statusCode == 200
                     {
-                        self.noticeary = resp.data
+                        self.noticeary = resp.data!
+                        
                         self.lblnoproperty.isHidden = true
                         self.tblview.isHidden = false
                         self.tblview.reloadData()
-                        if(resp.data.count == 0)
+                        if(resp.data == nil)
                                               {
                                                   self.tblview.isHidden = true
                                                   self.viewnoresult.isHidden = false
@@ -499,7 +509,7 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
                     }
                     else
                     {
-                        if(resp.data.count == 0)
+                        if(resp.data == nil)
                         {
                             self.tblview.isHidden = true
                             self.viewnoresult.isHidden = false

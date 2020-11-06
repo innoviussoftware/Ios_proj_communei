@@ -498,15 +498,27 @@ struct Apicallhandler {
     }
     
     //Mark : Api call add Notice
-    func AddNotice(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<AddNoticeResponse>) -> Void)) {
+  /*  func AddNotice(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<NoticesResponse>) -> Void)) {
         
-        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AddNoticeResponse>) in
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<NoticesResponse>) in
             
             onCompletion(response)
             
         }
         
-    }
+    } */
+    
+    
+     func AddNotice(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<AddNoticeResponse>) -> Void)) {
+         
+         AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AddNoticeResponse>) in
+             
+             onCompletion(response)
+             
+         }
+         
+     }
+    
     
     //Mark : Api call edit Notice
     func EditNotice(URL: String,param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {

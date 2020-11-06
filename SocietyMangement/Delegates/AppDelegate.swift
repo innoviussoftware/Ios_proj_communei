@@ -443,7 +443,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { response in
                 switch(response.result) {
                 case .success(let resp):
-                    if resp.status == true{
+                    if resp.status == 1{
                         
                      onCompletion(1)
                         
@@ -455,9 +455,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         UserDefaults.standard.removeObject(forKey:USER_EMAIL)
                         UserDefaults.standard.removeObject(forKey:USER_NAME)
                         UserDefaults.standard.removeObject(forKey:USER_SECRET)
-                        
-                       
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
 
+                        
                         
                     }else{
                          print("\(resp.message)")

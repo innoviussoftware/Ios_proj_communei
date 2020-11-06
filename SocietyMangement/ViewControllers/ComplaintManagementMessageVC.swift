@@ -27,7 +27,7 @@ class ComplaintManagementMessageVC: UIViewController, UIImagePickerControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        lblName.text = strlbl + " Complaint"
+        lblName.text = strlbl  //+ " Complaint"
 
         textViewReasion.layer.borderWidth = 1
                        

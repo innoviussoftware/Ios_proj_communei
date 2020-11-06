@@ -12,7 +12,7 @@ import Foundation
 // MARK: - ProfessionResponse
 struct ProfessionResponse: Codable {
     let data: [Profession]
-    let status: Bool
+    let status: Int
     let message: String
 }
 

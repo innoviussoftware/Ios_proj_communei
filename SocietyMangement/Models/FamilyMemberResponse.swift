@@ -12,7 +12,7 @@ import Foundation
 // MARK: - GetFamilyMember
 struct GetFamilyMember: Codable {
     let data: [FamilyMember]?
-    let status: Bool
+    let status: Int
     let message: String
 }
 

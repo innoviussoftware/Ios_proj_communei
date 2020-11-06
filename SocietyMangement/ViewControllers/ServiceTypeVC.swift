@@ -23,14 +23,16 @@ class ServiceTypecell:UITableViewCell
 
 }
 
-class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
    
 
     @IBOutlet weak var tblServiceType: UITableView!
     
-    @IBOutlet weak var searchBar: UISearchBar!
+   // @IBOutlet weak
+    var searchBar: UISearchBar!
     
-    @IBOutlet weak var txtSearchbar: UITextField!
+   // @IBOutlet weak
+    var txtSearchbar: UITextField!
 
     
     var data = ["Ac Service", "Business Events", "Carpenter", "Caterers", "Civil Work", "Cleaning Services", "Cleaning Services Office", "Computer/Laptop Repair", "Curtains & Blinds", "Driver", "Electrician", "Elevator Services", "Fabrication Service", "Flourmill Repair", "Gardening", "Geyser", "Glass Works", "Home Appliances", "Interior Designer_Office", "Interior Designers", "Lcd/Led Repair", "Maid Services", "Microwaves/Ovens Repair", "Movers & Packers", "Overseas Visa Services", "Painting", "Party & Event Mgmt", "Passport Services", "Pest Control", "Photographers", "Plumber", "Refrigerator Repair", "Ro Services", "Security Services", "Security Services_Office", "Water Cooler"]
@@ -53,9 +55,7 @@ class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSour
 
         tblServiceType.reloadData()
         
-        txtSearchbar.layer.borderColor = UIColor.clear.cgColor
         
-        txtSearchbar.borderStyle = .none
 
         // Do any additional setup after loading the view.
     }
@@ -132,7 +132,7 @@ class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSour
     
     //MARK:- searchBar delegate
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+   /* func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         filteredData = searchText.isEmpty ? data : data.filter({(dataString: String) -> Bool in
             
@@ -141,7 +141,7 @@ class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSour
 
         tblServiceType.reloadData()
 
-    }
+    } */
 
 
 }

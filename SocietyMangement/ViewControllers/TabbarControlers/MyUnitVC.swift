@@ -254,9 +254,12 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         // 22/10/20. temp comment
                        // self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.society?.propertyID!,UsermeResponse!.data!.society?.parentProperty as! CVarArg)
                         
-                        self.lblflatno.text = "Flat No: \( UsermeResponse!.data!.society?.property ?? "")"
+                     //   self.lblflatno.text = "Flat No: \( UsermeResponse!.data!.society?.property ?? "")"
                         
-                        self.lblflattype.text = "Contact No: \(UsermeResponse!.data!.phone!)"
+                        self.lblflatno.text = "Flat No: \(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
+
+                        
+                        self.lblflattype.text = "Contact No: \(UsermeResponse?.data?.phone ?? "")"
                         
                         
                        /* if UsermeResponse?.data?.relation == "self"{

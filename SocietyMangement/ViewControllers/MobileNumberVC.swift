@@ -12,11 +12,16 @@ import Alamofire
 @available(iOS 13.0, *)
 class MobileNumberVC: BaseVC  , UITextFieldDelegate{
     
+    var isfrom = 0
+    
     @IBOutlet weak var btncreatenew: UIButton!
     
     @IBAction func BAckaction(_ sender: Any) {
-        
-        self.navigationController?.popViewController(animated:true)
+        if isfrom == 0 {
+            self.navigationController?.popViewController(animated:true)
+        }else{
+            exit(0)
+        }
     }
     
     @IBAction func CreateNewAccountAction(_ sender: Any) {

@@ -162,12 +162,17 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                  
                 let cell : Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
             
+            cell.layer.shadowColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.16).cgColor
+            cell.layer.shadowOpacity = 1
+            cell.layer.shadowRadius = 1.0
+            cell.layer.shadowOffset = CGSize(width:0, height: 1)
+            
                 cell.lblname.font = UIFont(name: "Gotham-Book", size: 16)
 
                 
                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                 
-                if(str.contains("Secretory") || str.contains("Chairman"))
+            if(str.contains("society_admin"))
                 {
                   //  cell.lblname.text = menuary[indexPath.row]
                   //  cell.imgview.image = UIImage(named:meimagesary[indexPath.row])
@@ -285,7 +290,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
             
                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                 
-                if(str.contains("Secretory") || str.contains("Chairman"))
+                 if(str.contains("society_admin"))
                 {
                    // return menuary.count
                     return arrData.count

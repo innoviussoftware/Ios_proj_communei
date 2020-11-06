@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>944864296604-8h6rc4i3apfh2oo1p78mhbkquokv6rjd.apps.googleusercontent.com</string>
+	<string>14845745685-m7sqpk13l9fdbn42csqour66iicq2j75.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.944864296604-8h6rc4i3apfh2oo1p78mhbkquokv6rjd</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>944864296604-sa6md3lthogma03hn3c8iqb2vg2e53qj.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.14845745685-m7sqpk13l9fdbn42csqour66iicq2j75</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAOdux9Px3EmxzeXUfGkIwy7w7R4RWxwuQ</string>
+	<string>AIzaSyDj7SSnISz9JfPDnQCuJXeDvZP_0VLQbZQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>944864296604</string>
+	<string>14845745685</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.societybuddy</string>
+	<string>com.Communei123</string>
 	<key>PROJECT_ID</key>
-	<string>societymanagement-4450b</string>
+	<string>communei-de5a9</string>
 	<key>STORAGE_BUCKET</key>
-	<string>societymanagement-4450b.appspot.com</string>
+	<string>communei-de5a9.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:944864296604:ios:c17ce174915abb46e9f759</string>
+	<string>1:14845745685:ios:32d60b431ab42daa55cc1c</string>
 	<key>DATABASE_URL</key>
-	<string>https://societymanagement-4450b.firebaseio.com</string>
+	<string>https://communei-de5a9.firebaseio.com</string>
 </dict>
 </plist>

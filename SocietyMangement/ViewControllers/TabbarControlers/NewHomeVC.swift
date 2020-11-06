@@ -59,10 +59,9 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
 
         }
         
-       // collectionshortcut.layer.borderColor =  UIColor(red: 125/255.0, green: 125/255.0, blue: 125/255.0, alpha: 1.0).cgColor
         
-        collectionshortcut.layer.shadowColor = UIColor(red: 125/255.0, green: 125/255.0, blue: 125/255.0, alpha: 1.0).cgColor
-      //  collectionshortcut.layer.shadowOffset = CGSize(width: 1, height: 1)
+        collectionshortcut.layer.shadowColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.16).cgColor
+        collectionshortcut.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
         collectionshortcut.layer.shadowOpacity = 1
         collectionshortcut.layer.shadowRadius = 1.0
       //  collectionshortcut.clipsToBounds = false

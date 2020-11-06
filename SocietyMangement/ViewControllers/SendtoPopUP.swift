@@ -45,7 +45,7 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
             {
                 
                 nameary.add(dic.propertyFullName)
-                selectedaryId.add(dic.propertyName)
+                selectedaryId.add(dic.propertyID)
 
             }
             
@@ -236,7 +236,7 @@ class SendtoPopUP: UIViewController , UITableViewDelegate , UITableViewDataSourc
 
                          let param : Parameters = [
                             "Society" : SociId,
-                            "Parent" : UsermeResponse!.data!.society!.societyID!
+                           // "Parent" : UsermeResponse!.data!.society!.societyID!
                          ]
         
 

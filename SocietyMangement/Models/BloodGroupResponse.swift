@@ -12,7 +12,7 @@ import Foundation
 // MARK: - Welcome
 struct BloodGroupResponse: Codable {
     let data: [BloodGroup]
-    let status: Bool
+    let status: Int
     let message: String
 }
 

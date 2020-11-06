@@ -953,6 +953,11 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
             
+            cell.layer.shadowColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.16).cgColor
+            cell.layer.shadowOpacity = 1
+            cell.layer.shadowRadius = 1.0
+            cell.layer.shadowOffset = CGSize(width:0, height: 1)
+
             cell.lblName.text = buildingary[indexPath.row].propertyFullName
             if(buildingid == buildingary[indexPath.row].propertyID)
             {
@@ -1502,7 +1507,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
              let param : Parameters = [
                  "Society" : SociId,
-                "Parent" : UsermeResponse!.data!.society!.societyID!
+               // "Parent" : UsermeResponse!.data!.society!.societyID!
              ]
             
            print("Parameters : ",param)

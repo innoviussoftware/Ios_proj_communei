@@ -63,7 +63,7 @@ class SplashVC: UIViewController {
                     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                     
                     let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
-                    
+                    nextViewController.isfrom = 1
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                 }

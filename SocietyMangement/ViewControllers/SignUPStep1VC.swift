@@ -136,7 +136,7 @@ class SignUPStep1VC: BaseVC {
             NSAttributedStringKey.foregroundColor :UIColor(red: 0.51, green: 0.56, blue: 0.65, alpha: 1.00)]
         
         let combionation = NSMutableAttributedString()
-        let attributeString = NSMutableAttributedString(string: "I agree to the ",attributes: yourAttributes1)
+        let attributeString = NSMutableAttributedString(string: "I Agree to the ",attributes: yourAttributes1)
         let attributeString1 = NSMutableAttributedString(string: "Terms & Conditions",attributes: yourAttributes)
         combionation.append(attributeString)
         combionation.append(attributeString1)

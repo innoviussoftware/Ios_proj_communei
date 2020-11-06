@@ -543,7 +543,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                             self.viewnoresult.isHidden = false
                             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                                                                                              
-                                                                                             //if(str.contains("Secretory") || str.contains("Chairman"))
                             if(str.contains("society_admin"))
                                            {
                                                                                                self.lblNoDataFound.isHidden = false

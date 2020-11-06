@@ -11,6 +11,6 @@ import Foundation
 // MARK: - Acce
 
 struct logout: Codable {
-    let status: Bool
+    let status: Int
     let message: String
 }

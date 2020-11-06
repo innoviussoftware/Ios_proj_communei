@@ -13,7 +13,7 @@ import Foundation
 // MARK: - GetVehicleUserList
 struct GetVehicleUserList: Codable {
     let data: [VehicleDataUser]?
-    let status: Bool
+    let status: Int
     let message: String
 }
 

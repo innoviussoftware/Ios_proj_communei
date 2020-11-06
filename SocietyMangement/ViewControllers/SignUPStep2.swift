@@ -24,9 +24,14 @@ class SignUPStep2: BaseVC {
        
        var cityid = ""
        var areaid = ""
-       var societyid = ""
-       var buildingid = ""
-       var Flatid = ""
+      // var societyid = ""
+    var societyid = Int()
+
+      // var buildingid = ""
+    var buildingid = Int()
+
+       //var Flatid = ""
+    var Flatid = Int()
        var role = ""
     var UserType = Int()
     
@@ -262,7 +267,7 @@ class SignUPStep2: BaseVC {
 
                   self.txtcommunity.text = self.societyary[row].SocietyName
                   //self.txtcommunity.resignFirstResponder()
-                  self.societyid =  String(self.societyary[row].SocietyID)
+                  self.societyid =  self.societyary[row].SocietyID
                   self.apicallGetBuildings()
               }
             self.viewbottom.isHidden = false
@@ -283,7 +288,7 @@ class SignUPStep2: BaseVC {
 
                   self.txtcommunity.text = self.societyary[row].SocietyName
                   //self.txtcommunity.resignFirstResponder()
-                  self.societyid =  String(self.societyary[row].SocietyID)
+                  self.societyid = self.societyary[row].SocietyID
                   self.apicallGetBuildings()
                 
             self.viewbottom.isHidden = false
@@ -619,20 +624,23 @@ class SignUPStep2: BaseVC {
                 "Phone": mobile!,
                 "Secret": secret,
                 "Name": fullname!,
-                "Society": societyid,
+                "Society": societyid, 
                 "Building": buildingid,
                 "Flat": Flatid,
                 "UserType": UserType,
                 "FCMToken": strFCmToken
             ]
                 
+            print("parameter register :- ",parameter)
+
                 Apicallhandler().ApiCallSignUp2(URL: webservices().baseurl + APIRegister, param: parameter) { response in
-                    
+                  //  let statusCode = response.response?.statusCode
+
                     switch response.result{
                     case .success(let resp):
                         webservices().StopSpinner()
                         
-                        if resp.status == 1
+                       if resp.status == 1
                         {
 
                             
@@ -652,7 +660,7 @@ class SignUPStep2: BaseVC {
                         
                         else
                         {
-                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
+                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
                             self.present(alert, animated: true, completion: nil)
                         }
                         
@@ -900,7 +908,7 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         if(pickerView == pickerview3)
         {
             txtcommunity.text = societyary[row].SocietyName
-            societyid =  String(societyary[row].SocietyID)
+            societyid =  societyary[row].SocietyID
         }
     }
     
@@ -954,7 +962,7 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
            {
                txtblockname.text = buildingary[indexPath.row].PropertyName
                
-               buildingid =  String(buildingary[indexPath.row].PropertyID)
+               buildingid = buildingary[indexPath.row].PropertyID
                apicallGetFlat()
             self.txtblockname.resignFirstResponder()
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
@@ -986,8 +994,10 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
             self.txtflats.resignFirstResponder()
 
                self.txtflats.text = self.Flatary[indexPath.row].PropertyName
-               Flatid = String(self.Flatary[indexPath.row].PropertyID!)
+              // Flatid = String(self.Flatary[indexPath.row].PropertyID!)
             
+            Flatid = self.Flatary[indexPath.row].PropertyID!
+
             self.viewbottom.isHidden = false
                                   self.hightbottomview.constant = 200
                                   self.hightflat.constant = 0
@@ -1012,18 +1022,27 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
              
              */
             
-            if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 1 {
+            /*
+             if IsActiveOwner = 0 and IsActiveTenant = 0 then show both options
+             if IsActiveOwner = 1 and IsActiveTenant = 0 then show tenant options
+             if IsActiveOwner = 1 and IsActiveTenant = 1 then show Flat is booked
+             if IsActiveOwner = 0 and IsActiveTenant = 1 then show owner options
+             */
+            
+            if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 0 {
                 viewcheckbox.isHidden = false
-            }else if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 1 {
+            }else if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 0 {
                 cbowner.isHidden = true
                 btnOwner.isHidden = true
                 
                 cbrenter.isHidden = false
                 btnRentingFlat.isHidden = false
-            }else if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 0 {
+            }else if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 1 {
+                viewcheckbox.isHidden = true
+
                 let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"This flat is already booked")
                 self.present(alert, animated: true, completion: nil)
-            }else if self.Flatary[indexPath.row].isActiveOwner == 1 && self.Flatary[indexPath.row].isActiveTenant == 0 {
+            }else if self.Flatary[indexPath.row].isActiveOwner == 0 && self.Flatary[indexPath.row].isActiveTenant == 1 {
                 cbowner.isHidden = false
                 btnOwner.isHidden = false
                 

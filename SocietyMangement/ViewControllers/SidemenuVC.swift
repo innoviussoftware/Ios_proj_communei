@@ -247,10 +247,14 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                                            if int == 1{
                                                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                            
+                                                aVC.isfrom = 1
                                                                                                           let navController = UINavigationController(rootViewController: aVC)
                                                                                                           navController.isNavigationBarHidden = true
                                                                                              self.appDelegate.window!.rootViewController  = navController
-                                                                                             
+                                                         
+                                                print("logout")
+
                                                            }
                                                        })
                                 
@@ -341,7 +345,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if indexPath.row == cells.count - 1{
-            return 110
+            return 85
         }else if indexPath.row == 0{
            return 128
         }else{

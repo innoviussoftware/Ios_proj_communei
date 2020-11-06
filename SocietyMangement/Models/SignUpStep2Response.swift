@@ -9,11 +9,65 @@
 import Foundation
 
 
+// MARK: - SignUpStep2Response
+struct SignUpStep2Response: Codable {
+    let data: Signup2?
+    let status: Int
+    let message: String
+}
 
+// MARK: - DataClass
+struct Signup2: Codable {
+    let active: Int?
+    let bloodGroupID: Int?
+    let dateOfBirth, fcmToken, gender: String?
+    let phone: String?
+    let professionDetails: String?
+    let professionID: Int?
+    let qr: String?
+    let relation, resident: String?
+    let role: String?
+    let sinceDevice: String?
+    let email, guid, name: String?
+    let profilePhotoPath: String?
+    let updatedAt, token: String?
+    let property: Property?
+    let adminNotify: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case active = "Active"
+        case bloodGroupID = "BloodGroupID"
+        case dateOfBirth = "DateOfBirth"
+        case fcmToken = "FCMToken"
+        case gender = "Gender"
+        case phone = "Phone"
+        case professionDetails = "ProfessionDetails"
+        case professionID = "ProfessionID"
+        case qr = "Qr"
+        case relation = "Relation"
+        case resident = "Resident"
+        case role = "Role"
+        case sinceDevice = "SinceDevice"
+        case email, guid, name
+        case profilePhotoPath = "profile_photo_path"
+        case updatedAt = "updated_at"
+        case token, property
+        case adminNotify = "admin_notify"
+    }
+}
+
+// MARK: - Property
+struct Property: Codable {
+    let success: Bool
+    let message: String
+}
+
+ 
+/*
 // MARK: - City
 struct SignUpStep2Response: Codable {
     let data: Signup2?
-    let status: Int?
+    let status: String? // Int? // 2/11/20. temp comment
     let message: String?
 }
 
@@ -35,6 +89,7 @@ struct Signup2: Codable {
     }
 }
 
+ */
 
 
 /*

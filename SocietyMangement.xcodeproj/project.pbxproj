@@ -49,7 +49,6 @@
 		4E5B4DA42375336600F51F9F /* FamilyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E5B4DA22375336600F51F9F /* FamilyCell.xib */; };
 		4E5B4DA823758B6A00F51F9F /* EditFrequentEntryPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B4DA723758B6A00F51F9F /* EditFrequentEntryPopUp.swift */; };
 		4E5B96542382C220009D8968 /* audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4E5B96532382C220009D8968 /* audio.mp3 */; };
-		4E617F27234EF9A7008EC601 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E617F26234EF9A6008EC601 /* GoogleService-Info.plist */; };
 		4E617F2A234F0614008EC601 /* VehicleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E617F28234F0614008EC601 /* VehicleCollectionCell.swift */; };
 		4E617F2B234F0614008EC601 /* VehicleCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E617F29234F0614008EC601 /* VehicleCollectionCell.xib */; };
 		4E617F2D234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E617F2C234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift */; };
@@ -209,6 +208,7 @@
 		D23C3A152525DEFE00366CCB /* DeliveryWaitingPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23C3A142525DEFE00366CCB /* DeliveryWaitingPopupVC.swift */; };
 		D23DF19524F62CE200888ADE /* BuycategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23DF19324F62CE200888ADE /* BuycategoryCell.swift */; };
 		D23DF19624F62CE200888ADE /* BuycategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23DF19424F62CE200888ADE /* BuycategoryCell.xib */; };
+		D23FCEFE2552D6CF0075F744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */; };
 		D2412AAC25120D06003B0D54 /* Gotham Extra Light Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2412AAB25120D06003B0D54 /* Gotham Extra Light Italic.otf */; };
 		D241442E2531884D0018704F /* ServiceTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D241442D2531884D0018704F /* ServiceTypeVC.swift */; };
 		D241793524EA5B1800966E81 /* QuickActionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D241793424EA5B1800966E81 /* QuickActionVC.swift */; };
@@ -333,7 +333,6 @@
 		4E5B4DA22375336600F51F9F /* FamilyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FamilyCell.xib; sourceTree = "<group>"; };
 		4E5B4DA723758B6A00F51F9F /* EditFrequentEntryPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFrequentEntryPopUp.swift; sourceTree = "<group>"; };
 		4E5B96532382C220009D8968 /* audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = audio.mp3; sourceTree = "<group>"; };
-		4E617F26234EF9A6008EC601 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E617F28234F0614008EC601 /* VehicleCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleCollectionCell.swift; sourceTree = "<group>"; };
 		4E617F29234F0614008EC601 /* VehicleCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VehicleCollectionCell.xib; sourceTree = "<group>"; };
 		4E617F2C234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryVehicleDetailPopUpVC.swift; sourceTree = "<group>"; };
@@ -505,6 +504,7 @@
 		D23DF19324F62CE200888ADE /* BuycategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuycategoryCell.swift; sourceTree = "<group>"; };
 		D23DF19424F62CE200888ADE /* BuycategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuycategoryCell.xib; sourceTree = "<group>"; };
 		D23EE38524F3B6F100C5C609 /* SocietyMangement-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SocietyMangement-Bridging-Header.h"; sourceTree = "<group>"; };
+		D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D2412AAB25120D06003B0D54 /* Gotham Extra Light Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham Extra Light Italic.otf"; sourceTree = "<group>"; };
 		D241442D2531884D0018704F /* ServiceTypeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTypeVC.swift; sourceTree = "<group>"; };
 		D241793424EA5B1800966E81 /* QuickActionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionVC.swift; sourceTree = "<group>"; };
@@ -738,7 +738,7 @@
 				9A532548230BCA0B003E5F29 /* Main.storyboard */,
 				9A53254B230BCA0D003E5F29 /* Assets.xcassets */,
 				9A53254D230BCA0D003E5F29 /* LaunchScreen.storyboard */,
-				4E617F26234EF9A6008EC601 /* GoogleService-Info.plist */,
+				D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */,
 				9A532550230BCA0D003E5F29 /* Info.plist */,
 				D23EE38524F3B6F100C5C609 /* SocietyMangement-Bridging-Header.h */,
 			);
@@ -1116,6 +1116,7 @@
 				9A53254C230BCA0D003E5F29 /* Assets.xcassets in Resources */,
 				D2DDD58B24FE0F060008BE6A /* PollDetailCell.xib in Resources */,
 				4EEA6EFC235DD3A200B53E98 /* DomesticHelpCell.xib in Resources */,
+				D23FCEFE2552D6CF0075F744 /* GoogleService-Info.plist in Resources */,
 				4E668C10233DE7790077DABB /* DaysCell.xib in Resources */,
 				9AAF0E112372C035008587E3 /* NotificationCell.xib in Resources */,
 				D2BE92EF24E523BB00F885A8 /* GothamMedium.ttf in Resources */,
@@ -1124,7 +1125,6 @@
 				4E5B96542382C220009D8968 /* audio.mp3 in Resources */,
 				4E17CEB7235862A10024ABA8 /* NewMemberCell.xib in Resources */,
 				D2DDD59C24FE2B2C0008BE6A /* AmenitiesFacilitiesCell.xib in Resources */,
-				4E617F27234EF9A7008EC601 /* GoogleService-Info.plist in Resources */,
 				9AD4235C2371540900FF4F4A /* HelperDeskCell.xib in Resources */,
 				4EE946B72356E1DB00AA17CE /* FrequentGuestEntryCell.xib in Resources */,
 				4E5B4DA42375336600F51F9F /* FamilyCell.xib in Resources */,
@@ -1649,7 +1649,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = JB5LNQMKD3;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1657,7 +1657,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Communei123;
 				PRODUCT_NAME = Communei;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1676,7 +1676,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = JB5LNQMKD3;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1684,7 +1684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Communei123;
 				PRODUCT_NAME = Communei;
 				PROVISIONING_PROFILE_SPECIFIER = "";

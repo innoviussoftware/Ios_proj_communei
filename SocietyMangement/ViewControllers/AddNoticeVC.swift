@@ -343,7 +343,7 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
                     }
                     else
                     {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message ?? "")
                         self.present(alert, animated: true, completion: nil)
                     }
                     
@@ -495,7 +495,7 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
 
                          let param : Parameters = [
                              "Society" : SociId,
-                            "Parent" : UsermeResponse!.data!.society!.societyID!
+                           // "Parent" : UsermeResponse!.data!.society!.societyID!
                          ]
                         
                        print("Parameters : ",param)
@@ -528,7 +528,7 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
                               //  {
                                     self.selectedary.add(dic.propertyFullName)
                                     nameary.add(dic.propertyFullName)
-                                self.selectedaryId.add(dic.propertyName)// propertyID)
+                                self.selectedaryId.add(dic.propertyID)// propertyID)
                               //  }
                             }
                             self.lblsendto.text = self.selectedary.componentsJoined(by:",")

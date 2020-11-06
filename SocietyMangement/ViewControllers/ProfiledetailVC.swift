@@ -48,7 +48,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     var pickerview = UIPickerView()
     var pickerview1 = UIPickerView()
     var pickerview2 = UIPickerView()
-    var pickerview3 = UIPickerView()
+    var pickerview3 = UIPickerView() // blood
+
     
     var isfrom : Int? = 0
     
@@ -116,7 +117,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     
     var bloodgroupId = Int()
 
-    var SelectedBlodGroup : Int! = 0
+    var SelectedBlodGroup = Int() //! = 0
 
     var bloodgroupary = [BloodGroup]()
    // ["O+","O-","A-","A+","AB-","AB+","B-","B+"]
@@ -177,6 +178,11 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         else if(txtbloodgroup.text == "")
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select bloodgroup")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if(txtGender.text == "")
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select Gender")
             self.present(alert, animated: true, completion: nil)
         }
         else if !txtprofession.hasText{
@@ -290,6 +296,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         pickerview3.delegate = self
         pickerview3.dataSource = self
         
+        
         if(isfrom == 0) || (isfrom == 1)
         {
             
@@ -319,7 +326,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             {
                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                 
-                if(str.contains("Chairman") || str.contains("Secretory"))
+               // if(str.contains("Chairman") || str.contains("Secretory"))
+                if(str.contains("society_admin"))
                 {
                     txtmember.isUserInteractionEnabled = true
                     btnsave.isHidden = false
@@ -351,7 +359,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                        {
                            let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                            
-                           if(str.contains("Chairman") || str.contains("Secretory"))
+                         // if(str.contains("Chairman") || str.contains("Secretory"))
+                        if(str.contains("society_admin"))
+
                            {
                                txtmember.isUserInteractionEnabled = true
                                btnsave.isHidden = false
@@ -381,7 +391,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             {
                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
                 
-                if(str.contains("Chairman") || str.contains("Secretory"))
+                
+             // if(str.contains("Chairman") || str.contains("Secretory"))
+                if(str.contains("society_admin"))
                 {
                     txtmember.isUserInteractionEnabled = true
                     btnsave.isHidden = false
@@ -690,7 +702,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                        {
                            
                            self.bloodgroupary = resp.data
-                           self.pickerview.reloadAllComponents()
+                           self.pickerview3.reloadAllComponents()
                            
                        }
                        else
@@ -800,10 +812,16 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 txtProfessionOther.isHidden = true
                 constraintHeightProfessionOther.constant = 0
                 constraintTopProfessionOther.constant = 0
+        
+        activeTextField.resignFirstResponder()
+        let row = self.pickerview1.selectedRow(inComponent: 0)
+        txtprofession.text! = professionary[row].name
+        professiongroupId = professionary[row].id
+        
                 
-                txtprofession.text = professionary[0].name
+               // txtprofession.text = professionary[0].name
                   
-            professiongroupId = professionary[0].id
+         //   professiongroupId = professionary[0].id
 
                   txtprofession.resignFirstResponder()
         
@@ -922,7 +940,6 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if(pickerView == pickerview1)
         {
-            
             return professionary.count + 1
             
         }
@@ -932,11 +949,13 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             return flatary.count
             
         }
-        else if activeTextField == txtGender{
-            return arrGender.count
+        else if(pickerView == pickerview3) {
+          //  activeTextField == txtGender{
+            return bloodgroupary.count
         }
         else{
-            return bloodgroupary.count
+            return arrGender.count
+
         }
         
     }

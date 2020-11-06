@@ -12,7 +12,7 @@ import Foundation
 // MARK: - AddEventTypeResponse
 struct AddEventTypeResponse: Codable {
     let data: [AddEventType]?
-    let status: Bool
+    let status: Int
     let message: String
 }
 

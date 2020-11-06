@@ -1022,11 +1022,13 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
             
             Apicallhandler().ApiCallSignUp2(URL: webservices().baseurl + APIRegister, param: parameter) { response in
                 
+               // let statusCode = response.response?.statusCode
+
                 switch response.result{
                 case .success(let resp):
                     webservices().StopSpinner()
                     
-                    if resp.status == 1
+                 if resp.status == 1
                     {
 //                        UserDefaults.standard.set(resp.data.role, forKey: USER_ROLE)
 //                        UserDefaults.standard.set(resp.data.token, forKey: USER_TOKEN)
@@ -1061,7 +1063,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
                     }
                     else
                     {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
+                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"")//resp.message!)
                         self.present(alert, animated: true, completion: nil)
                     }
                     

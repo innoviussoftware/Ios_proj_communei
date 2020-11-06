@@ -178,8 +178,12 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         else if txtemail.hasText{
             
             if(isValidEmail(emailStr: txtemail.text!) == false) {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
-            self.present(alert, animated: true, completion: nil)
+              let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
+             self.present(alert, animated: true, completion: nil)
+            }
+            else if(txtnum.text!.count >= 9) {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
+                self.present(alert, animated: true, completion: nil)
             }
         else if(txtnum.text == "")
         {
@@ -300,13 +304,21 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             txtname.text = member?.name
             txtnum.text = member?.phone
             
+            txtemail.text = member?.email
+            
+            txtViewProfessionDetail.text = member?.professionDetails
+            
+            txtprofession.text = member?.professionName
+            
             let dateee = member?.dateOfBirth
             
             print("dateee : ",dateee!)
             
+          //  txtbirthdate.text = dateee
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
-            let strDate = formatter.date(from: (member?.dateOfBirth)!)
+            let strDate = formatter.date(from: dateee!)
             formatter.dateFormat = "dd-MM-yyyy"
             if strDate != nil {
                 let str = formatter.string(from: strDate!)
@@ -356,6 +368,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         toolBar1.sizeToFit()
         txtprofession.inputAccessoryView = toolBar1
         txtprofession.inputView = pickerview1
+        
                
         // 21/10/20. temp comment
         
@@ -365,7 +378,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession)
         } */
         
-        txtprofession.text = member?.professionName
+      //  txtprofession.text = member?.professionName
 
       //  txtViewProfessionDetail.text = setOptionalStr(value: UsermeResponse?.data!.professionDetail)
 
@@ -373,6 +386,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
         
     }
+    
     
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -914,7 +928,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
 //                            self.present(alert, animated: true, completion: nil)
                             
                         }else{
-                            let alert = UIAlertController(title: Alert_Titel, message:(response.result.value as! NSDictionary).value(forKey: "message") as! String , preferredStyle: UIAlertController.Style.alert)
+                            let alert = UIAlertController(title: Alert_Titel, message:((response.result.value as! NSDictionary).value(forKey: "message") as! String) , preferredStyle: UIAlertController.Style.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
                                 
                             }))
