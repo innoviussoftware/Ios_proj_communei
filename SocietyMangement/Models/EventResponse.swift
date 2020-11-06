@@ -11,75 +11,38 @@
 
 import Foundation
 
-//// MARK: - EvenetResponse
-//struct EvenetResponse: Codable {
-//    let data: [Event]
-//    let errorCode: Int
-//    let message: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case data
-//        case errorCode = "error_code"
-//        case message
-//    }
-//}
-//
-//// MARK: - Datum
-//struct Event: Codable {
-//    let id, societyID, buildingID, memberID: String
-//    let eventType, title, datumDescription, eventStartDate: String
-//    let eventStartTime, eventEndDate, eventEndTime, eventAttachment: String
-//    let createdAt: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case id
-//        case societyID = "society_id"
-//        case buildingID = "building_id"
-//        case memberID = "member_id"
-//        case eventType = "event_type"
-//        case title
-//        case datumDescription = "description"
-//        case eventStartDate = "event_start_date"
-//        case eventStartTime = "event_start_time"
-//        case eventEndDate = "event_end_date"
-//        case eventEndTime = "event_end_time"
-//        case eventAttachment = "event_attachment"
-//        case createdAt = "created_at"
-//    }
-//}
-
-
-
-// MARK: - GetFamilyMember
+// MARK: - EvenetResponse
 struct EvenetResponse: Codable {
-    let data: [Event]
-    let status: Int
-    let message: String
+    let status: Int?
+    let data: Event?
+    let message: String?
 }
 
-// MARK: - Datum
+// MARK: - DataClass
 struct Event: Codable {
-    let id, societyID: Int?
-    let buildingID: String?
-    let userID: Int?
-    let eventType, title, datumDescription, eventStartDate: String?
-    let eventStartTime, eventEndDate, eventEndTime, eventAttachment: String?
-    let createdAt, updatedAt: String?
-    
+    let noticeID, noticeTypeID: Int?
+    let title, datumDescription, publishDate, visibleTill: String?
+    let eventTypeID: Int?
+    let eventStartDate, eventEndDate, creationDate, createdBy: String?
+    let pollEnabled, multiPollEnable, societyID: Int?
+    let attachments: [String]?
+
     enum CodingKeys: String, CodingKey {
-        case id
-        case societyID = "society_id"
-        case buildingID = "building_id"
-        case userID = "user_id"
-        case eventType = "event_type"
-        case title
-        case datumDescription = "description"
-        case eventStartDate = "event_start_date"
-        case eventStartTime = "event_start_time"
-        case eventEndDate = "event_end_date"
-        case eventEndTime = "event_end_time"
-        case eventAttachment = "event_attachment"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case noticeID = "NoticeID"
+        case noticeTypeID = "NoticeTypeID"
+        case title = "Title"
+        case datumDescription = "Description"
+        case publishDate = "PublishDate"
+        case visibleTill = "VisibleTill"
+        case eventTypeID = "EventTypeID"
+        case eventStartDate = "EventStartDate"
+        case eventEndDate = "EventEndDate"
+        case creationDate = "CreationDate"
+        case createdBy = "CreatedBy"
+        case pollEnabled = "PollEnabled"
+        case multiPollEnable = "MultiPollEnable"
+        case societyID = "SocietyID"
+        case attachments
     }
 }
+

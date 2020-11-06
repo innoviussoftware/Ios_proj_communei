@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -91,7 +91,7 @@
                                 <state key="normal" image="ic_notice_admin"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iw5-HV-bT5">
-                                <rect key="frame" x="30" y="104" width="82" height="25"/>
+                                <rect key="frame" x="30" y="104" width="77" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="Sba-CR-exe"/>
                                 </constraints>
@@ -100,7 +100,7 @@
                                         <fragment content="Read More &gt;">
                                             <attributes>
                                                 <color key="NSColor" red="0.94901960784313721" green="0.38039215686274508" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <font key="NSFont" size="13" name="Gotham-Book"/>
+                                                <font key="NSFont" metaFont="system"/>
                                                 <integer key="NSUnderline" value="1"/>
                                             </attributes>
                                         </fragment>
@@ -188,6 +188,7 @@
                 <outlet property="lblDate" destination="9K4-QM-IIV" id="ZdK-rJ-Hj9"/>
                 <outlet property="lblDiscription" destination="GCh-eF-MXi" id="RJa-og-hoF"/>
                 <outlet property="lblTitel" destination="JaU-J5-C9H" id="NAr-uE-1af"/>
+                <outlet property="lblcolor" destination="XRg-Yd-L73" id="fnx-Db-WFi"/>
                 <outlet property="lbltime" destination="YaG-it-PrO" id="0oW-9N-N4f"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="145.98214285714286"/>

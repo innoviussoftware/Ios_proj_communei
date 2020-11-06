@@ -207,12 +207,12 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             AttechemntView.isHidden = true
             AttechemntView_update.isHidden = false
             
-            txttype.text = dic?.eventType
+           // txttype.text = dic?.eventType
             txttitle.text = dic?.title
             txtdes.text = dic?.datumDescription
             txtdes.placeholder = ""
-            txtstartdate.text = "\(dic!.eventStartDate!) \(dic!.eventStartTime!)"
-            txtenddate.text =  "\(dic!.eventEndDate!) \(dic!.eventEndTime!)"
+            txtstartdate.text = "\(dic!.eventStartDate!) \(dic!.eventStartDate!)"
+            txtenddate.text =  "\(dic!.eventEndDate!) \(dic!.eventEndDate!)"
            
             /* btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), for: .normal)
            // btnattechment.setTitle("", for:.normal)
@@ -222,8 +222,10 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             
             webservices().StartSpinner()
             
+            //             btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.attachments!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
+
             
-            btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
+           /* btnattechment_update.imageView!.sd_setImage(with: URL(string:(dic!.attachments?)!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
                 if ((error) != nil) {
                     // set the placeholder image here
                     
@@ -245,7 +247,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                     webservices().StopSpinner()
 
                 }
-            })
+            }) */
             
         }
         else
@@ -639,6 +641,8 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
       //  let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
         let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
         
+        print("strtoken : ",strtoken)
+        
         webservices().StartSpinner()
         let param : Parameters = [
            // "society_id" : strSocietyId,
@@ -649,7 +653,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             "EventStartDate":txtstartdate.text!.components(separatedBy:" ")[0],
             "EventEndDate":txtenddate.text!.components(separatedBy:" ")[0],
             "EventTypeID": selectedType,//txttype.text!,
-            "Properties":strSocietyId
+            "Properties": "1" // strSocietyId // 6/11/20. temp comment
            // "building_id":strBuildingId
             //"event_attachment":btnattechment.backgroundImage(for:.normal)!
         ]
@@ -671,12 +675,18 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
 
                 }
                 
-                if self.imgData!.count != 0{
+               /* if self.imgData!.count != 0{
                    // MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                     
                     MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "application/pdf")
 
+                } */
+                
+                if self.imgData!.count != 0
+                {
+                    MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "image/jpeg/pdf")
                 }
+                
                 
                 
         }, to:  webservices().baseurl + API_ADD_EVENT,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
@@ -755,7 +765,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
         let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
         let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
         let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
-        let strEventId = String(format: "%d", (dic?.id)!)
+        let strEventId = String(format: "%d", (dic?.eventTypeID)!)
         
         webservices().StartSpinner()
         let param : Parameters = [

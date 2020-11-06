@@ -56,7 +56,7 @@ class AlertBottomViewController: UIViewController {
 
         }else if isfrom == 4
         {
-            lblTitle.titleLabel?.textColor = UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1.0)
+            lblTitle.setTitleColor(UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1.0), for: UIControl.State.normal)
             stckVw.isHidden = true
             lblline1.isHidden = true
             lblline2.isHidden = true

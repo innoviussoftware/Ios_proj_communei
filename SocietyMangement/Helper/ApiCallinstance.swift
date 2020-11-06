@@ -310,7 +310,7 @@ struct Apicallhandler {
     func GetAllEvents(URL: String, societyid:String,BuildingID:String,token:String, onCompletion: @escaping ((_ response: DataResponse<EvenetResponse>) -> Void)) {
         //let parameter:Parameters = ["society_id":societyid , "building_id":BuildingID]
         
-        AF.request(URL, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<EvenetResponse>) in
+        AF.request(URL, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<EvenetResponse>) in
             
             onCompletion(response)
         }

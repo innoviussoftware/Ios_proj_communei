@@ -11,6 +11,8 @@ import UIKit
 class CircularNewCell: UITableViewCell {
     @IBOutlet weak var btnNotification: UIButton!
     
+    @IBOutlet weak var lblcolor: UILabel!
+    
     @IBOutlet weak var lblDiscription: UILabel!
     @IBOutlet weak var btnDownload: UIButton!
     @IBOutlet weak var btnReadMore: UIButton!

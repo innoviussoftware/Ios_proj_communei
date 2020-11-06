@@ -87,7 +87,7 @@ let API_GET_BUILDING_SOCIETY = "society/properties"  //"get/building"
 
 let API_USER_GET_CIRCULAR = "user/getcircular"
 let API_ADD_NOTICE = "society/notices/1/add"  // "user/addnotice"
-let API_GET_NOTICE = "user/getnotice"  // "society/notices/1" // 
+let API_GET_NOTICE =  "user/notices/1"//  "user/getnotice"  // "society/notices/1" // 
 let API_ACCEPT_DECLINE = "user/acceptreject"
 let API_LOGOUT = "user/signout" //"logout"
 let API_GUEST_LIST = "user/guestlist"
@@ -113,7 +113,7 @@ let API_EDIT_EVENT = "user/editevent"
 
 let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"
 let API_UPDATE_NOTICE = "society/notices/1/edit" // "user/editnotice"
-let API_UPDATE_EVENT = "user/editevent"
+let API_UPDATE_EVENT = "society/notices/3/edit" // "user/editevent"
 
 
 

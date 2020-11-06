@@ -41,8 +41,9 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     @IBOutlet weak var toptblConstraint: NSLayoutConstraint!
     
     var isfrom = 0
-    var eventary = [Event]()
-    
+            
+    var eventary = [SocietyEvent]()
+
     var arrReadMore = NSMutableArray()
     var refreshControl = UIRefreshControl()
 
@@ -208,7 +209,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     @objc func sendNotification(sender:UIButton){
         
-        let id = "\(eventary[sender.tag].id!)"
+        let id = "\(eventary[sender.tag].noticeID)"
         
         //let stri
         APPDELEGATE.apicallReminder(strType: "2", id: id)
@@ -240,8 +241,8 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         let cell: SocietyEventcell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SocietyEventcell
         
         cell.lblname.text = eventary[indexPath.row].title
-        cell.lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[indexPath.row].eventStartDate!)) \(eventary[indexPath.row].eventStartTime!)"
-        cell.lblenddate.text = "To: \(changeDateFormate(strDate: eventary[indexPath.row].eventEndDate!)) \(eventary[indexPath.row].eventEndTime!)"
+        cell.lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[indexPath.row].eventStartDate!))"
+        cell.lblenddate.text = "To: \(changeDateFormate(strDate: eventary[indexPath.row].eventEndDate!))"
         //cell.lbldes.text = eventary[indexPath.row].datumDescription
         //webservices.sharedInstance.setShadow(view:cell.innerview)
         cell.btnEditNew.tag = indexPath.row
@@ -263,20 +264,12 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
 
         
                
-               if arrReadMore.contains(eventary[indexPath.row].id){
-                cell.lbldes.numberOfLines = 0
-                cell.lbldes.lineBreakMode = .byWordWrapping
-                cell.lbldes.text = eventary[indexPath.row].datumDescription
-                cell.btnreadmore.setTitle("Read Less <", for:.normal)
-
-                   
-               }else{
-                cell.lbldes.numberOfLines = 3
+              
+                cell.lbldes.numberOfLines = 4
                 cell.lbldes.lineBreakMode = .byTruncatingTail
                 cell.lbldes.text = eventary[indexPath.row].datumDescription
                 cell.btnreadmore.setTitle("Read More >", for:.normal)
 
-               }
       
         cell.btnEditNew.addTarget(self, action:#selector(editevent), for: .touchUpInside)
         cell.btnDeleteNew.addTarget(self, action:#selector(deletevent), for: .touchUpInside)
@@ -325,7 +318,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                                                 avc?.subtitleStr = "Are you sure you want to delete \(self.eventary[sender.tag].title!)?"
                                                 avc?.yesAct = {
                                                 
-                                               self.apicallDeleteEvent(id: (self.eventary[sender.tag].id! as NSNumber).stringValue)
+                                                    self.apicallDeleteEvent(id: (self.eventary[sender.tag].noticeID as NSNumber).stringValue)
 
                                                     }
                                                 avc?.noAct = {
@@ -356,23 +349,26 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     @objc func downloadaction(sender:UIButton)
        {
-           let pdffile = eventary[sender.tag].eventAttachment
+           let pdffile = eventary[sender.tag].attachments
            
-         guard let url = URL(string:webservices().imgurl + pdffile!) else {
-               return //be safe
-           }
+        // 6/11/20. temp comment 2 line
+        
+//         guard let url = URL(string:webservices().baseurl + pdffile!) else {
+//               return //be safe
+//           }
         
 //            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
 //            let downloadTask = urlSession.downloadTask(with: url)
 //            downloadTask.resume()
 //
         
-           
-           if #available(iOS 10.0, *) {
+        // 6/11/20. temp comment 2 line
+
+          /* if #available(iOS 10.0, *) {
                UIApplication.shared.open(url, options: [:], completionHandler: nil)
            } else {
                UIApplication.shared.openURL(url)
-           }
+           } */
            
        }
     
@@ -382,8 +378,8 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "AddEventVC") as! AddEventVC
-        
-        nextViewController.dic = eventary[sender.tag]
+        // 6/11/20. temp comment
+      //  nextViewController.dic = eventary[sender.tag]
         nextViewController.isfrom = 1
         navigationController?.pushViewController(nextViewController, animated: true)
         
@@ -391,18 +387,18 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     @objc func readmore(sender:UIButton)
     {
-        if arrReadMore.contains(eventary[sender.tag].id) {
-            arrReadMore.remove(eventary[sender.tag].id)
+        if arrReadMore.contains(eventary[sender.tag].noticeID) {
+            arrReadMore.remove(eventary[sender.tag].noticeID)
         }else{
-            arrReadMore.add(eventary[sender.tag].id)
+            arrReadMore.add(eventary[sender.tag].noticeID)
         }
         
         vwReadMore.isHidden = false
                
         lblTitel.text = eventary[sender.tag].title
         
-        lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[sender.tag].eventStartDate!)) \(eventary[sender.tag].eventStartTime!)"
-        lblenddate.text = "To: \(changeDateFormate(strDate: eventary[sender.tag].eventEndDate!)) \(eventary[sender.tag].eventEndTime!)"
+        lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[sender.tag].eventStartDate!))"
+        lblenddate.text = "To: \(changeDateFormate(strDate: eventary[sender.tag].eventEndDate!))"
 
        // lblDate.text = strChangeDateFormate(strDateeee: eventary[sender.tag].createdAt!)
         txtvwDiscription.text = eventary[sender.tag].datumDescription
@@ -433,6 +429,9 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     func apicallGetEvents()
     {
+        
+        // 6/11/20 temp comment
+        
          if !NetworkState().isInternetAvailable {
                          ShowNoInternetAlert()
                          return
@@ -440,14 +439,21 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
            let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
             
             webservices().StartSpinner()
-            Apicallhandler().GetAllEvents(URL: webservices().baseurl + API_GET_EVENT, societyid:"", BuildingID: "", token: strToken) { JSON in
+        
+        Apicallhandler().GetAllEvents(URL: webservices().baseurl + API_GET_EVENT, token:strToken) { JSON in
+
+        
+          //  Apicallhandler().GetAllEvents(URL: webservices().baseurl + API_GET_EVENT, societyid:"", BuildingID: "", token: strToken) { JSON in
                 switch JSON.result{
                 case .success(let resp):
                     self.refreshControl.endRefreshing()
                     webservices().StopSpinner()
                     if(JSON.response?.statusCode == 200)
+                    
+                  //  Cannot assign value of type 'Event' to type '[SocietyEvent]'
                     {
-                        self.eventary = resp.data
+                        self.eventary = resp.data!
+
                         self.tblview.reloadData()
                         if(resp.data.count == 0)
                         {

@@ -133,6 +133,14 @@ class UserSettingsVC: BaseVC {
     @IBOutlet weak var textViewReasion: UITextView!
     @IBOutlet weak var viewDND: UIView!
     
+    @IBOutlet weak var viewProfile: UIView!
+    @IBOutlet weak var viewPrivacy: UIView!
+    @IBOutlet weak var viewDomestic: UIView!
+    @IBOutlet weak var viewVisitor: UIView!
+    @IBOutlet weak var viewDelivery: UIView!
+    @IBOutlet weak var viewRemoveActivate: UIView!
+
+    
 
     @IBOutlet weak var lblDNDStaic: UIButton!
 
@@ -224,6 +232,16 @@ class UserSettingsVC: BaseVC {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
+        
+        
+        webservices().setShadow(view: viewProfile)
+        webservices().setShadow(view: viewPrivacy)
+        webservices().setShadow(view: viewDomestic)
+        webservices().setShadow(view: viewVisitor)
+        webservices().setShadow(view: viewDelivery)
+        webservices().setShadow(view: viewRemoveActivate)
+        webservices().setShadow(view: viewDND)
+
         
         // 31/10/20. temp comment
         

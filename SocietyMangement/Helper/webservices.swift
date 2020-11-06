@@ -25,8 +25,12 @@ class webservices: NSObject {
    
     // Mark : Communei Live base url
     
-   var baseurl =  "http://65.0.14.211/public/api/"
-    var imgurl = "http://65.0.14.211/storage/app/"
+    //var baseurl =  "http://65.0.14.211/public/api/"
+    // var imgurl = "http://65.0.14.211/storage/app/"
+
+    
+   var baseurl =  "https://api.communei.com/api/"
+   var imgurl = "https://api.communei.com/storage/app/icons/"
     
     
 
@@ -272,6 +276,13 @@ extension UIView {
         UIView.animate(withDuration: duration, delay: delay, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.alpha = 0.0
         }, completion: completion)
+    }
+    
+    func shadow(yourView: UIView) {
+        yourView.layer.shadowColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.16).cgColor
+        yourView.layer.shadowOpacity = 1
+        yourView.layer.shadowOffset = .zero
+        yourView.layer.shadowRadius = 10
     }
 }
 

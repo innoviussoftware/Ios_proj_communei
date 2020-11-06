@@ -160,13 +160,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
     
     
     @IBAction func SaveAction(_ sender: UIButton) {
-        
-       /* if(self.imguser.image! == 0)
+      
+        /* if(self.imguser.image! == 0)
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select family member Image")
             self.present(alert, animated: true, completion: nil)
         }
-        else */ if(txtname.text == "")
+        else */
+        if(txtname.text == "")
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your family member name")
             self.present(alert, animated: true, completion: nil)
@@ -181,16 +182,16 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
              self.present(alert, animated: true, completion: nil)
             }
-            else if(txtnum.text!.count >= 9) {
+            else if(txtnum.text == "") || (txtnum.text!.count > 9)
+            {
+                
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
                 self.present(alert, animated: true, completion: nil)
             }
-        else if(txtnum.text == "")
-        {
-            
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number")
-            self.present(alert, animated: true, completion: nil)
-        }
+//            else if(txtnum.text!.count > 9) {
+//                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
+//                self.present(alert, animated: true, completion: nil)
+//            }
         else if(txtbirthdate.text == "")
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select birthdate")

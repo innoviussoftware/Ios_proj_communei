@@ -23,6 +23,8 @@ struct Notice: Codable {
     let createdBy, creationDate: String
     let pollEnabled, multiPollEnable, societyID: Int
     let attachments: [String?]
+    let readAt: String?
+
 
     enum CodingKeys: String, CodingKey {
         case noticeID = "NoticeID"
@@ -37,6 +39,32 @@ struct Notice: Codable {
         case multiPollEnable = "MultiPollEnable"
         case societyID = "SocietyID"
         case attachments
+        case readAt
+
     }
 }
 
+
+/*
+ {
+     "data": [
+         {
+             "NoticeID": 138,
+             "NoticeTypeID": 1,
+             "Title": "Test notice 20201030 03",
+             "Description": "Test notice 20201030 01 description",
+             "PublishDate": "2020-11-06 06:47:34",
+             "VisibleTill": "2020-11-20 00:00:00",
+             "CreatedBy": "69c6200c-3d8d-47e1-bcea-2771422ccc79",
+             "CreationDate": "2020-11-06 06:47:34",
+             "PollEnabled": 0,
+             "MultiPollEnable": 0,
+             "SocietyID": 5,
+             "attachments": [],
+             "ReadAt": null
+         }
+     ],
+     "status": 1,
+     "message": "Get society notices done"
+ }
+ */

@@ -289,7 +289,11 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
         
          cell!.btnNotification.tag = indexPath.row
         
-        cell
+        if (noticeary[indexPath.row].readAt) != nil {
+            cell?.lblcolor.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)  // F26101 orange
+        }else{
+            cell?.lblcolor.backgroundColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1.0) // #DDDDDD
+        }
         
         cell?.lblTitel.text = noticeary[indexPath.row].title
         cell?.lblDate.text = strChangeDateFormate(strDateeee: noticeary[indexPath.row].visibleTill)
@@ -305,21 +309,22 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
 //           }
 
         
-        if arrReadMore.contains(noticeary[indexPath.row].noticeID){
-            cell?.lblDiscription.numberOfLines = 0
-            cell!.lblDiscription.lineBreakMode = .byWordWrapping
-            cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
-
-            cell?.btnReadMore.setTitle("Read Less <", for:.normal)
-            
-        }else{
+//        if arrReadMore.contains(noticeary[indexPath.row].noticeID){
+//            cell?.lblDiscription.numberOfLines = 0
+//            cell!.lblDiscription.lineBreakMode = .byWordWrapping
+//            cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
+//
+//            cell?.btnReadMore.setTitle("Read Less <", for:.normal)
+//
+//        }else{
+        
             cell!.lblDiscription.numberOfLines = 4
             cell!.lblDiscription.lineBreakMode = .byTruncatingTail
             cell!.lblDiscription.text = noticeary[indexPath.row].datumDescription
 
             cell?.btnReadMore.setTitle("Read More >", for:.normal)
 
-        }
+      //  }
         
         
         

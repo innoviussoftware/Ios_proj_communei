@@ -154,6 +154,7 @@
 		9A955AB5230FE9DA004A4668 /* AddBuidingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A955AB4230FE9DA004A4668 /* AddBuidingResponse.swift */; };
 		9A955AB7230FEFDB004A4668 /* UpdateBuildingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A955AB6230FEFDB004A4668 /* UpdateBuildingResponse.swift */; };
 		9A96591E232CCCC0008B702E /* Buildingcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A96591D232CCCC0008B702E /* Buildingcell.swift */; };
+		9AA06068255574DF009F48D7 /* SocietyEventResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */; };
 		9AA81661233489DE007E3CE9 /* GuestPopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA81660233489DE007E3CE9 /* GuestPopVC.swift */; };
 		9AA900AF230D0ED900697383 /* SidemenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA900AE230D0ED900697383 /* SidemenuCell.swift */; };
 		9AA900B1230D2CB400697383 /* UpcomingEventsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA900B0230D2CB400697383 /* UpcomingEventsCell.swift */; };
@@ -447,6 +448,7 @@
 		9A955AB4230FE9DA004A4668 /* AddBuidingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBuidingResponse.swift; sourceTree = "<group>"; };
 		9A955AB6230FEFDB004A4668 /* UpdateBuildingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBuildingResponse.swift; sourceTree = "<group>"; };
 		9A96591D232CCCC0008B702E /* Buildingcell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buildingcell.swift; sourceTree = "<group>"; };
+		9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocietyEventResponse.swift; sourceTree = "<group>"; };
 		9AA81660233489DE007E3CE9 /* GuestPopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestPopVC.swift; sourceTree = "<group>"; };
 		9AA900AE230D0ED900697383 /* SidemenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuCell.swift; sourceTree = "<group>"; };
 		9AA900B0230D2CB400697383 /* UpcomingEventsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsCell.swift; sourceTree = "<group>"; };
@@ -651,6 +653,7 @@
 				9A07B6C5230EB75F00ED5C6C /* NoticeResponse.swift */,
 				D258E10325499AC5004405DE /* AddEventTypeResponse.swift */,
 				9A07B6C7230EBBF200ED5C6C /* EventResponse.swift */,
+				9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */,
 				9A955AAA230FA24A004A4668 /* CircularResponse.swift */,
 				9A955AAC230FB1C6004A4668 /* BuildingResponse.swift */,
 				D25CDD372547E5EA0099B1C2 /* BuildingAddResponse.swift */,
@@ -1441,6 +1444,7 @@
 				4E1F9C2E233CDEAE000B84D3 /* HourlyEntryPermissionPopUpVC.swift in Sources */,
 				D23C3A052524497A00366CCB /* MessageGuardVC.swift in Sources */,
 				05349F9F24BC3DE200EC598B /* RSLabel.swift in Sources */,
+				9AA06068255574DF009F48D7 /* SocietyEventResponse.swift in Sources */,
 				9A92A2FE23150C740032AB2D /* VendorResponse.swift in Sources */,
 				4E617F2D234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift in Sources */,
 				9AD4235B2371540900FF4F4A /* HelperDeskCell.swift in Sources */,
