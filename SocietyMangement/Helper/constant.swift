@@ -85,28 +85,28 @@ let API_USER_ME = "user"   //  "user/me"
 let API_GET_BUILDING_SOCIETY = "society/properties"  //"get/building"
 
 
-let API_USER_GET_CIRCULAR = "user/getcircular"
+let API_USER_GET_CIRCULAR = "user/notices/2"  //"user/getcircular"
 let API_ADD_NOTICE = "society/notices/1/add"  // "user/addnotice"
-let API_GET_NOTICE =  "user/notices/1"//  "user/getnotice"  // "society/notices/1" // 
+let API_GET_NOTICE =  "user/notices/1" //  "user/getnotice"  // "society/notices/1" // 
 let API_ACCEPT_DECLINE = "user/acceptreject"
 let API_LOGOUT = "user/signout" //"logout"
 let API_GUEST_LIST = "user/guestlist"
 let API_IN_OUT = "InOut"
 
 
-let API_ADD_CIRCULAR = "user/addcircular"
+let API_ADD_CIRCULAR = "society/notices/2/add" //"user/addcircular"
 let API_ADD_EVENT = "society/notices/3/add" // "user/addevent"
 let API_ADD_FAMILY_MEMBER = "user/family/add"  // "user/addfamilymember"
 
-let API_GET_EVENT = "society/notices/3/add" //"user/getevent"
+let API_GET_EVENT = "society/notices/3" //"user/getevent"
 let API_GET_FAMAILY_MEMBER = "user/family"  // "user/getfamilymember"
 let API_MEMBER_LIST = "user/memberlist"
 
-let API_DELETE_EVENT = "user/deleteevent"
-let API_DELETE_CIRCULAR = "user/deletecircular"
+let API_DELETE_EVENT =  "society/notices/3/delete" // "user/deleteevent"
+let API_DELETE_CIRCULAR = "society/notices/2/delete" //"user/deletecircular"
 let API_DELETE_NOTICE = "society/notices/1/delete"  //"user/deletenotice"
 
-let API_EDIT_CIRCULAR = "user/editcircular"
+let API_EDIT_CIRCULAR = "society/notices/2/edit" //"user/editcircular"
 let API_EDIT_NOTICE = "user/editnotice"
 let API_EDIT_EVENT = "user/editevent"
 
@@ -158,7 +158,7 @@ let API_DELETE_REVIEWS = "user/delreview"
 let API_DELETE_GUEST = "deleteguest"
 
 
-let API_NOTIFY_COUNT = "user/notify_count"
+let API_NOTIFY_COUNT = "user/notice/details"  // "user/notify_count"
 
 let API_UPDATE_NOTIFY_COUNT = "user/updatenotify"
 
@@ -174,8 +174,6 @@ let API_REMINDER = "user/reminder"
 
 
 let API_DELETE_FAMILY_MEMBER =  "user/family/delete" // "user/deletefamilymember"
-
-
 
 let API_SEND_OTP = "send_otp"
 

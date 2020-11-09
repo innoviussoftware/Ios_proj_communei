@@ -46,7 +46,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
      var arrData = ["Residents","Notices","Events","Circulars","Emergency No's","Domestic Helper"]//,"Vendors"]
        var arrImage = ["ic_residents","ic_notice","ic_event","ic_circular","ic_emergency_no","ic_domestic_help"]//,"ic_vendor"]
        
-    
+        
     var arrNotificationCountData = [NotificationCountData]()
 
 
@@ -65,12 +65,15 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                 print("revealViewController auto")
 
             }
-                
+
+        // lblname.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         apicallUserMe()
         
-        
-       // lblname.text = String(format: "%@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)
-
+        apicallNotificationCount()
     }
     
     // MARK: - User me
@@ -140,6 +143,51 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
         
     }
     
+    func apicallNotificationCount()
+       {
+           if !NetworkState().isInternetAvailable {
+                            ShowNoInternetAlert()
+                            return
+                        }
+        
+               let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+               webservices().StartSpinner()
+            
+           // Apicallhandler.sharedInstance.GetNotifyCount(URL: webservices().baseurl + API_NOTIFY_COUNT) { JSON in
+                
+            Apicallhandler.sharedInstance.GetNotifyCount(URL: webservices().baseurl + API_NOTIFY_COUNT, token: token as! String) { JSON in
+
+            
+                   let statusCode = JSON.response?.statusCode
+                   
+                   switch JSON.result{
+                   case .success(let resp):
+                       webservices().StopSpinner()
+                       if statusCode == 200{
+                           
+                        self.arrNotificationCountData = resp.data!
+                        self.collectionmenu.delegate = self
+                        self.collectionmenu.dataSource = self
+                        self.collectionmenu.reloadData()
+                        
+                       }
+                       
+                   case .failure(let err):
+                       
+                       webservices().StopSpinner()
+                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                       
+                       
+                   }
+               }
+               
+          
+           
+       }
+    
     @IBAction func btnZendeskPressed(_ sender: Any) {
         // let vc =
         _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
@@ -188,24 +236,8 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                                        //cell.lblBadgeCount.text = arrNotificationCountData[0]
                                    }
                                    
-                                   
-                                   if indexPath.row == 1{ //member
-                                    cell.lblBadgeCount?.isHidden = true
-                                    }
-                                   
-                                   if indexPath.row == 2{ // Notice
+                                  else if indexPath.row == 1{ // Notice
                                        
-                                       if arrNotificationCountData[1].count == 0{
-                                        cell.lblBadgeCount?.isHidden = true
-                                       }else{
-                                        cell.lblBadgeCount?.text = "\(arrNotificationCountData[1].count!)"
-                                        cell.lblBadgeCount?.isHidden = false
-
-                                       }
-                                       
-                                    }
-                                   
-                                   if indexPath.row == 4{ // event
                                        if arrNotificationCountData[0].count == 0{
                                         cell.lblBadgeCount?.isHidden = true
                                        }else{
@@ -213,15 +245,29 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                                         cell.lblBadgeCount?.isHidden = false
 
                                        }
+                                       
+                                    }
+                                   
+                                  else if indexPath.row == 2{ // event
+                                       if arrNotificationCountData[2].count == 0{
+                                        cell.lblBadgeCount?.isHidden = true
+                                       }else{
+                                        cell.lblBadgeCount?.text = "\(arrNotificationCountData[2].count!)"
+                                        cell.lblBadgeCount?.isHidden = false
+
+                                       }
                                    }
-                    if indexPath.row == 3{ // circular
-                        if arrNotificationCountData[2].count == 0{
+                                 
+                                  else if indexPath.row == 3{ // circular
+                        if arrNotificationCountData[1].count == 0{
                             cell.lblBadgeCount?.isHidden = true
                         }else{
-                            cell.lblBadgeCount?.text = "\(arrNotificationCountData[2].count!)"
+                            cell.lblBadgeCount?.text = "\(arrNotificationCountData[1].count!)"
                             cell.lblBadgeCount?.isHidden = false
 
                         }
+                    }else{
+                        cell.lblBadgeCount?.isHidden = true
                     }
                      }else{
                         
@@ -239,19 +285,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                     }
                     
                     
-                    if indexPath.row == 1{ //Notice
-                        
-                        if arrNotificationCountData[1].count == 0{
-                            cell.lblBadgeCount?.isHidden = true
-                        }else{
-                            cell.lblBadgeCount?.text = "\(arrNotificationCountData[1].count!)"
-                            cell.lblBadgeCount?.isHidden = false
-
-                        }
-                       
-                     }
-                    
-                    if indexPath.row == 2{ // Event
+                    else if indexPath.row == 1{ //Notice
                         
                         if arrNotificationCountData[0].count == 0{
                             cell.lblBadgeCount?.isHidden = true
@@ -260,10 +294,11 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                             cell.lblBadgeCount?.isHidden = false
 
                         }
-                        
+                       
                      }
-                                                            
-                    if indexPath.row == 3{ // Circular
+                    
+                    else if indexPath.row == 2{ // Event
+                        
                         if arrNotificationCountData[2].count == 0{
                             cell.lblBadgeCount?.isHidden = true
                         }else{
@@ -271,6 +306,19 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                             cell.lblBadgeCount?.isHidden = false
 
                         }
+                        
+                     }
+                                                            
+                    else if indexPath.row == 3{ // Circular
+                        if arrNotificationCountData[1].count == 0{
+                            cell.lblBadgeCount?.isHidden = true
+                        }else{
+                            cell.lblBadgeCount?.text = "\(arrNotificationCountData[1].count!)"
+                            cell.lblBadgeCount?.isHidden = false
+
+                        }
+                    }else{
+                        cell.lblBadgeCount?.isHidden = true
                     }
                     }else{
                         cell.lblBadgeCount?.isHidden = true

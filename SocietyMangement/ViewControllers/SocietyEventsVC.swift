@@ -241,8 +241,12 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         let cell: SocietyEventcell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SocietyEventcell
         
         cell.lblname.text = eventary[indexPath.row].title
-        cell.lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[indexPath.row].eventStartDate!))"
-        cell.lblenddate.text = "To: \(changeDateFormate(strDate: eventary[indexPath.row].eventEndDate!))"
+       // cell.lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[indexPath.row].eventStartDate!))"
+      //  cell.lblenddate.text = "To: \(changeDateFormate(strDate: eventary[indexPath.row].eventEndDate!))"
+        
+        cell.lblstartdate.text = "From: \( eventary[indexPath.row].eventStartDate!)"
+        cell.lblenddate.text = "To: \(eventary[indexPath.row].eventEndDate!)"
+
         //cell.lbldes.text = eventary[indexPath.row].datumDescription
         //webservices.sharedInstance.setShadow(view:cell.innerview)
         cell.btnEditNew.tag = indexPath.row
@@ -256,16 +260,16 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                
         let hight = getLabelHeight(text: eventary[indexPath.row].datumDescription!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
                
-                  if hight >  38{
+            //      if hight >  38{
                       cell.btnreadmore.isHidden = false
-                  }else{
-                      cell.btnreadmore.isHidden = true
-                  }
+//                  }else{
+//                      cell.btnreadmore.isHidden = true
+//                  }
 
         
                
               
-                cell.lbldes.numberOfLines = 4
+                cell.lbldes.numberOfLines = 3
                 cell.lbldes.lineBreakMode = .byTruncatingTail
                 cell.lbldes.text = eventary[indexPath.row].datumDescription
                 cell.btnreadmore.setTitle("Read More >", for:.normal)
@@ -378,12 +382,13 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "AddEventVC") as! AddEventVC
-        // 6/11/20. temp comment
-      //  nextViewController.dic = eventary[sender.tag]
+        
+        nextViewController.dic = eventary[sender.tag]
         nextViewController.isfrom = 1
         navigationController?.pushViewController(nextViewController, animated: true)
         
     }
+    
     
     @objc func readmore(sender:UIButton)
     {
@@ -397,8 +402,11 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                
         lblTitel.text = eventary[sender.tag].title
         
-        lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[sender.tag].eventStartDate!))"
-        lblenddate.text = "To: \(changeDateFormate(strDate: eventary[sender.tag].eventEndDate!))"
+       // lblstartdate.text = "From: \(changeDateFormate(strDate: eventary[sender.tag].eventStartDate!))"
+       // lblenddate.text = "To: \(changeDateFormate(strDate: eventary[sender.tag].eventEndDate!))"
+
+        lblstartdate.text = "From: \(eventary[sender.tag].eventStartDate!)"
+        lblenddate.text = "To: \( eventary[sender.tag].eventEndDate!)"
 
        // lblDate.text = strChangeDateFormate(strDateeee: eventary[sender.tag].createdAt!)
         txtvwDiscription.text = eventary[sender.tag].datumDescription
@@ -406,7 +414,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
       //  tblview.reloadData()
         
     }
-    
     
     
     func changeDateFormate(strDate:String) -> String {
@@ -455,7 +462,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                         self.eventary = resp.data!
 
                         self.tblview.reloadData()
-                        if(resp.data.count == 0)
+                        if(resp.data!.count == 0)
                         {
                             self.tblview.isHidden = true
                             self.viewnoresult.isHidden = false
@@ -481,7 +488,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                     }
                     else
                     {
-                        if(resp.data.count == 0)
+                        if(resp.data!.count == 0)
                         {
                             self.tblview.isHidden = true
                             self.viewnoresult.isHidden = false
@@ -629,3 +636,15 @@ extension SocietyEventsVC : URLSessionDownloadDelegate {
         }
     }
 }
+
+
+extension Array {
+    public func toDictionary<Key: Hashable>(with selectKey: (Element) -> Key) -> [Key:Element] {
+        var dict = [Key:Element]()
+        for element in self {
+            dict[selectKey(element)] = element
+        }
+        return dict
+    }
+}
+

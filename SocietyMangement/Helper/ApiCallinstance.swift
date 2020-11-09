@@ -307,10 +307,10 @@ struct Apicallhandler {
     
     
     //Mark : Api call get notice
-    func GetAllEvents(URL: String, societyid:String,BuildingID:String,token:String, onCompletion: @escaping ((_ response: DataResponse<EvenetResponse>) -> Void)) {
+    func GetAllEvents(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<SocietyEventResponse>) -> Void)) {
         //let parameter:Parameters = ["society_id":societyid , "building_id":BuildingID]
         
-        AF.request(URL, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<EvenetResponse>) in
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<SocietyEventResponse>) in
             
             onCompletion(response)
         }
@@ -360,7 +360,7 @@ struct Apicallhandler {
     func GetAllCirculars(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<CircularResponse>) -> Void)) {
         //var parameter:Parameters = ["society_id":societyid]
         
-        AF.request(webservices().baseurl + API_USER_GET_CIRCULAR, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<CircularResponse>) in
+        AF.request(webservices().baseurl + API_USER_GET_CIRCULAR, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<CircularResponse>) in
             
             onCompletion(response)
         }
@@ -369,10 +369,10 @@ struct Apicallhandler {
     }
     
     //Mark : Api call get Buildings
-    func DeleteCircular(URL: String, id:String,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
-        let parameter:Parameters = ["circular_id":id]
+    func DeleteCircular(URL: String, id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        let parameter:Parameters = ["NoticeID":id]
         
-        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
             
             onCompletion(response)
         }
@@ -476,6 +476,15 @@ struct Apicallhandler {
         }
     }
     
+    // read notice
+    func readNoticeAPI(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
+       
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<logout>) in
+         
+            onCompletion(response)
+            
+        }
+    }
     /*
      func LogoutAPI(URL: String, param:Parameters, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
          
@@ -583,9 +592,9 @@ struct Apicallhandler {
     
     //Mark : Api call Delete Notice
     func DeleteEvent(URL: String, id:String,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
-        let parameter:Parameters = ["event_id":id]
+        let parameter:Parameters = ["NoticeID":id]
         
-        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
             onCompletion(response)
         }
         
@@ -606,9 +615,10 @@ struct Apicallhandler {
     
     
     //Mark : Api call Notify count
-    func GetNotifyCount(URL: String,token:String, onCompletion: @escaping ((_ response: DataResponse<NotificationCount>) -> Void)) {
+    func GetNotifyCount(URL: String, token: String, onCompletion: @escaping ((_ response: DataResponse<NotificationCount>) -> Void)) {
         
-        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<NotificationCount>) in
+        AF.request(URL, method: .get, encoding: JSONEncoding.default,headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<NotificationCount>) in
+            
             onCompletion(response)
         }
         

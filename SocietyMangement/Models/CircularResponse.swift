@@ -7,33 +7,42 @@
 //
 import Foundation
 
-//
-//// MARK: - GetCircularResponse
-//struct CircularResponse: Codable {
-//    let data: [Circular]
-//    let status: Int
-//    let message: String
-//}
-//
-//// MARK: - Datum
-//struct Circular: Codable {
-//    let id, userID, societyID: Int
-//    let buildingID, title, datumDescription, pdffile: String?
-//    let createdAt, updatedAt: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case id
-//        case userID = "user_id"
-//        case societyID = "society_id"
-//        case buildingID = "building_id"
-//        case title
-//        case datumDescription = "description"
-//        case pdffile
-//        case createdAt = "created_at"
-//        case updatedAt = "updated_at"
-//    }
-//}
 
+// MARK: - Welcome
+struct CircularResponse: Codable {
+    let data: [Circular]?
+    let status: Int?
+    let message: String?
+}
+
+// MARK: - Datum
+struct Circular: Codable {
+    let noticeID, noticeTypeID: Int?
+    let title, datumDescription, publishDate, visibleTill: String?
+    let createdBy, creationDate: String?
+    let pollEnabled, multiPollEnable, societyID: Int?
+    let attachments: [String]?
+    let readAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case noticeID = "NoticeID"
+        case noticeTypeID = "NoticeTypeID"
+        case title = "Title"
+        case datumDescription = "Description"
+        case publishDate = "PublishDate"
+        case visibleTill = "VisibleTill"
+        case createdBy = "CreatedBy"
+        case creationDate = "CreationDate"
+        case pollEnabled = "PollEnabled"
+        case multiPollEnable = "MultiPollEnable"
+        case societyID = "SocietyID"
+        case attachments
+        case readAt = "ReadAt"
+    }
+}
+
+/*
+ 
 
 // MARK: - GetFamilyMember
 struct CircularResponse: Codable {
@@ -65,3 +74,5 @@ struct Circular: Codable {
        // case name
     }
 }
+
+*/

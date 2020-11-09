@@ -444,9 +444,21 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
         lblTitel.text = noticeary[sender.tag].title
         lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].creationDate)
         txtvwDiscription.text = noticeary[sender.tag].datumDescription
+        
+        /*
+         // user/notice/1/157/read
+
+         //todo:: update read count
+            /*Todo::: type 1=notice 2=Circulars  3=Events  4=poll*/
+            @GET("user/notice/{type}/{id}/read")
+         */
 
        // tblview.reloadData()
         
+    }
+    
+    func apiCallNoticeRead() {
+        <#function body#>
     }
     
     func strChangeDateFormate(strDateeee:String) -> String {

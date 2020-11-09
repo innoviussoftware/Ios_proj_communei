@@ -31,7 +31,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
     
-    var arrDays = ["Monday" , "Tueday" , "Wedday" , "Thuday" , "Friday" , "Satday"  ,"Sunday"]
+    var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
 
     
     @IBOutlet weak var collectionHours: UICollectionView!
@@ -725,7 +725,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
         
-        return CGSize(width:width,height: 38);
+        return CGSize(width:width,height: 42);
         
     }
     

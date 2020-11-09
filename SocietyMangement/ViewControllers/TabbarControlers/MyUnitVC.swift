@@ -104,10 +104,10 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             apicallGetFamilyMembers(id: (UsermeResponse?.data?.guid)!)
         }
 
-        
+        // 7/11/20. temp comment 2 lines
 
-           apicallGetFrequentGuestList()
-           apicallGetMyHelperList()
+         //  apicallGetFrequentGuestList()
+         //  apicallGetMyHelperList()
            
            // Mark :Check label no data found is hidden or not
 
@@ -330,7 +330,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             webservices().StartSpinner()
             
             
-        Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { JSON in
+        Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { [self] JSON in
                 
                 print(JSON)
                 switch JSON.result{
@@ -379,9 +379,21 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     }
                     
                 case .failure(let err):
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    
+                    if(self.familymeberary.count == 0) || (self.familymeberary.count == 1)
+                    {
+                        self.collectionfamily.isHidden = true
+                        self.viewfamilymembers.isHidden = false
+                    }
+                    else
+                    {
+                        self.collectionfamily.isHidden = false
+                        self.viewfamilymembers.isHidden = true
+                    }
+                    
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                  //  print(err.asAFError)
                     webservices().StopSpinner()
                     
                 }
@@ -468,8 +480,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     self.lblStaticAddVhicleDetail.isHidden = false
                     self.collectionVehicle.isHidden = true
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
                     print(err.asAFError)
                     webservices().StopSpinner()
                     
@@ -1206,6 +1218,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     @objc func deleteFamilyMember(sender:UIButton)
     {
             let id =  familymeberary[sender.tag].guid
+        
+        print("guid :- ",id!)
         //let strId = "\(id)"
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             avc?.titleStr = "Delete Contact"  // "Communei"

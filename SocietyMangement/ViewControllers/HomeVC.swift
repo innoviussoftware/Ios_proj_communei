@@ -2267,7 +2267,8 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                             ShowNoInternetAlert()
                             return
                         }
-               let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+           /*    let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
                webservices().StartSpinner()
             
@@ -2298,7 +2299,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                    }
                }
                
-          
+          */
            
        }
     

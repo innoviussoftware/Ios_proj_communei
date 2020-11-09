@@ -42,8 +42,6 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
     
     @IBOutlet weak var AttechemntView_update: UIView!
     
-    
-    
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -70,10 +68,19 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
     
     //["Festival","AGM", "Committee","Entertainment"]
     
-    var dic:Event?
+   // var dic : Event?
+    
+     var dic : SocietyEvent?
+
+    
     var isfrom = 0
     
     var imgData : Data?
+    
+    var selectedaryId = NSMutableArray()
+
+    var selectedId = ""
+
     
   /*  @IBAction func chnagephoto(_ sender: Any) {
         
@@ -154,6 +161,60 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
         }
     }
     
+    // MARK: - get GetBuildings
+    
+    func apicallGetBuildings()
+    {
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+        
+          let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+
+            webservices().StartSpinner()
+                                         
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                         let param : Parameters = [
+                             "Society" : SociId,
+                           // "Parent" : UsermeResponse!.data!.society!.societyID!
+                         ]
+                        
+                       print("Parameters : ",param)
+                                
+                            
+        Apicallhandler.sharedInstance.GetAllBuidldingSociety(token: token as! String, param: param) { [self] JSON in
+                
+                switch JSON.result{
+                case .success(let resp):
+                    
+                    webservices().StopSpinner()
+                    let nameary = NSMutableArray()
+                    if(resp.status == 1)
+                    {
+                        for dic in resp.data
+                        {
+                            nameary.add(dic.propertyFullName)
+                            self.selectedaryId.add(dic.propertyID)
+                            self.selectedId = self.selectedaryId.componentsJoined(by: ",")
+                        }
+                            
+                    }
+                    
+                    print("selectedaryId :- \(self.selectedaryId),selectedId :- \(self.selectedId)")
+                    print(resp)
+                case .failure(let err):
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
+        
+    }
+    
     var pickerview = UIPickerView()
     
     var selectedType = Int()
@@ -170,6 +231,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
         
         btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
               
+        apicallGetBuildings()
         
         viewCamera.isHidden = true
 
@@ -211,8 +273,9 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             txttitle.text = dic?.title
             txtdes.text = dic?.datumDescription
             txtdes.placeholder = ""
-            txtstartdate.text = "\(dic!.eventStartDate!) \(dic!.eventStartDate!)"
-            txtenddate.text =  "\(dic!.eventEndDate!) \(dic!.eventEndDate!)"
+            txtstartdate.text = dic?.eventStartDate
+            // \(dic!.eventStartDate!)"
+            txtenddate.text =  dic?.eventEndDate //\(dic!.eventEndDate!)"
            
             /* btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.eventAttachment!), for: .normal)
            // btnattechment.setTitle("", for:.normal)
@@ -653,7 +716,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             "EventStartDate":txtstartdate.text!.components(separatedBy:" ")[0],
             "EventEndDate":txtenddate.text!.components(separatedBy:" ")[0],
             "EventTypeID": selectedType,//txttype.text!,
-            "Properties": "1" // strSocietyId // 6/11/20. temp comment
+            "Properties": self.selectedId //"1" // strSocietyId // 6/11/20. temp comment
            // "building_id":strBuildingId
             //"event_attachment":btnattechment.backgroundImage(for:.normal)!
         ]
@@ -762,25 +825,28 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                          ShowNoInternetAlert()
                          return
                      }
-        let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
-        let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
+      //  let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+      //  let strBuildingId = String(format: "%d", UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int)
         let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
-        let strEventId = String(format: "%d", (dic?.eventTypeID)!)
+       // let strEventId = String(format: "%d", (dic?.eventTypeID)!)
         
         webservices().StartSpinner()
         let param : Parameters = [
-            "event_id":strEventId,
-            "society_id" : strSocietyId,
-            "title" : txttitle.text!,
-            "description" : txtdes.text!,
-            "event_start_time":txtstartdate.text!.components(separatedBy:" ")[1],
-            "event_end_time":txtenddate.text!.components(separatedBy:" ")[1],
-            "event_start_date":txtstartdate.text!.components(separatedBy:" ")[0],
-            "event_end_date":txtenddate.text!.components(separatedBy:" ")[0],
-            "EventTypeID":txttype.text!,
-            "building_id":strBuildingId
+            "NoticeID" :  dic?.noticeID, //strSocietyId,
+            "Title" : txttitle.text!,
+            "Description" : txtdes.text!,
+          //  "event_start_time":txtstartdate.text!.components(separatedBy:" ")[1],
+          //  "event_end_time":txtenddate.text!.components(separatedBy:" ")[1],
+            "EventStartDate":txtstartdate.text!.components(separatedBy:" ")[0],
+            "EventEndDate":txtenddate.text!.components(separatedBy:" ")[0],
+            "EventTypeID": selectedType, //txttype.text!,
+          //  "building_id":strBuildingId
+            
+            "Properties": self.selectedId
             //"event_attachment":btnattechment.backgroundImage(for:.normal)!
         ]
+        
+        print("param :- ",param)
         
         AF.upload(
             multipartFormData: { MultipartFormData in
@@ -791,13 +857,15 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                 let strFileName = formatter.string(from: date)
                 
                 for (key, value) in param {
-                    MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                    
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
                 }
                 
                 if self.imgData!.count != 0{
                    // MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                   
-                    MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+                    MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
 
                 }
                 

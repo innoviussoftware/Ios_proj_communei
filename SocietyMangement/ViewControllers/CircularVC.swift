@@ -207,7 +207,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     }
     
     @objc  func sendNotification(sender:UIButton) {
-        let strId = "\(Circularary[sender.tag].id!)"
+        let strId = "\(Circularary[sender.tag].noticeID)"
         APPDELEGATE.apicallReminder(strType: "3", id: strId)
         
     }
@@ -240,7 +240,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
         cell.btnNotification.tag = indexPath.row
         
         cell.lblTitel.text = Circularary[indexPath.row].title
-        cell.lblDate.text = strChangeDateFormate(strDateeee: Circularary[indexPath.row].createdAt!)
+        cell.lblDate.text = strChangeDateFormate(strDateeee: Circularary[indexPath.row].creationDate!)
         
         // 4/9/20.
       //  let str = Circularary[indexPath.row].name
@@ -255,30 +255,32 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
            }
 
         
-        if arrReadMore.contains(Circularary[indexPath.row].id){
+       /* if arrReadMore.contains(Circularary[indexPath.row].id){
             cell.lblDiscription.numberOfLines = 0
             cell.lblDiscription.lineBreakMode = .byWordWrapping
             cell.lblDiscription.text = Circularary[indexPath.row].datumDescription
             cell.btnReadMore.setTitle("Read Less <", for:.normal)
             
-        }else{
+        }else{ */
             cell.lblDiscription.numberOfLines = 4
             cell.lblDiscription.lineBreakMode = .byTruncatingTail
             cell.lblDiscription.text = Circularary[indexPath.row].datumDescription
             cell.btnReadMore.setTitle("Read More >", for:.normal)
 
-        }
+       // }
         
         
-        if(Circularary[indexPath.row].pdffile != nil || Circularary[indexPath.row].pdffile == "")
+      /*  if(Circularary[indexPath.row].attachments?[0] != nil || Circularary[indexPath.row].attachments![0] == "")
         {
             cell.btnDownload.isHidden = false
         }
         else
         {
             cell.btnDownload.isHidden = true
-        }
+        } */
         
+        cell.btnDownload.isHidden = false
+
         cell.btnEdit.tag = indexPath.row
         cell.btnDelete.tag = indexPath.row
         
@@ -375,9 +377,9 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     }
     @objc func downloadaction(sender:UIButton)
     {
-        let pdffile = Circularary[sender.tag].pdffile!
+        let pdffile = Circularary[sender.tag].attachments![0]
         
-        guard let url = URL(string:webservices().imgurl + pdffile) else {
+        guard let url = URL(string: pdffile) else {
             return //be safe
         }
         
@@ -407,7 +409,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                                                       avc?.subtitleStr = "Are you sure you want to delete \(self.Circularary[sender.tag].title!)?"
                                                       avc?.yesAct = {
                                                             
-                                                       self.apicallDeleteCirculars(id: (self.Circularary[sender.tag].id! as NSNumber).stringValue)
+                                                       self.apicallDeleteCirculars(id: self.Circularary[sender.tag].noticeID!)
                                                           }
                                                       avc?.noAct = {
                                                         
@@ -438,17 +440,17 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     
     @objc func readmore(sender:UIButton)
     {
-        if arrReadMore.contains(Circularary[sender.tag].id) {
+        if arrReadMore.contains(Circularary[sender.tag].noticeID) {
             
-            arrReadMore.remove(Circularary[sender.tag].id)
+            arrReadMore.remove(Circularary[sender.tag].noticeID)
         }else{
-            arrReadMore.add(Circularary[sender.tag].id)
+            arrReadMore.add(Circularary[sender.tag].noticeID)
         }
         
         vwReadMore.isHidden = false
         
         lblTitel.text = Circularary[sender.tag].title
-        lblDate.text = strChangeDateFormate(strDateeee: Circularary[sender.tag].createdAt!)
+        lblDate.text = strChangeDateFormate(strDateeee: Circularary[sender.tag].creationDate!)
 
         txtvwDiscription.text = Circularary[sender.tag].datumDescription
         
@@ -492,7 +494,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
             webservices().StartSpinner()
-          //  Apicallhandler().GetAllCirculars(URL: webservices().baseurl + API_USER_GET_CIRCULAR, token: token) { JSON in
         
         Apicallhandler().GetAllCirculars(URL: webservices().baseurl + API_USER_GET_CIRCULAR, token: token) { JSON in
 
@@ -502,15 +503,15 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                     webservices().StopSpinner()
                     if(JSON.response?.statusCode == 200)
                     {
-                        self.Circularary = resp.data
+                        self.Circularary = resp.data!
+                        
 //                        for i in 0 ..< self.Circularary.count{
 //                            self.arrReadMore.add("0")
 //                        }
                         
-                        
                         self.tblcircular.reloadData()
                         
-                        if(resp.data.count == 0)
+                        if(resp.data!.count == 0)
                         {
                             self.tblcircular.isHidden = true
                             self.viewnoresult.isHidden = false
@@ -537,7 +538,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                     }
                     else
                     {
-                        if(resp.data.count == 0)
+                        if(resp.data!.count == 0)
                         {
                             self.tblcircular.isHidden = true
                             self.viewnoresult.isHidden = false
@@ -578,9 +579,9 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
                         
                         return
                     }
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
                     
                     
                 }
@@ -591,7 +592,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     
     // MARK: - Delete circulars
     
-    func apicallDeleteCirculars(id:String)
+    func apicallDeleteCirculars(id:Int)
     {
          if !NetworkState().isInternetAvailable {
                          ShowNoInternetAlert()

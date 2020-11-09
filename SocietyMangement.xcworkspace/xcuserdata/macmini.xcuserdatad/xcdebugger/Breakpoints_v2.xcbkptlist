@@ -27,8 +27,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "400"
             endingLineNumber = "400"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "respondToSwipeGesture(gesture:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -43,8 +43,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "394"
             endingLineNumber = "394"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "respondToSwipeGesture(gesture:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -146,22 +146,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7F394FBC-E2E2-4D00-8DD3-29C3BFAE427C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/NoticeVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F1CD272F-DABF-4219-8178-9936DC05A62B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -173,38 +157,6 @@
             endingLineNumber = "698"
             landmarkName = "apicallAddEvents()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F1CD272F-DABF-4219-8178-9936DC05A62B - 148735cf8861f3f4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Communei.AddEventVC.apicallAddEvents() -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/AddEventVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "698"
-                  endingLineNumber = "698"
-                  offsetFromSymbolStart = "4720">
-               </Location>
-               <Location
-                  uuid = "F1CD272F-DABF-4219-8178-9936DC05A62B - be05e4d1a60ee8e4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in Communei.AddEventVC.apicallAddEvents() -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/AddEventVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "700"
-                  endingLineNumber = "700"
-                  offsetFromSymbolStart = "172">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -220,6 +172,38 @@
             startingLineNumber = "700"
             endingLineNumber = "700"
             landmarkName = "apicallAddEvents()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5BDA902E-0A94-408D-9C82-E59EC736748A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/CircularVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
+            landmarkName = "downloadaction(sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "95B8FF95-9328-42B2-B606-83BBCC3ADBA0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/CommunityVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

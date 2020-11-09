@@ -182,7 +182,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
              self.present(alert, animated: true, completion: nil)
             }
-            else if(txtnum.text == "") || (txtnum.text!.count > 9)
+            else if(txtnum.text == "") || (txtnum.text!.count < 10)
             {
                 
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
@@ -315,16 +315,18 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             
             print("dateee : ",dateee!)
             
+            txtbirthdate.text! = dateee! //(member?.dateOfBirth!)!
+
           //  txtbirthdate.text = dateee
             
-            let formatter = DateFormatter()
+          /*  let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             let strDate = formatter.date(from: dateee!)
             formatter.dateFormat = "dd-MM-yyyy"
             if strDate != nil {
                 let str = formatter.string(from: strDate!)
                 txtbirthdate.text = str //member?.dob
-            }
+            } */
 //            let str = formatter.string(from: strDate!)
 //            txtbirthdate.text = str //member?.dob
             txtbloodgroup.text = member?.bloodGroupName
@@ -485,23 +487,31 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
      @objc func donePressed1()
             
         {
-              if(txtprofession.text == "")
-                  {
+            //  if(txtprofession.text == "") {
                       
                     txtProfessionOther.isHidden = true
                     constraintHeightProfessionOther.constant = 0
                     constraintTopProfessionOther.constant = 0
-
-                    txtprofession.text = professionary[0].name
                 
-                professiongroupId = professionary[0].id
+                let row = self.pickerview1.selectedRow(inComponent: 0)
+                txtprofession.text! = professionary[row].name
+                professiongroupId = professionary[row].id
+                
+
+                //    txtprofession.text = professionary[0].name
+                
+             //   professiongroupId = professionary[0].id
 
                 
                       
                       txtprofession.resignFirstResponder()
-                  }
+            /*      }
                   else
                   {
+                    let row = self.pickerview1.selectedRow(inComponent: 0)
+                    txtprofession.text! = professionary[row].name
+                    professiongroupId = professionary[row].id
+                    
                       txtprofession.resignFirstResponder()
                       
                 }
@@ -525,7 +535,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                 txtProfessionOther.isHidden = true
                 constraintHeightProfessionOther.constant = 0
                 constraintTopProfessionOther.constant = 0
-            }
+            } */
             
             
           
@@ -601,7 +611,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         }else if activeTextField == txtGender{
             return arrGender.count
         }else if(pickerView == pickerview1){
-            return professionary.count + 1
+            return professionary.count //+ 1
         }else{
             return arrRelation.count
         }
@@ -613,23 +623,23 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         if(pickerView == pickerview1){
-            if(row == professionary.count){
-                    return "other"
-            }else{
+        //    if(row == professionary.count){
+//                    return "other"
+//            }else{
                 return professionary[row].name
-                
+
                 // Fatal error: Index out of range: file Swift/ContiguousArrayBuffer.swift, line 444
 
-            }
-        }else{
-            if activeTextField == txtbloodgroup{
+         //   }
+      //  }else{ */
+           }else if activeTextField == txtbloodgroup{
                 return bloodgroupary[row].name
             }else if activeTextField == txtGender{
                 return arrGender[row]
             }else{
                 return arrRelation[row]
             }
-        }
+       // }
        
         
     }
@@ -638,14 +648,17 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
         if(pickerView == pickerview1)
         {
-            if(row == professionary.count)
+          /*  if(row == professionary.count)
             {
                 txtprofession.text =  "other"
             }
             else
-            {
-                txtprofession.text = professionary[row].name
-            }
+            { */
+               // txtprofession.text = professionary[row].name
+
+            professiongroupId = professionary[row].id //row
+
+          //  }
         }else{
             if activeTextField == txtbloodgroup{
                 txtbloodgroup.text = bloodgroupary[row].name
@@ -1099,7 +1112,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                        {
                            
                            self.professionary = resp.data
-                           self.pickerview.reloadAllComponents()
+                        self.pickerview1.reloadAllComponents()
                            
                        }
                        else

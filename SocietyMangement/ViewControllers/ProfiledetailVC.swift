@@ -115,6 +115,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
     var arrGender = ["Male","Female","Prefer not to say"]
     
+    var UserType = Int()
+    
     var bloodgroupId = Int()
 
     var SelectedBlodGroup = Int() //! = 0
@@ -508,6 +510,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 //                }
                 if(UsermeResponse?.data!.bloodGroupID != nil)
                 {
+                    bloodgroupId = (UsermeResponse?.data!.bloodGroupID)!
                     txtbloodgroup.text = UsermeResponse?.data!.bloodGroupName
                 }
                 
@@ -560,10 +563,12 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                             }
                             if(UsermeResponse?.data!.userTypeName != nil)
                             {
+                                UserType = (UsermeResponse?.data?.society?.userTypeID)!
                         txtflattype.text = UsermeResponse?.data!.userTypeName
                             }
                             if(UsermeResponse?.data!.bloodGroupID != nil)
                                          {
+                                bloodgroupId = (UsermeResponse?.data!.bloodGroupID)!
                         txtbloodgroup.text =  UsermeResponse?.data!.bloodGroupName
                             }
                         }
@@ -667,7 +672,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     @objc func donedatePicker(){
         //For date formate
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+        formatter.dateFormat = "yyyy-MM-dd" //"dd-MM-yyyy"
         txtbirthDate.text = formatter.string(from: datePicker.date)
         //dismiss date picker dialog
         self.view.endEditing(true)
@@ -806,8 +811,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     
     @objc func donePressed1()
     {
-//          if(txtprofession.text == "")
-//              {
+         if(txtprofession.text == "")
+              {
                   
                 txtProfessionOther.isHidden = true
                 constraintHeightProfessionOther.constant = 0
@@ -825,7 +830,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
                   txtprofession.resignFirstResponder()
         
- //             }
+           }
 //              else
 //              {
 //                  txtprofession.resignFirstResponder()
@@ -853,6 +858,14 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             txtProfessionOther.isHidden = true
             constraintHeightProfessionOther.constant = 0
             constraintTopProfessionOther.constant = 0
+            
+            activeTextField.resignFirstResponder()
+            let row = self.pickerview1.selectedRow(inComponent: 0)
+            txtprofession.text! = professionary[row].name
+            professiongroupId = professionary[row].id
+            
+            txtprofession.resignFirstResponder()
+
         }
         
         
@@ -863,6 +876,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     {
         if(txtflattype.text == "")
         {
+           // UserType = (UsermeResponse?.data?.society?.userTypeID)!
             
             txtflattype.text = flatary[0]
             
@@ -941,21 +955,20 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         if(pickerView == pickerview1)
         {
             return professionary.count + 1
-            
         }
         else if(pickerView == pickerview2)
         {
-            
             return flatary.count
-            
         }
-        else if(pickerView == pickerview3) {
+        else if activeTextField == txtGender{
+      //  else if(pickerView == pickerview3) {
           //  activeTextField == txtGender{
-            return bloodgroupary.count
+         //   return bloodgroupary.count
+            return arrGender.count
         }
         else{
-            return arrGender.count
-
+          //  return arrGender.count
+            return bloodgroupary.count
         }
         
     }
@@ -1093,6 +1106,16 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             professiongroupId = 0
         }
         
+        if(txtflattype.text == "Owner"){
+            UserType = 1
+        }else if(txtflattype.text == "Tenant"){
+            UserType = 3
+        }else if(txtflattype.text == "Resident Owner"){
+            UserType = 1
+        }else{
+            UserType = 3
+        }
+        
         webservices().StartSpinner()
 //        let param : Parameters = [
 //            "name":txtname.text!,
@@ -1117,7 +1140,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             "Gender": txtGender.text!,
             "Profession": professiongroupId, //txtprofession.text!,
             "ProfessionDetails":txtViewProfessionDetail.text!,
-            "UserType":txtflattype.text!
+            "UserType": UserType //txtflattype.text!
         ]
         
         print("param : ",param)
@@ -1132,7 +1155,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 
                 
                 for (key, value) in param {
-                    MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                 //   MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                    
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
                 }
                 
 
@@ -1149,13 +1175,15 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             
             print("Upload Progress: \(progress.fractionCompleted)")
             
-            webservices().StopSpinner()
+           // webservices().StopSpinner()
 
         })
             .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                 
-                //webservices().StopSpinner()
+                webservices().StopSpinner()
                 let statusCode = response.response?.statusCode
+                
+                print("statusCode :- ",statusCode!)
                 switch(response.result) {
                 case .success(let resp):
                     if statusCode == 200{

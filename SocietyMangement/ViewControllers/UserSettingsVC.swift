@@ -234,13 +234,13 @@ class UserSettingsVC: BaseVC {
         }
         
         
-        webservices().setShadow(view: viewProfile)
-        webservices().setShadow(view: viewPrivacy)
-        webservices().setShadow(view: viewDomestic)
-        webservices().setShadow(view: viewVisitor)
-        webservices().setShadow(view: viewDelivery)
-        webservices().setShadow(view: viewRemoveActivate)
-        webservices().setShadow(view: viewDND)
+        webservices().shadow(yourView: viewProfile)
+        webservices().shadow(yourView: viewPrivacy)
+        webservices().shadow(yourView: viewDomestic)
+        webservices().shadow(yourView: viewVisitor)
+        webservices().shadow(yourView: viewDelivery)
+        webservices().shadow(yourView: viewRemoveActivate)
+        webservices().shadow(yourView: viewDND)
 
         
         // 31/10/20. temp comment

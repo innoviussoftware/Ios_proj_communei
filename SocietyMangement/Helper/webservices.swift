@@ -106,6 +106,13 @@ class webservices: NSObject {
         view.layer.shadowRadius = 4
     }
     
+    func shadow(yourView: UIView) {
+        yourView.layer.shadowColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.16).cgColor
+        yourView.layer.shadowOpacity = 1
+        yourView.layer.shadowOffset = .zero
+        yourView.layer.shadowRadius = 10
+    }
+    
     func circularimage(imageview:UIImageView)
     {
         imageview.layer.masksToBounds = false
@@ -278,12 +285,6 @@ extension UIView {
         }, completion: completion)
     }
     
-    func shadow(yourView: UIView) {
-        yourView.layer.shadowColor = UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.16).cgColor
-        yourView.layer.shadowOpacity = 1
-        yourView.layer.shadowOffset = .zero
-        yourView.layer.shadowRadius = 10
-    }
 }
 
 private var __maxLengths = [UITextField: Int]()

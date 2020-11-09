@@ -791,7 +791,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         
         let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
         
-        return CGSize(width:width,height: 38);
+        return CGSize(width:width,height: 42);
         
     }
     

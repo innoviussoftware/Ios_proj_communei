@@ -59,10 +59,12 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
 
         }
         
-        collectionshortcut.layer.shadowColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.16).cgColor
+        dropShadow()
+        
+       /* collectionshortcut.layer.shadowColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.16).cgColor
         collectionshortcut.layer.shadowOpacity = 1
         collectionshortcut.layer.shadowRadius = 1.0
-        collectionshortcut.layer.shadowOffset = CGSize(width:0.5, height: 1)
+        collectionshortcut.layer.shadowOffset = CGSize(width:0.5, height: 1) */
       //  collectionshortcut.clipsToBounds = false
      //   collectionshortcut.layer.masksToBounds = false
         
@@ -71,6 +73,16 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
          
         // Do any additional setup after loading the view.
         
+    }
+    
+    func dropShadow() {
+        collectionshortcut.layer.masksToBounds = true
+        collectionshortcut.clipsToBounds = true
+        collectionshortcut.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        collectionshortcut.layer.shadowOpacity = 2.5
+        collectionshortcut.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        collectionshortcut.layer.shadowRadius = 12.0
+        collectionshortcut.layer.cornerRadius = 10.0
     }
     
     override func viewWillAppear(_ animated: Bool) {

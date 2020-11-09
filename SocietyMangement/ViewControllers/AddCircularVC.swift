@@ -145,24 +145,31 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
             
            // imgview.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.pdffile!), for: .normal)
             
-            btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.pdffile!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
-                if ((error) != nil) {
+            //if ((dic?.attachments![0].isEmpty != nil)) {
+                
+            if  ((dic?.attachments!.firstIndex(where: {$0 == ""})) == nil) {
+                print("empty")
+            }else{
+                
+              btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().baseurl + dic!.attachments![0]), placeholderImage:UIImage(named: "ic_pdf_file"), completed: { (image, error, cacheType, url) -> Void in
+                 if ((error) != nil) {
                     // set the placeholder image here
                     
-                    self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
+                   self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.pdffile!)!)
+                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.attachments![0])!)
                     self.imgData = testImage as Data?
 
                 } else {
                     // success ... use the image
-                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.pdffile!), for: .normal)
+                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.attachments![0]), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.pdffile!)!)
+                    let testImage = NSData(contentsOf: URL(string:webservices().baseurl + self.dic!.attachments![0])!)
                     self.imgData = testImage as Data?
                 }
             })
             
+        }
 
             apicallGetBuildings()
             txttitle.text = dic?.title
@@ -285,25 +292,25 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                          ShowNoInternetAlert()
                          return
                      }
-            let strSocetyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+        
+        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+
             
             webservices().StartSpinner()
-          //  Apicallhandler().GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, societyid:strSocetyId) { JSON in
                 
             
-                let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
-            
-                 let param : Parameters = [
-                     "Phone" : mobile!,
-                     "Secret" : secret,
-                     "Society" : strSocetyId
-                 ]
-                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                     let param : Parameters = [
+                         "Society" : SociId,
+                       // "Parent" : UsermeResponse!.data!.society!.societyID!
+                     ]
+                    
+                   print("Parameters : ",param)
+                            
                         
-                Apicallhandler.sharedInstance.GetAllBuidldings(URL: webservices().baseurl + API_GET_BUILDING, param: param) { JSON in
-                   
-                
-                
+                Apicallhandler.sharedInstance.GetAllBuidldingSociety(token: token as! String, param: param) { JSON in
+
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -315,11 +322,12 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                         {
                             for dic in resp.data
                             {
-                                if(((self.dic?.buildingID!.contains((dic.PropertyID as NSNumber).stringValue))!))
-                                {
-                                    self.selectedary.add(dic.PropertyID)
-                                    nameary.add(dic.PropertyName)
-                                }
+                              //  if(((self.dic?.buildingID!.contains((dic.PropertyID as NSNumber).stringValue))!))
+                              //  {
+                                
+                                    self.selectedary.add(dic.propertyID)
+                                    nameary.add(dic.propertyFullName)
+                              //  }
                             }
                             self.txtsendto.text = nameary.componentsJoined(by:",")
                         }
@@ -537,20 +545,22 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                          return
                      }
         
-        let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
+      //  let strSocietyId = String(format: "%d", UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int)
         let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
         
         webservices().StartSpinner()
         let param : Parameters = [
-            "society_id" : strSocietyId,
-            "building_id" : selectedary.componentsJoined(by: ","),
+           // "society_id" : strSocietyId,
+            "Properties" : selectedary.componentsJoined(by: ","),
 //            "name" : nameary.componentsJoined(by: ","),
-            "title" : txttitle.text!,
-            "description" : txtdes.text!
+            "Title" : txttitle.text!,
+            "Description" : txtdes.text!
             
 
-            //"pdffile" : ""
         ]
+        
+        print("AddNotice Parameters : ",param)
+
         
         AF.upload(
             multipartFormData: { MultipartFormData in
@@ -569,17 +579,15 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                 if self.imgData!.count != 0{
                   //  MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                     
-                    MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: strFileName, mimeType: "application/pdf")
+                    MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "application/pdf")
 
                 }
                 
                 
     
                 
-        }, to:  webservices().baseurl + API_ADD_CIRCULAR,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+        }, to:  webservices().baseurl + API_ADD_CIRCULAR,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
-            
-            
             
             print("Upload Progress addcircula : \(progress.fractionCompleted)")
         })
@@ -650,7 +658,7 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
 //            let buildingId = UserDefaults.standard.value(forKey:USER_BUILDING_ID) as! Int
 //            let strBuildingID = (buildingId as NSNumber).stringValue
             
-            let circularId = dic?.id
+            let circularId = dic?.noticeID
             let strCircularId = (circularId! as NSNumber).stringValue
             
             webservices().StartSpinner()
@@ -658,12 +666,15 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
         print("strCircularId : ",strCircularId)
         
            let param:Parameters = [
-                "circular_id":strCircularId,
-                "society_id":strSocietyId,
-                "building_id":txtsendto.text!,
+            
+            "NoticeID": circularId!,
+              //  "circular_id":strCircularId,
+             //   "society_id":strSocietyId,
+             //   "building_id":txtsendto.text!,
               //  "name" : txtsendto.text!,
-                "title":txttitle.text!,
-                "description":txtdes.text!
+            "Properties": selectedary.componentsJoined(by: ","),
+                "Title":txttitle.text!,
+                "Description":txtdes.text!
             ]
         
             
@@ -671,7 +682,9 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                 multipartFormData: { MultipartFormData in
                     
                     for (key, value) in param {
-                        MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                       // MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                        
+                        MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                     }
                     
                     
@@ -684,11 +697,13 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                     
                   //  MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                     
-                    MultipartFormData.append(self.imgData!, withName: "pdffile", fileName: strFileName, mimeType: "application/pdf")
+                    
+                    MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+
 
                     
                     
-            }, to:  webservices().baseurl + API_EDIT_CIRCULAR,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+            }, to:  webservices().baseurl + API_EDIT_CIRCULAR,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
                 //Current upload progress of file
                 
                 print("Upload Progress Editcircular : \(progress.fractionCompleted)")
