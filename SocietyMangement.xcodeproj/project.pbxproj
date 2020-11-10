@@ -111,6 +111,7 @@
 		9A384554230E79E200B64AC2 /* NoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384553230E79E200B64AC2 /* NoticeVC.swift */; };
 		9A384556230E903C00B64AC2 /* AddNoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384555230E903C00B64AC2 /* AddNoticeVC.swift */; };
 		9A384558230E956300B64AC2 /* AddAnnounceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384557230E956300B64AC2 /* AddAnnounceVC.swift */; };
+		9A460454255AA55700E5AA7D /* BookingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A460453255AA55700E5AA7D /* BookingsModel.swift */; };
 		9A532545230BCA0A003E5F29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A532544230BCA0A003E5F29 /* AppDelegate.swift */; };
 		9A53254A230BCA0B003E5F29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A532548230BCA0B003E5F29 /* Main.storyboard */; };
 		9A53254C230BCA0D003E5F29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A53254B230BCA0D003E5F29 /* Assets.xcassets */; };
@@ -397,6 +398,7 @@
 		9A384553230E79E200B64AC2 /* NoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeVC.swift; sourceTree = "<group>"; };
 		9A384555230E903C00B64AC2 /* AddNoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoticeVC.swift; sourceTree = "<group>"; };
 		9A384557230E956300B64AC2 /* AddAnnounceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnnounceVC.swift; sourceTree = "<group>"; };
+		9A460453255AA55700E5AA7D /* BookingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingsModel.swift; sourceTree = "<group>"; };
 		9A532541230BCA0A003E5F29 /* Communei.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Communei.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A532544230BCA0A003E5F29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A532549230BCA0B003E5F29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 				9A955AB2230FC216004A4668 /* AddCircularResponse.swift */,
 				9A955AB4230FE9DA004A4668 /* AddBuidingResponse.swift */,
 				D2DDD59124FE1CBB0008BE6A /* AmenitiesModel.swift */,
+				9A460453255AA55700E5AA7D /* BookingsModel.swift */,
 				9A955AB6230FEFDB004A4668 /* UpdateBuildingResponse.swift */,
 				9ABF596B2313993B007F7F61 /* MembersResponse.swift */,
 				9A92A2FD23150C740032AB2D /* VendorResponse.swift */,
@@ -1444,6 +1447,7 @@
 				4E1F9C2E233CDEAE000B84D3 /* HourlyEntryPermissionPopUpVC.swift in Sources */,
 				D23C3A052524497A00366CCB /* MessageGuardVC.swift in Sources */,
 				05349F9F24BC3DE200EC598B /* RSLabel.swift in Sources */,
+				9A460454255AA55700E5AA7D /* BookingsModel.swift in Sources */,
 				9AA06068255574DF009F48D7 /* SocietyEventResponse.swift in Sources */,
 				9A92A2FE23150C740032AB2D /* VendorResponse.swift in Sources */,
 				4E617F2D234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift in Sources */,

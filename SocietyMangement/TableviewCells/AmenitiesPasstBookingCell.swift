@@ -9,9 +9,13 @@
 import UIKit
 
 class AmenitiesPasstBookingCell: UITableViewCell {
+    
     @IBOutlet weak var lblDateTimeBooked: UILabel!
     
     @IBOutlet weak var btnCancel: UIButton!
+    
+    @IBOutlet weak var btnEdit: UIButton!
+
     @IBOutlet weak var lblPaymentPending: UILabel!
     @IBOutlet weak var lblSeprater: UILabel!
     @IBOutlet weak var lblStaticPaymentPending: UILabel!

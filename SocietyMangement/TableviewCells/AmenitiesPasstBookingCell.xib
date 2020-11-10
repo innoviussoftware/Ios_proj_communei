@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -160,7 +160,9 @@
             <connections>
                 <outlet property="bgView" destination="VOr-pJ-o8d" id="toU-RA-RIl"/>
                 <outlet property="btnCancel" destination="koN-xn-QXK" id="n6d-TX-iNd"/>
+                <outlet property="btnEdit" destination="aeK-dy-fma" id="0Zl-PG-7Yc"/>
                 <outlet property="lblDateTimeBooked" destination="Lm5-Ki-uHC" id="pWz-bL-Mjv"/>
+                <outlet property="lblDatetimeBlow" destination="kip-7V-V10" id="WO4-iX-tlJ"/>
                 <outlet property="lblNameType" destination="4UG-bq-z7x" id="qGJ-5p-Mvv"/>
                 <outlet property="lblStatus" destination="8It-iZ-93X" id="aXW-4m-35C"/>
             </connections>

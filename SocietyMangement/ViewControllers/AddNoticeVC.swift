@@ -317,7 +317,6 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
             ]
             
             print("AddNotice Parameters : ",param)
-
             
             Apicallhandler.sharedInstance.AddNotice(URL:  webservices().baseurl + API_ADD_NOTICE, param: param,token:strtoken) { JSON  in
                 switch JSON.result{

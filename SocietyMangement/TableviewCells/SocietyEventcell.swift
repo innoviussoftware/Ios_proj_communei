@@ -36,6 +36,8 @@ class SocietyEventcell: UITableViewCell {
     
     @IBOutlet weak var lblflattype: UILabel!
     
+    @IBOutlet weak var lblcolor: UILabel!
+
     @IBOutlet weak var imgview: UIImageView!
     
     

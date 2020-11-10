@@ -43,6 +43,8 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     var isfrom = 0
             
     var eventary = [SocietyEvent]()
+    
+    var eventRead = ""
 
     var arrReadMore = NSMutableArray()
     var refreshControl = UIRefreshControl()
@@ -211,8 +213,13 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         
         let id = "\(eventary[sender.tag].noticeID)"
         
-        //let stri
-        APPDELEGATE.apicallReminder(strType: "2", id: id)
+        let noticeReminder = "user/notice/" + "1/" + id + "/reminder"
+         
+         print("noticeReminder :- ",noticeReminder)
+         
+         APPDELEGATE.apicallNoticeReminder(strType: noticeReminder)
+         
+       // APPDELEGATE.apicallReminder(strType: "2", id: id)
         
         
         
@@ -256,7 +263,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         cell.btnDownloadEvent.tag = indexPath.row
         
 
-        
                
         let hight = getLabelHeight(text: eventary[indexPath.row].datumDescription!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
                
@@ -266,8 +272,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
 //                      cell.btnreadmore.isHidden = true
 //                  }
 
-        
-               
               
                 cell.lbldes.numberOfLines = 3
                 cell.lbldes.lineBreakMode = .byTruncatingTail
@@ -280,6 +284,12 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         cell.btnreadmore.addTarget(self, action:#selector(readmore(sender:)), for: .touchUpInside)
         cell.btnNotification.addTarget(self, action: #selector(sendNotification(sender:)), for: .touchUpInside)
          cell.btnDownloadEvent.addTarget(self, action: #selector(downloadaction(sender:)), for: .touchUpInside)
+        
+        if (eventary[indexPath.row].readAt) != nil {
+            cell.lblcolor.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)  // F26101 orange
+        }else{
+            cell.lblcolor.backgroundColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1.0) // #DDDDDD
+        }
         
         
         if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
@@ -410,11 +420,54 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
 
        // lblDate.text = strChangeDateFormate(strDateeee: eventary[sender.tag].createdAt!)
         txtvwDiscription.text = eventary[sender.tag].datumDescription
-    
+        
+        let id = String(format: "%d",eventary[sender.tag].noticeID)
+        
+        eventRead = "user/notice/" + "3/" + id + "/read"
+        
+        print("eventRead :- ",eventRead)
+        
+        apiCalleventRead()
+        
       //  tblview.reloadData()
         
     }
     
+    func apiCalleventRead() {
+        
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+     
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+            webservices().StartSpinner()
+         
+             
+        Apicallhandler.sharedInstance.apiCallNoticeRead(URL: webservices().baseurl + eventRead, token: token as! String) { [self] JSON in
+        
+         
+                let statusCode = JSON.response?.statusCode
+                
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if statusCode == 200{
+                      print("read")
+                    }
+                    
+                case .failure(let err):
+                    
+                    webservices().StopSpinner()
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                 print(err.asAFError!)
+                    
+                    
+                }
+            }
+    }
     
     func changeDateFormate(strDate:String) -> String {
         //"2019/10/11"
@@ -448,9 +501,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
             webservices().StartSpinner()
         
         Apicallhandler().GetAllEvents(URL: webservices().baseurl + API_GET_EVENT, token:strToken) { JSON in
-
         
-          //  Apicallhandler().GetAllEvents(URL: webservices().baseurl + API_GET_EVENT, societyid:"", BuildingID: "", token: strToken) { JSON in
                 switch JSON.result{
                 case .success(let resp):
                     self.refreshControl.endRefreshing()

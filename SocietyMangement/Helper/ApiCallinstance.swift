@@ -213,13 +213,25 @@ struct Apicallhandler {
     }
     
     //Mark : Api call get notice
-       func GetAmenitiesList(URL: String, param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AmenitiesList>) -> Void)) {
-          
-           AF.request(URL, method: .post, parameters:param ,encoding: JSONEncoding.default).responseDecodable { (response:DataResponse<AmenitiesList>) in
+       func GetAmenitiesList(URL: String, token:String , onCompletion: @escaping ((_ response: DataResponse<AmenitiesList>) -> Void)) {
+        
+          AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AmenitiesList>) in
                
                onCompletion(response)
+            
            }
        }
+    
+    
+    func GetBookingsList(URL: String, token:String , onCompletion: @escaping ((_ response: DataResponse<BookingsList>) -> Void)) {
+     
+       AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BookingsList>) in
+            
+            onCompletion(response)
+         
+        }
+    }
+    
     
     // 25/8/20.
     
@@ -477,7 +489,7 @@ struct Apicallhandler {
     }
     
     // read notice
-    func readNoticeAPI(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
+    func apiCallNoticeRead(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
        
         AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<logout>) in
          
@@ -643,6 +655,27 @@ struct Apicallhandler {
               }
               
           }
+    
+    func APINoticeReminder(URL: String,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
+            onCompletion(response)
+            
+        }
+        
+    }
+    
+    //  APINoticeReminder
+    
+  /*  func APINoticeReminder(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
+       
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<logout>) in
+         
+            onCompletion(response)
+            
+        }
+    } */
     
     
     //Mark : Api user me api

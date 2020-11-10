@@ -6,8 +6,53 @@
 //  Copyright © 1941 MacMini. All rights reserved.
 //
 
+
 import Foundation
 
+
+// MARK: - AmenitiesList
+struct AmenitiesList: Codable {
+    let data: [AmenitiesListData]?
+    let status: Int?
+    let message: String?
+}
+
+// MARK: - Datum
+struct AmenitiesListData: Codable {
+    let amenityID, societyID: Int?
+    let name, datumDescription, notes: String?
+    let amount, status: Int?
+    let likeCount, disLikeCount: Int?
+    let attachments: [Attachment]?
+
+    enum CodingKeys: String, CodingKey {
+        case amenityID = "AmenityID"
+        case societyID = "SocietyID"
+        case name = "Name"
+        case datumDescription = "Description"
+        case notes = "Notes"
+        case amount = "Amount"
+        case status = "Status"
+        case likeCount = "LikeCount"
+        case disLikeCount = "DisLikeCount"
+        case attachments = "Attachments"
+    }
+}
+
+// MARK: - Attachment
+struct Attachment: Codable {
+    let amenityID: Int?
+    let attachment: String?
+
+    enum CodingKeys: String, CodingKey {
+        case amenityID = "AmenityID"
+        case attachment = "Attachment"
+    }
+}
+
+
+
+/*
 
 // MARK: - AmenitiesList
 struct AmenitiesList: Codable {
@@ -39,3 +84,4 @@ struct AmenitiesListData: Codable {
     }
 }
 
+*/

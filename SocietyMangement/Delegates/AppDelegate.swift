@@ -515,7 +515,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
            }
 
-    
+    func apicallNoticeReminder(strType:String)
+           {
+               if(webservices().isConnectedToNetwork())
+               {
+                
+                let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                webservices().StartSpinner()
+                Apicallhandler.sharedInstance.APINoticeReminder(URL: webservices().baseurl + strType, token: token as! String) { JSON in
+
+                      print("----->Reminder Notification Response\(JSON)")
+                       let statusCode = JSON.response?.statusCode
+                       switch JSON.result{
+                       case .success(let resp):
+                           webservices().StopSpinner()
+                           if statusCode == 200{
+                           
+                            print("successfully Reminder sent")
+                            
+                            
+                           }
+                        break
+                       case .failure(let _): break
+
+                       }
+                   }
+
+               }
+               else
+               {
+                   webservices.sharedInstance.nointernetconnection()
+               }
+
+           }
     
     
     func apicallReminder(strType:String,id:String)

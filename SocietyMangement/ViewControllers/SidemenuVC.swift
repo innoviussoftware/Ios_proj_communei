@@ -244,7 +244,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                 
                                 
                                 APPDELEGATE.ApiLogout(onCompletion: { int in
-                                                           if int == 1{
+                                                         //  if int == 1{
                                                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                             
@@ -255,7 +255,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                                          
                                                 print("logout")
 
-                                                           }
+                                                     //      }
                                                        })
                                 
                               /*  let token = UserDefaults.standard.value(forKey: USER_TOKEN)

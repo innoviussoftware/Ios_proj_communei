@@ -11,7 +11,7 @@ import ScrollPager
 import SWRevealViewController
 import Alamofire
 
-class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDataSource {
+class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
     @IBOutlet weak var tblBookingHistory: UITableView!
     
     @IBOutlet weak var pager: ScrollPager!
@@ -26,6 +26,9 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     
     var arrFacilities = [AmenitiesListData]()
     var arrSearchFinal = [AmenitiesListData]()
+    
+    var arrBookings = [BookingsListData]()
+
     
     var isfrom = 1
 
@@ -66,7 +69,10 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                    self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
                }
         }
+        
         apicallGetAmenities()
+        
+       // apicallGetBookings()
         
     }
     
@@ -111,6 +117,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             
         }else{
             self.tblBookingHistory.reloadData()
+            apicallGetBookings()
             
         }
         
@@ -130,8 +137,76 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 
     }
     
+    // MARK: - get Bookings
+
+    func apicallGetBookings()
+    {
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+          }
+        
+        let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
+
+        
+            webservices().StartSpinner()
+        Apicallhandler().GetBookingsList(URL: webservices().baseurl + API_GET_BOOKINGS_LIST, token:strToken) { JSON in
+                switch JSON.result{
+                case .success(let resp):
+
+                    webservices().StopSpinner()
+                    if(resp.status == 1)
+                    {
+                        self.arrBookings = resp.data!
+                        
+                        if self.arrBookings.count > 0{
+                            self.tblBookingHistory.dataSource = self
+                            self.tblFacilities.delegate = self
+                            self.tblFacilities.reloadData()
+                            
+                        }else{
+                            
+                        }
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    print(resp)
+                case .failure(let err):
+
+                    webservices().StopSpinner()
+                    if JSON.response?.statusCode == 401{
+                        if #available(iOS 13.0, *) {
+                            APPDELEGATE.ApiLogout(onCompletion: { int in
+                                if int == 1{
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                    let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                    let navController = UINavigationController(rootViewController: aVC)
+                                    navController.isNavigationBarHidden = true
+                                    self.appDelegate.window!.rootViewController  = navController
+                                    
+                                }
+                            })
+                        } else {
+                            // Fallback on earlier versions
+                        }
+
+                        return
+                    }
+
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError)
+
+                }
+            }
+    }
     
-    // MARK: - get Notices
+    
+    // MARK: - get Amenities
 
     func apicallGetAmenities()
     {
@@ -140,15 +215,11 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                          return
           }
         
-        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        let strSociId  = (SociId as NSNumber).stringValue
-        
-        let param : Parameters = [
-            "society_id":strSociId
-        ]
+        let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
+
         
             webservices().StartSpinner()
-        Apicallhandler().GetAmenitiesList(URL: webservices().baseurl + API_GET_AMENITIES_LIST, param:param) { JSON in
+        Apicallhandler().GetAmenitiesList(URL: webservices().baseurl + API_GET_AMENITIES_LIST, token:strToken) { JSON in
                 switch JSON.result{
                 case .success(let resp):
 
@@ -215,7 +286,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             return arrFacilities.count
 
         }else{
-            return arrFacilities.count
+            return arrBookings.count
 
         }
         
@@ -228,16 +299,16 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         let cell = tableView.dequeueReusableCell(withIdentifier: "AmenitiesFacilitiesCell") as! AmenitiesFacilitiesCell
 
         
-        if arrFacilities[indexPath.row].images != nil{
+          /*  if arrFacilities[indexPath.row].attachments != nil{
            cell.imgService.sd_setImage(with: URL(string:webservices().imgurl + arrFacilities[indexPath.row].images!), placeholderImage: UIImage(named: "ic_Amenities"))
-        }
+        } */
         
         cell.selectionStyle = .none
         cell.btnViewAll.tag = indexPath.row
         
         cell.lblNameType.text = arrFacilities[indexPath.row].name
             
-        cell.lblDescription.text = arrFacilities[indexPath.row].description
+        cell.lblDescription.text = arrFacilities[indexPath.row].datumDescription
 
         cell.btnViewAll.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
         
@@ -245,9 +316,18 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
          }else{
              let cell = tableView.dequeueReusableCell(withIdentifier: "AmenitiesPasstBookingCell") as! AmenitiesPasstBookingCell
             
+            cell.lblNameType.text = arrBookings[indexPath.row].amenityName
+                
+            cell.lblStatus.text = arrBookings[indexPath.row].bookingStatusName
             
+            cell.lblDateTimeBooked.text = "\("Create on:" + arrBookings[indexPath.row].createdAt!)"
             
+            cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
+
+          //  cell.btnCancel.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
             
+          //  cell.btnEdit.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
+
             
             return cell
         }
@@ -273,9 +353,85 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 //    }
     
     
+    //MARK:- textfield delegate
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        //searchActive = true
+        arrFacilities  = arrSearchFinal
+        self.tblFacilities.reloadData()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        //searchActive = false
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        arrFacilities  = arrSearchFinal
+        self.tblFacilities.reloadData()
+        return true
+    }
+    
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+               
+        if(string != "")
+               {
+                   
+                   arrFacilities.removeAll()
+                   
+                   for dic in arrSearchFinal
+                   {
+                       var profession = ""
+                       if(dic.name?.lowercased() != nil)
+                       {
+                           profession = (dic.name?.lowercased())!
+                       }
+                    if((dic.name?.lowercased().contains(string.lowercased()))! || (profession.contains(string.lowercased())))
+                       {
+                           
+                           arrFacilities.append(dic)
+                           
+                           
+                       }
+                       if (arrFacilities.count == 0){
+                           // searchActive = false
+                           
+                           //lblnoproperty.isHidden = false
+                           //lblnoproperty.text  = "No Members Found for \(searchText)"
+                       }
+                       else{
+                           //searchActive = true
+                           
+                           //lblnoproperty.isHidden = true
+                           
+                       }
+                       self.tblFacilities.reloadData()
+                       
+                   }
+                   
+               }
+               else
+               {
+                  // searchActive = false
+                   tblFacilities.reloadData()
+                   
+              //  textField.resignFirstResponder()
+                   
+                   
+                   
+               }
+               
+               
+               return true
+               
+               
+           
+    }
+    
     //MARK:- searchView delegate
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+   /* func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
        
         //searchActive = true
         arrFacilities  = arrSearchFinal
@@ -286,6 +442,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         //searchActive = false
     }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
         arrFacilities  = arrSearchFinal
@@ -293,12 +450,12 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         searchBar.resignFirstResponder()
         
     }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         searchBar.resignFirstResponder()
         
     }
-    
     
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -355,7 +512,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
            
            
            
-       }
+       }  */
 
     
     

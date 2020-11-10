@@ -211,4 +211,6 @@ let API_GET_POLL_LIST = "user/pollslist"
 let API_POLL_DETAIL = "user/pollsresult"
 
 
-let API_GET_AMENITIES_LIST = "amenties"
+let API_GET_AMENITIES_LIST = "society/amenities"  //"amenties"
+
+let API_GET_BOOKINGS_LIST = "user/amenity/bookings"  

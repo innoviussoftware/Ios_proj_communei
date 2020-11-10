@@ -1023,7 +1023,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             }
          else {
         
-            let collectionViewWidth = self.view.bounds.width
+            let collectionViewWidth = self.view.bounds.width - 10
                 
             return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2 + 2)
             

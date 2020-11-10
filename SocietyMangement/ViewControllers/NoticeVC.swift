@@ -43,6 +43,8 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
     var eventary = [Event]()
     var circularary = [Circular]()
     
+    var noticeRead = ""
+    
 //  var noticeary = [Notice]()  // 3/11/20. temp comment
 //  var noticearytype = NSMutableArray()
     
@@ -254,8 +256,14 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
     
     @objc  func sendNotification(sender:UIButton) {
         let strId = "\(noticeary[sender.tag].noticeID)"
-
-        APPDELEGATE.apicallReminder(strType: "1", id: strId)
+        
+       let noticeReminder = "user/notice/" + "1/" + strId + "/reminder"
+        
+        print("noticeReminder :- ",noticeReminder)
+        
+        APPDELEGATE.apicallNoticeReminder(strType: noticeReminder)
+        
+        // /user/notice/1/134/reminder
         
     }
     
@@ -445,9 +453,17 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
         lblDate.text = strChangeDateFormate(strDateeee: noticeary[sender.tag].creationDate)
         txtvwDiscription.text = noticeary[sender.tag].datumDescription
         
+        let id = String(format: "%d",noticeary[sender.tag].noticeID)
+         
+        noticeRead = "user/notice/" + "1/" + id + "/read"
+        
+        print("noticeRead :- ",noticeRead)
+        
+        apiCallNoticeRead()
+        
         /*
          // user/notice/1/157/read
-
+         
          //todo:: update read count
             /*Todo::: type 1=notice 2=Circulars  3=Events  4=poll*/
             @GET("user/notice/{type}/{id}/read")
@@ -458,7 +474,40 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
     }
     
     func apiCallNoticeRead() {
-        <#function body#>
+        
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+     
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+            webservices().StartSpinner()
+         
+             
+         Apicallhandler.sharedInstance.apiCallNoticeRead(URL: webservices().baseurl + noticeRead, token: token as! String) { JSON in
+        
+         
+                let statusCode = JSON.response?.statusCode
+                
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if statusCode == 200{
+                      print("read")
+                    }
+                    
+                case .failure(let err):
+                    
+                    webservices().StopSpinner()
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                 print(err.asAFError!)
+                    
+                    
+                }
+            }
+        
     }
     
     func strChangeDateFormate(strDateeee:String) -> String {

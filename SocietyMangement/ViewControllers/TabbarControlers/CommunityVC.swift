@@ -355,40 +355,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
             
             if(collectionView == collectionmenu)
             {
-              //  let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
-              /*  if(str.contains("Secretory") || str.contains("Chairman")){
-                    if indexPath.item == 0{//Buildings
-                        
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "BuildingsVC") as! BuildingsVC
-                        vc.isFrom = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }else if indexPath.item == 1{ //Member
-                        
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MembersVC") as! MembersVC
-                        vc.isFromDash = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }else if indexPath.item == 2{//Notice
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC
-                        vc.isFrormDashboard = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }else if indexPath.item == 3{//Events
-                        
-                       // APPDELEGATE.api
-                        
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SocietyEventsVC") as! SocietyEventsVC
-                        vc.isfrom = 0
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }else{//Circular
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CircularVC") as! CircularVC
-                        vc.isfrom = 0
-                        self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }
-                }else{ */
+              
                     if indexPath.item == 0{ //Member
                         
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MembersVC") as! MembersVC
@@ -430,7 +397,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                         vc.isfrom = 1
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
-               // }
+               
                 
             }
             
@@ -446,7 +413,7 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
            return CGSize(width: size, height: size) */
         
         
-            let collectionViewWidth = self.view.bounds.width
+            let collectionViewWidth = self.view.bounds.width - 10
             return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2
                        + 2)
         

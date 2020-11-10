@@ -48,6 +48,8 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     var lblnoproperty = UILabel()
     var Circularary = [Circular]()
     
+    var noticeRead = ""
+    
     var arrReadMore = NSMutableArray()
     
     var refreshControl = UIRefreshControl()
@@ -207,8 +209,16 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     }
     
     @objc  func sendNotification(sender:UIButton) {
-        let strId = "\(Circularary[sender.tag].noticeID)"
-        APPDELEGATE.apicallReminder(strType: "3", id: strId)
+        
+        let id = String.getString(Circularary[sender.tag].noticeID)
+        
+        let noticeReminder = "user/notice/" + "3/" + id + "/reminder"
+         
+         print("noticeReminder :- ",noticeReminder)
+         
+         APPDELEGATE.apicallNoticeReminder(strType: noticeReminder)
+        
+       // APPDELEGATE.apicallReminder(strType: "3", id: strId)
         
     }
     
@@ -248,11 +258,11 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
      
         let hight = getLabelHeight(text: Circularary[indexPath.row].datumDescription!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
         
-           if hight >  34{
-               cell.btnReadMore.isHidden = false
-           }else{
-               cell.btnReadMore.isHidden = true
-           }
+         //  if hight >  34{
+              cell.btnReadMore.isHidden = false
+         //  }else{
+         //      cell.btnReadMore.isHidden = true
+         //  }
 
         
        /* if arrReadMore.contains(Circularary[indexPath.row].id){
@@ -293,6 +303,13 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
         
         cell.btnDownload.tag = indexPath.row
         cell.btnDownload.addTarget(self, action:#selector(downloadaction), for: .touchUpInside)
+        
+        if (Circularary[indexPath.row].readAt) != nil {
+            cell.lblcolor.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)  // F26101 orange
+        }else{
+            cell.lblcolor.backgroundColor = UIColor(red: 221/255, green: 221/255, blue: 221/255, alpha: 1.0) // #DDDDDD
+        }
+        
         if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
         {
             let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
@@ -454,9 +471,55 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
 
         txtvwDiscription.text = Circularary[sender.tag].datumDescription
         
+        let id = String.getString(Circularary[sender.tag].noticeID)
+
+        noticeRead = "user/notice/" + "2/" + id + "/read"
+        
+        print("circularRead :- ",noticeRead)
+        
+        apiCallNoticeRead()
+        
        // tblcircular.reloadData()
       
     }
+    
+    func apiCallNoticeRead() {
+        
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+     
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+            webservices().StartSpinner()
+         
+             
+         Apicallhandler.sharedInstance.apiCallNoticeRead(URL: webservices().baseurl + noticeRead, token: token as! String) { JSON in
+        
+         
+                let statusCode = JSON.response?.statusCode
+                
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if statusCode == 200{
+                      print("read")
+                    }
+                    
+                case .failure(let err):
+                    
+                    webservices().StopSpinner()
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                 print(err.asAFError!)
+                    
+                    
+                }
+            }
+        
+    }
+    
     
     @IBAction func btnclosePressed(_ sender: Any) {
              vwReadMore.isHidden = true

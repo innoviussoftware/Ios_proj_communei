@@ -478,7 +478,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         
         // 31/10/20 TEMP COMMENT
         
-              // apicallGetBuildings()
+        apicallGetBuildings(id: buildingid!)
                 
                 ApiCallGetProfession()
 
@@ -1464,7 +1464,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     }
     // MARK: - get GetBuildings
     
-    func apicallGetBuildings()
+    func apicallGetBuildings(id: Int)
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -1991,7 +1991,7 @@ extension MembersDetailsVC : UISearchBarDelegate
             tblMembers.reloadData()
           //  hightcollectionbuilding.constant = 60
             
-            apicallGetBuildings()
+            apicallGetBuildings(id: buildingid!)
           //  self.collectionbuildings.isHidden = false
           //  self.collectionbuildings.reloadData()
 
