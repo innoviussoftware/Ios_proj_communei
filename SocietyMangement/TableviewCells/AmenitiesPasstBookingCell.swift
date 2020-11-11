@@ -29,7 +29,8 @@ class AmenitiesPasstBookingCell: UITableViewCell {
         bgView.layer.cornerRadius = 12
         bgView.clipsToBounds = true
         
-        
+        lblStatus.layer.cornerRadius = 8.0
+        lblStatus.clipsToBounds = true
         
     }
 

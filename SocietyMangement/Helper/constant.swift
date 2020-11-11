@@ -214,3 +214,5 @@ let API_POLL_DETAIL = "user/pollsresult"
 let API_GET_AMENITIES_LIST = "society/amenities"  //"amenties"
 
 let API_GET_BOOKINGS_LIST = "user/amenity/bookings"  
+
+let API_DELETE_BOOKING_ENTRY = "user/amenity/bookings/delete"

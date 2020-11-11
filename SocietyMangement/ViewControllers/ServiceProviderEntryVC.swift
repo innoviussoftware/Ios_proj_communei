@@ -100,6 +100,9 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                    ("Single", ViewSingle),
                    ("Multiple", ViewMultiple)
                ])
+        
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
+
                       
                if(isfrom == "") {
                    pager.setSelectedIndex(index: 0, animated: true)

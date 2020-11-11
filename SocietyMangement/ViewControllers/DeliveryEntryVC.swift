@@ -98,6 +98,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             ("Multiple", ViewMultiple)
         ])
         
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
+
         if(isfrom == "")
         {
             pager.setSelectedIndex(index: 0, animated: true)

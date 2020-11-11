@@ -15,6 +15,11 @@ class SidemenuCell: UITableViewCell {
     
     @IBOutlet weak var lblcontact: UILabel!
     
+    @IBOutlet weak var lblTC: UILabel!
+
+    @IBOutlet weak var lblPrivacyPolicy: UILabel!
+
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

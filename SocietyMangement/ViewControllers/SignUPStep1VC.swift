@@ -37,7 +37,7 @@ class SignUPStep1VC: BaseVC {
     var strmobile = ""
     @IBAction func actionTC(_ sender: Any) {
         
-        let pdffile = "http://societybuddy.in/privacy-policy"
+        let pdffile = "https://communei.com/privacy-policy/"
         guard let url = URL(string:pdffile) else {
             return //be safe
         }

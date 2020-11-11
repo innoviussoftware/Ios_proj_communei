@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -24,7 +24,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zbl-sG-cQp">
                         <rect key="frame" x="16" y="8" width="288" height="100"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5d5bb1a45381b" translatesAutoresizingMaskIntoConstraints="NO" id="T2z-6J-A05" customClass="RSImageViewCustomisation" customModule="Communei" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_Amenities" translatesAutoresizingMaskIntoConstraints="NO" id="T2z-6J-A05" customClass="RSImageViewCustomisation" customModule="Communei" customModuleProvider="target">
                                 <rect key="frame" x="12" y="5" width="90" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="T2z-6J-A05" secondAttribute="height" multiplier="1:1" id="mzs-Ly-Xnl"/>
@@ -105,13 +105,13 @@
     </objects>
     <designables>
         <designable name="7O9-C5-px0">
-            <size key="intrinsicContentSize" width="78" height="29"/>
+            <size key="intrinsicContentSize" width="87" height="27"/>
         </designable>
         <designable name="T2z-6J-A05">
-            <size key="intrinsicContentSize" width="78" height="78"/>
+            <size key="intrinsicContentSize" width="20" height="20"/>
         </designable>
     </designables>
     <resources>
-        <image name="5d5bb1a45381b" width="78" height="78"/>
+        <image name="ic_Amenities" width="20" height="20"/>
     </resources>
 </document>

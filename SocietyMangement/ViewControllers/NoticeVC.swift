@@ -113,6 +113,15 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
            btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
         }
         
+        viewnoresult.center = self.view.center
+        self.view.addSubview(viewnoresult)
+        viewnoresult.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        viewnoresult.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        
+        viewnoresult.heightAnchor.constraint(equalToConstant: 198).isActive = true
+        
+        viewnoresult.isHidden  = true
+        
         
         if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
         {
@@ -127,7 +136,7 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
 
             }
             else{ // resident
-                self.toptblConstraint.constant = -60
+              //  self.toptblConstraint.constant = -60
                 vwbtnadd.isHidden = true
 
                 btnadd.isHidden = true
@@ -135,14 +144,7 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
             }
         }
         
-        viewnoresult.center = self.view.center
-        self.view.addSubview(viewnoresult)
-        viewnoresult.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        viewnoresult.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         
-        viewnoresult.heightAnchor.constraint(equalToConstant: 198).isActive = true
-        
-        viewnoresult.isHidden  = true
         //        if(revealViewController() != nil)
         //        {
         //            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
@@ -365,11 +367,16 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
             // if(str.contains("Chairman") || str.contains("Secretory"))
             if(str.contains("society_admin"))
             {
+                self.toptblConstraint.constant = 0
+
                 cell?.btnEdit.isHidden = false
                 cell?.btnDelete.isHidden = false
                 cell!.btnNotification.isHidden = false
             }
             else{
+                
+                self.toptblConstraint.constant = -60
+
                 cell?.btnEdit.isHidden = true
                 cell?.btnDelete.isHidden = true
                 cell!.btnNotification.isHidden = true
@@ -560,7 +567,10 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
                         self.lblnoproperty.isHidden = true
                         self.tblview.isHidden = false
                         self.tblview.reloadData()
-                        if(resp.data == nil)
+                      //  if(resp.data == nil)
+                        
+                        if(resp.data!.count == 0)
+
                                               {
                                                   self.tblview.isHidden = true
                                                   self.viewnoresult.isHidden = false
@@ -575,7 +585,10 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
                     }
                     else
                     {
-                        if(resp.data == nil)
+                        //if(resp.data == nil)
+                        
+                        if(resp.data!.count == 0)
+
                         {
                             self.tblview.isHidden = true
                             self.viewnoresult.isHidden = false

@@ -352,6 +352,7 @@ class SignUPVC: UIViewController,  UITableViewDelegate , UITableViewDataSource ,
         checkbox(cb: cbrenter)
         checkbox(cb: cbother)
         checkbox(cb: cbagree)
+        
         let tap = UITapGestureRecognizer()
         tap.addTarget(self, action: #selector(tapline1))
         

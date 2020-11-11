@@ -387,7 +387,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             
         setView(view: filtrview, hidden: true)
 
-        apicallGetAllMembers()
+        apicallGetAllMembers(id: buildingid!)
         self.searchActive = true
         
      
@@ -471,14 +471,13 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                 btnFilter.isSelected = false
                 
                 // 22/8/20.
-        
                 
         
-                apicallGetAllMembers()
+                apicallGetAllMembers(id: buildingid!)
         
         // 31/10/20 TEMP COMMENT
         
-        apicallGetBuildings(id: buildingid!)
+        apicallGetBuildings()
                 
                 ApiCallGetProfession()
 
@@ -1464,7 +1463,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     }
     // MARK: - get GetBuildings
     
-    func apicallGetBuildings(id: Int)
+    func apicallGetBuildings()
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -1668,7 +1667,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         
     }
     
-    func apicallGetAllMembers()
+    func apicallGetAllMembers(id : Int)
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -1991,7 +1990,7 @@ extension MembersDetailsVC : UISearchBarDelegate
             tblMembers.reloadData()
           //  hightcollectionbuilding.constant = 60
             
-            apicallGetBuildings(id: buildingid!)
+            apicallGetBuildings()
           //  self.collectionbuildings.isHidden = false
           //  self.collectionbuildings.reloadData()
 

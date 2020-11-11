@@ -475,7 +475,18 @@ struct Apicallhandler {
 
        }
     
+    //Mark : Api Delete booking Entry
     
+       func ApiDeletebookingEntry(URL: String, token:String,booking_id:Int, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+           
+           let parameter:Parameters = ["AmenitiesBookingID":booking_id]
+           AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+               
+               onCompletion(response)
+           }
+           
+
+       }
     
     //Mark : Api call get Login
     

@@ -32,6 +32,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     
     var isfrom = 1
 
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,8 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         pager.tintColor  = AppColor.appcolor
         pager.addSegmentsWithTitlesAndViews(segments: [
                    ("Facilities", ViewFacilities),("Booking History", viewBookingHistory)])
+        
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
         
         tblFacilities.register(UINib(nibName: "AmenitiesFacilitiesCell", bundle: nil), forCellReuseIdentifier: "AmenitiesFacilitiesCell")
         
@@ -72,7 +75,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         
         apicallGetAmenities()
         
-       // apicallGetBookings()
         
     }
     
@@ -113,27 +115,19 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         
         if changedIndex == 0{//facilities
           apicallGetAmenities()
-            
-            
         }else{
-            self.tblBookingHistory.reloadData()
             apicallGetBookings()
-            
         }
+        
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
+
         
     }
     
-    @objc func actionViewDetailFacilities(sender:UIButton)
-    {
-        print("actionViewDetailFacilities")
-        
+    @objc func actionViewDetailFacilities(sender:UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
-        //vc = arrFacilities
+        //vc. = arrFacilities
         self.navigationController?.pushViewController(vc, animated: true)
-
-       // self.present(vc, animated: true, completion: nil)
-        
-      //  self.dialNumber(number:self.arrHelperList[sender.tag].mobile!)
 
     }
     
@@ -161,45 +155,27 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                         
                         if self.arrBookings.count > 0{
                             self.tblBookingHistory.dataSource = self
-                            self.tblFacilities.delegate = self
-                            self.tblFacilities.reloadData()
+                            self.tblBookingHistory.delegate = self
+                            self.tblBookingHistory.reloadData()
                             
                         }else{
-                            
+                            self.tblBookingHistory.isHidden = true
                         }
 
                     }
                     else
                     {
-
+                        self.tblBookingHistory.isHidden = true
                     }
 
                     print(resp)
                 case .failure(let err):
 
                     webservices().StopSpinner()
-                    if JSON.response?.statusCode == 401{
-                        if #available(iOS 13.0, *) {
-                            APPDELEGATE.ApiLogout(onCompletion: { int in
-                                if int == 1{
-                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                                    let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
-                                    let navController = UINavigationController(rootViewController: aVC)
-                                    navController.isNavigationBarHidden = true
-                                    self.appDelegate.window!.rootViewController  = navController
-                                    
-                                }
-                            })
-                        } else {
-                            // Fallback on earlier versions
-                        }
 
-                        return
-                    }
-
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
 
                 }
             }
@@ -275,10 +251,62 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             }
     }
     
+    @objc func DeleteBookingEntry(sender:UIButton) {
+        let strGuestId = arrBookings[sender.tag].amenitiesBookingID
+
+           let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+           avc?.titleStr = "Delete Booking"
+           avc?.subtitleStr = "Are you sure you want to delete this Booking?"
+           avc?.yesAct = {
+           
+               self.ApiCallDeleteBookingEntry(booking_id: strGuestId!)
+           }
+           avc?.noAct = {
+             
+           }
+           present(avc!, animated: true)
+        
+    }
+    
+    func ApiCallDeleteBookingEntry(booking_id : Int)
+    {
+       // let strGuestId = (guestId as NSNumber).stringValue
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+          if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            webservices().StartSpinner()
+        Apicallhandler().ApiDeletebookingEntry(URL: webservices().baseurl + API_DELETE_BOOKING_ENTRY, token: token as! String, booking_id: booking_id) { JSON in
+                switch JSON.result{
+                case .success(let resp):
+                    
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        self.apicallGetBookings()
+                    }
+                    else
+                    {
+                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"")
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                    
+                    webservices().StopSpinner()
+
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+            }
+    }
+    
     
     
     //MARK:- tableview delegate
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -289,8 +317,8 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             return arrBookings.count
 
         }
-        
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -316,6 +344,10 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
          }else{
              let cell = tableView.dequeueReusableCell(withIdentifier: "AmenitiesPasstBookingCell") as! AmenitiesPasstBookingCell
             
+            cell.btnCancel.tag = indexPath.row
+            
+            cell.btnEdit.tag = indexPath.row
+            
             cell.lblNameType.text = arrBookings[indexPath.row].amenityName
                 
             cell.lblStatus.text = arrBookings[indexPath.row].bookingStatusName
@@ -323,10 +355,11 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             cell.lblDateTimeBooked.text = "\("Create on:" + arrBookings[indexPath.row].createdAt!)"
             
             cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
-
-          //  cell.btnCancel.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
             
-          //  cell.btnEdit.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
+
+            cell.btnCancel.addTarget(self, action: #selector(DeleteBookingEntry(sender:)), for: .touchUpInside)
+            
+            cell.btnEdit.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
 
             
             return cell

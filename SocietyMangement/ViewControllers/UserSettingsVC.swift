@@ -140,7 +140,9 @@ class UserSettingsVC: BaseVC {
     @IBOutlet weak var viewDelivery: UIView!
     @IBOutlet weak var viewRemoveActivate: UIView!
 
-    
+    @IBOutlet weak var lblTC: UILabel!
+
+    @IBOutlet weak var lblPrivacyPolicy: UILabel!
 
     @IBOutlet weak var lblDNDStaic: UIButton!
 
@@ -294,7 +296,47 @@ class UserSettingsVC: BaseVC {
         } */
         
         
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(taplblTC))
+        
+        lblTC.addGestureRecognizer(tap)
+        
+        let tap1 = UITapGestureRecognizer()
+        tap1.addTarget(self, action: #selector(taplblPP))
+        
+        lblPrivacyPolicy.addGestureRecognizer(tap1)
+
+        
     }
+    
+    @objc func taplblTC(sender: UITapGestureRecognizer)
+    {
+        let pdffile = "https://communei.com/terms-and-conditions/"
+        guard let url = URL(string:pdffile) else {
+            return //be safe
+        }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
+    @objc func taplblPP(sender: UITapGestureRecognizer)
+    {
+        let pdffile = "https://communei.com/privacy-policy/"
+        guard let url = URL(string:pdffile) else {
+            return //be safe
+        }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
 
@@ -386,6 +428,8 @@ class UserSettingsVC: BaseVC {
         cb.checkmarkColor = AppColor.appcolor
         
     }
+    
+    
     
     @IBAction func actionNotification(_ sender: Any) {
           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC

@@ -55,6 +55,34 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                 tblview.reloadData()
     }
     
+    @objc func taplblTC(sender: UITapGestureRecognizer)
+    {
+        let pdffile = "https://communei.com/terms-and-conditions/"
+        guard let url = URL(string:pdffile) else {
+            return //be safe
+        }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
+    @objc func taplblPP(sender: UITapGestureRecognizer)
+    {
+        let pdffile = "https://communei.com/privacy-policy/"
+        guard let url = URL(string:pdffile) else {
+            return //be safe
+        }
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(url)
+        }
+    }
+    
     // MARK: - Tableview delegate and datasource methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,6 +106,20 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                     cell.backgroundColor = UIColor.white
                             
                 }
+        }
+        
+        if(indexPath.row == 11)
+        {
+            let tap = UITapGestureRecognizer()
+            tap.addTarget(self, action: #selector(taplblTC))
+            
+            cell.lblTC.addGestureRecognizer(tap)
+            
+            let tap1 = UITapGestureRecognizer()
+            tap1.addTarget(self, action: #selector(taplblPP))
+            
+            cell.lblPrivacyPolicy.addGestureRecognizer(tap1)
+
         }
         
         if(indexPath.row == 0 || indexPath.row == 10)
@@ -104,6 +146,23 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         
         selectedindex = indexPath.row
         tableView.reloadData()
+        
+        if(indexPath.row == 11)
+        {
+            let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:cells[indexPath.row], for: indexPath) as! SidemenuCell
+
+            let tap = UITapGestureRecognizer()
+            tap.addTarget(self, action: #selector(taplblTC))
+            
+            cell.lblTC.addGestureRecognizer(tap)
+            
+            let tap1 = UITapGestureRecognizer()
+            tap1.addTarget(self, action: #selector(taplblPP))
+            
+            cell.lblPrivacyPolicy.addGestureRecognizer(tap1)
+
+        }
+        
         
         if(indexPath.row == 1) {
             

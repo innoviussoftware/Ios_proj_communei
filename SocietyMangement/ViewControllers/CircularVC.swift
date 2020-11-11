@@ -95,6 +95,14 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
             btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
         }
         
+        viewnoresult.center = self.view.center
+        self.view.addSubview(viewnoresult)
+        viewnoresult.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        viewnoresult.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        
+        viewnoresult.heightAnchor.constraint(equalToConstant: 198).isActive = true
+        
+        viewnoresult.isHidden  = true
         
         if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
         {
@@ -109,7 +117,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
 
             }
             else{
-                self.toptblConstraint.constant = -60
+              //  self.toptblConstraint.constant = -60
 
                 vwbtnadd.isHidden = true
                 btnadd.isHidden = true //Manish
@@ -117,14 +125,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
             }
         }
         
-        viewnoresult.center = self.view.center
-        self.view.addSubview(viewnoresult)
-        viewnoresult.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        viewnoresult.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        
-        viewnoresult.heightAnchor.constraint(equalToConstant: 198).isActive = true
-        
-        viewnoresult.isHidden  = true
+       
         
 //        if(revealViewController() != nil)
 //        {
@@ -251,6 +252,8 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
         
         cell.lblTitel.text = Circularary[indexPath.row].title
         cell.lblDate.text = strChangeDateFormate(strDateeee: Circularary[indexPath.row].creationDate!)
+        
+
         
         // 4/9/20.
       //  let str = Circularary[indexPath.row].name

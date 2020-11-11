@@ -76,7 +76,9 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Daily", viewDaily),("On Demand", ViewOnDemand)
         ])
-            
+        
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
+
         if(isfromStr == ""){  // Daily
             pager.setSelectedIndex(index: 0, animated: true)
             pager.frame = CGRect(x: 0, y: 59, width: view.frame.size.width, height: 60)

@@ -33,6 +33,10 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         showTimepPicker()
         
         setUpView()
+        
+        txtStartTime.leftViewMode = .always
+        txtEndTime.leftViewMode = .always
+
     }
     
     @IBAction func backaction(_ sender: Any) {

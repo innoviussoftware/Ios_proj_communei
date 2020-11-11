@@ -484,16 +484,16 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             print("unable to fetch contacts")
         }        
         
-        
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Contact", ViewContact),
             ("Recent", Viewrecent),
             ("Manual",viewmanual)
         ])
         
+        pager.font = UIFont(name: "GothamMedium", size: 16)!
+
         if(isfrom == "")
         {
-            
             pager.setSelectedIndex(index: 0, animated: true)
         }
         if(isfrom == "conatct")

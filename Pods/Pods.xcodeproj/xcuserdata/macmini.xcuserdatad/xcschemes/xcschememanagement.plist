@@ -14,12 +14,12 @@
 		<key>FSCalendar.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>41</integer>
+			<integer>30</integer>
 		</dict>
 		<key>FSPagerView.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>30</integer>
+			<integer>40</integer>
 		</dict>
 		<key>Firebase.xcscheme</key>
 		<dict>
@@ -80,7 +80,7 @@
 		<key>FloatRatingView.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>38</integer>
+			<integer>36</integer>
 		</dict>
 		<key>GoogleAppMeasurement.xcscheme</key>
 		<dict>
@@ -113,7 +113,7 @@
 		<key>IHProgressHUD.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>31</integer>
+			<integer>39</integer>
 		</dict>
 		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
@@ -125,12 +125,12 @@
 		<key>JSQMessagesViewController.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>26</integer>
+			<integer>35</integer>
 		</dict>
 		<key>JSQSystemSoundPlayer.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>33</integer>
+			<integer>28</integer>
 		</dict>
 		<key>PKHUD-PKHUDResources.xcscheme</key>
 		<dict>
@@ -205,52 +205,52 @@
 		<key>SwiftHEXColors.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>32</integer>
+			<integer>37</integer>
 		</dict>
 		<key>SwiftSVG.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>40</integer>
+			<integer>38</integer>
 		</dict>
 		<key>ZDCChat.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>39</integer>
+			<integer>31</integer>
 		</dict>
 		<key>ZendeskCommonUISDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>34</integer>
+			<integer>26</integer>
 		</dict>
 		<key>ZendeskCoreSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>28</integer>
+			<integer>34</integer>
 		</dict>
 		<key>ZendeskMessagingAPISDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>27</integer>
+			<integer>32</integer>
 		</dict>
 		<key>ZendeskMessagingSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>35</integer>
+			<integer>41</integer>
 		</dict>
 		<key>ZendeskSDKConfigurationsSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>37</integer>
+			<integer>27</integer>
 		</dict>
 		<key>ZendeskSupportProvidersSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>29</integer>
+			<integer>33</integer>
 		</dict>
 		<key>ZendeskSupportSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>36</integer>
+			<integer>29</integer>
 		</dict>
 		<key>nanopb.xcscheme</key>
 		<dict>

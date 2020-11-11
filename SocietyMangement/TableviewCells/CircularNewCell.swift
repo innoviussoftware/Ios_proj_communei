@@ -22,6 +22,9 @@ class CircularNewCell: UITableViewCell {
     @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblTitel: UILabel!
     @IBOutlet weak var bgView: UIView!
+    
+    @IBOutlet weak var imgvw: UIImageView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
