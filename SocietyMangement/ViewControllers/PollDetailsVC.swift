@@ -9,7 +9,18 @@
 import UIKit
 import Alamofire
 
-class PollDetailsVC: BaseVC {
+class PollListDetailsCell: UITableViewCell {
+    
+    @IBOutlet weak var lblOptionText: UILabel!
+    @IBOutlet weak var lblVotes: UILabel!
+    
+    @IBOutlet weak var bgView: UIView!
+
+}
+
+
+class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
+    
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var ViewBg: UIView!
     @IBOutlet weak var lblDemo: UILabel!
@@ -17,7 +28,10 @@ class PollDetailsVC: BaseVC {
     
     @IBOutlet weak var lblExpireDate: UILabel!
     
-    var arrPollData : PollListResponseData!
+   var arrPollData : PollListResponseData?
+    
+  //  var arrPollData = [PollListResponseData]()
+
     var selectedIndex : Int! = -5
     var arrPollDetail = NSMutableArray()
     var selectedtType = ""
@@ -72,20 +86,23 @@ class PollDetailsVC: BaseVC {
     
     func setData() {
         
-        lblDemo.text = arrPollData.question
+        // 12/11/20. temp comment
         
-        if arrPollData.expiresOn != nil{
+       
+        lblDemo.text = arrPollData?.title
+        
+        if arrPollData?.visibleTill != nil{
             lblExpireDate.isHidden = false
             let date = NSDate()
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strdate = dateFormatterGet.string(from: date as Date)
             
-            let strOURDate = dateFormateChangeNEW(str: arrPollData.expiresOn!)
+            let strOURDate = dateFormateChangeNEW(str: (arrPollData?.visibleTill!)!)
             
             if strdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let TodayDate = dateFormatterGet.date(from: arrPollData.expiresOn!)
+                let TodayDate = dateFormatterGet.date(from: (arrPollData?.visibleTill!)!)
                 dateFormatterGet.dateFormat = "HH:mm a"
                 if TodayDate != nil{
                     let strDtae = dateFormatterGet.string(from: TodayDate!)
@@ -93,15 +110,22 @@ class PollDetailsVC: BaseVC {
                 }
                
             }else{
-                lblExpireDate.text = "Expire On: \(dateFormateChange(str: arrPollData.expiresOn!))"
+                lblExpireDate.text = "Expire On: \(dateFormateChange(str: (arrPollData?.visibleTill!)!))"
             }
             
         }else{
             lblExpireDate.isHidden = true
         }
         
+        if (arrPollData != nil) {
+            tblView.delegate = self
+            tblView.dataSource = self
+            tblView.reloadData()
+        }else{
+            tblView.isHidden = true
+        }
         
-        
+        /*
         
         viewAns1.layer.cornerRadius = 8
         viewAns1.clipsToBounds = true
@@ -113,8 +137,8 @@ class PollDetailsVC: BaseVC {
         viewAns4.clipsToBounds = true
         
         
-        let userId = (UserDefaults.standard.value(forKey: USER_ID) as! NSNumber).stringValue
         
+        let userId = (UserDefaults.standard.value(forKey: USER_ID) as! NSNumber).stringValue
         
         if arrPollData.a1Userid != nil {
             let strID = arrPollData.a1Userid
@@ -124,7 +148,7 @@ class PollDetailsVC: BaseVC {
                    }
         }
        
-        if arrPollData.a2Userid != nil {
+        if arrPollData.pollOptions. != nil {
         let strID2 = arrPollData.a2Userid
         let arrID2 = strID2?.components(separatedBy: ",")
         if  (arrID2?.contains(userId))!{
@@ -181,6 +205,7 @@ class PollDetailsVC: BaseVC {
         lblAnsPer3.text = String(format: "%d %%",arrPollData.percentage3!)
         lblAnsPer4.text = String(format: "%d %%",arrPollData.percentage4!)
         
+        */
         
         //
         //
@@ -453,7 +478,7 @@ class PollDetailsVC: BaseVC {
         
         
         let param:Parameters = [
-            "id":(arrPollData.id! as NSNumber).stringValue,
+            "id":((arrPollData?.noticeID!)! as NSNumber).stringValue,
             "options":strOption,
             "type":strType,
         ]
@@ -520,7 +545,7 @@ class PollDetailsVC: BaseVC {
         
         
         let param:Parameters = [
-            "id":(arrPollData.id! as NSNumber).stringValue,
+            "id":((arrPollData?.noticeID!)! as NSNumber).stringValue,
             "options":strOption,
             "type":strType,
         ]
@@ -571,15 +596,53 @@ class PollDetailsVC: BaseVC {
                 
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
             }
         }
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
+        
+        
+        if selectedIndex == indexPath.row{
+            cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+            cell.bgView.layer.borderWidth = 3.0
+        }else{
+            cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+            cell.bgView.layer.borderWidth = 1.0
+        }
+        
+        cell.lblOptionText.text = arrPollData?.pollOptions?[indexPath.row].optionText
+        
+        
+        let lblVote = String(format: "%d",(arrPollData?.pollOptions?[indexPath.row].votes)! as Int)
+        
+        cell.lblVotes.text = lblVote
+        
+        return cell
     
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+        selectedIndex = indexPath.row
+        
+        tblView.reloadData()
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50  // UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
 }
 
 

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Gotham Medium Regular.ttf">
+            <string>GothamMedium</string>
+        </array>
         <array key="Gotham-Light.otf">
             <string>Gotham-Light</string>
-        </array>
-        <array key="Lato-Semibold.ttf">
-            <string>Lato-Semibold</string>
         </array>
     </customFonts>
     <objects>
@@ -33,8 +34,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="J2x-Q1-c7E"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Semibold" family="Lato" pointSize="16"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="18"/>
+                                <color key="textColor" red="0.10196078431372549" green="0.21176470588235294" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8B7-WO-vsC">
@@ -65,7 +66,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Eu4-Dz-owA" firstAttribute="top" secondItem="ZVR-85-dhU" secondAttribute="top" constant="12" id="0U2-MM-BGb"/>
                             <constraint firstItem="Ffq-zb-xg4" firstAttribute="top" secondItem="8B7-WO-vsC" secondAttribute="bottom" constant="2" id="1dZ-A4-SdV"/>
@@ -83,7 +84,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.92549019607843142" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="ZVR-85-dhU" secondAttribute="trailing" constant="16" id="8IG-7l-bwI"/>
                     <constraint firstAttribute="bottom" secondItem="ZVR-85-dhU" secondAttribute="bottom" constant="16" id="aRL-cY-hcd"/>
@@ -92,6 +93,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="lblDate" destination="8B7-WO-vsC" id="NDj-Oc-JTl"/>
                 <outlet property="lblExpireDate" destination="Ffq-zb-xg4" id="vcN-J0-9Bs"/>
@@ -103,5 +105,8 @@
     </objects>
     <resources>
         <image name="ic_next" width="8" height="8"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

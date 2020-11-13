@@ -34,8 +34,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         
         setUpView()
         
-        txtStartTime.leftViewMode = .always
-        txtEndTime.leftViewMode = .always
+       
 
     }
     
@@ -52,8 +51,8 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
        // datePicker.dataSource = datePicker
       //  datePicker.delegate = datePicker
         
-        setborders(textfield: txtStartTime)
-        setborders(textfield: txtEndTime)
+      //  setborders(textfield: txtStartTime)
+      //  setborders(textfield: txtEndTime)
        // setrightviewnew(textfield: txtStartTime, image: UIImage(named:"ic_downarrow")!)
        // setrightviewnew(textfield: txtEndTime, image: UIImage(named:"ic_downarrow")!)
         

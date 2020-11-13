@@ -32,7 +32,6 @@ class CategoryListVC: UIViewController {
             ("Sell",viewData)
             ])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         collectionCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
         collectionRecommendation.register(UINib(nibName: "RecommendationCell", bundle: nil), forCellWithReuseIdentifier: "RecommendationCell")

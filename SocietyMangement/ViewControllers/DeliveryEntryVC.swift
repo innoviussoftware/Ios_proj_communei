@@ -98,7 +98,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             ("Multiple", ViewMultiple)
         ])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         if(isfrom == "")
         {

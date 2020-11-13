@@ -60,7 +60,6 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Buy", viewBuy),("Sell", viewSell)])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         collectionBuyCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
         collectionSellCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")

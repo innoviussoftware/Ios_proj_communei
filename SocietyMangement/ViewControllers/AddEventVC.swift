@@ -286,15 +286,15 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
             webservices().StartSpinner()
             
             //             btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().imgurl + dic!.attachments!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
-
             
-           /* btnattechment_update.imageView!.sd_setImage(with: URL(string:(dic!.attachments?)!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
+            
+            btnattechment_update.imageView?.sd_setImage(with: URL(string:(dic!.attachments?[0])!), placeholderImage:nil, completed: { (image, error, cacheType, url) -> Void in
                 if ((error) != nil) {
                     // set the placeholder image here
                     
                     self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.eventAttachment!)!)
+                    let testImage = NSData(contentsOf: URL(string:(self.dic!.attachments?[0])!)!)
                     self.imgData = testImage as Data?
                     
                     webservices().StopSpinner()
@@ -302,15 +302,15 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
 
                 } else {
                     // success ... use the image
-                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.eventAttachment!), for: .normal)
+                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:(self.dic!.attachments?[0])!), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.eventAttachment!)!)
+                    let testImage = NSData(contentsOf: URL(string:(self.dic!.attachments?[0])!)!)
                     self.imgData = testImage as Data?
                     
                     webservices().StopSpinner()
 
                 }
-            }) */
+            })
             
         }
         else

@@ -48,7 +48,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         pager.addSegmentsWithTitlesAndViews(segments: [
                    ("Facilities", ViewFacilities),("Booking History", viewBookingHistory)])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
         
         tblFacilities.register(UINib(nibName: "AmenitiesFacilitiesCell", bundle: nil), forCellReuseIdentifier: "AmenitiesFacilitiesCell")
         
@@ -119,7 +118,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             apicallGetBookings()
         }
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         
     }

@@ -77,7 +77,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
             ("Daily", viewDaily),("On Demand", ViewOnDemand)
         ])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
+        
 
         if(isfromStr == ""){  // Daily
             pager.setSelectedIndex(index: 0, animated: true)
@@ -149,6 +149,8 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
             self.tblView_OnDemand.reloadData()
             
         }
+        
+        
         
     }
        

@@ -490,7 +490,6 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             ("Manual",viewmanual)
         ])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         if(isfrom == "")
         {
@@ -782,6 +781,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         print("scrollPager index changed: \(changedIndex)")
+        
+
        // pager.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
 
        /* if changedIndex == 0 {

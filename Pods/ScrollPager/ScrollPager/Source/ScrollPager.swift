@@ -57,11 +57,13 @@ import UIKit
 		didSet { redrawComponents() }
 	}
 	
-	@IBInspectable public var font: UIFont = UIFont.systemFont(ofSize: 13) {
+    @IBInspectable public var font: UIFont = UIFont(name: "GothamMedium", size: 16)! {
+    //systemFont(ofSize: 13) {
 		didSet { redrawComponents() }
 	}
 
-	@IBInspectable public var selectedFont: UIFont = UIFont.boldSystemFont(ofSize: 13) {
+    @IBInspectable public var selectedFont: UIFont = UIFont(name: "GothamMedium", size: 16)! {
+        //UIFont.boldSystemFont(ofSize: 16) {
 		didSet { redrawComponents() }
 	}
 	
@@ -106,6 +108,8 @@ import UIKit
 	private func initialize() {
 		#if TARGET_INTERFACE_BUILDER
         addSegmentsWithTitles(segmentTitles: ["One", "Two"])
+        
+        
       //  addSegmentsWithTitles(segmentTitles: ["One", "Two", "Three", "Four"])
 		#endif
 	}
@@ -263,6 +267,7 @@ import UIKit
 			let button = buttons[i]
 			button.frame = CGRect(x: width * CGFloat(i), y: y, width: width, height: height)
 			button.setTitleColor((i == selectedIndex) ? selectedTextColor : textColor, for: .normal)
+          //  button.titleLabel?.font = (i == selectedIndex) ? selectedFont : font
 			button.titleLabel?.font = (i == selectedIndex) ? selectedFont : font
 		}
 	}

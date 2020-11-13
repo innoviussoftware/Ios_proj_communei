@@ -76,7 +76,8 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
                
         collectionHours.collectionViewLayout = alignedFlowLayout
-               
+            
+        
         
         let datee = Date()
         let formatter = DateFormatter()

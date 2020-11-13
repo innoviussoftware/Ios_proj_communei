@@ -9,6 +9,10 @@
 import UIKit
 import SWRevealViewController
 
+
+
+
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -180,28 +184,28 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PollListCell") as! PollListCell
         
-        cell.lblQuestion.text = arrPollList[indexPath.row].question
+        cell.lblQuestion.text = arrPollList[indexPath.row].title
         //cell.lblDate.text = "Create On: \(dateFormateChange(str: arrPollList[indexPath.row].createdAt!))"
         
         
-        if arrPollList[indexPath.row].createdAt != nil{
+        if arrPollList[indexPath.row].publishDate != nil{
             cell.lblDate.isHidden = false
             let date = NSDate()
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strCurrentdate = dateFormatterGet.string(from: date as Date)
             
-            let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].createdAt!)
+            let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].publishDate!)
             
             if strCurrentdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].createdAt!)
+                let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].publishDate!)
                  dateFormatterGet.dateFormat = "HH:mm a"
                 let strDtae = dateFormatterGet.string(from: TodayDate!)
                 
-                cell.lblDate.text = "Create On: Today \(strDtae)"
+                cell.lblDate.text = "Posted On: Today \(strDtae)"
             }else{
-                 cell.lblDate.text = "Create On: \(dateFormateChange(str: arrPollList[indexPath.row].createdAt!))"
+                 cell.lblDate.text = "Posted On: \(dateFormateChange(str: arrPollList[indexPath.row].publishDate!))"
             }
             
         }else{
@@ -211,24 +215,24 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
         
         //for expire
         
-        if arrPollList[indexPath.row].expiresOn != nil{
+        if arrPollList[indexPath.row].visibleTill != nil{
             cell.lblExpireDate.isHidden = false
             let date = NSDate()
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strCurrentdate = dateFormatterGet.string(from: date as Date)
             
-            let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].expiresOn!)
+            let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].visibleTill!)
             
             if strCurrentdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].expiresOn!)
+                let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].visibleTill!)
                  dateFormatterGet.dateFormat = "HH:mm a"
                 let strDtae = dateFormatterGet.string(from: TodayDate!)
                 
-                cell.lblExpireDate.text = "Expire On: Today \(strDtae)"
+                cell.lblExpireDate.text = "Expire On: \(strDtae)"
             }else{
-                 cell.lblExpireDate.text = "Expire On: \(dateFormateChange(str: arrPollList[indexPath.row].expiresOn!))"
+                 cell.lblExpireDate.text = "Expire On: \(dateFormateChange(str: arrPollList[indexPath.row].visibleTill!))"
             }
             
         }else{

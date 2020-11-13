@@ -205,7 +205,7 @@ let API_ADD_PRODUCT = "user/addproduct"
 
 
 
-let API_GET_POLL_LIST = "user/pollslist"
+let API_GET_POLL_LIST =  "user/notices/4" // "user/pollslist"
 
 
 let API_POLL_DETAIL = "user/pollsresult"

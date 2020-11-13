@@ -96,7 +96,6 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             ("Multiple", ViewMultiple)
         ])
         
-        pager.font = UIFont(name: "GothamMedium", size: 16)!
 
         
         if isfrom_entry == 0 {

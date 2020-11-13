@@ -226,6 +226,9 @@ struct AppColor {
     
     static let lblFilterUnselect =  UIColor(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0, alpha: 1)
 
+    static let pollborder =  UIColor(red: 247.0/255.0, green: 251.0/255.0, blue: 253.0/255.0, alpha: 1)
+    
+    static let pollborderSelect =  UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1)
 
 
     // 828EA5

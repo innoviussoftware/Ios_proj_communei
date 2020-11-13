@@ -17,16 +17,16 @@ struct SocietyEventResponse: Codable {
 
 // MARK: - Datum
 struct SocietyEvent: Codable {
-    let noticeID, noticeTypeID: Int
+    let noticeID, noticeTypeID: Int?
     let title: String? //Title
     let datumDescription: String? // Description
     let publishDate: String?
     let visibleTill: String? //EventEndDate
-    let eventTypeID: Int
+    let eventTypeID: Int?
     let eventStartDate: String? //EventStartDate
     let eventEndDate: String? //EventEndDate
     let creationDate, createdBy: String
-    let pollEnabled, multiPollEnable, societyID: Int
+    let pollEnabled, multiPollEnable, societyID: Int?
     let attachments: [String]?
     let readAt: String?
 

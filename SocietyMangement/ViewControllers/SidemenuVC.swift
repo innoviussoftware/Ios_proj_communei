@@ -83,6 +83,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         }
     }
     
+        
     // MARK: - Tableview delegate and datasource methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,6 +94,21 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:cells[indexPath.row], for: indexPath) as! SidemenuCell
+        
+        if(indexPath.row == 11) {
+            cell.backgroundColor = UIColor.clear
+            let tap = UITapGestureRecognizer()
+            tap.addTarget(self, action:#selector(taplblTC))
+            cell.lblTC.addGestureRecognizer(tap)
+            cell.lblTC.isUserInteractionEnabled = true
+            
+            let tap1 = UITapGestureRecognizer()
+            tap1.addTarget(self, action:#selector(taplblPP))
+            cell.lblPrivacyPolicy.addGestureRecognizer(tap1)
+            cell.lblPrivacyPolicy.isUserInteractionEnabled = true
+
+        }
+        
         if(indexPath.row != 0 && indexPath.row != 11)
         {
                 if(selectedindex == indexPath.row) {
@@ -108,19 +124,6 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                 }
         }
         
-        if(indexPath.row == 11)
-        {
-            let tap = UITapGestureRecognizer()
-            tap.addTarget(self, action: #selector(taplblTC))
-            
-            cell.lblTC.addGestureRecognizer(tap)
-            
-            let tap1 = UITapGestureRecognizer()
-            tap1.addTarget(self, action: #selector(taplblPP))
-            
-            cell.lblPrivacyPolicy.addGestureRecognizer(tap1)
-
-        }
         
         if(indexPath.row == 0 || indexPath.row == 10)
         {
@@ -146,22 +149,6 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         
         selectedindex = indexPath.row
         tableView.reloadData()
-        
-        if(indexPath.row == 11)
-        {
-            let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:cells[indexPath.row], for: indexPath) as! SidemenuCell
-
-            let tap = UITapGestureRecognizer()
-            tap.addTarget(self, action: #selector(taplblTC))
-            
-            cell.lblTC.addGestureRecognizer(tap)
-            
-            let tap1 = UITapGestureRecognizer()
-            tap1.addTarget(self, action: #selector(taplblPP))
-            
-            cell.lblPrivacyPolicy.addGestureRecognizer(tap1)
-
-        }
         
         
         if(indexPath.row == 1) {

@@ -197,7 +197,7 @@ struct Apicallhandler {
     //Mark : Api call get notice
     func GetPollList(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<PollListResponse>) -> Void)) {
        
-        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<PollListResponse>) in
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<PollListResponse>) in
             
             onCompletion(response)
         }
