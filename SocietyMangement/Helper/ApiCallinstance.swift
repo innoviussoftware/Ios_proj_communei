@@ -604,17 +604,21 @@ struct Apicallhandler {
     
     
     //Mark : Api call get Members
-    func GetAllMembers(URL: String, societyid:String,building_id:String,token:String, onCompletion: @escaping ((_ response: DataResponse<MembersResponse>) -> Void)) {
-        let parameter:Parameters = ["society_id":societyid,"building_id":building_id]
+  //  func GetAllMembers(URL: String,building_id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<MembersResponse>) -> Void)) {
         
-        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MembersResponse>) in
+    func GetAllMembers(URL: String,token:String, onCompletion: @escaping ((_ response: DataResponse<MembersResponse>) -> Void)) {
+
+      
+      //  let parameter:Parameters = ["society_id":societyid,"building_id":building_id]
+        
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MembersResponse>) in
             onCompletion(response)
         }
         
     }
     
     //Mark : Api call Delete Notice
-    func DeleteEvent(URL: String, id:String,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+    func DeleteEvent(URL: String, id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
         let parameter:Parameters = ["NoticeID":id]
         
         AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in

@@ -247,7 +247,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         self.lblname.text = resp.data!.name
                         if(UsermeResponse?.data!.profilePhotoPath != nil)
                         {
-                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgview.sd_setImage(with: URL(string: (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                         
@@ -342,7 +342,6 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     {
                         self.familymeberary = resp.data!
                         //self.lblNoDataFound.isHidden = true
-                        self.collectionfamily.reloadData()
                         if(resp.data!.count == 0)
                         {
                             self.collectionfamily.isHidden = true
@@ -351,6 +350,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         }
                         else
                         {
+                            self.collectionfamily.reloadData()
+
                             self.collectionfamily.isHidden = false
                             self.viewfamilymembers.isHidden = true
                            // self.viewprofile.bringSubview(toFront:self.collectionfamily)
@@ -369,6 +370,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         }
                         else
                         {
+                            self.collectionfamily.reloadData()
+
                             self.collectionfamily.isHidden = false
                             self.viewfamilymembers.isHidden = true
                            // self.viewprofile.bringSubview(toFront:self.collectionfamily)
@@ -658,9 +661,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     }
     
     func inviteaction(from: String) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "InviteVC") as! InviteVC
+        let nextViewController = storyboard?.instantiateViewController(withIdentifier: "InviteVC") as! InviteVC
         nextViewController.isfrom = from
         navigationController?.pushViewController(nextViewController, animated: true)
     }
@@ -705,7 +707,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
      //            cell.btnEdit.isHidden = true
      //            cell.btnCall.tag = indexPath.row
      //            cell.btnDelete.tag = indexPath.row
-     //            //cell.imgUser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
+     //            //cell.imgUser.sd_setImage(with: URL(string: familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
      //            //
      //            cell.btnEdit.addTarget(self, action:#selector(EditFrequentEntry(sender:)), for: .touchUpInside)
      //            cell.btnDelete.addTarget(self, action:#selector(DeleteFrequentEntry(sender:)), for: .touchUpInside)
@@ -757,7 +759,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 
              
                 if arrHelperList[indexPath.row].photos != nil{
-                    cell.imgMaid.sd_setImage(with: URL(string:webservices().imgurl + arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
+                    cell.imgMaid.sd_setImage(with: URL(string: arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
                  }
                 
                 cell.btnCall.tag = indexPath.row
@@ -837,7 +839,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
                  if(familymeberary[indexPath.row].profilePhotoPath != nil)
                  {
-                 cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                 cell.imguser.sd_setImage(with: URL(string: familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
                  }
                  cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
                  cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
@@ -853,7 +855,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
               
                  if arrHelperList[indexPath.row].photos != nil{
-                     cell.imgMaid.sd_setImage(with: URL(string:webservices().imgurl + arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
+                     cell.imgMaid.sd_setImage(with: URL(string: arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
                   }
                  
                  cell.btnCall.tag = indexPath.row
@@ -892,7 +894,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
                  if(familymeberary[indexPath.row].image != nil)
                  {
-                 cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
+                 cell.imguser.sd_setImage(with: URL(string: familymeberary[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
                  }
                  cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
                  cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)

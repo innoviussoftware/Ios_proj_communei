@@ -435,7 +435,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     }
     
     
-    var bloodgroupary = ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
+    var bloodgroupary = [BloodGroup]()
+       // ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
     
     var agegroupary = ["0-10 Age","10-20 Age","20-30 Age","30-40 Age","40-50 Age","60-70 Age","Above 70 Age"]
     
@@ -464,6 +465,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         apicallGetBuildings()
         
         ApiCallGetProfession()
+        
+        ApiCallGetBlood()
 
         webservices.sharedInstance.setShadow(view: filtrview)
         setView(view: filtrview, hidden: true)
@@ -761,6 +764,53 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         vc.isfrom = 0
     }
     
+    // MARK: - get Blood
+       
+       func ApiCallGetBlood()
+       {
+             if !NetworkState().isInternetAvailable {
+                            ShowNoInternetAlert()
+                            return
+                        }
+               webservices().StartSpinner()
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        print("token : ",token as! String)
+
+        Apicallhandler().ApiCallGetBlood(URL: webservices().baseurl + "communei/blood-groups", token: token as! String) { JSON in
+           
+                   switch JSON.result{
+                   case .success(let resp):
+                       
+                       webservices().StopSpinner()
+                       if(JSON.response?.statusCode == 200)
+                       {
+                           
+                           self.bloodgroupary = resp.data
+                           
+                       }
+                       else
+                       {
+                           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                           self.present(alert, animated: true, completion: nil)
+                           
+                       }
+                       
+                       print(resp)
+                   case .failure(let err):
+                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                       webservices().StopSpinner()
+                       
+                   }
+                   
+               }
+               
+           
+       }
+    
     // MARK: - get Professsion
     
     func ApiCallGetProfession()
@@ -997,7 +1047,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         }
         else if(collectionView == CollectionBloodGrp)
         {
-            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+          /*  let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
             let contentNSString = bloodgroupary[indexPath.row]
             let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:14.0)], context: nil)
             
@@ -1005,7 +1055,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             
             print("CollectionBloodGrp expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 25)")
 
-            return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
+            return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31 */
+            
+            let numberOfSets = CGFloat(4.0)
+             
+             let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
+             
+             return CGSize(width:width,height: 31)
             
         }
             else if(collectionView == collectionAge)
@@ -1185,7 +1241,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
                       //  let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! NewMemberCell
                         
-                        if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
+                        if membersary[indexPath.item].memberStatus == 0 ||  membersary[indexPath.item].memberStatus == 2{
                             //  cell.lblContact.isHidden = true
                             cell.btnCall.isHidden = true
                             // cell.lblStatic.isHidden = true
@@ -1199,35 +1255,37 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         
                         webservices().setShadow(view: cell.innerview)
                         
-                        print("------->>>>\(membersary[indexPath.item].name), \(membersary[indexPath.item].buildingname!)-\(membersary[indexPath.item].flatname!)")
+                            //   print("------->>>>\(membersary[indexPath.item].name), \(membersary[indexPath.item].buildingname!)-\(membersary[indexPath.item].flatname!)")
                         
-                        if membersary[indexPath.item].flatType == nil {
+                        if membersary[indexPath.item].userTypeName == nil {
                                     cell.lblSelfs.text = ""
                         }else{
-                            cell.lblSelfs.text = "\(membersary[indexPath.item].flatType!)"
+                            cell.lblSelfs.text = "\(membersary[indexPath.item].userTypeName!)"
                         }
                         
-                        cell.lblStatic.text =   "\(membersary[indexPath.item].buildingname!) - \(membersary[indexPath.item].flatname!)"
+
+                        
+                        cell.lblStatic.text =   "\(membersary[indexPath.item].society?.parentProperty! ?? "") - \(membersary[indexPath.item].society?.property! ?? "")"
                         
                       //  cell.lblStatic.text =  "\(membersary[indexPath.item].flatname!)" //\(membersary[indexPath.item].buildingname!)-
                         // cell.lblContact.text = membersary[indexPath.item].phone
                         // cell.btnedit.tag = indexPath.row
                         cell.btnCall.tag = indexPath.item
                         
-                        if membersary[indexPath.row].image != nil{
-                              cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor-1"))
+                        if membersary[indexPath.row].profilePhotoPath != nil{
+                              cell.imgMember.sd_setImage(with: URL(string: membersary[indexPath.item].profilePhotoPath!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         
                         cell.lblName.text = membersary[indexPath.item].name
-                        cell.lblprofession.text = membersary[indexPath.item].profession
+                        cell.lblprofession.text = membersary[indexPath.item].professionName
                         cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
                         
-                        if membersary[indexPath.item].bloodgroup != nil{
+                        if membersary[indexPath.item].bloodGroupName != nil{
                             cell.lblBloodGroup.isHidden = false
                            // cell.lblBloodGroup.text = String(format: "Blood Group: %@", membersary[indexPath.item].bloodgroup!)//"Blood Group: \(membersary[indexPath.item].bloodgroup!)"
                             cell.lblBloodGroupName.isHidden = false
 
-                            cell.lblBloodGroupName.text = membersary[indexPath.item].bloodgroup!
+                            cell.lblBloodGroupName.text = membersary[indexPath.item].bloodGroupName!
                             }else{
                             cell.lblBloodGroup.isHidden = true
                             cell.lblBloodGroupName.isHidden = true
@@ -1266,7 +1324,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         let cell = tableView.dequeueReusableCell(withIdentifier: "MembersCell") as! MembersCell
 
                         
-                        if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
+                        if allmembersary[indexPath.item].memberStatus == 0 ||  allmembersary[indexPath.item].memberStatus == 2{
                             //  cell.lblContact.isHidden = true
                             cell.btnCall.isHidden = true
                             // cell.lblStatic.isHidden = true
@@ -1278,13 +1336,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                             
                         }
                         
-                        if allmembersary[indexPath.item].bloodgroup != nil{
+                        if allmembersary[indexPath.item].bloodGroupName != nil{
                                           cell.lblBloodGroup.isHidden = false
                                          // cell.lblBloodGroup.text = String(format: "Blood Group: %@", allmembersary[indexPath.item].bloodgroup!)
                             
                             cell.lblBloodGroupName.isHidden = false
 
-                            cell.lblBloodGroupName.text = allmembersary[indexPath.item].bloodgroup!
+                            cell.lblBloodGroupName.text = allmembersary[indexPath.item].bloodGroupName!
                                        }else{
                                            cell.lblBloodGroup.isHidden = true
                                             cell.lblBloodGroupName.isHidden = true
@@ -1294,27 +1352,28 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         
                         webservices().setShadow(view: cell.innerview)
                         
-                        print("------->>>>\(allmembersary[indexPath.item].name), \(allmembersary[indexPath.item].buildingname!)-\(allmembersary[indexPath.item].flatname!)") //-\(allmembersary[indexPath.item].flatType!)")
+                      //  print("------->>>>\(allmembersary[indexPath.item].name), \(allmembersary[indexPath.item].buildingname!)-\(allmembersary[indexPath.item].flatname!)") //-\(allmembersary[indexPath.item].flatType!)")
                         
-                        if allmembersary[indexPath.item].flatType == nil {
+                        if allmembersary[indexPath.item].userTypeName == nil {
                                                           cell.lblSelfs.text = ""
                                               }else{
-                                                  cell.lblSelfs.text = "\(allmembersary[indexPath.item].flatType!)"
+                                                  cell.lblSelfs.text = "\(allmembersary[indexPath.item].userTypeName!)"
                                               }
-                        
-                        cell.lblStatic.text = "\(allmembersary[indexPath.item].buildingname!) - \(allmembersary[indexPath.item].flatname!)"
+                                                
+                        cell.lblStatic.text =   "\(allmembersary[indexPath.item].society?.parentProperty! ?? "") - \(allmembersary[indexPath.item].society?.property! ?? "")"
+
                       //  cell.lblStatic.text =  "\(allmembersary[indexPath.item].flatname!)" //\(allmembersary[indexPath.item].buildingname!)-
                         // cell.lblContact.text = membersary[indexPath.item].phone
                         // cell.btnedit.tag = indexPath.row
                         cell.btnCall.tag = indexPath.item
                         
-                        if allmembersary[indexPath.row].image != nil{
+                        if allmembersary[indexPath.row].profilePhotoPath != nil{
                             // 3/9/20.
-                             // cell.imgMember.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.item].image!), placeholderImage: UIImage(named: "vendor profile"))
+                              cell.imgMember.sd_setImage(with: URL(string: allmembersary[indexPath.item].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
                         }
                         
                         cell.lblName.text = allmembersary[indexPath.item].name
-                        cell.lblprofession.text = allmembersary[indexPath.item].profession
+                        cell.lblprofession.text = allmembersary[indexPath.item].professionName
                         
                         cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
                         
@@ -1355,7 +1414,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 
                     if(searchActive == false)
                     {
-                        if membersary[indexPath.item].member_status == 0 ||  membersary[indexPath.item].member_status == 2{
+                        if membersary[indexPath.item].memberStatus == 0 ||  membersary[indexPath.item].memberStatus == 2{
                             
                             let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
                             popup.member = membersary[indexPath.item]
@@ -1367,14 +1426,17 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         }else{
                             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
-                            nextViewController.member = membersary[indexPath.item]
+                            nextViewController.member = membersary//[indexPath.item]
+                            
+                            nextViewController.indexMember = indexPath.item
+
                             nextViewController.isfrom = 1
                             navigationController?.pushViewController(nextViewController, animated: true)
                         }
                     }
                     else
                     {
-                        if allmembersary[indexPath.item].member_status == 0 ||  allmembersary[indexPath.item].member_status == 2{
+                        if allmembersary[indexPath.item].memberStatus == 0 ||  allmembersary[indexPath.item].memberStatus == 2{
                             
                             let popup = self.storyboard?.instantiateViewController(withIdentifier: "OtherMemberPopUpVC") as! OtherMemberPopUpVC
                             popup.member = allmembersary[indexPath.item]
@@ -1386,7 +1448,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         }else{
                             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileVC") as! ProfileVC
-                            nextViewController.member = allmembersary[indexPath.item]
+                            nextViewController.member = allmembersary//[indexPath.item]
+                            nextViewController.indexMember = indexPath.item
+
                             nextViewController.isfrom = 1
                             navigationController?.pushViewController(nextViewController, animated: true)
                         }
@@ -1409,8 +1473,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 //       }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           // return UITableViewAutomaticDimension
-            return 190
+            return UITableViewAutomaticDimension
+           // return 150
         }
     
     
@@ -1431,7 +1495,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             avc?.isfrom = 3
 
                                        avc?.yesAct = {
-                                         self.dialNumber(number:  self.membersary[sender.tag].phone)
+                                         self.dialNumber(number:  self.membersary[sender.tag].phone!)
 
                                                 }
             
@@ -1450,7 +1514,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
                                        avc?.yesAct = {
                                         
-                                        self.dialNumber(number:  self.allmembersary[sender.tag].phone)
+                                        self.dialNumber(number:  self.allmembersary[sender.tag].phone!)
 
                                                 }
             
@@ -1579,22 +1643,29 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             ShowNoInternetAlert()
             return
         }
-        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        let strSociId  = (SociId as NSNumber).stringValue
+        let building_id =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+       // let strSociId  = (building_id as NSNumber).stringValue
+        
+        let id = String(format: "%d",building_id)
+
         
         let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
         
         webservices().StartSpinner()
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id: (self.buildingid! as! NSNumber).stringValue,token:strToken as! String) { JSON in
+        
+       // Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id: (self.buildingid! as! NSNumber).stringValue,token:strToken as! String) { JSON in
+            
+            Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id,token:strToken as! String) { JSON in
+
             switch JSON.result{
             case .success(let resp):
                 
                 webservices().StopSpinner()
                 if(JSON.response?.statusCode == 200)
                 {
-                    self.membersary = resp.data
+                    self.membersary = resp.data!
                     
-                    if(resp.data.count == 0)
+                    if(resp.data!.count == 0)
                     {
                        // self.collectionmembers.isHidden = true
                         
@@ -1650,7 +1721,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 }
                 else
                 {
-                    if(resp.data.count == 0)
+                    if(resp.data!.count == 0)
                     {
                        // self.collectionmembers.isHidden = true
                         
@@ -1718,13 +1789,20 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         
         
         
-        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        let strSociId  = (SociId as NSNumber).stringValue
+        let building_id =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+      //  let strSociId  = (building_id as NSNumber).stringValue
+        
+        let id = String(format: "%d",building_id)
+
         
         let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
         
         webservices().StartSpinner()
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id:"0",token:strToken as! String) { JSON in
+      
+        //Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id:"0",token:strToken as! String) { JSON in
+        
+        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
+
             switch JSON.result{
             case .success(let resp):
                 
@@ -1733,8 +1811,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 {
                     if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
                     {
-                        self.allmembersary = resp.data
-                        self.Finalallmembersary = resp.data
+                        self.allmembersary = resp.data!
+                        self.Finalallmembersary = resp.data!
                         
                       //  self.hightcollectionbuilding.constant = 60
                         self.collectionbuildings.isHidden = false
@@ -1744,13 +1822,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     {
                         self.allmembersary.removeAll()
                         self.Finalallmembersary.removeAll()
-                        for dic in resp.data
+                        for dic in resp.data!
                         {
                             
                             if self.selectedbloodgrop != ""{
                                 for i in 0..<self.arrBloodGrp.count{
                                     
-                                    if(dic.bloodgroup == (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "blood_grp") as? String && (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+                                    if(dic.bloodGroupName == (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "blood_grp") as? String && (self.arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
                                     {
                                         self.allmembersary.append(dic)
                                         self.Finalallmembersary.append(dic)
@@ -1763,8 +1841,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                             //for profession
                             
                             if self.arrSelectionCheck.count > 0{
-                                if dic.profession != nil {
-                                    if(self.arrSelectionCheck.contains(dic.profession!))
+                                if dic.professionName != nil {
+                                    if(self.arrSelectionCheck.contains(dic.professionName!))
                                     {
                                         self.allmembersary.append(dic)
                                         self.Finalallmembersary.append(dic)
@@ -1807,7 +1885,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                 else
                 {
-                    if(resp.data.count == 0)
+                    if(resp.data!.count == 0)
                     {
                         self.tblMembers.isHidden = true
                         self.viewnoresult.isHidden = false
@@ -1840,7 +1918,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 }
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
                 
             }
@@ -1951,11 +2029,11 @@ extension MembersVC : UISearchBarDelegate
             for dic in Finalallmembersary
             {
                 var profession = ""
-                if(dic.profession?.lowercased() != nil)
+                if(dic.professionName?.lowercased() != nil)
                 {
-                    profession = (dic.profession?.lowercased())!
+                    profession = (dic.professionName?.lowercased())!
                 }
-                if(dic.name.lowercased().contains(searchText.lowercased()) || (profession.contains(searchText.lowercased())))
+                if(dic.name!.lowercased().contains(searchText.lowercased()) || (profession.contains(searchText.lowercased())))
                 {
                     
                     allmembersary.append(dic)

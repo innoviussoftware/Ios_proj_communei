@@ -28,9 +28,12 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var lblExpireDate: UILabel!
     
-   var arrPollData : PollListResponseData?
+ //  var arrPollData : PollListResponseData?
     
-  //  var arrPollData = [PollListResponseData]()
+    var arrPollData = [PollListResponseData]()
+    
+    var indexPoll = Int()
+
 
     var selectedIndex : Int! = -5
     var arrPollDetail = NSMutableArray()
@@ -89,20 +92,20 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         // 12/11/20. temp comment
         
        
-        lblDemo.text = arrPollData?.title
+        lblDemo.text = arrPollData[indexPoll].title
         
-        if arrPollData?.visibleTill != nil{
+        if arrPollData[indexPoll].visibleTill != nil{
             lblExpireDate.isHidden = false
             let date = NSDate()
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strdate = dateFormatterGet.string(from: date as Date)
             
-            let strOURDate = dateFormateChangeNEW(str: (arrPollData?.visibleTill!)!)
+            let strOURDate = dateFormateChangeNEW(str: (arrPollData[indexPoll].visibleTill!))
             
             if strdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let TodayDate = dateFormatterGet.date(from: (arrPollData?.visibleTill!)!)
+                let TodayDate = dateFormatterGet.date(from: (arrPollData[indexPoll].visibleTill!))
                 dateFormatterGet.dateFormat = "HH:mm a"
                 if TodayDate != nil{
                     let strDtae = dateFormatterGet.string(from: TodayDate!)
@@ -110,7 +113,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 }
                
             }else{
-                lblExpireDate.text = "Expire On: \(dateFormateChange(str: (arrPollData?.visibleTill!)!))"
+                lblExpireDate.text = "Expire On: \(dateFormateChange(str: (arrPollData[indexPoll].visibleTill!)))"
             }
             
         }else{
@@ -478,7 +481,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         
         let param:Parameters = [
-            "id":((arrPollData?.noticeID!)! as NSNumber).stringValue,
+            "id":((arrPollData[indexPoll].noticeID!) as NSNumber).stringValue,
             "options":strOption,
             "type":strType,
         ]
@@ -545,7 +548,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         
         let param:Parameters = [
-            "id":((arrPollData?.noticeID!)! as NSNumber).stringValue,
+            "id":((arrPollData[indexPoll].noticeID!) as NSNumber).stringValue,
             "options":strOption,
             "type":strType,
         ]
@@ -603,14 +606,26 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return arrPollData[indexPoll].pollOptions!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
         
+          /*  if cell.isSelected
+               {
+            cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+            cell.bgView.layer.borderWidth = 3.0
+            
+            }
+               else
+               {
+                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+                cell.bgView.layer.borderWidth = 1.0
+                
+               } */
         
-        if selectedIndex == indexPath.row{
+       if selectedIndex == indexPath.row{
             cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
             cell.bgView.layer.borderWidth = 3.0
         }else{
@@ -618,10 +633,10 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
             cell.bgView.layer.borderWidth = 1.0
         }
         
-        cell.lblOptionText.text = arrPollData?.pollOptions?[indexPath.row].optionText
+        cell.lblOptionText.text = arrPollData[indexPoll].pollOptions?[indexPath.row].optionText
         
         
-        let lblVote = String(format: "%d",(arrPollData?.pollOptions?[indexPath.row].votes)! as Int)
+        let lblVote = String(format: "%d",(arrPollData[indexPoll].pollOptions?[indexPath.row].votes)! as Int)
         
         cell.lblVotes.text = lblVote
         
@@ -631,9 +646,20 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+       /* let cell = tableView.cellForRow(at: indexPath)
+               
+        if cell!.isSelected == true{
+            selectedIndex = indexPath.row
+            // cell!.accessoryType = UITableViewCellAccessoryType.checkmark
+        }else{
+            selectedIndex = indexPath.row
+            //cell!.accessoryType = UITableViewCellAccessoryType.none
+        } */
+                  
         selectedIndex = indexPath.row
-        
+
         tblView.reloadData()
+        
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

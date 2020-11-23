@@ -300,7 +300,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             lblname.text = "Edit Family Member"
             btnsave.setTitle("Update", for: .normal)
             if member!.profilePhotoPath != nil {
-                imguser.sd_setImage(with: URL(string:webservices().imgurl + member!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                imguser.sd_setImage(with: URL(string: member!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
             }
             txtname.text = member?.name
             txtnum.text = member?.phone
@@ -311,11 +311,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             
             txtprofession.text = member?.professionName
             
-            let dateee = member?.dateOfBirth
-            
-            print("dateee : ",dateee!)
-            
-            txtbirthdate.text! = dateee! //(member?.dateOfBirth!)!
+            let date =   member?.dateOfBirth // "2016-02-10 00:00:00"
+            let dateFormatter = DateFormatter()
+
+              dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            let dateFromString : NSDate = dateFormatter.date(from: date!)! as NSDate
+              dateFormatter.dateFormat = "dd-MM-yyyy"
+            let datenew = dateFormatter.string(from: dateFromString as Date)
+            txtbirthdate.text = datenew
 
           //  txtbirthdate.text = dateee
             

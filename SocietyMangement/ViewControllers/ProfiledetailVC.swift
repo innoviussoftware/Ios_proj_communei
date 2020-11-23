@@ -39,15 +39,18 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,UIImagePickerControllerDelegate , UINavigationControllerDelegate , UITextFieldDelegate,memberrole,addedOther{
+
+class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,UIImagePickerControllerDelegate , UINavigationControllerDelegate , UITextFieldDelegate,memberrole
+                       //,addedOther
+    {
    
     @IBOutlet weak var txtViewProfessionDetail: IQTextView!
     
     @IBOutlet weak var btnNotification: UIButton!
     
     var pickerview = UIPickerView()
-    var pickerview1 = UIPickerView()
-    var pickerview2 = UIPickerView()
+    var pickerview1 = UIPickerView() // profession
+    var pickerview2 = UIPickerView() // flat
     var pickerview3 = UIPickerView() // blood
 
     
@@ -128,8 +131,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     var Roleary  = ["Member" ,"Comimitee member" ,"Secretory" ,"Join Secretory" ,"President" ,"Treasure"]
     
     @IBAction func backaction(_ sender: Any) {
-        if isfrom != 0{
-            self.navigationController?.popViewController(animated: true)
+        if isfrom == 2{
+          self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -422,8 +425,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         toolBar.isUserInteractionEnabled = true
         toolBar.sizeToFit()
         txtbloodgroup.inputAccessoryView = toolBar
-        txtbloodgroup.inputView = pickerview
-        pickerview.backgroundColor = UIColor.white
+        txtbloodgroup.inputView = pickerview3
+        pickerview3.backgroundColor = UIColor.white
 
         
         
@@ -469,7 +472,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             lblname.text = UsermeResponse?.data!.name
             
             if UsermeResponse?.data!.profilePhotoPath != nil{
-                imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
+                imgview.sd_setImage(with: URL(string: (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
             }
             
             lblcontact.text = UsermeResponse?.data!.phone
@@ -528,12 +531,27 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                         lblname.text = UsermeResponse?.data!.name
                         
                         if UsermeResponse?.data!.profilePhotoPath != nil{
-                            imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
+                            imgview.sd_setImage(with: URL(string: (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
                         }
                         
                         lblcontact.text = UsermeResponse?.data!.phone
                         
                         txtemail.text = UsermeResponse?.data!.email
+            
+            txtprofession.text = UsermeResponse?.data?.professionName //member?.professionName
+            txtViewProfessionDetail.text = UsermeResponse?.data?.professionDetails //member?.professionDetails
+            
+            txtGender.text = UsermeResponse?.data!.gender
+            
+            
+            let date =  UsermeResponse?.data!.dateOfBirth  // "2016-02-10 00:00:00"
+            let dateFormatter = DateFormatter()
+
+              dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            let dateFromString : NSDate = dateFormatter.date(from: date!)! as NSDate
+              dateFormatter.dateFormat = "yyyy-MM-dd"
+            let datenew = dateFormatter.string(from: dateFromString as Date)            
+            txtbirthDate.text = datenew //UsermeResponse?.data!.dateOfBirth
                         
                      /*   if UsermeResponse?.data!.profession == "other"{
                              txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession_other)
@@ -585,16 +603,16 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             
             lblname.text = member?.name
             
-            if member?.image != nil{
-                imgview.sd_setImage(with: URL(string:webservices().imgurl + (member?.image)!), placeholderImage: UIImage(named: "vendor profile"))
+            if member?.profilePhotoPath != nil{
+                imgview.sd_setImage(with: URL(string: (member?.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor profile"))
             }
             
             
             lblcontact.text = member?.phone
             
             txtemail.text = member?.email
-            txtprofession.text = member?.profession
-            txtViewProfessionDetail.text = member?.professionDetail
+            txtprofession.text = member?.professionName
+            txtViewProfessionDetail.text = member?.professionDetails
             //txtViewProfessionDetail.placeholder = ""
             
             // 22/10/20. temp comment
@@ -721,7 +739,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                    case .failure(let err):
                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        self.present(alert, animated: true, completion: nil)
-                       print(err.asAFError)
+                    print(err.asAFError!)
                        webservices().StopSpinner()
                        
                    }
@@ -818,7 +836,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 constraintHeightProfessionOther.constant = 0
                 constraintTopProfessionOther.constant = 0
         
-        activeTextField.resignFirstResponder()
+       // activeTextField.resignFirstResponder()
+            
         let row = self.pickerview1.selectedRow(inComponent: 0)
         txtprofession.text! = professionary[row].name
         professiongroupId = professionary[row].id
@@ -859,7 +878,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             constraintHeightProfessionOther.constant = 0
             constraintTopProfessionOther.constant = 0
             
-            activeTextField.resignFirstResponder()
+          //  activeTextField.resignFirstResponder()
             let row = self.pickerview1.selectedRow(inComponent: 0)
             txtprofession.text! = professionary[row].name
             professiongroupId = professionary[row].id
@@ -890,7 +909,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     }
     
     @objc func DoneGender()  {
-        activeTextField.resignFirstResponder()
+       // activeTextField.resignFirstResponder()
         txtGender.text = arrGender[SelectedGender]
         
         if arrGender[SelectedGender] == "Male"{
@@ -900,6 +919,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         }else{
             strGender = "Prefer not to say"
         }
+        
+        txtGender.resignFirstResponder()
+
     }
     
    /* @IBAction func actionNotification_clickbtn(_ sender: Any) {
@@ -914,10 +936,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         view.endEditing(true) // or do something
     }
     
-    func addOtherProfession(str: String) {
+   /* func addOtherProfession(str: String) {
         txtprofession.text = str
         txtprofession.resignFirstResponder()
-    }
+    } */
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -954,21 +976,19 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if(pickerView == pickerview1)
         {
-            return professionary.count + 1
+            return professionary.count //+ 1
         }
         else if(pickerView == pickerview2)
         {
             return flatary.count
         }
-        else if activeTextField == txtGender{
-      //  else if(pickerView == pickerview3) {
+       // else if activeTextField == txtGender{
+        else if(pickerView == pickerview3) {
           //  activeTextField == txtGender{
-         //   return bloodgroupary.count
-            return arrGender.count
+            return bloodgroupary.count
         }
         else{
-          //  return arrGender.count
-            return bloodgroupary.count
+            return arrGender.count
         }
         
     }
@@ -977,25 +997,26 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(pickerView == pickerview1)
         {
-            if(row == professionary.count)
-            {
-                return "other"
-            }else
-            {
+//            if(row == professionary.count)
+//            {
+//                return "other"
+//            }else
+//            {
                 return professionary[row].name
-            }
+           // }
         }
         else if(pickerView == pickerview2)
         {
             return flatary[row]
             
         }
-        else if activeTextField == txtGender{
-            return arrGender[row]
+       // else if activeTextField == txtGender{
+        else if(pickerView == pickerview3) {
+            return bloodgroupary[row].name
         }
         else
         {
-            return bloodgroupary[row].name
+            return arrGender[row]
         }
         
     }
@@ -1003,28 +1024,29 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(pickerView == pickerview1)
         {
-            if(row == professionary.count)
-            {
-                txtprofession.text =  "other"
-            }
-            else
-            {
+//            if(row == professionary.count)
+//            {
+//                txtprofession.text =  "other"
+//            }
+//            else
+//            {
                 txtprofession.text = professionary[row].name
-            }
+           // }
         }
         else if(pickerView == pickerview2)
         {
             txtflattype.text = flatary[row]
             
         }
-        else if activeTextField == txtGender{
-            SelectedGender = row
+        else if(pickerView == pickerview3) {
+
+      //  else if activeTextField == txtGender{
+            txtbloodgroup.text = bloodgroupary[row].name
+            SelectedBlodGroup = row
         }
         else
         {
-            txtbloodgroup.text = bloodgroupary[row].name
-            SelectedBlodGroup = row
-
+            SelectedGender = row
         }
         
     }
@@ -1389,7 +1411,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                     {
                         
                         self.professionary = resp.data
-                        self.pickerview.reloadAllComponents()
+                        self.pickerview1.reloadAllComponents()
                         
                     }
                     else

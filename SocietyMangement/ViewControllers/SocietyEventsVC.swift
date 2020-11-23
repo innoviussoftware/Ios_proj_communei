@@ -308,7 +308,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
             }
             else{
                 
-                self.toptblConstraint.constant = -60
+                self.toptblConstraint.constant = -44
 
                 cell.btnEditNew.isHidden = true
                 cell.btnDeleteNew.isHidden = true
@@ -332,7 +332,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                                                 avc?.subtitleStr = "Are you sure you want to delete \(self.eventary[sender.tag].title!)?"
                                                 avc?.yesAct = {
                                                 
-                                                    self.apicallDeleteEvent(id: (self.eventary[sender.tag].noticeID as NSNumber).stringValue)
+                                                    self.apicallDeleteEvent(id: self.eventary[sender.tag].noticeID!)
 
                                                     }
                                                 avc?.noAct = {
@@ -363,13 +363,12 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     @objc func downloadaction(sender:UIButton)
        {
-           let pdffile = eventary[sender.tag].attachments
+        let pdffile = eventary[sender.tag].attachments![0]
            
-        // 6/11/20. temp comment 2 line
         
-//         guard let url = URL(string:webservices().baseurl + pdffile!) else {
-//               return //be safe
-//           }
+         guard let url = URL(string: pdffile) else {
+               return //be safe
+           }
         
 //            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
 //            let downloadTask = urlSession.downloadTask(with: url)
@@ -378,11 +377,11 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         
         // 6/11/20. temp comment 2 line
 
-          /* if #available(iOS 10.0, *) {
+           if #available(iOS 10.0, *) {
                UIApplication.shared.open(url, options: [:], completionHandler: nil)
            } else {
                UIApplication.shared.openURL(url)
-           } */
+           }
            
        }
     
@@ -402,10 +401,10 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     @objc func readmore(sender:UIButton)
     {
-        if arrReadMore.contains(eventary[sender.tag].noticeID) {
-            arrReadMore.remove(eventary[sender.tag].noticeID)
+        if arrReadMore.contains(eventary[sender.tag].noticeID!) {
+            arrReadMore.remove(eventary[sender.tag].noticeID!)
         }else{
-            arrReadMore.add(eventary[sender.tag].noticeID)
+            arrReadMore.add(eventary[sender.tag].noticeID!)
         }
         
         vwReadMore.isHidden = false
@@ -421,7 +420,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
        // lblDate.text = strChangeDateFormate(strDateeee: eventary[sender.tag].createdAt!)
         txtvwDiscription.text = eventary[sender.tag].datumDescription
         
-        let id = String(format: "%d",eventary[sender.tag].noticeID)
+        let id = String(format: "%d",eventary[sender.tag].noticeID!)
         
         eventRead = "user/notice/" + "3/" + id + "/read"
         
@@ -581,9 +580,9 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                         
                         return
                     }
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                //    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
                    
                     
                 }
@@ -595,7 +594,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     // MARK: - Delete Notices
     
-    func apicallDeleteEvent(id:String)
+    func apicallDeleteEvent(id:Int)
     {
          if !NetworkState().isInternetAvailable {
                          ShowNoInternetAlert()

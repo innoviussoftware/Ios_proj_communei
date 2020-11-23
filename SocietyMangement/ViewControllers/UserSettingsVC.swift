@@ -255,7 +255,7 @@ class UserSettingsVC: BaseVC {
         lblName.text = UsermeResponse?.data!.name
         if(UsermeResponse?.data!.profilePhotoPath != nil)
         {
-            imgUser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
+            imgUser.sd_setImage(with: URL(string: (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
         }
         // 22/10/20 temp comment
         
@@ -814,7 +814,7 @@ class UserSettingsVC: BaseVC {
                             self.collectionmember.reloadData()
                             //self.highcollection.constant = CGFloat(self.arrMemberSelected.count) * 30
                         }else{
-                            self.collectionmember.reloadData()
+                           // self.collectionmember.reloadData()
                             //self.highcollection.constant = 0
                         }
                         self.apicallGetSettings()

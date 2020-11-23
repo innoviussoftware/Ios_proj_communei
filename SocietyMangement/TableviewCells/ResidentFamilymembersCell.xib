@@ -18,7 +18,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResidentFamilymembersCell" rowHeight="100" id="Z0u-cp-fLB" customClass="ResidentFamilymembersCell" customModule="Communei" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="100" id="Z0u-cp-fLB" customClass="ResidentFamilymembersCell" customModule="Communei" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Z0u-cp-fLB" id="D9K-Wd-Tlf">
@@ -98,7 +98,7 @@
                 <outlet property="lblmember" destination="ePh-E6-5G7" id="mS1-iu-jxu"/>
                 <outlet property="lblname" destination="spp-w6-pgx" id="iFA-8T-jLf"/>
             </connections>
-            <point key="canvasLocation" x="141" y="-12"/>
+            <point key="canvasLocation" x="146" y="-44"/>
         </tableViewCell>
     </objects>
     <designables>

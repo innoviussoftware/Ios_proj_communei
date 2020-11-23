@@ -249,12 +249,14 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
   
         if #available(iOS 13.0, *) {
             let vc = self.storyboard?.instantiateViewController(identifier: "PollDetailsVC") as! PollDetailsVC
-            vc.arrPollData = arrPollList[indexPath.row]
+            vc.arrPollData = arrPollList//[indexPath.row]
+            vc.indexPoll = indexPath.row
             //vc.lblTitel.text = arrPollList[indexPath.row].question
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "PollDetailsVC") as! PollDetailsVC
-             vc.arrPollData = arrPollList[indexPath.row]
+             vc.arrPollData = arrPollList//[indexPath.row]
+            vc.indexPoll = indexPath.row
             //vc.lblTitel.text = arrPollList[indexPath.row].question
             self.navigationController?.pushViewController(vc, animated: true)
         }

@@ -104,7 +104,7 @@ class AddVendorVC: UIViewController, UIImagePickerControllerDelegate , UINavigat
             txtemail.text = dic?.vendorEmail
             txtprofession.text = dic?.vendorProfession
            txtphone.text = dic?.vendorPhone
-            imgview.sd_setImage(with: URL(string: webservices().imgurl + dic!.vendorProfile), placeholderImage: UIImage(named: "img_default"))
+            imgview.sd_setImage(with: URL(string: dic!.vendorProfile), placeholderImage: UIImage(named: "img_default"))
 
             
         }

@@ -319,7 +319,7 @@ extension CategoryDetailsVC : UICollectionViewDataSource,UICollectionViewDelegat
         if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
                        if arrCategoryDetails[indexPath.row].productsimages?[0].image != nil
                        {
-                           cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor-1"))
+                           cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor-1"))
                        }
                    }
   
@@ -399,7 +399,7 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
                   if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
                                  if arrCategoryDetails[indexPath.row].productsimages?[0].image != nil
                                  {
-                                     cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                                     cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                                  }
                              }
             

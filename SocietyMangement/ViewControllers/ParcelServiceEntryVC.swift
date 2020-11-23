@@ -285,7 +285,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
            
                let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
 
-               cell.lblname.text = hourary[indexPath.row] as! String
+        cell.lblname.text = (hourary[indexPath.row])
                if(selectedindex == indexPath.row)
                {
                    
@@ -314,7 +314,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
            
            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
            
-           return CGSize(width:width,height: 42);
+           return CGSize(width:width,height: 42)
            
        }
        

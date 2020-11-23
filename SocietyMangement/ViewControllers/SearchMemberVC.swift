@@ -49,14 +49,14 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
         membersary.removeAll()
         if(searchText != nil)
         {
-        for dic in newmembersary
+       /* for dic in newmembersary
         {
            if(dic.name.lowercased().contains(searchText.lowercased()))
            {
             membersary.append(dic)
             }
             tblview.reloadData()
-        }
+        } */
         }
         else
         {
@@ -79,12 +79,12 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
         
         let cell: SocietyEventcell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SocietyEventcell
         
-        cell.lblname.text = "Name :\(membersary[indexPath.row].name)"
+   /*     cell.lblname.text = "Name :\(membersary[indexPath.row].name)"
         cell.lblcontact.text = "Contact No :\(membersary[indexPath.row].phone)"
         cell.lblflatno.text = "Flat No :\(membersary[indexPath.row].gender!)"
         cell.lblflattype.text = "Flat Type :\(membersary[indexPath.row].flatType!)"
         
-        cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.row].image!), placeholderImage: UIImage(named: "img_default"))
+        cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + membersary[indexPath.row].image!), placeholderImage: UIImage(named: "img_default")) */
         
         webservices.sharedInstance.setShadow(view:cell.innerview)
         return cell
@@ -111,7 +111,19 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
                          return
                      }
             webservices().StartSpinner()
-            Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:UserDefaults.standard.value(forKey:"societyid")! as! String, building_id:"", token: "") { JSON in
+        
+        let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
+
+        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+        
+        let id = String(format: "%d",SociId)
+
+
+        
+          //  Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:UserDefaults.standard.value(forKey:"societyid")! as! String, building_id:"", token: "") { JSON in
+                
+                Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
+
                 switch JSON.result{
                 case .success(let resp):
                     
@@ -119,8 +131,8 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
                     var nameary = NSMutableArray()
                     if(JSON.response?.statusCode == 200)
                     {
-                        self.membersary = resp.data
-                        self.newmembersary = resp.data
+                        self.membersary = resp.data!
+                        self.newmembersary = resp.data!
                         self.tblview.reloadData()
                         self.tblview.isHidden = false
                         self.viewnoresult.isHidden = true
@@ -128,7 +140,7 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
                         
                     else
                     {
-                        if(resp.data.count == 0)
+                        if(resp.data!.count == 0)
                         {
                             self.tblview.isHidden = true
                             self.viewnoresult.isHidden = false
@@ -138,7 +150,7 @@ class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelega
                             self.tblview.isHidden = false
                             self.viewnoresult.isHidden = true
                             
-                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
                             self.present(alert, animated: true, completion: nil)
                             
                         }

@@ -219,16 +219,16 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
             txtgender.text = dic?.gender
             txtmobile.text = dic?.phone
             txtemail.text = dic?.email
-            txtprofession.text = dic?.profession
-            txtprofdetail.text = dic?.professionDetail
+            txtprofession.text = dic?.professionName
+            txtprofdetail.text = dic?.professionDetails
             txtflatno.text = dic?.name
-            txtflattype.text = dic?.flatType
+            txtflattype.text = dic?.role
             txtmemberrole.text = dic?.role
             txtusername.text = dic?.name
            // txtpassword.text = dic?.memberPassword
             
-            if dic!.image != nil{
-                 imgvie.sd_setImage(with: URL(string: webservices().imgurl + dic!.image!), placeholderImage: UIImage(named: "img_default"))
+            if dic!.profilePhotoPath != nil{
+                 imgvie.sd_setImage(with: URL(string: dic!.profilePhotoPath!), placeholderImage: UIImage(named: "img_default"))
             }
             
            
@@ -544,7 +544,7 @@ class AddMemberVC: UIViewController , UIImagePickerControllerDelegate , UINaviga
                         for new in resp.data
                         {
                            // if((self.dic?.buildingID.contains((new.id as NSNumber).stringValue))!)
-                         if self.dic?.buildingID == new.PropertyID
+                            if self.dic?.society?.societyID == new.PropertyID
                          {
                             nameary.add(new.PropertyName)
                             self.buildingid = String(new.PropertyID)

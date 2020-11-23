@@ -73,34 +73,34 @@ class OtherMemberPopUpVC: UIViewController {
         }
         
         
-        if member?.contact_status == 1{
+        if member?.memberStatus == 1{
             lblMobileNumber.text = member?.phone
-            lblFlatType.text = member?.flatType
+            lblFlatType.text = member?.role
         }else{
             lblMobileNumber.isHidden = true
             btnCall.isHidden = true
-            lblFlatType.text = member?.flatType
+            lblFlatType.text = member?.role
             
         }
         
-        
-        lblFlatNo.text = "\(member!.buildingname!)-\(member!.flatname!)"
-        lblBloodGrpValue.text = member?.bloodgroup
-        if(member?.image != nil)
+
+        lblFlatNo.text = "\(member!.society?.parentProperty! ?? "")-\(member!.society?.property! ?? "")"
+        lblBloodGrpValue.text = member?.bloodGroupName
+        if(member?.profilePhotoPath != nil)
         {
             imgMember.layer.cornerRadius = imgMember.frame.size.height/2
             imgMember.clipsToBounds = true
-            imgMember.sd_setImage(with: URL(string:webservices().imgurl + (member?.image)!), placeholderImage: UIImage(named: "vendor-1"))
+            imgMember.sd_setImage(with: URL(string: (member?.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
         }
         
-        if member?.profession != nil {
-            lblProfession.text = member?.profession
+        if member?.professionName != nil {
+            lblProfession.text = member?.professionName
         }else{
             lblProfession.text = ""
         }
         
-        if member?.professionDetail != nil {
-            lblProfessionDetail.text = String(format: "Profession Details: %@", (member?.professionDetail)!)
+        if member?.professionDetails != nil {
+            lblProfessionDetail.text = String(format: "Profession Details: %@", (member?.professionDetails)!)
         }else{
             lblProfessionDetail.text = String(format: "Profession Details: %@", "")
         }

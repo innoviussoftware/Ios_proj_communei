@@ -105,19 +105,19 @@ class QRCodeVC: BaseVC {
                         self.lblname.text = resp.data!.name
                         if(UsermeResponse?.data!.profilePhotoPath != nil)
                         {
-                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgview.sd_setImage(with: URL(string: (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         
                         
                         if(UsermeResponse?.data!.qr != nil)
                         {
-                           // self.imgvwScaner.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.qr)), placeholderImage: UIImage(named: ""))
+                           // self.imgvwScaner.sd_setImage(with: URL(string: (UsermeResponse!.data!.qr)), placeholderImage: UIImage(named: ""))
                             
-                          //  let svg = URL(string: webservices().imgurl + (UsermeResponse!.data!.qr))!
+                          //  let svg = URL(string: (UsermeResponse!.data!.qr))!
                            // imgvwScaner.sd_setImage(with: svg, completed: nil)
                            // print("svg : ",svg)
                             
-                            let svgURL = URL(string: webservices().imgurl + (UsermeResponse!.data!.qr!))!
+                            let svgURL = URL(string: (UsermeResponse!.data!.qr!))!
                             print("svgURL : ",svgURL)
                             let hammock = UIView(SVGURL: svgURL) { (svgLayer) in
                                // svgLayer.fillColor = UIColor(red:0.52, green:0.16, blue:0.32, alpha:1.00).cgColor

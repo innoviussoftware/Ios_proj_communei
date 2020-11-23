@@ -353,7 +353,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
             
             cell.lbltime.text = dateFormatterGet.string(from: date!)
             
-            cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
             
             return cell
         }

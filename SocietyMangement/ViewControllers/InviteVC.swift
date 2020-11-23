@@ -10,6 +10,8 @@ import UIKit
 import ScrollPager
 import ContactsUI
 import Contacts
+import SkyFloatingLabelTextField
+
 
 class manuallycell:UITableViewCell
 {
@@ -66,8 +68,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 
     
     @IBOutlet weak var lblStaticAllowUser: UILabel!
-    @IBOutlet weak var txtcontact: UITextField!
-    @IBOutlet weak var txtname: UITextField!
+    @IBOutlet weak var txtcontact: SkyFloatingLabelTextField!
+    @IBOutlet weak var txtname: SkyFloatingLabelTextField!
     
     @IBOutlet weak var tblmanually: UITableView!
     
@@ -412,9 +414,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                    
                    if frequencyType == "once"{
                    }else{
-                       strDateee = strChangeDateFormate(strDateeee: startdate)
-                       endDate = strChangeDateFormate(strDateeee: enddate)
-                   }
+                    strDateee = strChangeDateFormate(strDateeee: startdate)
+                    endDate = strChangeDateFormate(strDateeee: enddate)
+                }
                
         
         if frequencyType == "once"{
@@ -423,6 +425,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             lbltodayrecent.text = "\(date),\(time),\(validtill)"
         }else{
             
+            strDateee = strChangeDateFormate(strDateeee: startdate)
+            endDate = strChangeDateFormate(strDateeee: enddate)
+        
             lblTodayData.text = "\(strDateee) to \(endDate)"
             lbltodayContact.text = "\(strDateee) to \(endDate)"
             lbltodayrecent.text = "\(strDateee) to \(endDate)"

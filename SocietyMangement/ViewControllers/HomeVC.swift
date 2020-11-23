@@ -797,7 +797,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             
          
             if arrHelperList[indexPath.row].photos != nil{
-                cell.imgMaid.sd_setImage(with: URL(string:webservices().imgurl + arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
+                cell.imgMaid.sd_setImage(with: URL(string: arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
              }
             
             cell.btnCall.tag = indexPath.row
@@ -836,7 +836,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             
             if(familymeberary[indexPath.row].profilePhotoPath != nil)
             {
-            cell.imguser.sd_setImage(with: URL(string:webservices().imgurl + familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+            cell.imguser.sd_setImage(with: URL(string: familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
             }
             cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
             cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
@@ -979,7 +979,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     {
         
         let otpVC = self.storyboard?.instantiateViewController(withIdentifier: "ImagePopUP") as! ImagePopUP
-        otpVC.imgurl = webservices().imgurl + arrHelperList[sender.view!.tag].photos!
+        otpVC.imgurl =  arrHelperList[sender.view!.tag].photos!
            self.addChildViewController(otpVC)
                   self.view.addSubview(otpVC.view)
                   let height = self.view.bounds.height
@@ -996,7 +996,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     {
         
         let otpVC = self.storyboard?.instantiateViewController(withIdentifier: "ImagePopUP") as! ImagePopUP
-        otpVC.imgurl = webservices().imgurl + arrGuestList[sender.view!.tag].photos!
+        otpVC.imgurl = arrGuestList[sender.view!.tag].photos!
            self.addChildViewController(otpVC)
                   self.view.addSubview(otpVC.view)
                   let height = self.view.bounds.height
@@ -1048,7 +1048,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                 cell.btnWaiting.backgroundColor = AppColor.appcolor
                 cell.lblName.text = arrGuestList[indexPath.row].name
                 
-                cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+                cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
                 cell.btnGuestWaitingIcon.isHidden = true
                 
                 
@@ -1137,7 +1137,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                 cell.btnWaiting.backgroundColor = AppColor.appcolor
                            cell.lblName.text = arrGuestList[indexPath.row].name
                            
-                           cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+                           cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
                            cell.btnGuestWaitingIcon.isHidden = true
                            
                            cell.btnDecline.setTitle("Delete", for: .normal)
@@ -1275,7 +1275,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.lblGuestWaiting.text = "Guest is waiting at gate"
             cell.btnWaiting.backgroundColor = AppColor.appcolor
             cell.lblName.text = arrGuestList[indexPath.row].name
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
             dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
             cell.lblINTIme.text = dateFormatterGet.string(from: date!)
@@ -1294,7 +1294,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             cell.lblGuestWaiting.isHidden = true
             
@@ -1325,7 +1325,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             
             cell.btnAccept.isHidden = true
@@ -1415,7 +1415,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             
             cell.btnDecline.removeTarget(self, action: #selector(DeclineRequest(sender:)), for: .allEvents)
@@ -1549,7 +1549,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.btnWaiting.backgroundColor =  UIColor.red //UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             cell.lblGuestWaiting.isHidden = true
             
@@ -1743,7 +1743,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                         self.lblname.text = "Hello, \(resp.data!.name)"
                         if(UsermeResponse?.data!.image != nil)
                         {
-                            self.imgview.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse!.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgview.sd_setImage(with: URL(string: (UsermeResponse!.data!.image)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                         self.lblflatno.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.building!,UsermeResponse!.data!.flats!)

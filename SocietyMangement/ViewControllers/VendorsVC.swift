@@ -69,7 +69,7 @@ class VendorsVC: UIViewController, UITableViewDelegate , UITableViewDataSource {
         cell.lblflatno.text = "Contact No :\(vendorsary[indexPath.row].vendorPhone)"
         cell.lblflattype.text = "Email :\(vendorsary[indexPath.row].vendorEmail)"
         
-        cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + vendorsary[indexPath.row].vendorProfile), placeholderImage: UIImage(named: "img_default"))
+        cell.imgview.sd_setImage(with: URL(string: vendorsary[indexPath.row].vendorProfile), placeholderImage: UIImage(named: "img_default"))
         
         cell.btnedit.addTarget(self, action:#selector(editvendor), for: .touchUpInside)
         cell.btndelete.addTarget(self, action:#selector(deleteVendor), for: .touchUpInside)

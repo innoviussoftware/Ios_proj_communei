@@ -16,6 +16,112 @@
 import Foundation
 
 
+
+// MARK: - MembersResponse
+struct MembersResponse: Codable {
+    let data: [Members]?
+    let status: Int?
+    let message: String?
+}
+
+// MARK: - Datum
+struct Members: Codable {
+    let active, bloodGroupID, contactStatus: Int?
+    let dateOfBirth, fcmToken: String?
+    let gender: String?
+    let memberStatus: Int?
+    let phone: String?
+    let professionDetails: String?
+    let professionID: Int?
+    let qr: String?
+    let relation: String?
+    let resident: Int?
+    let role: String?
+    let sinceDevice: String?
+    let society: SocietyMembers?
+    let userTypeName: String?
+    let vehicles: [VehicleMembers]?
+    let email, guid, name: String?
+    let profilePhotoPath: String?
+    let updatedAt: String?
+    let bloodGroupName, professionName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case active = "Active"
+        case bloodGroupID = "BloodGroupID"
+        case contactStatus = "ContactStatus"
+        case dateOfBirth = "DateOfBirth"
+        case fcmToken = "FCMToken"
+        case gender = "Gender"
+        case memberStatus = "MemberStatus"
+        case phone = "Phone"
+        case professionDetails = "ProfessionDetails"
+        case professionID = "ProfessionID"
+        case qr = "Qr"
+        case relation = "Relation"
+        case resident = "Resident"
+        case role = "Role"
+        case sinceDevice = "SinceDevice"
+        case society = "Society"
+        case userTypeName = "UserTypeName"
+        case vehicles = "Vehicles"
+        case email, guid, name
+        case profilePhotoPath = "profile_photo_path"
+        case updatedAt = "updated_at"
+        case bloodGroupName = "BloodGroupName"
+        case professionName = "ProfessionName"
+    }
+}
+
+
+
+
+
+// MARK: - SocietyClass
+struct SocietyMembers: Codable {
+    let societyID, propertyID, parentPropertyID, propertyTypeID: Int?
+    let isCommercial, userTypeID: Int?
+    let society: String?
+    let areaID, cityID: Int?
+    let property: String?
+    let parentProperty: String?
+
+    enum CodingKeys: String, CodingKey {
+        case societyID = "SocietyID"
+        case propertyID = "PropertyID"
+        case parentPropertyID = "ParentPropertyID"
+        case propertyTypeID = "PropertyTypeID"
+        case isCommercial = "IsCommercial"
+        case userTypeID = "UserTypeID"
+        case society = "Society"
+        case areaID = "AreaID"
+        case cityID = "CityID"
+        case property = "Property"
+        case parentProperty = "ParentProperty"
+    }
+}
+
+
+// MARK: - Vehicle
+struct VehicleMembers: Codable {
+    let vehicleID: Int?
+    let number: String?
+    let numberDigits, vehicleTypeID: Int?
+    let type: String?
+
+    enum CodingKeys: String, CodingKey {
+        case vehicleID = "VehicleID"
+        case number = "Number"
+        case numberDigits = "NumberDigits"
+        case vehicleTypeID = "VehicleTypeID"
+        case type = "Type"
+    }
+}
+
+
+
+
+/*
 // MARK: - GetFamilyMember
 struct MembersResponse: Codable {
     let data: [Members]
@@ -52,3 +158,4 @@ struct Members: Codable {
 }
 
 
+*/

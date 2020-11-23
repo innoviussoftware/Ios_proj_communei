@@ -117,7 +117,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
 
             }
             else{
-              //  self.toptblConstraint.constant = -60
 
                 vwbtnadd.isHidden = true
                 btnadd.isHidden = true //Manish
@@ -328,7 +327,7 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
             }
             else{
                 
-                self.toptblConstraint.constant = -60
+                self.toptblConstraint.constant = -44
 
                 cell.btnEdit.isHidden = true
                 cell.btnDelete.isHidden = true

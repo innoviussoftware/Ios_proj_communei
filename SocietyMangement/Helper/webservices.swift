@@ -30,7 +30,8 @@ class webservices: NSObject {
 
     
    var baseurl =  "https://api.communei.com/api/"
-   var imgurl = "https://api.communei.com/storage/app/icons/"
+    
+ //  var imgurl = "https://api.communei.com/storage/app/icons/"
     
     
 

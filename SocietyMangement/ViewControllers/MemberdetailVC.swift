@@ -89,10 +89,10 @@ class MemberdetailVC: UIViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
-               avc?.subtitleStr = "Are you sure you want to delete \(dic!.name)?"
+        avc?.subtitleStr = "Are you sure you want to delete \(dic!.name ?? "")?"
                avc?.yesAct = {
                      
-                        self.apicallDeleteMember(id:(self.dic!.id as! NSNumber).stringValue)
+                self.apicallDeleteMember(id:self.dic!.guid!)
 
                    }
                avc?.noAct = {

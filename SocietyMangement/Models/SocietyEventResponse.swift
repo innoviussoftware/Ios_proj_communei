@@ -25,7 +25,7 @@ struct SocietyEvent: Codable {
     let eventTypeID: Int?
     let eventStartDate: String? //EventStartDate
     let eventEndDate: String? //EventEndDate
-    let creationDate, createdBy: String
+    let creationDate, createdBy: String?
     let pollEnabled, multiPollEnable, societyID: Int?
     let attachments: [String]?
     let readAt: String?

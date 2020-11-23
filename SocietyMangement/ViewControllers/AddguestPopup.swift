@@ -105,18 +105,33 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     
     @IBAction func AddFromcontact(_ sender: Any) {
-        
-        delegate?.inviteaction(from: "contact")
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            validtill = txtvaildtill.text!
+            delegate?.inviteaction(from: "contact")
+        }
     }
     
     @IBAction func AddFromRecent(_ sender: Any) {
-          
-          delegate?.inviteaction(from: "recent")
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            validtill = txtvaildtill.text!
+            delegate?.inviteaction(from: "recent")
+        }
       }
     
     @IBAction func ManuallyAction(_ sender: Any) {
-        
-        delegate?.inviteaction(from: "Manually")
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            validtill = txtvaildtill.text!
+            delegate?.inviteaction(from: "Manually")
+        }
     }
     
     @IBAction func AdOptionAction(_ sender: Any) {
@@ -144,18 +159,19 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         self.viewbottom.isHidden = true
     }
     
-    @IBAction func btnApply(_ sender: Any) {
+    @IBAction func btnApply(_ sender: UIButton) {
+        
+        txtvaildtill.text = hourary[selectedindex]
+
+       // selectedindex = 0
+        
+        collectionHours.reloadData()
+
         self.viewbottom.isHidden = true
     }
     
     @IBAction func btnReset(_ sender: Any) {
         
-        txtvaildtill.text = hourary[0]
-
-        selectedindex = 0
-        
-        collectionHours.reloadData()
-
         self.viewbottom.isHidden = true
     }
     
@@ -252,6 +268,9 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         showTimepPicker()
         showDatePicker()
         
+        txtvaildtill.text = hourary[0]
+
+        
         let tap2 = UITapGestureRecognizer()
         tap2.addTarget(self, action: #selector(tapcontact))
         lblcontact.addGestureRecognizer(tap2)
@@ -283,6 +302,11 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         
         lblfreemanually.addGestureRecognizer(tap3)
         
+        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
+               
+        collectionHours.collectionViewLayout = alignedFlowLayout
+         
+        
         
         let datee = Date()
         let formatter = DateFormatter()
@@ -292,10 +316,15 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         txtenddate.text = formatter.string(from: datee)
         date = txtdate.text!
         
+        txtdate.text = "Today"
+        
         let formatt = DateFormatter()
         formatt.dateFormat = "hh:mm a"
         txttime.text = formatt.string(from: datee)
         time =  txttime.text!
+        
+       
+
         
     }
     
@@ -382,16 +411,24 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
                 
             }else
             {
-                
-                date = txtdate.text!
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
                 enddate = txtenddate.text!
                 
+                print("recent once")
                 
                 delegate?.inviteaction(from: "recent")
-                
             }
         }
         else{
@@ -410,12 +447,24 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             }
             else
             {
-                
-                date = txtdate.text!
+                                
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
                 enddate = txtenddate.text!
+                
+                print("recent multi")
+
                 delegate?.inviteaction(from: "recent")
                 
             }
@@ -447,14 +496,26 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             }else
             {
                 
-                date = txtdate.text!
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
+                
                 enddate = txtenddate.text!
                 
+                print("contact once")
                 
                 delegate?.inviteaction(from: "contact")
+
                 
             }
         }
@@ -475,11 +536,24 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             else
             {
                 
-                date = txtdate.text!
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
+                
                 enddate = txtenddate.text!
+                
+                print("contact multi")
+                
                 delegate?.inviteaction(from: "contact")
                 
             }
@@ -510,11 +584,24 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
                 
             }else
             {
-                date = txtdate.text!
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
+                
                 enddate = txtenddate.text!
+                
+                print("manually once")
+                
                 delegate?.inviteaction(from: "manually")
                 
             }
@@ -536,11 +623,22 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             else
             {
                 
-                date = txtdate.text!
+                if txtdate.text == "Today" {
+                    let datee = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy"
+                    txtdate.text = formatter.string(from: datee)
+                    date = txtdate.text!
+                }else{
+                    date = txtdate.text!
+                }
                 time = txttime.text!
                 validtill = txtvaildtill.text!
+                
                 startdate = txtstartdate.text!
                 enddate = txtenddate.text!
+                
+                print("manually multi")
                 
                 delegate?.inviteaction(from: "manually")
                 
@@ -607,6 +705,9 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         txttime.inputAccessoryView = toolbar
         // add datepicker to textField
         txttime.inputView = timePicker
+        
+        // add datepicker to textField
+     
         
     }
     
@@ -761,11 +862,12 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         return hourary.count
         
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
         
-        cell.lblname.text = hourary[indexPath.row] as! String
+        cell.lblname.text = hourary[indexPath.row] as? String
         if(selectedindex == indexPath.row)
         {
             
@@ -787,11 +889,18 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let numberOfSets = CGFloat(4.0)
+       /* let numberOfSets = CGFloat(4.0)
         
         let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
         
-        return CGSize(width:width,height: 42);
+        return CGSize(width:width,height: 42) */
+        
+        let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+        let contentNSString = hourary[indexPath.row]
+        let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+        
+        print("\(expectedLabelSize)")
+        return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 25) //31
         
     }
     

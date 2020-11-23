@@ -615,7 +615,7 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
             if arrRecommend[indexPath.row].productsimages!.count > 0{
                 if arrRecommend[indexPath.row].productsimages?[0].image != nil
                 {
-                    cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor profile"))
+                    cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor profile"))
                 }
             }
             
@@ -707,7 +707,7 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
           if arrRecommend[indexPath.row].productsimages!.count > 0{
                 if arrRecommend[indexPath.row].productsimages?[0].image != nil
                       {
-                          cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                          cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                       
                   }
@@ -743,7 +743,7 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
                     if arrRecommend[indexPath.row].productsimages!.count > 0{
                         if arrRecommend[indexPath.row].productsimages?[0].image != nil
                         {
-                            cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                            cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                     }
                     

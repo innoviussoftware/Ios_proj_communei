@@ -324,10 +324,13 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                     
         let cell = tableView.dequeueReusableCell(withIdentifier: "AmenitiesFacilitiesCell") as! AmenitiesFacilitiesCell
 
-        
-          /*  if arrFacilities[indexPath.row].attachments != nil{
-           cell.imgService.sd_setImage(with: URL(string:webservices().imgurl + arrFacilities[indexPath.row].images!), placeholderImage: UIImage(named: "ic_Amenities"))
-        } */
+        //          let pdffile = Circularary[sender.tag].attachments![0]
+
+            if arrFacilities[indexPath.row].attachments != nil{
+                cell.imgService.sd_setImage(with: URL(string:(arrFacilities[indexPath.row].attachments?[0].attachment!)!), placeholderImage: UIImage(named: "ic_Amenities"))
+                
+                // sd_setImage(with: URL(string: (arrFacilities[indexPath.row].attachments![0].attachment!)), completed: nil)
+        }
         
         cell.selectionStyle = .none
         cell.btnViewAll.tag = indexPath.row

@@ -98,9 +98,12 @@ let API_ADD_CIRCULAR = "society/notices/2/add" //"user/addcircular"
 let API_ADD_EVENT = "society/notices/3/add" // "user/addevent"
 let API_ADD_FAMILY_MEMBER = "user/family/add"  // "user/addfamilymember"
 
-let API_GET_EVENT = "society/notices/3" //"user/getevent"
+let API_GET_EVENT = "user/notices/3" //"society/notices/3" //"user/getevent"
 let API_GET_FAMAILY_MEMBER = "user/family"  // "user/getfamilymember"
-let API_MEMBER_LIST = "user/memberlist"
+let API_MEMBER_LIST =  "user/society-members/" //"user/memberlist"
+
+let API_GET_FAMAILY_MEMBER_PROFILE = "society/family/"  // "user/getfamilymember"
+
 
 let API_DELETE_EVENT =  "society/notices/3/delete" // "user/deleteevent"
 let API_DELETE_CIRCULAR = "society/notices/2/delete" //"user/deletecircular"

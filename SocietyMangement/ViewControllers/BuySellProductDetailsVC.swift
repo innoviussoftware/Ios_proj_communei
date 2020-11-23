@@ -140,7 +140,7 @@ class BuySellProductDetailsVC: BaseVC {
         
         if(arrProductDetails.image != nil)
         {
-            imgSeller.sd_setImage(with: URL(string:webservices().imgurl + arrProductDetails.image!), placeholderImage: UIImage(named: "profile_magic"))
+            imgSeller.sd_setImage(with: URL(string: arrProductDetails.image!), placeholderImage: UIImage(named: "profile_magic"))
         }
         apiProductList(productID: strProductID, categoryId: strCategoryId)
 
@@ -501,7 +501,7 @@ extension BuySellProductDetailsVC : FSPagerViewDelegate,FSPagerViewDataSource{
         
         if(arrProductImage[index].image != nil)
         {
-            cell.imageView?.sd_setImage(with: URL(string:webservices().imgurl + arrProductImage[index].image!), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imageView?.sd_setImage(with: URL(string: arrProductImage[index].image!), placeholderImage: UIImage(named: "vendor-1"))
         }
         
         return cell
@@ -541,7 +541,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
           if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
                 if arrRelatedProduct[indexPath.row].productsimages?[0].image != nil
                       {
-                          cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                          cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                       
                   }
@@ -577,7 +577,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                     if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
                         if arrRelatedProduct[indexPath.row].productsimages?[0].image != nil
                         {
-                            cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                          //  cell.imgProduct.sd_setImage(with: (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                     }
                     

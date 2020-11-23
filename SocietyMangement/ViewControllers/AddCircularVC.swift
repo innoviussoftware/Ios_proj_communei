@@ -143,33 +143,33 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
             AttechemntView_update.isHidden = false
             
             
-           // imgview.sd_setBackgroundImage(with: URL(string:webservices().imgurl + dic!.pdffile!), for: .normal)
+           // imgview.sd_setBackgroundImage(with: URL(string: dic!.pdffile!), for: .normal)
             
             //if ((dic?.attachments![0].isEmpty != nil)) {
                 
-            if  ((dic?.attachments!.firstIndex(where: {$0 == ""})) == nil) {
-                print("empty")
-            }else{
-                
-              btnattechment_update.imageView!.sd_setImage(with: URL(string:webservices().baseurl + dic!.attachments![0]), placeholderImage:UIImage(named: "ic_pdf_file"), completed: { (image, error, cacheType, url) -> Void in
+//            if  ((dic?.attachments!.firstIndex(where: {$0 == ""})) == nil) {
+//                print("empty")
+//            }else{
+//
+              btnattechment_update.imageView!.sd_setImage(with: URL(string: dic!.attachments![0]), placeholderImage:UIImage(named: "ic_pdf_file"), completed: { (image, error, cacheType, url) -> Void in
                  if ((error) != nil) {
                     // set the placeholder image here
                     
                    self.btnattechment_update.setBackgroundImage(UIImage(named: "ic_pdf_file"), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().imgurl + self.dic!.attachments![0])!)
+                    let testImage = NSData(contentsOf: URL(string: self.dic!.attachments![0])!)
                     self.imgData = testImage as Data?
 
                 } else {
                     // success ... use the image
-                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string:webservices().imgurl + self.dic!.attachments![0]), for: .normal)
+                    self.btnattechment_update.sd_setBackgroundImage(with: URL(string: self.dic!.attachments![0]), for: .normal)
                     
-                    let testImage = NSData(contentsOf: URL(string:webservices().baseurl + self.dic!.attachments![0])!)
+                    let testImage = NSData(contentsOf: URL(string: self.dic!.attachments![0])!)
                     self.imgData = testImage as Data?
                 }
             })
             
-        }
+     //   }
 
             apicallGetBuildings()
             txttitle.text = dic?.title

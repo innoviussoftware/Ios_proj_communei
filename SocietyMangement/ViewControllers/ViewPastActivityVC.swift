@@ -127,7 +127,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
                 cell.btnWaiting.backgroundColor = AppColor.appcolor
                 cell.lblName.text = arrGuestList[indexPath.row].name
                 
-                cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+                cell.imgUser.sd_setImage(with: URL(string:  arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
                 cell.btnGuestWaitingIcon.isHidden = true
                 
                 
@@ -216,7 +216,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
                 cell.btnWaiting.backgroundColor = AppColor.appcolor
                            cell.lblName.text = arrGuestList[indexPath.row].name
                            
-                           cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+                           cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
                            cell.btnGuestWaitingIcon.isHidden = true
                            
                            cell.btnDecline.setTitle("Delete", for: .normal)
@@ -354,7 +354,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             cell.lblGuestWaiting.text = "Guest is waiting at gate"
             cell.btnWaiting.backgroundColor = AppColor.appcolor
             cell.lblName.text = arrGuestList[indexPath.row].name
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
             dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
             cell.lblINTIme.text = dateFormatterGet.string(from: date!)
@@ -373,7 +373,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             cell.lblGuestWaiting.isHidden = true
             
@@ -404,7 +404,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             
             cell.btnAccept.isHidden = true
@@ -494,7 +494,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             cell.btnWaiting.backgroundColor = UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             
             cell.btnDecline.removeTarget(self, action: #selector(DeclineRequest(sender:)), for: .allEvents)
@@ -624,7 +624,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
             cell.btnWaiting.backgroundColor =  UIColor.red //UIColor(red: 0.0/255.0, green: 138.0/255.0, blue: 6.0/255.0, alpha: 1)
             cell.lblName.text = arrGuestList[indexPath.row].name
             
-            cell.imgUser.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+            cell.imgUser.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
             cell.btnGuestWaitingIcon.isHidden = true
             cell.lblGuestWaiting.isHidden = true
             
@@ -802,7 +802,7 @@ class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDa
      {
          
          let otpVC = self.storyboard?.instantiateViewController(withIdentifier: "ImagePopUP") as! ImagePopUP
-         otpVC.imgurl = webservices().imgurl + arrGuestList[sender.view!.tag].photos!
+         otpVC.imgurl =  arrGuestList[sender.view!.tag].photos!
             self.addChildViewController(otpVC)
                    self.view.addSubview(otpVC.view)
                    let height = self.view.bounds.height

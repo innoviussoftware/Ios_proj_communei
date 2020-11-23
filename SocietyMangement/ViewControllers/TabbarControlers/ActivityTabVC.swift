@@ -613,7 +613,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         cell.lblname.text = arrGuestList[indexPath.row].name
         
-        cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+        cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
         
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -647,7 +647,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 let cell:AcceptedRequestCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! AcceptedRequestCell
                 cell.lblname.text = arrGuestList[indexPath.row].name
                 
-                cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+                cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
                 cell.lblouttime.isHidden = true
                // cell.lblouttime.isHidden = true
                 cell.imgout.isHidden = true
@@ -706,7 +706,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblname.text = arrGuestList[indexPath.row].name
                 
-                cell.imgview.sd_setImage(with: URL(string: webservices().imgurl + arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
+                cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "ic_profile"))
                 cell.btnout.isHidden = false
                 cell.btnout.isHidden = false
                 cell.btnout.tag = indexPath.row

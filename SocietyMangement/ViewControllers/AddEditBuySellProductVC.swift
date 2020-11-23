@@ -90,7 +90,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                    txtDescription.text = arrRecommendData.datumDescription
                 
                 for img in arrRecommendData.productsimages!{
-                    let str =  webservices().imgurl + img.image!
+                    let str =  img.image!
                     let img = UIImageView()
                     img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor-1"))
                     arrEditProductImg.add(img.image!)

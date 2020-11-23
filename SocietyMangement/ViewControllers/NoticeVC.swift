@@ -136,7 +136,9 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
 
             }
             else{ // resident
-              //  self.toptblConstraint.constant = -60
+                
+              //  self.toptblConstraint.constant = -44
+                
                 vwbtnadd.isHidden = true
 
                 btnadd.isHidden = true
@@ -375,7 +377,7 @@ class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFie
             }
             else{
                 
-                self.toptblConstraint.constant = -60
+                self.toptblConstraint.constant = -44
 
                 cell?.btnEdit.isHidden = true
                 cell?.btnDelete.isHidden = true

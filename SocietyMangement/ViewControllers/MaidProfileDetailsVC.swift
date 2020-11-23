@@ -212,7 +212,7 @@ class MaidProfileDetailsVC: UIViewController {
                                {
                                 self.imgUser.layer.cornerRadius =  self.imgUser.frame.size.height/2
                                 self.imgUser.clipsToBounds = true
-                                self.imgUser.sd_setImage(with: URL(string:webservices().imgurl + self.dictHelperData.photos!), placeholderImage: UIImage(named: "vendor-1"))
+                                self.imgUser.sd_setImage(with: URL(string: self.dictHelperData.photos!), placeholderImage: UIImage(named: "vendor-1"))
                                }
                         self.lblName.text = self.dictHelperData.name
                         self.lblProfession.text = self.dictHelperData.typename

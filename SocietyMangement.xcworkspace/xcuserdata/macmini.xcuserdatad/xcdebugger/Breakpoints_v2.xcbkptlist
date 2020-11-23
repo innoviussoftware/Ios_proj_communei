@@ -18,80 +18,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "14EF08ED-C901-4771-BF8C-0762A92F40D0"
+            uuid = "9828F914-D6E0-49FC-856E-702B6256BD60"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/SocietyEventsVC.swift"
+            filePath = "SocietyMangement/ViewControllers/InviteVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "503"
-            endingLineNumber = "503"
-            landmarkName = "apicallGetEvents()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "14EF08ED-C901-4771-BF8C-0762A92F40D0 - be183f893839472a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Communei.SocietyEventsVC.apicallGetEvents() -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/SocietyEventsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "503"
-                  endingLineNumber = "503"
-                  offsetFromSymbolStart = "773">
-               </Location>
-               <Location
-                  uuid = "14EF08ED-C901-4771-BF8C-0762A92F40D0 - c14136ff8b14fa0b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.SocietyEventResponse&gt;) -&gt; () in Communei.SocietyEventsVC.apicallGetEvents() -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/SocietyEventsVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "505"
-                  endingLineNumber = "505"
-                  offsetFromSymbolStart = "254">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "37CFE578-2C01-42BB-B05A-F35975BCDC87"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/SocietyEventsVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "506"
-            endingLineNumber = "506"
-            landmarkName = "apicallGetEvents()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CAB365A0-97FE-45DB-B8C1-DB540B25FD6C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "327"
-            endingLineNumber = "327"
-            landmarkName = "GetAllEvents(URL:token:onCompletion:)"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

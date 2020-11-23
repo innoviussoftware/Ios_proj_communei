@@ -413,7 +413,7 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
         cell.selectionStyle = .none
         if arrHelper[indexPath.row].photos != nil
         {
-            cell.imgUser.sd_setImage(with: URL(string:webservices().imgurl + arrHelper[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imgUser.sd_setImage(with: URL(string: arrHelper[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
         }
         
         cell.lblName.text = arrHelper[indexPath.row].name

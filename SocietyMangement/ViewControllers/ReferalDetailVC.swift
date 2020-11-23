@@ -78,7 +78,7 @@ class ReferalDetailVC: BaseVC {
         lblname.text = UsermeResponse?.data!.name
         
         if UsermeResponse?.data!.profilePhotoPath != nil{
-            imguser.sd_setImage(with: URL(string:webservices().imgurl + (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
+            imguser.sd_setImage(with: URL(string: (UsermeResponse?.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "img_default"))
         }
         
         lblcontact.text = String(format: "Contact No: %@", (UsermeResponse?.data!.phone)!)   // "\(UsermeResponse?.data!.phone!)"

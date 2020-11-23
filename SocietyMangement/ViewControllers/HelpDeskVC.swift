@@ -60,9 +60,9 @@ class HelpDeskVC: UIViewController {
         
         if isfrom == 1{
                 // btnMenu.setImage(UIImage(named: "menu"), for: .normal)
-                btnMenu.setImage(UIImage(named: "ic_back-1"), for: .normal)
+                btnMenu.setImage(UIImage(named:"ic_back-1"), for: .normal)
         }else{
-                btnMenu.setImage(UIImage(named: "menu"), for: .normal)
+                btnMenu.setImage(UIImage(named:"menu"), for: .normal)
         }
         
         if isfrom == 0 {

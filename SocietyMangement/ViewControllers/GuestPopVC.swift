@@ -79,7 +79,7 @@ class GuestPopVC: UIViewController {
         //NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         lblname.text = guestdic.value(forKey:"guest_name") as? String
         let image = guestdic.value(forKey:"guest_image") as! String
-        imgview.sd_setImage(with: URL(string:webservices().imgurl + image), placeholderImage: UIImage(named: "vendor-1"))
+        imgview.sd_setImage(with: URL(string: image), placeholderImage: UIImage(named: "vendor-1"))
         lblflatno.text = "\(guestdic.value(forKey:"building_no") as! String) \(guestdic.value(forKey:"flat_no") as! String),\(guestdic.value(forKey:"socity_name") as! String)"
         //(guestdic.value(forKey:"building_no") as! String) \(guestdic.value(forKey:"flat_no") as! String),\(guestdic.value(forKey:"guest_name") as! String)"
         let tap = UITapGestureRecognizer()
@@ -93,7 +93,7 @@ class GuestPopVC: UIViewController {
     let image = guestdic.value(forKey:"guest_image") as! String
 
        let otpVC = self.storyboard?.instantiateViewController(withIdentifier: "ImagePopUP") as! ImagePopUP
-    otpVC.imgurl = webservices().imgurl + image
+    otpVC.imgurl = image
        self.addChildViewController(otpVC)
               self.view.addSubview(otpVC.view)
               let height = self.view.bounds.height
@@ -129,7 +129,7 @@ class GuestPopVC: UIViewController {
             {
                 lblname.text = object.value(forKey: "guest_name") as? String
                 let image = object.value(forKey: "guest_image") as! String
-                 imgview.sd_setImage(with: URL(string:webservices().imgurl + image), placeholderImage: UIImage(named: "vendor-1"))
+                 imgview.sd_setImage(with: URL(string: image), placeholderImage: UIImage(named: "vendor-1"))
                 lblflatno.text = "\(object.value(forKey:"building_no") as! String) \(object.value(forKey:"flat_no") as! String),\(object.value(forKey:"socity_name") as! String)"
             }
         }
