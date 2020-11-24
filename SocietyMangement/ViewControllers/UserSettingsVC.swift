@@ -276,6 +276,7 @@ class UserSettingsVC: BaseVC {
                                                                 verticalAlignment: .center)
         
         collectionmember.collectionViewLayout = alignedFlowLayout
+        
         self.collectionmember.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
         
        // checkbox(cb: cbself)
@@ -306,7 +307,6 @@ class UserSettingsVC: BaseVC {
         
         lblPrivacyPolicy.addGestureRecognizer(tap1)
 
-        
     }
     
     @objc func taplblTC(sender: UITapGestureRecognizer)

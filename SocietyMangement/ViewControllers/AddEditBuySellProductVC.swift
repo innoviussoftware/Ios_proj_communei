@@ -145,11 +145,8 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
             self.updateViewConstraints()
             self.view.layoutIfNeeded()
         }
-
     }
-    
-    
-    
+        
     @objc func openPicker(txt:UITextField!) {
         activeTexfield = txt
         
@@ -160,7 +157,6 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
         picker = UIPickerView()
         picker.delegate = self
         picker.dataSource = self
-        
         
         activeTexfield.inputView = picker
         picker.backgroundColor = .white

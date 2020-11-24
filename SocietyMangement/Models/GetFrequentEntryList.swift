@@ -8,7 +8,54 @@
 
 import Foundation
 
+// MARK: - GetFrequentEntryList
+struct GetFrequentEntryList: Codable {
+    let data: [GetFrequentEntryListData]?
+    let status: Int?
+    let message: String?
+}
 
+// MARK: - Datum
+struct GetFrequentEntryListData: Codable {
+    let visitorID: Int?
+    let activity: Activity?
+
+    enum CodingKeys: String, CodingKey {
+        case visitorID = "VisitorID"
+        case activity = "Activity"
+    }
+}
+
+// MARK: - Activity
+struct Activity: Codable {
+    let activityType, name, phone, activityIn: String?
+    let out, societyName, propertyFullName, isMulti: String?
+    let entryType, pic, status, addedBy: String?
+    let visitorPreApprovalID, activityID: Int?
+    let qr: String?
+    let qrURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case activityType = "ActivityType"
+        case name = "Name"
+        case phone = "Phone"
+        case activityIn = "In"
+        case out = "Out"
+        case societyName = "SocietyName"
+        case propertyFullName = "PropertyFullName"
+        case isMulti = "IsMulti"
+        case entryType = "EntryType"
+        case pic = "Pic"
+        case status = "Status"
+        case addedBy = "AddedBy"
+        case visitorPreApprovalID = "VisitorPreApprovalID"
+        case activityID = "ActivityID"
+        case qr = "QR"
+        case qrURL = "QRUrl"
+    }
+}
+
+/*
 // MARK: - GetFrequentEntryList
 struct GetFrequentEntryList: Codable {
     let data: [GetFrequentEntryListData]
@@ -38,3 +85,5 @@ struct GetFrequentEntryListData: Codable {
          
     }
 }
+
+ */

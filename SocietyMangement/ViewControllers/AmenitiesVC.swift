@@ -21,6 +21,9 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var btnMenu: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet weak var lblbooking: UILabel!
+
+    
     @IBOutlet weak var txtSearchbar: UITextField!
 
     
@@ -142,7 +145,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 
         
             webservices().StartSpinner()
-        Apicallhandler().GetBookingsList(URL: webservices().baseurl + API_GET_BOOKINGS_LIST, token:strToken) { JSON in
+        Apicallhandler().GetBookingsList(URL: webservices().baseurl + API_GET_BOOKINGS_LIST, token:strToken) { [self] JSON in
                 switch JSON.result{
                 case .success(let resp):
 
@@ -152,17 +155,23 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                         self.arrBookings = resp.data!
                         
                         if self.arrBookings.count > 0{
+                            
+                            self.lblbooking.isHidden = true
+
                             self.tblBookingHistory.dataSource = self
                             self.tblBookingHistory.delegate = self
                             self.tblBookingHistory.reloadData()
                             
                         }else{
+                            self.lblbooking.isHidden = false
                             self.tblBookingHistory.isHidden = true
                         }
 
                     }
                     else
                     {
+                        self.lblbooking.isHidden = false
+
                         self.tblBookingHistory.isHidden = true
                     }
 

@@ -137,8 +137,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         else
         {
             let dic = NSMutableDictionary()
-            dic.setValue(txtname.text!, forKey: "name")
-            dic.setValue(txtcontact.text!, forKey: "contact")
+            dic.setValue(txtname.text!, forKey: "Name")
+            dic.setValue(txtcontact.text!, forKey: "Mobile")
             
             manuallyary.add(dic)
             tblmanually.reloadData()
@@ -155,7 +155,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 //                               if(selectedindex.contains(namenew))
 //                               {
 //                                let dict = NSMutableDictionary()
-//                                dict.setValue(namenew, forKey: "name")
+//                                dict.setValue(namenew, forKey: "Name")
 //                                for phoneNumber in dic.phoneNumbers {
 //                                    if let number = phoneNumber.value as? CNPhoneNumber, let label = phoneNumber.label {
 //                                        let localizedLabel = CNLabeledValue<CNPhoneNumber>.localizedString(forLabel: label)
@@ -180,12 +180,12 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 
                 for i in 0...arrFinal.count - 1{
                       let dicc = (arrFinal[i] as! NSMutableDictionary)
-                      let namenew = dicc.value(forKey: "name")
+                      let namenew = dicc.value(forKey: "Name")
                     if(selectedindex.contains(namenew))
                     {
                         let dict = NSMutableDictionary()
-                        dict.setValue(namenew, forKey: "name")
-                        dict.setValue(dicc.value(forKey: "mobile"), forKey: "contact")
+                        dict.setValue(namenew, forKey: "Name")
+                        dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
                         
                         nameary.add(namenew)
                         lblname.text = nameary.componentsJoined(by:", ")
@@ -205,14 +205,14 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 for i in 0...manuallyary.count-1
                 {
                     let dic = manuallyary.object(at:i) as! NSMutableDictionary
-                    nameary.add(dic.value(forKey:"name") as! String)
+                    nameary.add(dic.value(forKey:"Name") as! String)
                     lblname.text = nameary.componentsJoined(by:", ")
                     lblnamerec.text = nameary.componentsJoined(by:", ")
                     lblnamemanu.text = nameary.componentsJoined(by:", ")
 
                     let dict = NSMutableDictionary()
-                    dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
-                     dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
+                    dict.setValue(dic.value(forKey:"Name") as! String, forKey: "Name")
+                     dict.setValue(dic.value(forKey:"Mobile") as! String, forKey: "Mobile")
                     arrContactName.add(dict)
                     
                 }
@@ -304,7 +304,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 //                                       if(selectedindex.contains(namenew))
 //                                       {
 //                                        let dict = NSMutableDictionary()
-//                                        dict.setValue(namenew, forKey: "name")
+//                                        dict.setValue(namenew, forKey: "Name")
 //                                        for phoneNumber in dic.phoneNumbers {
 //                                            if let number = phoneNumber.value as? CNPhoneNumber, let label = phoneNumber.label {
 //                                                let localizedLabel = CNLabeledValue<CNPhoneNumber>.localizedString(forLabel: label)
@@ -329,12 +329,12 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         for i in 0 ..< arrCotact.count
                         {
                                              let dicc = (arrCotact[i] as! NSMutableDictionary)
-                                             let namenew = dicc.value(forKey: "name") as! String
+                                             let namenew = dicc.value(forKey: "Name") as! String
                                            if(selectedindex.contains(namenew))
                                            {
                                                let dict = NSMutableDictionary()
-                                               dict.setValue(namenew, forKey: "name")
-                                               dict.setValue(dicc.value(forKey: "mobile"), forKey: "contact")
+                                               dict.setValue(namenew, forKey: "Name")
+                                               dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
                                                
                                                nameary.add(namenew)
                                                lblname.text = nameary.componentsJoined(by:", ")
@@ -357,7 +357,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         for i in 0...manuallyary.count-1
                         {
                             let dic = manuallyary.object(at:i) as! NSMutableDictionary
-                            nameary.add(dic.value(forKey:"name") as! String)
+                            nameary.add(dic.value(forKey:"Name") as! String)
                             lblname.text = nameary.componentsJoined(by:", ")
                             
                             lblnamerec.text = nameary.componentsJoined(by:", ")
@@ -365,8 +365,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 
                          
                             let dict = NSMutableDictionary()
-                            dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
-                             dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
+                            dict.setValue(dic.value(forKey:"Name") as! String, forKey: "Name")
+                             dict.setValue(dic.value(forKey:"Mobile") as! String, forKey: "Mobile")
                             arrContactName.add(dict)
                         }
                     }
@@ -554,11 +554,11 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         {
             let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! SidemenuCell
             
-            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "mobile") as? String
-            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Mobile") as? String
+            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
             
             // Get The Name
-                                let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+                                let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
                                 print(name)
                                 if(selectedindex.contains(name))
                                 {
@@ -619,11 +619,11 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             tblrecent.separatorStyle = .none
             
                     
-            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "mobile") as? String
-            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Mobile") as? String
+            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
                     
             // Get The Name
-            let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+            let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
             print(name)
             if(selectedindex.contains(name)) {
                 cell.imagview.image = #imageLiteral(resourceName: "ic_checked")
@@ -641,8 +641,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             
             let dic = manuallyary.object(at: indexPath.row) as! NSMutableDictionary
             
-            cell.lblname.text = dic.value(forKey:"name") as? String
-            cell.lblcontact.text = dic.value(forKey: "contact") as? String
+            cell.lblname.text = dic.value(forKey:"Name") as? String
+            cell.lblcontact.text = dic.value(forKey: "Mobile") as? String
             cell.btndelete.tag = indexPath.row
             cell.btndelete.addTarget(self, action: #selector(deleteaction), for: .touchUpInside)
             return cell
@@ -651,7 +651,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        // let namenew = results[indexPath.row].givenName + " " + results[indexPath.row].familyName
-        let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "name") as? String
+        let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
         
         if(selectedindex.contains(namenew!))
         {
@@ -684,7 +684,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             for i in 0 ..< arrFinal.count
             {
                 let dict = arrFinal[i] as! NSMutableDictionary
-                let namenew = dict.value(forKey: "name") as! String
+                let namenew = dict.value(forKey: "Name") as! String
                 if(selectedindex.contains(namenew))
                 {
                  nameary.add(namenew)
@@ -707,7 +707,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             {
                 
                 let dic = manuallyary.object(at:i) as! NSMutableDictionary
-                nameary.add(dic.value(forKey:"name") as! String)
+                nameary.add(dic.value(forKey:"Name") as! String)
                 lblname.text = nameary.componentsJoined(by:", ")
                 lblnamerec.text = nameary.componentsJoined(by:", ")
                 lblnamemanu.text = nameary.componentsJoined(by:", ")
@@ -823,14 +823,14 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     //                           let name = new.givenName + " " + new.familyName
                                              
                                               let dict = self.arrFinal[i] as! NSMutableDictionary
-                                              let name = dict.value(forKey: "name") as! String
-                                              let mobile = dict.value(forKey: "mobile") as! String
+                                              let name = dict.value(forKey: "Name") as! String
+                                              let mobile = dict.value(forKey: "Mobile") as! String
                                             
                                                nameary.add(name)
                                                
                                                let dic = NSMutableDictionary()
-                                               dic.setValue(name, forKey: "name")
-                                               dic.setValue(mobile, forKey: "contact")
+                                               dic.setValue(name, forKey: "Name")
+                                               dic.setValue(mobile, forKey: "Mobile")
                                                
                     //                           for phoneNumber in new.phoneNumbers {
                     //                                          if let number = phoneNumber.value as? CNPhoneNumber, let label = phoneNumber.label {
@@ -854,7 +854,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                            for i in 0...self.manuallyary.count-1
                                            {
                                                let dic = self.manuallyary.object(at:i) as! NSMutableDictionary
-                                               nameary.add(dic.value(forKey:"name") as! String)
+                                               nameary.add(dic.value(forKey:"Name") as! String)
                                                self.lblname.text = nameary.componentsJoined(by:", ")
                                             
                                             self.lblnamerec.text = nameary.componentsJoined(by:", ")
@@ -862,8 +862,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                             self.lblnamemanu.text = nameary.componentsJoined(by:", ")
 
                                                let dict = NSMutableDictionary()
-                                               dict.setValue(dic.value(forKey:"name") as! String, forKey: "name")
-                                                dict.setValue(dic.value(forKey:"contact") as! String, forKey: "contact")
+                                               dict.setValue(dic.value(forKey:"Name") as! String, forKey: "Name")
+                                                dict.setValue(dic.value(forKey:"Mobile") as! String, forKey: "Mobile")
                                                self.arrContactName.add(dict)
                                                
                                            }
@@ -945,7 +945,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             for i in 0 ..< arrFinal.count
             {
                 let dict = arrFinal[i] as! NSMutableDictionary
-                let namenew = dict.value(forKey: "name") as! String
+                let namenew = dict.value(forKey: "Name") as! String
                         if(namenew.lowercased().contains(searchText.lowercased()))
                         {
                             arrCotact.add(dict)
@@ -1024,8 +1024,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         let strs = contact.givenName + contact.familyName
                         
                         let dict = NSMutableDictionary()
-                        dict.setValue(strs, forKey: "name")
-                        dict.setValue(phoneNumber, forKey: "mobile")
+                        dict.setValue(strs, forKey: "Name")
+                        dict.setValue(phoneNumber, forKey: "Mobile")
                         self.arrCotact.add(dict)
                         self.arrFinal.add(dict)
                     })

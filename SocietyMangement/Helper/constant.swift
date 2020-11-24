@@ -141,7 +141,7 @@ let API_GET_FREQUENTGUEST_LIST = "user/invitelist"
 
 
 
-let API_ADD_FREQUENTGUEST = "user/addFrequentEntry"
+let API_ADD_FREQUENTGUEST = "user/pre-approved/1/add" //"user/addFrequentEntry"
 
 
 let API_GET_MEMBERFAMILY_LIST = "user/memberfamily"

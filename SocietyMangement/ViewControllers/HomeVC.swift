@@ -498,7 +498,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     }
     
     @objc func DeleteFrequentEntry(sender:UIButton) {
-        let strGuestId = arrFrequentGuestData[sender.tag].id
+        let strGuestId = arrFrequentGuestData[sender.tag].visitorID
 
            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
            avc?.titleStr = "Communei"
@@ -772,8 +772,8 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             
             //cell.lblBadgeCount?.isHidden = true
             
-            cell.lblname.text =  arrFrequentGuestData[indexPath.row].contactName
-            cell.lblMobilenumber.text = arrFrequentGuestData[indexPath.row].code
+           // cell.lblname.text =  arrFrequentGuestData[indexPath.row].activity
+          //  cell.lblMobilenumber.text = arrFrequentGuestData[indexPath.row].code
             cell.btnEdit.tag = indexPath.row
             cell.btnCall.tag = indexPath.row
             cell.btnDelete.tag = indexPath.row
@@ -2228,7 +2228,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
                 case .success(let resp):
                     webservices().StopSpinner()
                     if statusCode == 200{
-                        self.arrFrequentGuestData = resp.data
+                        self.arrFrequentGuestData = resp.data!
                         
                         if self.arrFrequentGuestData.count > 0{
                             self.viewStaticAddFrequentGuest.isHidden = true
@@ -2393,7 +2393,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     
     @objc func callFrequentGuestmember(sender:UIButton)
     {
-        dialNumber(number:arrFrequentGuestData[sender.tag].contactNumber!)
+        dialNumber(number:(arrFrequentGuestData[sender.tag].activity?.phone!)!)
     }
     
     @objc func editmember(sender:UIButton)

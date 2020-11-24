@@ -593,9 +593,9 @@ struct Apicallhandler {
     
     
     
-    //Mark : Api call add Notice
+    //Mark : Api call add Frequent Entry
     func APIAddFrequentEntry(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
-        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
             
             onCompletion(response)
         }

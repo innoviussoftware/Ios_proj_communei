@@ -17,6 +17,7 @@ var validtill = ""
 var startdate = ""
 var enddate = ""
 var days = ""
+
 protocol  Invite {
     
     func inviteaction(from:String)
@@ -110,6 +111,8 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             self.present(alert, animated: true, completion: nil)
         }else{
             validtill = txtvaildtill.text!
+            startdate = txtstartdate.text!
+            enddate = txtenddate.text!
             delegate?.inviteaction(from: "contact")
         }
     }
@@ -120,6 +123,8 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             self.present(alert, animated: true, completion: nil)
         }else{
             validtill = txtvaildtill.text!
+            startdate = txtstartdate.text!
+            enddate = txtenddate.text!
             delegate?.inviteaction(from: "recent")
         }
       }
@@ -130,6 +135,8 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             self.present(alert, animated: true, completion: nil)
         }else{
             validtill = txtvaildtill.text!
+            startdate = txtstartdate.text!
+            enddate = txtenddate.text!
             delegate?.inviteaction(from: "Manually")
         }
     }
@@ -319,7 +326,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         txtdate.text = "Today"
         
         let formatt = DateFormatter()
-        formatt.dateFormat = "hh:mm a"
+        formatt.dateFormat = "hh:mm:ss a"
         txttime.text = formatt.string(from: datee)
         time =  txttime.text!
         
@@ -714,7 +721,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     @objc  func doneTimePicker(){
         //For date formate
         let formatter = DateFormatter()
-        formatter.dateFormat = "hh:mm a"
+        formatter.dateFormat = "hh:mm:ss a"
         txttime.text = formatter.string(from: timePicker.date)
         //dismiss date picker dialog
         self.view.endEditing(true)

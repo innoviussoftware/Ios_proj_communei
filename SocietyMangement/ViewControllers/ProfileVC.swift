@@ -48,9 +48,13 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
     
     @IBOutlet weak var lblNoDataFound: UILabel!
     
+    @IBOutlet weak var lblvehicletbl: UILabel!
+    @IBOutlet weak var lblvehicletbl1: UILabel!
+
+    
     @IBOutlet weak var tblview: UITableView!
     
-   // @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableHeightConstraint: NSLayoutConstraint!
 
 
    // var member : Members?
@@ -111,27 +115,23 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
           //  }
         }
         
-        
-        
-        
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {
-                     // Always adopt a light interface style.
-          overrideUserInterfaceStyle = .light
+           overrideUserInterfaceStyle = .light
         }
         
         
         tblview.register(UINib(nibName: "ResidentFamilymembersCell", bundle: nil), forCellReuseIdentifier: "cell")
+        
+        self.tblview.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
                
         tblview.separatorStyle = .none
-         
         
-        self.tblview.estimatedRowHeight = 100.0
-        self.tblview.rowHeight = UITableViewAutomaticDimension
+       // self.tblview.estimatedRowHeight = 100.0
+       // self.tblview.rowHeight = UITableViewAutomaticDimension
         
         
         if(isfrom == 0)
@@ -258,6 +258,17 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        tblview.layer.removeAllAnimations()
+        print("tblview contentSize height :- ",tblview.contentSize.height)
+        tableHeightConstraint.constant = tblview.contentSize.height
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+            self.view.layoutIfNeeded()
+        }
+
     }
     
     @IBAction func callmembers(_ sender: Any) {
@@ -570,6 +581,14 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
                     {
                         self.familymeberary = resp.data!
                         
+                        if self.familymeberary.count > 0 {
+                            self.lblvehicletbl.isHidden = true
+                            self.lblvehicletbl1.isHidden = false
+                        }else{
+                            self.lblvehicletbl.isHidden = false
+                            self.lblvehicletbl1.isHidden = true
+                        }
+                        
                         if(resp.data!.count == 0)
                         {
                            // self.lblNoDataFound.isHidden = false
@@ -579,11 +598,7 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
                         }
                         else
                         {
-                            
                            
-                            self.tblview.dataSource = self
-                            self.tblview.delegate = self
-
                             self.tblview.reloadData()
 
                            // self.lblNoDataFound.isHidden = true
@@ -596,26 +611,6 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
                         }
                     }
                         
-                    else
-                    {
-                        if(resp.data!.count == 0)
-                        {
-                            self.tblview.isHidden = true
-                            self.viewmembers.isHidden = false
-                           // self.view.bringSubview(toFront:self.viewmembers)
-                        }
-                        else
-                        {
-                            
-                            self.tblview.reloadData()
-
-                            self.tblview.isHidden = false
-                            self.viewmembers.isHidden = true
-                          //  self.view.bringSubview(toFront:self.tblview)
-                        }
-                        
-                    }
-                    
                     print(resp)
                 case .failure(let err):
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)

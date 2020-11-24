@@ -86,8 +86,8 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! manuallycell
         
-        cell.lblname.text = (arrInvitedmember[indexPath.row] as!  NSMutableDictionary).value(forKey: "name") as? String
-        cell.lblcontact.text = (arrInvitedmember[indexPath.row] as!  NSMutableDictionary).value(forKey: "contact") as? String
+        cell.lblname.text = (arrInvitedmember[indexPath.row] as!  NSMutableDictionary).value(forKey: "Name") as? String
+        cell.lblcontact.text = (arrInvitedmember[indexPath.row] as!  NSMutableDictionary).value(forKey: "Mobile") as? String
         
         cell.btndelete.tag = indexPath.row
         cell.btndelete.addTarget(self, action: #selector(deleteaction(sender:)), for: .touchUpInside)
@@ -124,7 +124,6 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     
     @objc func deleteaction(sender:UIButton)
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                   let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                   avc?.titleStr = GeneralConstants.kAppName //"Communei"
                   avc?.subtitleStr = "Are you sure you want to delete this  contact?"
@@ -178,8 +177,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                          return
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-            let SocietyId = UserDefaults.standard.value(forKey: USER_SOCIETY_ID) as! Int
-            let strsocietyId = (SocietyId as NSNumber).stringValue
+        
+         //  let SocietyId = UserDefaults.standard.value(forKey: USER_SOCIETY_ID) as! Int
+          //  let strsocietyId = (SocietyId as NSNumber).stringValue
             
             //            type, contact_array, society_id, start_date, end_date, maxhour, time
             //            date format:- yyyy-mm-dd
@@ -204,12 +204,15 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             if frequencyType == "once"{
                 strDateee = strChangeDateFormate(strDateeee: date)
+                
             }else{
                 strDateee = strChangeDateFormate(strDateeee: startdate)
                 endDate = strChangeDateFormate(strDateeee: enddate)
             }
+        
+     
             
-            let param : Parameters = [
+           /* let param : Parameters = [
                 "type":frequencyType,
                 "contact_array":string,
                 "society_id":strsocietyId,
@@ -217,11 +220,88 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                 "end_date":endDate,
                 "maxhour":validtill,
                 "time":time
-                
+            ] */
+        
+        var after_add_time = ""
+
+        if validtill == "Day End" {
+            validtill = time
+            
+           // let myInt = Int(validtill)!
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = time //strDateee //"2016-04-14T10:44:00+0000"
+
+            dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd" // h:mm"
+
+          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            let date = dateFormatter.date(from:isoDate)!
+            
+//            let date2 = strDateee
+//            dateFormatter.dateFormat = "yyyy-MM-dd"
+//            var date = dateFormatter.date(from: date2)
+//
+//            date = dateFormatter.date(from:isoDate)!
+            
+            let addminutes = date!.addingTimeInterval(TimeInterval(24*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+                print("after add time --> ",after_add_time)
+        }else{
+            validtill.removeLast(3)
+            
+            let myInt = Int(validtill)!
+            
+            let dateFormatter = DateFormatter()
+            
+           // let valid =  time + ":00"
+            
+            let isoDate = time //validtill // valid  //"2016-04-14T10:44:00+0000"
+
+            dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
+
+          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+          
+            let date = dateFormatter.date(from:isoDate)
+            
+          //  let date2 = strDateee
+          //  dateFormatter.dateFormat = "yyyy-MM-dd"
+          //  let date = dateFormatter.date(from: date2)
+
+        //   date = dateFormatter.date(from:isoDate)
+            
+            
+            let addminutes = date!.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+            
+            print("after add time 3 --> ",after_add_time)
+        }
+       
+        var param = Parameters()
+        
+        if frequencyType == "once"{
+            param  = [
+                "VisitStartDate": strDateee,
+                "FromTime": time, // start time
+                "ToTime": after_add_time,  //validtill,  // to time
+                "Visitors": string
             ]
+        }else{
+            param  = [
+                "VisitStartDate": strDateee,
+                "VisitEndDate": endDate,
+                "Visitors": string
+            ]
+        }
+        
+        if frequencyType == "once"{
+              print("param once : ",param)
+        }else{
+             print("param multi : ",param)
+        }
             
             webservices().StartSpinner()
-            Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_FREQUENTGUEST, param: param, token: token as! String) { JSON in
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_FREQUENTGUEST, param: param, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{

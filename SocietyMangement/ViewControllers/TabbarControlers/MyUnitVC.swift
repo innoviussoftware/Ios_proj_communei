@@ -730,8 +730,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
                  //cell.lblBadgeCount?.isHidden = true
                  
-                 cell.lblname.text =  arrFrequentGuestData[indexPath.row].contactName
-                 cell.lblMobilenumber.text = arrFrequentGuestData[indexPath.row].code
+                cell.lblname.text =  arrFrequentGuestData[indexPath.row].activity?.name
+                cell.lblMobilenumber.text = arrFrequentGuestData[indexPath.row].activity?.phone
                //  cell.btnEdit.tag = indexPath.row
                  cell.btnCall.tag = indexPath.row
                  cell.btnDelete.tag = indexPath.row
@@ -1012,7 +1012,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                      case .success(let resp):
                          webservices().StopSpinner()
                          if statusCode == 200{
-                             self.arrFrequentGuestData = resp.data
+                            self.arrFrequentGuestData = resp.data!
                              
                              if self.arrFrequentGuestData.count > 0{
                                 self.viewStaticAddFrequentGuestMain.isHidden = true  // 2 number view
@@ -1050,7 +1050,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
          }
     
         @objc func DeleteFrequentEntry(sender:UIButton) {
-            let strGuestId = arrFrequentGuestData[sender.tag].id
+            let strGuestId = arrFrequentGuestData[sender.tag].activity?.activityID
 
                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
@@ -1199,10 +1199,10 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     avc?.titleStr = "Call"//GeneralConstants.kAppName // "Society Buddy"
                 avc?.isfrom = 3
 
-                avc?.subtitleStr = "Are you sure you want to call: \(arrFrequentGuestData[sender.tag].contactNumber!)"
+        avc?.subtitleStr = "Are you sure you want to call: \(arrFrequentGuestData[sender.tag].activity?.phone ?? "")"
                                     avc?.yesAct = {
                                         
-                                        self.dialNumber(number:self.arrFrequentGuestData[sender.tag].contactNumber!)
+                                        self.dialNumber(number:(self.arrFrequentGuestData[sender.tag].activity?.phone!)!)
 
                                                  }
                                     avc?.noAct = {

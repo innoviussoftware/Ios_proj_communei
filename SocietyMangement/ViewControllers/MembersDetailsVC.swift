@@ -1783,6 +1783,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         let id = String(format: "%d",buildingid!)
 
         webservices().StartSpinner()
+
         
         Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
             switch JSON.result{
