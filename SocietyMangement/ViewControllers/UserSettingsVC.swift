@@ -260,6 +260,9 @@ class UserSettingsVC: BaseVC {
         // 22/10/20 temp comment
         
       //  self.lblFlatNo.text = String(format: "Flat No: %@-%@", UsermeResponse!.data!.society?.propertyID!,UsermeResponse!.data!.society?.parentProperty!)
+        
+        self.lblFlatNo.text = "Flat No: \(UsermeResponse!.data!.society?.parentProperty ?? "")-\(UsermeResponse!.data!.society?.property ?? "")"
+
         lblFlatType.text = "Contact no: \(UsermeResponse!.data!.phone ?? "")"
         
         

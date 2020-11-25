@@ -166,7 +166,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfiledetailVC") as! ProfiledetailVC
             
-            nextViewController.isfrom = 1
+            nextViewController.isfrom = 3 //1
                            
             // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
 

@@ -302,7 +302,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         pickerview3.dataSource = self
         
         
-        if(isfrom == 0) || (isfrom == 1)
+        if(isfrom == 0) || (isfrom == 1) || (isfrom == 3)
         {
             
               if(revealViewController() != nil)
@@ -522,7 +522,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             // txtaddress.text = UsermeResponse?.data.address
             
             
-        }else if isfrom == 2{
+        }else if isfrom == 2 || isfrom == 3 {
             
                         txtname.text = UsermeResponse?.data!.name
                         
@@ -541,18 +541,21 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             txtprofession.text = UsermeResponse?.data?.professionName //member?.professionName
             txtViewProfessionDetail.text = UsermeResponse?.data?.professionDetails //member?.professionDetails
             
+            professiongroupId = (UsermeResponse?.data?.professionID)!
+            
             txtGender.text = UsermeResponse?.data!.gender
             
-            
-            let date =  UsermeResponse?.data!.dateOfBirth  // "2016-02-10 00:00:00"
-            let dateFormatter = DateFormatter()
+            if UsermeResponse?.data!.dateOfBirth != nil {
+                let date =  UsermeResponse?.data!.dateOfBirth  // "2016-02-10 00:00:00"
+                let dateFormatter = DateFormatter()
 
-              dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
-            let dateFromString : NSDate = dateFormatter.date(from: date!)! as NSDate
-              dateFormatter.dateFormat = "yyyy-MM-dd"
-            let datenew = dateFormatter.string(from: dateFromString as Date)            
-            txtbirthDate.text = datenew //UsermeResponse?.data!.dateOfBirth
-                        
+                  dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+                let dateFromString : NSDate = dateFormatter.date(from: date!)! as NSDate
+                  dateFormatter.dateFormat = "yyyy-MM-dd"
+                let datenew = dateFormatter.string(from: dateFromString as Date)
+                txtbirthDate.text = datenew //UsermeResponse?.data!.dateOfBirth
+            }
+               
                      /*   if UsermeResponse?.data!.profession == "other"{
                              txtprofession.text = setOptionalStr(value: UsermeResponse?.data!.profession_other)
                         }else{
@@ -856,7 +859,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 //
 //            }
               
-        if(txtprofession.text == "other")
+     /*   if(txtprofession.text == "other")
         {
             txtProfessionOther.isHidden = false
             constraintHeightProfessionOther.constant = 50
@@ -873,7 +876,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 //            }
 //            present(avc!, animated: true)
             
-        }else{
+        }*/
+        else{
             txtProfessionOther.isHidden = true
             constraintHeightProfessionOther.constant = 0
             constraintTopProfessionOther.constant = 0
@@ -1124,9 +1128,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             str = ""
         }
         
-        if txtprofession.text == "other" {
-            professiongroupId = 0
-        }
+//        if txtprofession.text == "other" {
+//            professiongroupId = 0
+//        }
         
         if(txtflattype.text == "Owner"){
             UserType = 1
@@ -1187,7 +1191,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 if UsermeResponse?.data!.profilePhotoPath != nil
                 {
                    // let imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)
-                    MultipartFormData.append(imgData, withName: "ProfilePicture", fileName: "\(strFileName).jpeg", mimeType: "image/jpeg")
+                    
+                    imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)!
+                    MultipartFormData.append(imgData, withName: "ProfilePicture", fileName: "\(strFileName).png", mimeType: "image/jpeg/png")
                 }
                 
                 
@@ -1201,6 +1207,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
         })
             .responseJSON (completionHandler: { (response:DataResponse<Any>) in
+                
+               // .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                 
                 webservices().StopSpinner()
                 let statusCode = response.response?.statusCode
@@ -1240,6 +1248,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             
             let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
             webservices().StartSpinner()
+            
            // Apicallhandler.sharedInstance.ApiCallUserMe(token: token) { JSON in
              
             Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token ) { JSON in

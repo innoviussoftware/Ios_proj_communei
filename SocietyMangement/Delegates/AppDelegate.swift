@@ -103,8 +103,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let userInfo = launchOptions![.remoteNotification] as? [AnyHashable: Any]
             if userInfo != nil {
                 let dic: NSDictionary = userInfo! as NSDictionary
+                
+                if dic.value(forKey: "notification_type") as! String == "alert"{
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                    
+                    
+                    let navigationController = UINavigationController.init(rootViewController: initialViewController)
+                    navigationController.navigationBar.isHidden = true
+                    
+                    self.window?.rootViewController = navigationController
+                    self.window?.makeKeyAndVisible()
+                    
+                    print("DeliveryWaitingPopupVC")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: dic)
+                    
+                }
 
-                if dic.value(forKey: "notification_type") as! String == "Notice"{
+               else if dic.value(forKey: "notification_type") as! String == "Notice"{
                          
                          let storyboard = UIStoryboard(name: "Main", bundle: nil)
                          let initialViewController = storyboard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC
@@ -340,15 +357,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let state:UIApplicationState = application.applicationState
                         let dic: NSDictionary = userInfo as NSDictionary
         
-        if(state == .active && dic.value(forKey:"notification_type") as! String == "security")
-        {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
-        }
         
-        else{
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
-        }
-    
+                if(state == .active && dic.value(forKey:"notification_type") as! String == "alert")
+                {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: dic)
+                }
+               else if(state == .active && dic.value(forKey:"notification_type") as! String == "security")
+                {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
+                }
+                
+              //  else{
+                  //  NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
+              //  }
+            
         
         }
     
@@ -356,7 +378,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func reDirect(dict:NSDictionary) {
         
-        if dict.value(forKey: "notification_type") as! String == "Notice"{
+        if dict.value(forKey: "notification_type") as! String == "alert"{
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+            
+            let navigationController = UINavigationController.init(rootViewController: initialViewController)
+            navigationController.navigationBar.isHidden = true
+            
+            self.window?.rootViewController = navigationController
+            self.window?.makeKeyAndVisible()
+            
+            print("DeliveryWaitingPopupVC")
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: dict)
+            
+        }
+        
+       else if dict.value(forKey: "notification_type") as! String == "Notice"{
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewController = storyboard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC

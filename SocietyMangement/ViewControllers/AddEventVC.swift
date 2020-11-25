@@ -832,7 +832,7 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
         
         webservices().StartSpinner()
         let param : Parameters = [
-            "NoticeID" :  dic?.noticeID, //strSocietyId,
+            "NoticeID" :  dic?.noticeID! ?? "", //strSocietyId,
             "Title" : txttitle.text!,
             "Description" : txtdes.text!,
           //  "event_start_time":txtstartdate.text!.components(separatedBy:" ")[1],

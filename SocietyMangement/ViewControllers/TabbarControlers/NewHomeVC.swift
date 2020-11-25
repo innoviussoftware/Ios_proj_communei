@@ -86,6 +86,9 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+
         apicallUserMe()
         // 28/10/20. temp comment
      //   apicallGuestList()
@@ -95,9 +98,87 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
         print("viewWillAppear true NewHomeVC")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
                
         print("viewDidAppear NewHomeVC")
+    }
+    
+    
+    @objc func AcceptRequest(notification: NSNotification) {
+        
+        let object = notification.object as! NSDictionary
+        
+        if let key = object.object(forKey: "notification_type")
+        {
+            let value = object.value(forKey: "notification_type") as! String
+            
+            if(value == "security")
+            {
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "GuestPopVC") as! GuestPopVC
+                nextViewController.guestdic = object
+                nextViewController.isfromnotification = 0
+                navigationController?.pushViewController(nextViewController, animated: true)
+                
+            }
+            else  if object.value(forKey: "notification_type") as! String == "alert"{
+                       
+              let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                
+                nextViewController.deliverydic = object
+
+                          //  nextViewController.isFrormDashboard = 0
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                       
+                       
+                   }
+            
+              else  if object.value(forKey: "notification_type") as! String == "Notice"{
+                         
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                              
+                              let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC
+                              nextViewController.isFrormDashboard = 0
+                              navigationController?.pushViewController(nextViewController, animated: true)
+                         
+                         
+                     }else if object.value(forKey: "notification_type") as! String == "Circular"{
+                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+                               let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CircularVC") as! CircularVC
+                                                              nextViewController.isfrom = 0
+                                                              navigationController?.pushViewController(nextViewController, animated: true)
+                
+                         
+                         
+                     }else if object.value(forKey: "notification_type") as! String == "Event"{
+                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SocietyEventsVC") as! SocietyEventsVC
+                                                                           nextViewController.isfrom = 1
+                                                                           navigationController?.pushViewController(nextViewController, animated: true)
+                
+                     }
+                
+                
+                
+                
+            else
+            {
+              //  apicallNotificationCount()
+                
+            }
+            
+        }
+        
     }
     
     @IBAction func btnZendeskPressed(_ sender: Any) {

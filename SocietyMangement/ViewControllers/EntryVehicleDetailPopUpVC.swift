@@ -21,6 +21,9 @@ class EntryVehicleDetailPopUpVC: BaseVC {
     
     var arrVehicleType = [VehicleData]() //["Two Wheeler","Four Wheeler"]
     
+    var arrVehicleList : GetVehicleUserList? // [VehicleData]()
+
+    
     var activeTextField = UITextField()
     var picker : UIPickerView!
 
@@ -219,24 +222,27 @@ class EntryVehicleDetailPopUpVC: BaseVC {
             ]
             webservices().StartSpinner()
             
-            Apicallhandler().GetADDVehicle(URL: webservices().baseurl + API_ADD_VEHICLE, param: param, token:token as! String) { JSON in
+        Apicallhandler().GetADDVehicle(URL: webservices().baseurl + API_ADD_VEHICLE, param: param, token:token as! String) { [self] JSON in
                 switch JSON.result{
                 case .success(let resp):
                     
                     webservices().StopSpinner()
-                    if(JSON.response?.statusCode == 200)
-                    {
+                    
+                    
+                            if(JSON.response?.statusCode == 200)
+                            {
+                                self.delegate?.addedNewVehicle()
+                                self.removeAnimate()
+                                self.txtVehicleType.text = ""
+                                self.txtVehicleNumber.text = ""
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                            else
+                            {
+                                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid vehicle number")
+                                self.present(alert, animated: true, completion: nil)
+                            }
                         
-                        self.delegate?.addedNewVehicle()
-                        self.removeAnimate()
-                        self.txtVehicleType.text = ""
-                        self.txtVehicleNumber.text = ""
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                    else
-                    {
-                        
-                    }
                     
                     print(resp)
                 case .failure(let err):

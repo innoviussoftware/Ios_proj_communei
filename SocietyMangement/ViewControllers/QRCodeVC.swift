@@ -133,7 +133,9 @@ class QRCodeVC: BaseVC {
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                         
                         // 22/10/20. temp comment
-                      //  self.lblflatno.text = String(format: "Flat No: %@ - %@", UsermeResponse!.data!.PropertyID!,UsermeResponse!.data!.ParentProperty!)
+                        
+                        self.lblflatno.text = "Flat No: \(resp.data!.society?.parentProperty ?? "")-\(resp.data!.society?.property ?? "")"
+
                         self.lblflattype.text = "Contact No: \(UsermeResponse!.data!.phone!)"
                         
                         

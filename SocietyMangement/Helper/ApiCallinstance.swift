@@ -355,6 +355,7 @@ struct Apicallhandler {
         AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GetVehicleUserList>) in
             
             onCompletion(response)
+            
         }
     }
     

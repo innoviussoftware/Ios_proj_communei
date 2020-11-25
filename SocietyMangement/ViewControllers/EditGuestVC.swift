@@ -244,7 +244,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
 //
 //            date = dateFormatter.date(from:isoDate)!
             
-            let addminutes = date!.addingTimeInterval(TimeInterval(24*60*60))
+            let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
             after_add_time = dateFormatter.string(from: addminutes)
                 print("after add time --> ",after_add_time)
         }else{
@@ -261,8 +261,13 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
 
           //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            
+          //  let formatter = DateFormatter()
+          //  formatter.dateFormat = "yyyy-MM-dd"
+          //  let date = formatter.date(from: strDateee)!
           
-            let date = dateFormatter.date(from:isoDate)
+            let date = dateFormatter.date(from:isoDate)!
+            
             
           //  let date2 = strDateee
           //  dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -271,7 +276,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         //   date = dateFormatter.date(from:isoDate)
             
             
-            let addminutes = date!.addingTimeInterval(TimeInterval(myInt*60*60))
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
             after_add_time = dateFormatter.string(from: addminutes)
             
             print("after add time 3 --> ",after_add_time)

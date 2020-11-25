@@ -96,9 +96,10 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
 
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    
     @IBAction func nextaction(_ sender: Any) {
         
-        if isfrom == 0{
+      /*  if isfrom == 0{
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ProfiledetailVC") as! ProfiledetailVC
             nextViewController.isfrom = self.isfrom
@@ -113,7 +114,7 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
                 nextViewController.member = self.member[indexMember]
                 navigationController?.pushViewController(nextViewController, animated: true)
           //  }
-        }
+        } */
         
     }
     

@@ -88,7 +88,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
-          // NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
+           NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
         
      //   let strId = String(format: "%d", (UsermeResponse?.data?.guid)!)
 
@@ -139,12 +139,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
     }
     
-      /* override func viewWillDisappear(_ animated: Bool) {
-           NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
-           
-       } */
+       override func viewWillDisappear(_ animated: Bool) {
+           NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+       }
     
-   /* @objc func AcceptRequest(notification: NSNotification) {
+    @objc func AcceptRequest(notification: NSNotification) {
         
         let object = notification.object as! NSDictionary
         
@@ -163,6 +162,19 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 navigationController?.pushViewController(nextViewController, animated: true)
                 
             }
+            else  if object.value(forKey: "notification_type") as! String == "alert"{
+                       
+              let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                
+                nextViewController.deliverydic = object
+
+                          //  nextViewController.isFrormDashboard = 0
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                       
+                       
+                   }
             
               else  if object.value(forKey: "notification_type") as! String == "Notice"{
                          
@@ -202,7 +214,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             
         }
         
-    } */
+    }
     
     // MARK: - User me
     
@@ -458,6 +470,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     {
                         
                         self.arrVehicleList = resp.data!
+                        
                         if self.arrVehicleList.count > 0{
                             self.collectionVehicle.isHidden = false
                             self.viewStaticAddVhicle.isHidden = true
@@ -483,9 +496,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     self.lblStaticAddVhicleDetail.isHidden = false
                     self.collectionVehicle.isHidden = true
                     
-                  //  let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
-                 //   self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }

@@ -143,8 +143,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
     }
     
     @objc func AcceptRequest(notification: NSNotification) {
@@ -165,6 +164,20 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                 navigationController?.pushViewController(nextViewController, animated: true)
                 
             }
+            
+            else  if object.value(forKey: "notification_type") as! String == "alert"{
+                       
+              let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                
+                nextViewController.deliverydic = object
+
+                          //  nextViewController.isFrormDashboard = 0
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                       
+                       
+                   }
             else  if object.value(forKey: "notification_type") as! String == "Notice"{
                                    
                           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -204,14 +217,14 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         apicallGetEvents()
         
         
-        NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
 
     }
     
     
     @objc func sendNotification(sender:UIButton){
         
-        let id = "\(eventary[sender.tag].noticeID)"
+        let id = "\(eventary[sender.tag].noticeID!)"
         
         let noticeReminder = "user/notice/" + "1/" + id + "/reminder"
          
@@ -326,7 +339,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
     {
         
         
-               let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                 let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                                                 avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                                                 avc?.subtitleStr = "Are you sure you want to delete \(self.eventary[sender.tag].title!)?"

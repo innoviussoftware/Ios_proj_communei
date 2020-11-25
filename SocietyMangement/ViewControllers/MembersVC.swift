@@ -335,7 +335,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 // 31/10/20. temp comment
      //   searchbar.text = ""
         
-      //  apicallGetAllMembers()
+        apicallGetAllMembers()
 
         
         if btnFilter.isSelected == false {
