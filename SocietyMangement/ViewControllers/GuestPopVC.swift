@@ -40,8 +40,8 @@ class GuestPopVC: UIViewController {
     
     var guestdic = NSDictionary()
     @IBAction func cancelaction(_ sender: Any) {
-        if(isfromnotification == 0)
-        { self.navigationController?.popViewController(animated: true)
+        
+        if(isfromnotification == 0){ self.navigationController?.popViewController(animated: true)
         }
         else
         {

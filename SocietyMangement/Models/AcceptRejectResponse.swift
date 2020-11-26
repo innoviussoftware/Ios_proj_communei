@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 // MARK: - Acce
 struct AcceptReject: Codable {
     let data: AcceptRejectData?

@@ -174,7 +174,9 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
 
         }
         
-        if(indexPath.row == 3) {
+        // temp comment live app 26/11/20.
+        
+      /*  if(indexPath.row == 3) {
       
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
            
@@ -247,7 +249,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                            //  tabBarController.tabBar.isHidden = false
                                                   self.revealViewController().pushFrontViewController(nextViewController, animated: true)
                                 
-        }
+        } */
         
         if(indexPath.row == 7)
         {

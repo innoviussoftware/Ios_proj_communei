@@ -141,6 +141,28 @@ struct Apicallhandler {
         
     }
     
+    //Mark : Api call Activity-types
+
+    func GetAllActivitytypes(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<UserActivityTypeResponse>) -> Void)) {
+        
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserActivityTypeResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
+    //Mark : Api call user Activity
+
+    
+    func ApiCallUserActivityList(token: String, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_USER_ACTIVITY_LIST, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserActivityAllResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
     
     func ApiCallMyHelperList(token: String, onCompletion: @escaping ((_ response: DataResponse<MyHelperListResp>) -> Void)) {
         
@@ -449,7 +471,17 @@ struct Apicallhandler {
 
        }
     
-    
+    //Mark : Api call Delivery Leave Gate
+    func ApicallDeliveryLeaveatGate(URL: String, token:String,VisitingFlatID:Int,UserActivityID:Int, onCompletion: @escaping ((_ response: DataResponse<DeliveryatGateResponse>) -> Void)) {
+        
+        let parameter:Parameters = ["type":VisitingFlatID,"UserActivityID":UserActivityID]
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryatGateResponse>) in
+            
+            onCompletion(response)
+        }
+        
+
+    }
     
     
     //Mark : Api call Accept guest request

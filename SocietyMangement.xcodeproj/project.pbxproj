@@ -167,6 +167,9 @@
 		9AAF0E112372C035008587E3 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AAF0E0F2372C035008587E3 /* NotificationCell.xib */; };
 		9AAF0E132372C182008587E3 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAF0E122372C182008587E3 /* NotificationList.swift */; };
 		9AAF0E152372C536008587E3 /* NotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAF0E142372C536008587E3 /* NotificationVC.swift */; };
+		9ABCFA30256F90D100DE476E /* DeliveryatGateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABCFA2F256F90D100DE476E /* DeliveryatGateResponse.swift */; };
+		9ABCFA35256FC2DB00DE476E /* UserActivityTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */; };
+		9ABCFA3A256FE7E600DE476E /* UserActivityAllResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABCFA39256FE7E600DE476E /* UserActivityAllResponse.swift */; };
 		9ABF596C2313993B007F7F61 /* MembersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF596B2313993B007F7F61 /* MembersResponse.swift */; };
 		9ABF596E2313AB6C007F7F61 /* AddMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */; };
 		9ABF59702313E5C3007F7F61 /* SearchMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF596F2313E5C3007F7F61 /* SearchMemberVC.swift */; };
@@ -462,6 +465,9 @@
 		9AAF0E0F2372C035008587E3 /* NotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		9AAF0E122372C182008587E3 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
 		9AAF0E142372C536008587E3 /* NotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationVC.swift; sourceTree = "<group>"; };
+		9ABCFA2F256F90D100DE476E /* DeliveryatGateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryatGateResponse.swift; sourceTree = "<group>"; };
+		9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityTypeResponse.swift; sourceTree = "<group>"; };
+		9ABCFA39256FE7E600DE476E /* UserActivityAllResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityAllResponse.swift; sourceTree = "<group>"; };
 		9ABF596B2313993B007F7F61 /* MembersResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersResponse.swift; sourceTree = "<group>"; };
 		9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberVC.swift; sourceTree = "<group>"; };
 		9ABF596F2313E5C3007F7F61 /* SearchMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMemberVC.swift; sourceTree = "<group>"; };
@@ -656,10 +662,13 @@
 				D258E10325499AC5004405DE /* AddEventTypeResponse.swift */,
 				9A07B6C7230EBBF200ED5C6C /* EventResponse.swift */,
 				9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */,
+				9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */,
+				9ABCFA39256FE7E600DE476E /* UserActivityAllResponse.swift */,
 				9A955AAA230FA24A004A4668 /* CircularResponse.swift */,
 				9A955AAC230FB1C6004A4668 /* BuildingResponse.swift */,
 				D25CDD372547E5EA0099B1C2 /* BuildingAddResponse.swift */,
 				9A955AB2230FC216004A4668 /* AddCircularResponse.swift */,
+				9ABCFA2F256F90D100DE476E /* DeliveryatGateResponse.swift */,
 				9A955AB4230FE9DA004A4668 /* AddBuidingResponse.swift */,
 				D2DDD59124FE1CBB0008BE6A /* AmenitiesModel.swift */,
 				9A460453255AA55700E5AA7D /* BookingsModel.swift */,
@@ -1314,6 +1323,7 @@
 				D2DDD58924FE0F060008BE6A /* PollDetailCell.swift in Sources */,
 				9A532585230BCB13003E5F29 /* ApiCallinstance.swift in Sources */,
 				4E9C3E59237A875000817B2F /* ViewPastActivityVC.swift in Sources */,
+				9ABCFA30256F90D100DE476E /* DeliveryatGateResponse.swift in Sources */,
 				9A1178B3235DBE730071C85A /* ProfessionResponse.swift in Sources */,
 				9AA900B9230D4A2D00697383 /* AddEventVC.swift in Sources */,
 				4E66B61E2373E9E500D31D26 /* Reachability.swift in Sources */,
@@ -1402,9 +1412,11 @@
 				9AA900B7230D42D700697383 /* SocietyEventcell.swift in Sources */,
 				9AAF0E152372C536008587E3 /* NotificationVC.swift in Sources */,
 				058EECA024C570ED00D30B23 /* ShortCutCell.swift in Sources */,
+				9ABCFA3A256FE7E600DE476E /* UserActivityAllResponse.swift in Sources */,
 				4E1A1E002341D96A00C90BB0 /* AddNotice.swift in Sources */,
 				9A53257B230BCAAF003E5F29 /* constant.swift in Sources */,
 				9AF770BC2339F00C006220BA /* InviteVC.swift in Sources */,
+				9ABCFA35256FC2DB00DE476E /* UserActivityTypeResponse.swift in Sources */,
 				05349F9B24BC3DD200EC598B /* RSButton.swift in Sources */,
 				D2B9DA6C24F5296200FF9BF0 /* BuySellProductDetailsVC.swift in Sources */,
 				D241793524EA5B1800966E81 /* QuickActionVC.swift in Sources */,

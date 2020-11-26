@@ -90,8 +90,9 @@ let API_ADD_NOTICE = "society/notices/1/add"  // "user/addnotice"
 let API_GET_NOTICE =  "user/notices/1" //  "user/getnotice"  // "society/notices/1" // 
 let API_ACCEPT_DECLINE = "user/acceptreject"
 let API_LOGOUT = "user/signout" //"logout"
-let API_GUEST_LIST = "user/guestlist"
 let API_IN_OUT = "InOut"
+
+let API_DELIVERY_LEAVE_GATE = "user/pre-approved/2/leave-at-gate"
 
 
 let API_ADD_CIRCULAR = "society/notices/2/add" //"user/addcircular"
@@ -112,6 +113,13 @@ let API_DELETE_NOTICE = "society/notices/1/delete"  //"user/deletenotice"
 let API_EDIT_CIRCULAR = "society/notices/2/edit" //"user/editcircular"
 let API_EDIT_NOTICE = "user/editnotice"
 let API_EDIT_EVENT = "user/editevent"
+
+let API_GUEST_LIST = "user/activity" //"user/guestlist"
+
+let API_USER_ACTIVITY_LIST = "user/activity" //"user/guestlist"
+
+
+let API_USER_ACTIVITYTYPES = "user/activity-types"
 
 
 let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"

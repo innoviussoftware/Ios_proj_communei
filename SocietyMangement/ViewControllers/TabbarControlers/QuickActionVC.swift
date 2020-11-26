@@ -86,19 +86,23 @@ class QuickActionVC: BaseVC ,Invite {
     }
     
     @IBAction func btnDailyHelperPressed(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        // temp comment live app 26/11/20.
+
+       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         vc.isfrom = 1
         vc.isfromStr  = "Daily"
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true) */
         print("Domestic Helper")
     }
     
     @IBAction func btnOnDemandHelperPressed(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        // temp comment live app 26/11/20.
+
+       /*let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         vc.isfrom = 1
        // vc.isfromStr  = "On Demand"
         vc.isfromStr  = "Daily"
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true) */
         print("On Demand Helper")
     }
         

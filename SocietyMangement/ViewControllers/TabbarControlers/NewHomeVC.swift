@@ -501,7 +501,11 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                                
                 print("Cab")
                 
-            }else if indexPath.item == 3 { // "Domestic Helper"
+            }
+            
+                  // temp comment live app 26/11/20.
+
+            /*else if indexPath.item == 3 { // "Domestic Helper"
                
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
                 vc.isfrom = 1
@@ -517,7 +521,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                 
                 print("Help Desk")
                 
-            }
+            } */
             
         }
 

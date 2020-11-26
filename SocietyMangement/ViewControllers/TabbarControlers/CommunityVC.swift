@@ -382,20 +382,24 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                     }else if indexPath.item == 3{//Circular
-
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CircularVC") as! CircularVC
+                       let vc = self.storyboard?.instantiateViewController(withIdentifier: "CircularVC") as! CircularVC
 
                         vc.isfrom = 0
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                     }else if indexPath.item == 4{
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
+                        
+                        // temp comment live app 26/11/20.
+
+                       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
                         vc.isfrom = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        self.navigationController?.pushViewController(vc, animated: true) */
                     }else{  // DomesticHelpVC
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+                        // temp comment live app 26/11/20.
+
+                      /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
                         vc.isfrom = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        self.navigationController?.pushViewController(vc, animated: true) */
                     }
                
                 

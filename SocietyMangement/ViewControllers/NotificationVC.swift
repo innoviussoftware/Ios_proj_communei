@@ -176,7 +176,7 @@ class NotificationVC: UIViewController {
                            ShowNoInternetAlert()
                            return
                        }
-              webservices().StartSpinner()
+            /*  webservices().StartSpinner()
               Apicallhandler().GetNotificationList(URL: webservices().baseurl + API_NOTIFICATION_LIST, token:UserDefaults.standard.value(forKey: USER_TOKEN)! as! String) { JSON in
                   switch JSON.result{
                   case .success(let resp):
@@ -232,7 +232,7 @@ class NotificationVC: UIViewController {
 
                   }
 
-              }
+              } */
 
 
       }
@@ -286,7 +286,11 @@ class NotificationVC: UIViewController {
                                ShowNoInternetAlert()
                                return
                            }
-                  let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+              /*
+         
+         // live app comment 26/11/20.
+              
+             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             
                let strId = arrNotificationId.componentsJoined(by: ",")
@@ -317,7 +321,7 @@ class NotificationVC: UIViewController {
                           
                           
                       }
-                  }
+                  } */
                   
           
               

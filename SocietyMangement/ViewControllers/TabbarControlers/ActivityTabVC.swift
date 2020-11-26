@@ -38,16 +38,93 @@ class ActivityTabVC: BaseVC {
 
     var arrSelectionCheck = NSMutableArray()
 
-    var arrActivity = NSMutableArray()
+    var arrActivity = [UserActivityType]()
+    //NSMutableArray()
     
-    var activityGroupAry = ["Visitor","Delivery","Cab","Service Provider","Daily Helper","On Demand Help","Parcel Collection"]
+  // var activityGroupAry = [UserActivityType]()
+    // ["Visitor","Delivery","Cab","Service Provider","Daily Helper","On Demand Help","Parcel Collection"]
 
-    var arrGuestList = [guestData]()
+    var arrGuestList = [UserActivityAll]()
+    //[guestData]()
     
     @IBOutlet weak var message: UILabel!
 
    // var message = UILabel()
     var refreshControl = UIRefreshControl()
+    
+    // MARK: - get Events
+    
+    func apicallGetActivitytypes()
+    {
+        
+        // 6/11/20 temp comment
+        
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+           let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
+            
+            webservices().StartSpinner()
+        
+        Apicallhandler().GetAllActivitytypes(URL: webservices().baseurl + API_USER_ACTIVITYTYPES, token:strToken) { JSON in
+        
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    
+                    {
+                        self.arrActivity = resp.data!
+
+                        if(resp.data!.count == 0)
+                        {
+                            self.filtrview.isHidden = true
+                            
+                        }
+                        else
+                        {
+                            self.collectionActivity.reloadData()
+
+                            self.collectionActivity.isHidden = false
+                            self.filtrview.isHidden = false
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        if(resp.data!.count == 0)
+                        {
+                            self.collectionActivity.isHidden = true
+                            self.filtrview.isHidden = true
+                        }
+                        else
+                        {
+                            self.collectionActivity.reloadData()
+
+                            self.collectionActivity.isHidden = false
+                            self.filtrview.isHidden = false
+                            
+                        }
+                        
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+
+                     webservices().StopSpinner()
+                //    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                   
+                    
+                }
+                
+            }
+            
+       
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,9 +145,12 @@ class ActivityTabVC: BaseVC {
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
         tblview.addSubview(refreshControl)
         
+        tblview.estimatedRowHeight = 150
+        tblview.rowHeight = UITableViewAutomaticDimension
+        
         filtrview.isHidden = true
         
-        setUpFilterActivityView()
+      //  setUpFilterActivityView()
         
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
                
@@ -120,7 +200,8 @@ class ActivityTabVC: BaseVC {
     }
     
     
-    func setUpFilterActivityView() {
+    /*
+     func setUpFilterActivityView() {
         
         let dict = NSMutableDictionary()
         dict.setValue("Visitor", forKey: "activity_grp")
@@ -158,9 +239,11 @@ class ActivityTabVC: BaseVC {
         dict6.setValue("0", forKey: "is_selected")
         arrActivity.add(dict6)
         
-    }
+    } */
     
     @IBAction func btnFilterOpenView(_ sender: Any) {
+        apicallGetActivitytypes()
+
         filtrview.isHidden = false
 
     }
@@ -174,6 +257,7 @@ class ActivityTabVC: BaseVC {
     }
     
     @IBAction func btnResetaction(_ sender: Any) {
+        arrSelectionCheck.removeAllObjects()
         filtrview.isHidden = true
     }
     
@@ -189,7 +273,14 @@ class ActivityTabVC: BaseVC {
         }
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         webservices().StartSpinner()
-        Apicallhandler.sharedInstance.ApiCallGuestList(type:1, token: token as! String) { JSON in
+        
+        Apicallhandler.sharedInstance.ApiCallUserActivityList(token: token as! String) { JSON in
+            
+//
+//        }
+//
+//        Apicallhandler.sharedInstance.ApiCallGuestList(type:1, token: token as! String) { JSON in
+
             
             let statusCode = JSON.response?.statusCode
             
@@ -256,12 +347,12 @@ class ActivityTabVC: BaseVC {
     }
     
     @objc func aceeptRequest(sender:UIButton) {
-        let strGuestId = arrGuestList[sender.tag].id
+        let strGuestId = arrGuestList[sender.tag].userActivityID
         ApiCallAccepGuest(type: 1, guestId: strGuestId!)
     }
     
     @objc func DeclineRequest(sender:UIButton) {
-        let strGuestId = arrGuestList[sender.tag].id
+        let strGuestId = arrGuestList[sender.tag].userActivityID
         
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
         avc?.titleStr =  GeneralConstants.kAppName   // "Society Buddy"
@@ -494,7 +585,8 @@ class ActivityTabVC: BaseVC {
     
     
     @objc func OutguestByMember(sender:UIButton) {
-        let strType = arrGuestList[sender.tag].type!
+        
+       /* let strType = arrGuestList[sender.tag].type!
         let strId = String(format: "%d", arrGuestList[sender.tag].id!)
         let strGurdId = String(format: "%d", arrGuestList[sender.tag].guard_id!)
         let strBuildingId = arrGuestList[sender.tag].buildingname!
@@ -516,7 +608,7 @@ class ActivityTabVC: BaseVC {
         avc?.noAct = {
             
         }
-        present(avc!, animated: true)
+        present(avc!, animated: true) */
         
         //
         //
@@ -547,10 +639,13 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
             
          
-            cell.lblname.text = (arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "activity_grp") as? String
+          //  cell.lblname.text = (arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "activity_grp") as? String
 
+        cell.lblname.text = arrActivity[indexPath.row].activityName
             
-            if((arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+          //  if((arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+        if(arrSelectionCheck.contains(arrActivity[indexPath.row].activityName!))
+
             {
                 cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
 
@@ -565,8 +660,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-        let contentNSString = activityGroupAry[indexPath.row]
-        let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+        let contentNSString = arrActivity[indexPath.row].activityName
+        let expectedLabelSize = contentNSString!.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
         
         print("\(expectedLabelSize)")
         return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12) //31
@@ -575,10 +670,16 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-            arrSelectionCheck.removeAllObjects()
+          //  arrSelectionCheck.removeAllObjects()
            // collectionProfession.reloadData()
             
-            if (arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
+        
+        if arrSelectionCheck.contains(arrActivity[indexPath.row].activityName!){
+            arrSelectionCheck.remove(arrActivity[indexPath.row].activityName!)
+        }else{
+            arrSelectionCheck.add(arrActivity[indexPath.row].activityName!)
+        }
+      /*  if (arrActivity[indexPath.row].activityName as! String).value(forKey: "is_selected") as? String == "0"{
                 
                 let dict = arrActivity[indexPath.row] as! NSMutableDictionary
                 dict.setValue("1", forKey: "is_selected")
@@ -590,7 +691,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 dict.setValue("0", forKey: "is_selected")
                 arrActivity.replaceObject(at: indexPath.row, with: dict)
                 
-            }
+            } */
             
             //selectedbloodgrop = bloodgroupary[indexPath.row]
             collectionActivity.reloadData()
@@ -611,15 +712,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         let cell:AcceptedRequestCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! AcceptedRequestCell
         
-        cell.lblname.text = arrGuestList[indexPath.row].name
+        cell.lblname.text = arrGuestList[indexPath.row].activity?.name
         
-        cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+      //  cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic!)!), placeholderImage: UIImage(named: "vendor-1"))
         
-        let dateFormatterGet = DateFormatter()
+      /* let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
+        let date = dateFormatterGet.date(from: (arrGuestList[indexPath.row].activity?.activityIn!)!)
         dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
-        cell.lblintime.text = dateFormatterGet.string(from: date!)
+        cell.lblintime.text = dateFormatterGet.string(from: date!) */
 
       //  cell.lblapprovedby.text = "INVITED by \(String.getString(UsermeResponse?.data?.name!))"
         
@@ -636,9 +737,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         return UITableViewAutomaticDimension
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension  // 345
-    }
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension  // 345
+//    }
     
     /* func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

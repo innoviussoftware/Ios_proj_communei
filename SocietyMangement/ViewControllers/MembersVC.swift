@@ -63,6 +63,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
     
     @IBOutlet weak var imgBlodUpDown: UIImageView!
+    
     @IBOutlet weak var imgUpDownProfession: UIImageView!
     
     @IBOutlet weak var imgUpDownAge: UIImageView!
@@ -1538,6 +1539,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         cb.checkmarkColor = AppColor.appcolor
         
     }
+    
     func dialNumber(number : String) {
         
         if let url = URL(string: "tel://\(number)"),
@@ -1551,6 +1553,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             // add error message here
         }
     }
+    
     // MARK: - get GetBuildings
     
     func apicallGetBuildings()

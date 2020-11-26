@@ -108,6 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
                     
+                   initialViewController.deliverydic = dic
                     
                     let navigationController = UINavigationController.init(rootViewController: initialViewController)
                     navigationController.navigationBar.isHidden = true
@@ -382,6 +383,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+            
+            initialViewController.deliverydic = dict
             
             let navigationController = UINavigationController.init(rootViewController: initialViewController)
             navigationController.navigationBar.isHidden = true
