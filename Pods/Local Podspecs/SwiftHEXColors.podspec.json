@@ -1,6 +1,6 @@
 {
   "name": "SwiftHEXColors",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "summary": "HEX color handling as an extension for UIColor. Written in Swift.",
   "homepage": "https://github.com/thii/SwiftHEXColors",
   "license": {
@@ -12,10 +12,11 @@
   },
   "source": {
     "git": "https://github.com/thii/SwiftHEXColors.git",
-    "tag": "1.4.0"
+    "tag": "1.4.1"
   },
   "platforms": {
     "ios": "8.0",
+    "watchos": "4.0",
     "osx": "10.9",
     "tvos": "9.0"
   },

@@ -474,7 +474,7 @@ struct Apicallhandler {
     //Mark : Api call Delivery Leave Gate
     func ApicallDeliveryLeaveatGate(URL: String, token:String,VisitingFlatID:Int,UserActivityID:Int, onCompletion: @escaping ((_ response: DataResponse<DeliveryatGateResponse>) -> Void)) {
         
-        let parameter:Parameters = ["type":VisitingFlatID,"UserActivityID":UserActivityID]
+        let parameter:Parameters = ["VisitingFlatID":VisitingFlatID,"UserActivityID":UserActivityID]
         AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryatGateResponse>) in
             
             onCompletion(response)

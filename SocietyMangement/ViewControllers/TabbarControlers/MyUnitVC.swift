@@ -341,8 +341,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             
             webservices().StartSpinner()
             
-            
-        Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { [self] JSON in
+        
+        Apicallhandler().APIGetFamilyMember(URL: webservices().baseurl + API_GET_FAMAILY_MEMBER, token: token as! String) { JSON in
+
                 
                 print(JSON)
                 switch JSON.result{
@@ -496,8 +497,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     self.lblStaticAddVhicleDetail.isHidden = false
                     self.collectionVehicle.isHidden = true
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     webservices().StopSpinner()
                     
@@ -512,9 +513,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     func btnAddHelperAction() {
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+      /*  let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         vc.isfrom = 1
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true) */
         
         print("btnAddHelperAction new")
     }

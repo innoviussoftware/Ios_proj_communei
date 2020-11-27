@@ -213,10 +213,11 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
            if !txtflattype.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
             self.present(alert, animated: true, completion: nil)
-            }else if !txtbloodgroup.hasText{
-               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your bloodgroup")
-               self.present(alert, animated: true, completion: nil)
-            }else{
+           }else if !txtbloodgroup.hasText {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select bloodgroup")
+            self.present(alert, animated: true, completion: nil)
+           }
+            else{
                 apicallUpdateProfile()
                 return
                }
@@ -255,6 +256,22 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                             return
                          }
         }
+        
+        
+        else if !txtflattype.hasText{
+           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
+           self.present(alert, animated: true, completion: nil)
+           }
+        else if(txtflattype.text == "")
+        {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
+            self.present(alert, animated: true, completion: nil)
+        }
+           else{
+               apicallUpdateProfile()
+               return
+            }
+                   
        
     }
     
@@ -326,6 +343,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             txtmember.isUserInteractionEnabled = true
             txtaddress.isUserInteractionEnabled = true
             imgview.isUserInteractionEnabled = true
+            
+            txtGender.isUserInteractionEnabled = true
+            txtbirthDate.isUserInteractionEnabled = true
+
             
             if(UserDefaults.standard.object(forKey:USER_ROLE) != nil)
             {
@@ -1268,16 +1289,17 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
                        // let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                         
-                        if(self.isfrom == 1){
+                      /*  if(self.isfrom == 1){
                             let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                             
                             self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
                             
                             self.navigationController?.pushViewController(nextViewController, animated: true)
                             
-                        }else{
+                        }else{ */
                             
                             self.navigationController?.popViewController(animated: true)
+                      //  }
 
 //                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
 //
@@ -1286,7 +1308,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 //                            self.navigationController?.popViewController(animated: true)
 
 
-                        }
+                        
                                 
                     }
                     

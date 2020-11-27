@@ -712,7 +712,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         let cell:AcceptedRequestCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! AcceptedRequestCell
         
-        cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+        if arrGuestList[indexPath.row].activity?.name != nil {
+            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+        }
         
       //  cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic!)!), placeholderImage: UIImage(named: "vendor-1"))
         

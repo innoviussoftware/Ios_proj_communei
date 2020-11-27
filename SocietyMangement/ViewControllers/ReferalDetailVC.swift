@@ -63,7 +63,7 @@ class ReferalDetailVC: BaseVC {
         }
         else
         {
-            apicallReferFriend()
+           // apicallReferFriend()
             
         }
         

@@ -191,6 +191,7 @@
 		9AEE05F0230E5C140009E8A3 /* AddBuildingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE05EF230E5C140009E8A3 /* AddBuildingPopup.swift */; };
 		9AEE05F2230E5C350009E8A3 /* BuildingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE05F1230E5C350009E8A3 /* BuildingsVC.swift */; };
 		9AEE802E236C539000068075 /* UpdateNotifiCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE802D236C539000068075 /* UpdateNotifiCount.swift */; };
+		9AF41C78257105C500E943F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AF41C77257105C400E943F2 /* GoogleService-Info.plist */; };
 		9AF770BA2339D2DC006220BA /* AddguestPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF770B92339D2DC006220BA /* AddguestPopup.swift */; };
 		9AF770BC2339F00C006220BA /* InviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF770BB2339F00C006220BA /* InviteVC.swift */; };
 		9AF770BE233A14E0006220BA /* EditGuestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF770BD233A14E0006220BA /* EditGuestVC.swift */; };
@@ -213,7 +214,6 @@
 		D23C3A152525DEFE00366CCB /* DeliveryWaitingPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23C3A142525DEFE00366CCB /* DeliveryWaitingPopupVC.swift */; };
 		D23DF19524F62CE200888ADE /* BuycategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23DF19324F62CE200888ADE /* BuycategoryCell.swift */; };
 		D23DF19624F62CE200888ADE /* BuycategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D23DF19424F62CE200888ADE /* BuycategoryCell.xib */; };
-		D23FCEFE2552D6CF0075F744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */; };
 		D2412AAC25120D06003B0D54 /* Gotham Extra Light Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = D2412AAB25120D06003B0D54 /* Gotham Extra Light Italic.otf */; };
 		D241442E2531884D0018704F /* ServiceTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D241442D2531884D0018704F /* ServiceTypeVC.swift */; };
 		D241793524EA5B1800966E81 /* QuickActionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D241793424EA5B1800966E81 /* QuickActionVC.swift */; };
@@ -489,6 +489,7 @@
 		9AEE05EF230E5C140009E8A3 /* AddBuildingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBuildingPopup.swift; sourceTree = "<group>"; };
 		9AEE05F1230E5C350009E8A3 /* BuildingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingsVC.swift; sourceTree = "<group>"; };
 		9AEE802D236C539000068075 /* UpdateNotifiCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNotifiCount.swift; sourceTree = "<group>"; };
+		9AF41C77257105C400E943F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9AF770B92339D2DC006220BA /* AddguestPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddguestPopup.swift; sourceTree = "<group>"; };
 		9AF770BB2339F00C006220BA /* InviteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteVC.swift; sourceTree = "<group>"; };
 		9AF770BD233A14E0006220BA /* EditGuestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGuestVC.swift; sourceTree = "<group>"; };
@@ -514,7 +515,6 @@
 		D23DF19324F62CE200888ADE /* BuycategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuycategoryCell.swift; sourceTree = "<group>"; };
 		D23DF19424F62CE200888ADE /* BuycategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BuycategoryCell.xib; sourceTree = "<group>"; };
 		D23EE38524F3B6F100C5C609 /* SocietyMangement-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SocietyMangement-Bridging-Header.h"; sourceTree = "<group>"; };
-		D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D2412AAB25120D06003B0D54 /* Gotham Extra Light Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham Extra Light Italic.otf"; sourceTree = "<group>"; };
 		D241442D2531884D0018704F /* ServiceTypeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTypeVC.swift; sourceTree = "<group>"; };
 		D241793424EA5B1800966E81 /* QuickActionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionVC.swift; sourceTree = "<group>"; };
@@ -753,8 +753,8 @@
 				9A532548230BCA0B003E5F29 /* Main.storyboard */,
 				9A53254B230BCA0D003E5F29 /* Assets.xcassets */,
 				9A53254D230BCA0D003E5F29 /* LaunchScreen.storyboard */,
-				D23FCEFD2552D6CE0075F744 /* GoogleService-Info.plist */,
 				9A532550230BCA0D003E5F29 /* Info.plist */,
+				9AF41C77257105C400E943F2 /* GoogleService-Info.plist */,
 				D23EE38524F3B6F100C5C609 /* SocietyMangement-Bridging-Header.h */,
 			);
 			path = SocietyMangement;
@@ -1001,9 +1001,9 @@
 				9A53253D230BCA0A003E5F29 /* Sources */,
 				9A53253E230BCA0A003E5F29 /* Frameworks */,
 				9A53253F230BCA0A003E5F29 /* Resources */,
-				1A6D66E77624DB15F674F087 /* [CP] Embed Pods Frameworks */,
 				9A80436C2334A66300852B81 /* Embed App Extensions */,
-				3C115D452466D5163FB0B161 /* [CP] Copy Pods Resources */,
+				97C9FB6C2AF88D847B75F2B2 /* [CP] Embed Pods Frameworks */,
+				5B946F14CA3AC9C38F9354B0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1121,6 +1121,7 @@
 				05349FB124BC472700EC598B /* Gotham-Thin.otf in Resources */,
 				05349FB224BC472700EC598B /* Gilroy-ExtraBold.otf in Resources */,
 				05349FB324BC472700EC598B /* Gotham Bold.otf in Resources */,
+				9AF41C78257105C500E943F2 /* GoogleService-Info.plist in Resources */,
 				9A53258C230BE5CF003E5F29 /* Lato-Bold.ttf in Resources */,
 				D2B9DA7124F535F100FF9BF0 /* ProductAddImgCollectionCell.xib in Resources */,
 				4EBE8028233BA03000AC94A2 /* CategoryListCell.xib in Resources */,
@@ -1131,7 +1132,6 @@
 				9A53254C230BCA0D003E5F29 /* Assets.xcassets in Resources */,
 				D2DDD58B24FE0F060008BE6A /* PollDetailCell.xib in Resources */,
 				4EEA6EFC235DD3A200B53E98 /* DomesticHelpCell.xib in Resources */,
-				D23FCEFE2552D6CF0075F744 /* GoogleService-Info.plist in Resources */,
 				4E668C10233DE7790077DABB /* DaysCell.xib in Resources */,
 				9AAF0E112372C035008587E3 /* NotificationCell.xib in Resources */,
 				D2BE92EF24E523BB00F885A8 /* GothamMedium.ttf in Resources */,
@@ -1196,24 +1196,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1A6D66E77624DB15F674F087 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3C115D452466D5163FB0B161 /* [CP] Copy Pods Resources */ = {
+		5B946F14CA3AC9C38F9354B0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1228,6 +1211,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97C9FB6C2AF88D847B75F2B2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A3FEE47591B2DA71B8313C86 /* [CP] Check Pods Manifest.lock */ = {
@@ -1667,20 +1667,20 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
-				DEVELOPMENT_TEAM = JB5LNQMKD3;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.3;
+				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Communei123;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CommuneiProduction;
 				PRODUCT_NAME = Communei;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = CommuneiLive;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1694,20 +1694,20 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1;
-				DEVELOPMENT_TEAM = JB5LNQMKD3;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.3;
+				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Communei123;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CommuneiProduction;
 				PRODUCT_NAME = Communei;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = CommuneiLive;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;

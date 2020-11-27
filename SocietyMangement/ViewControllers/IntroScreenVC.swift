@@ -87,32 +87,32 @@ extension IntroScreenVC:UICollectionViewDelegate,UICollectionViewDataSource, UIC
         
         let cell:IntroscreenCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! IntroscreenCell
         
-        cell.lblcontent.font = UIFont.init(name: "Gotham-Light", size: 14.0)
+      //  cell.lblcontent.font = UIFont.init(name: "Gotham-Light", size: 14.0)
         
         if(indexPath.row == 0)
         {
             cell.imgview.image = UIImage(named:"ic_splash1")
-            cell.lbltitle.text = "Visitor Management"
-            cell.lblcontent.text = "Ensure your guests feel welcome. With a simple passcode, your guests are through to your door instantly. No need for manual register."
+           // cell.lbltitle.text = "Visitor Management"
+           // cell.lblcontent.text = "Ensure your guests feel welcome. With a simple passcode, your guests are through to your door instantly. No need for manual register."
         }
         else if(indexPath.row == 1)
         {
             cell.imgview.image = UIImage(named:"ic_splash2")
-            cell.lbltitle.text = "Daily Staff Management"
-            cell.lblcontent.text = "Record attendance for staff and find best-rated helper in the community."
+           // cell.lbltitle.text = "Daily Staff Management"
+          //  cell.lblcontent.text = "Record attendance for staff and find best-rated helper in the community."
         }
         else if(indexPath.row == 2)
                {
                    cell.imgview.image = UIImage(named:"ic_splash3")
-                   cell.lbltitle.text = "Delivery Management & more..."
-                   cell.lblcontent.text = "Verify entry of every delivery executive and, if needed, instruct them to leave the package at the gate and pick it up at your convenience."
+                  // cell.lbltitle.text = "Delivery Management & more..."
+                 //  cell.lblcontent.text = "Verify entry of every delivery executive and, if needed, instruct them to leave the package at the gate and pick it up at your convenience."
                }
         return cell
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width:collectionView.frame.width, height: 442)
+        return CGSize(width:collectionView.frame.width, height: 380)
         
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
