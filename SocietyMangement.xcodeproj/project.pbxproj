@@ -224,7 +224,6 @@
 		D25CDD382547E5EA0099B1C2 /* BuildingAddResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25CDD372547E5EA0099B1C2 /* BuildingAddResponse.swift */; };
 		D2774D502536BD28006FC579 /* AlertSelectCameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2774D4F2536BD27006FC579 /* AlertSelectCameraVC.swift */; };
 		D297483A251DFC4C004B7518 /* DomesticHelperAttendanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2974839251DFC4C004B7518 /* DomesticHelperAttendanceVC.swift */; };
-		D2A45916252DD84000FFD863 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A45915252DD84000FFD863 /* MessagesViewController.swift */; };
 		D2A4593F252DDFE600FFD863 /* KhaSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A4593E252DDFE500FFD863 /* KhaSpinner.swift */; };
 		D2A45968252DE0F600FFD863 /* ZopimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A45967252DE0F500FFD863 /* ZopimViewController.swift */; };
 		D2A4596D252DECD100FFD863 /* KhaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A4596C252DECCE00FFD863 /* KhaViewController.swift */; };
@@ -525,7 +524,6 @@
 		D25CDD372547E5EA0099B1C2 /* BuildingAddResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingAddResponse.swift; sourceTree = "<group>"; };
 		D2774D4F2536BD27006FC579 /* AlertSelectCameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertSelectCameraVC.swift; sourceTree = "<group>"; };
 		D2974839251DFC4C004B7518 /* DomesticHelperAttendanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomesticHelperAttendanceVC.swift; sourceTree = "<group>"; };
-		D2A45915252DD84000FFD863 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		D2A4593E252DDFE500FFD863 /* KhaSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KhaSpinner.swift; sourceTree = "<group>"; };
 		D2A45967252DE0F500FFD863 /* ZopimViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZopimViewController.swift; sourceTree = "<group>"; };
 		D2A4596C252DECCE00FFD863 /* KhaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KhaViewController.swift; sourceTree = "<group>"; };
@@ -819,7 +817,6 @@
 				05B1B1BE24BC785C00AABF5E /* SignUPOTPVC.swift */,
 				4E298C01234313A2003FBDA9 /* EntryVC.swift */,
 				9A679CF6232A254C0077CDCB /* MobileNumberVC.swift */,
-				D2A45915252DD84000FFD863 /* MessagesViewController.swift */,
 				D2A45967252DE0F500FFD863 /* ZopimViewController.swift */,
 				9A679CF8232A2AB90077CDCB /* OTPVC.swift */,
 				9AC7B305232A6375001717C2 /* SignUPVC.swift */,
@@ -1003,7 +1000,6 @@
 				9A53253F230BCA0A003E5F29 /* Resources */,
 				9A80436C2334A66300852B81 /* Embed App Extensions */,
 				97C9FB6C2AF88D847B75F2B2 /* [CP] Embed Pods Frameworks */,
-				5B946F14CA3AC9C38F9354B0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1196,23 +1192,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5B946F14CA3AC9C38F9354B0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SocietyMangement/Pods-SocietyMangement-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		97C9FB6C2AF88D847B75F2B2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1358,7 +1337,6 @@
 				05349FBF24BC66D900EC598B /* BaseVC.swift in Sources */,
 				9A532587230BCF30003E5F29 /* SplashVC.swift in Sources */,
 				9A07B6C6230EB75F00ED5C6C /* NoticeResponse.swift in Sources */,
-				D2A45916252DD84000FFD863 /* MessagesViewController.swift in Sources */,
 				D2FBD95525417FDA00BC84E2 /* BloodGroupResponse.swift in Sources */,
 				9A53257A230BCAAF003E5F29 /* webservices.swift in Sources */,
 				D23DF19524F62CE200888ADE /* BuycategoryCell.swift in Sources */,
@@ -1669,7 +1647,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.3;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1696,7 +1674,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.3;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

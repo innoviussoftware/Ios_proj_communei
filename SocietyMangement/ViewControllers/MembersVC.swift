@@ -753,10 +753,12 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     
     
     override func viewWillAppear(_ animated: Bool) {
-        
     
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
+        // 28/11/20 app live process
+
+       // txtSearchbar.addTarget(self, action:#selector(MembersListDetails(_:)), for: .editingChanged)
         
     }
     
@@ -868,6 +870,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         
     }
     
+    // MARK: textField delegate
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         if(buildingary.count == 0)
@@ -880,7 +884,45 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     }
     
     
+  /*  @objc func MembersListDetails(_ textfield:UITextField) {
+            self.membersary.removeAll()
+            if textfield.text?.count != 0 {
+                for dicData in self.allmembersary {
+                    let isMachingWorker : NSString = (dicData.name!) as NSString
+                    let range = isMachingWorker.lowercased.range(of: textfield.text!, options: NSString.CompareOptions.caseInsensitive, range: nil,   locale: nil)
+                    if range != nil {
+                        self.membersary.append(dicData)
+                    }
+                }
+                if(membersary.count == 0)
+                {
+                    self.tblMembers.isHidden = true
+                }
+                else
+                {
+                    self.tblMembers.isHidden = false
+                    
+                }
+                self.tblMembers.reloadData()
+                
+            } else {
+                self.membersary = self.allmembersary
+                if(membersary.count == 0)
+                {
+                    self.tblMembers.isHidden = true
+                }
+                else
+                {
+                    self.tblMembers.isHidden = false
+                    
+                }
+            }
+            self.tblMembers.reloadData()
+        } */
     
+    
+    // MARK: collectionView delegate
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if(collectionView == CollectionBloodGrp)
@@ -1805,6 +1847,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         //Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id:"0",token:strToken as! String) { JSON in
         
         Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
+            
+      //  Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST ,token:strToken as! String) { JSON in
+
 
             switch JSON.result{
             case .success(let resp):

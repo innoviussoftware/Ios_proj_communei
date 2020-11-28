@@ -14,14 +14,14 @@ import Alamofire
 import SWRevealViewController
 
 import FirebaseMessaging
+// 28/11/20 app live process
 
+/*
 import ZDCChat
 
 import SupportSDK
 import ZendeskCoreSDK
-
-//import ZendeskSDK
-
+*/
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -38,14 +38,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UINavigationBar.appearance().barStyle = .blackTranslucent        
 
-        Zendesk.initialize(appId: "4ea1392aac888121afe024b8597d9914d9729120dd2f4219", clientId: "mobile_sdk_client_9d81559f360d1c9fc80b", zendeskUrl: "https://communei.zendesk.com")
+        // 28/11/20 app live process
+
+       /* Zendesk.initialize(appId: "4ea1392aac888121afe024b8597d9914d9729120dd2f4219", clientId: "mobile_sdk_client_9d81559f360d1c9fc80b", zendeskUrl: "https://communei.zendesk.com")
         
         let ident = Identity.createAnonymous()
         Zendesk.instance?.setIdentity(ident)
 
         Support.initialize(withZendesk: Zendesk.instance)
 
-        ZDCChat.initialize(withAccountKey: "vmJD9mg6iui0rWzxNcR5jfb1gLLEjBll")
+        ZDCChat.initialize(withAccountKey: "vmJD9mg6iui0rWzxNcR5jfb1gLLEjBll") */
 
 
         IQKeyboardManager.shared.enable = true
@@ -122,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                 }
 
-               else if dic.value(forKey: "notification_type") as! String == "Notice"{
+               else if dic.value(forKey: "notification_type") as! String == "SocietyNotice"{
                          
                          let storyboard = UIStoryboard(name: "Main", bundle: nil)
                          let initialViewController = storyboard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC

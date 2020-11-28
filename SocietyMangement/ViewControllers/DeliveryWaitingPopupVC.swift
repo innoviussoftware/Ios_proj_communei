@@ -153,7 +153,7 @@ class DeliveryWaitingPopupVC: UIViewController {
     }
     
     @IBAction func btnDeliveryatGatePressed(_ sender: UIButton){
-        ApiCallDeliveryGate()
+       // ApiCallDeliveryGate()
     }
     
     // MARK: - Delivery at Gate

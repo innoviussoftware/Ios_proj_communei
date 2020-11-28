@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '10.0'
 
 target 'SocietyMangement' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -22,13 +22,13 @@ target 'SocietyMangement' do
 
    pod 'SwiftHEXColors', :git => 'https://github.com/thii/SwiftHEXColors.git'
 
-   pod 'ZDCChat'
+   #   pod 'ZDCChat'
    
-   pod 'JSQMessagesViewController'
+   #  pod 'JSQMessagesViewController'
    
-   pod 'ZendeskSupportSDK'
+   #  pod 'ZendeskSupportSDK'
 
-   pod 'ZendeskSupportProvidersSDK'
+   #  pod 'ZendeskSupportProvidersSDK'
 
    pod 'SwiftSVG', '~> 2.0'
 

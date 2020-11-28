@@ -422,7 +422,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     }
     @objc func deletecircular(sender:UIButton)
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                       let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                                                       avc?.titleStr = "Communei"
                                                       avc?.subtitleStr = "Are you sure you want to delete \(self.Circularary[sender.tag].title!)?"

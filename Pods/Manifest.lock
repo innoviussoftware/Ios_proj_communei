@@ -44,7 +44,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
   - FloatRatingView (4.0)
-  - FSCalendar (2.8.1)
+  - FSCalendar (2.8.2)
   - FSPagerView (0.8.3)
   - GoogleAppMeasurement (7.1.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
@@ -75,9 +75,6 @@ PODS:
     - GoogleUtilities/Logger
   - IHProgressHUD (0.1.5)
   - IQKeyboardManagerSwift (6.5.6)
-  - JSQMessagesViewController (7.3.5):
-    - JSQSystemSoundPlayer (~> 2.0.1)
-  - JSQSystemSoundPlayer (2.0.1)
   - nanopb (2.30906.0):
     - nanopb/decode (= 2.30906.0)
     - nanopb/encode (= 2.30906.0)
@@ -93,28 +90,6 @@ PODS:
   - SwiftHEXColors (1.4.1)
   - SwiftSVG (2.3.2)
   - SWRevealViewController (2.3.0)
-  - ZDCChat (1.4.7):
-    - ZDCChat/API (= 1.4.7)
-    - ZDCChat/Localization (= 1.4.7)
-    - ZDCChat/UI (= 1.4.7)
-  - ZDCChat/API (1.4.7)
-  - ZDCChat/Localization (1.4.7)
-  - ZDCChat/UI (1.4.7):
-    - ZDCChat/API
-  - ZendeskCommonUISDK (6.0.0):
-    - ZendeskSDKConfigurationsSDK (~> 1.1.6)
-  - ZendeskCoreSDK (2.4.1)
-  - ZendeskMessagingAPISDK (3.8.0):
-    - ZendeskSDKConfigurationsSDK (~> 1.1.6)
-  - ZendeskMessagingSDK (3.8.0):
-    - ZendeskCommonUISDK (~> 6.0.0)
-    - ZendeskMessagingAPISDK (~> 3.8.0)
-  - ZendeskSDKConfigurationsSDK (1.1.6)
-  - ZendeskSupportProvidersSDK (5.1.1):
-    - ZendeskCoreSDK (~> 2.4.1)
-  - ZendeskSupportSDK (5.1.1):
-    - ZendeskMessagingSDK (~> 3.8.0)
-    - ZendeskSupportProvidersSDK (~> 5.1.1)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `alamofire5`)
@@ -125,7 +100,6 @@ DEPENDENCIES:
   - FSPagerView
   - IHProgressHUD (from `https://github.com/Swiftify-Corp/IHProgressHUD.git`)
   - IQKeyboardManagerSwift
-  - JSQMessagesViewController
   - PKHUD
   - ScrollPager
   - SDWebImage
@@ -133,9 +107,6 @@ DEPENDENCIES:
   - SwiftHEXColors (from `https://github.com/thii/SwiftHEXColors.git`)
   - SwiftSVG (~> 2.0)
   - SWRevealViewController
-  - ZDCChat
-  - ZendeskSupportProvidersSDK
-  - ZendeskSupportSDK
 
 SPEC REPOS:
   trunk:
@@ -153,8 +124,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - IQKeyboardManagerSwift
-    - JSQMessagesViewController
-    - JSQSystemSoundPlayer
     - nanopb
     - PKHUD
     - PromisesObjC
@@ -163,14 +132,6 @@ SPEC REPOS:
     - SkyFloatingLabelTextField
     - SwiftSVG
     - SWRevealViewController
-    - ZDCChat
-    - ZendeskCommonUISDK
-    - ZendeskCoreSDK
-    - ZendeskMessagingAPISDK
-    - ZendeskMessagingSDK
-    - ZendeskSDKConfigurationsSDK
-    - ZendeskSupportProvidersSDK
-    - ZendeskSupportSDK
 
 EXTERNAL SOURCES:
   Alamofire:
@@ -202,15 +163,13 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 61e8d10a4192a582c6239378169d10e504ca8d91
   FirebaseMessaging: 076054895c9260f82c7304cc7709dbf19b8f3e4a
   FloatRatingView: bb6bdddfbeec51b1d387b4bd50abc27b4dfccd48
-  FSCalendar: 5245140456fcbcac5824c203b98bd8068bdfee1a
+  FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
   FSPagerView: 670405b2f18e2a87fa37f20b00de783e562c25a8
   GoogleAppMeasurement: 89e1a64593f968713b0506ba1b53b38a154bf9a5
   GoogleDataTransport: e4085e6762f36a6141738f46b0153473ce57fb18
   GoogleUtilities: 3dc4ff0d5e4840e2fa8eef0889620e8c33d4218c
   IHProgressHUD: 554f1e4cb088cf82c238dc1c607f5fadfd81ab89
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
-  JSQMessagesViewController: 6587f56aedbcb150a8ba1d968e1ef58b1bc758b7
-  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
@@ -220,15 +179,7 @@ SPEC CHECKSUMS:
   SwiftHEXColors: 1cb6e5d55c52749aa33db8f088ac55eb71ca4c7f
   SwiftSVG: ca7f64e403b8ea7ea8eba8c823b83ba4a059834c
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
-  ZDCChat: 46e070452e4543fab9f39913210dfff6527081d1
-  ZendeskCommonUISDK: f496b95e2cb728bd5729fe022f400cf1dedda00b
-  ZendeskCoreSDK: 2dc9457ae01d024ca02f60f6134ad1ad90136c29
-  ZendeskMessagingAPISDK: e315a6ad7a9b6cae9e52d946df4aa8a7727abdf5
-  ZendeskMessagingSDK: 774d88bec0671d58ae51c9964d4c4f9bb4142095
-  ZendeskSDKConfigurationsSDK: 2fa9413915db85c993f58ad8f7902bea0b6090a5
-  ZendeskSupportProvidersSDK: 51c9d4a826f7bd87e3109e5c801c602a6b62c762
-  ZendeskSupportSDK: dcb2596ad05a63d662e8c7924357babbf327b421
 
-PODFILE CHECKSUM: abd32e2eaebcf00beff06a9c6af41888859b09f9
+PODFILE CHECKSUM: b4e38c8872a529b84087fa69672cb0146d3f3719
 
 COCOAPODS: 1.10.0

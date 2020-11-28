@@ -1149,9 +1149,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             str = ""
         }
         
-//        if txtprofession.text == "other" {
-//            professiongroupId = 0
-//        }
+        if txtprofession.text == "other" {
+            professiongroupId = 0
+        }
         
         if(txtflattype.text == "Owner"){
             UserType = 1
@@ -1289,17 +1289,17 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
                        // let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                         
-                      /*  if(self.isfrom == 1){
+                        if(self.isfrom == 3){
                             let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                             
                             self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
                             
                             self.navigationController?.pushViewController(nextViewController, animated: true)
                             
-                        }else{ */
+                        }else{
                             
                             self.navigationController?.popViewController(animated: true)
-                      //  }
+                        }
 
 //                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
 //

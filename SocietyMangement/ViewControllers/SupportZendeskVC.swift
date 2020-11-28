@@ -7,7 +7,9 @@
 //
 
 import UIKit
+// 28/11/20 app live process
 
+/*
 import MessagingAPI
 import MessagingSDK
 import SupportProvidersSDK
@@ -16,6 +18,8 @@ import ZDCChat
 import ZDCChatAPI
 
 import CommonUISDK
+
+*/
 
 
 class SupportZendeskVC: UIViewController {
@@ -30,7 +34,9 @@ class SupportZendeskVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        CommonTheme.currentTheme.primaryColor = UIColor.orange
+        // 28/11/20 app live process
+
+       // CommonTheme.currentTheme.primaryColor = UIColor.orange
         
         isfrom = 1
 
@@ -93,10 +99,11 @@ class SupportZendeskVC: UIViewController {
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().barTintColor = UIColor(red: 0.0 / 255.0, green: 0.0 / 0.0, blue: 0.0 / 255.0, alpha: 1.0)
 
-       // Theme.currentTheme.primaryColor = UIColor(red: 0, green: 188.0 / 255.0, blue: 212.0 / 255.0, alpha: 1.0)
-        CommonTheme.currentTheme.primaryColor = UIColor(red: 0, green: 188.0 / 255.0, blue: 212.0 / 255.0, alpha: 1.0)
+        // 28/11/20 app live process
+
+       /* CommonTheme.currentTheme.primaryColor = UIColor(red: 0, green: 188.0 / 255.0, blue: 212.0 / 255.0, alpha: 1.0)
         // chat SDK
-        ZDCChatOverlay.appearance().insets = NSValue(uiEdgeInsets: UIEdgeInsets(top: 75.0, left: 15.0, bottom: 70.0, right: 15.0))
+        ZDCChatOverlay.appearance().insets = NSValue(uiEdgeInsets: UIEdgeInsets(top: 75.0, left: 15.0, bottom: 70.0, right: 15.0)) */
         
     }
     
@@ -109,13 +116,15 @@ class SupportZendeskVC: UIViewController {
         
       //  UINavigationBar.appearance().backgroundColor = UIColor(red: 0.37, green: 0.37, blue: 0.37, alpha: 1.0)
         
-        self.navigationController?.isNavigationBarHidden = false
-                
+        // 28/11/20 app live process
+        
+      /*  self.navigationController?.isNavigationBarHidden = false
+        
         let hcConfig = HelpCenterUiConfiguration()
         hcConfig.showContactOptions = true
 
         let vc: UIViewController = ZDKHelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [hcConfig])
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true) */
                 
 
        // navigationController?.pushViewController(ZDKHelpCenterUi.buildHelpCenterOverviewUi(), animated: true)
@@ -173,7 +182,9 @@ class SupportZendeskVC: UIViewController {
     @IBAction func showChat(_ sender: Any) {
         print("showChat")
         
-        CommonTheme.currentTheme.primaryColor = UIColor.orange
+        // 28/11/20 app live process
+        
+      /*  CommonTheme.currentTheme.primaryColor = UIColor.orange
 
         
         ZDCChat.updateVisitor { [self] (user) in
@@ -200,7 +211,7 @@ class SupportZendeskVC: UIViewController {
        
         }
         
-        ZDCChat.start(in: self.navigationController, withConfig: nil)
+        ZDCChat.start(in: self.navigationController, withConfig: nil) */
     
     }
     

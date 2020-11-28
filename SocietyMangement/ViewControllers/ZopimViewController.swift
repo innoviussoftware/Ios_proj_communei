@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import ZDCChat
+// 28/11/20 app live process
+
+//import ZDCChat
 import SWRevealViewController
 
 class ZopimViewController: KhaViewController {
@@ -17,7 +19,9 @@ class ZopimViewController: KhaViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		ZDCChat.updateVisitor { (user) in
+        // 28/11/20 app live process
+
+		/*ZDCChat.updateVisitor { (user) in
             
             user?.name = UsermeResponse?.data!.name ?? ""
 
@@ -42,7 +46,7 @@ class ZopimViewController: KhaViewController {
 		//	user?.name = fullName
 		//	user?.email = User.me.profile?.email ?? ""
 		}
-		ZDCChat.start(in: self.navigationController, withConfig: nil)
+		ZDCChat.start(in: self.navigationController, withConfig: nil) */
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
