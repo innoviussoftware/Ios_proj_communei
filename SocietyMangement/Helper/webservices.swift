@@ -29,7 +29,9 @@ class webservices: NSObject {
     // var imgurl = "http://65.0.14.211/storage/app/"
 
     
-   var baseurl =  "https://api.communei.com/api/"
+ // var baseurl =  "https://api.communei.com/api/"
+    
+    var baseurl =  "https://dev.communei.net/api/"
     
  //  var imgurl = "https://api.communei.com/storage/app/icons/"
     
@@ -216,6 +218,9 @@ struct AppColor {
     
     static let borderColor = UIColor(red: 242.0/255.0, green: 97.0/255.0, blue: 1.0/255.0, alpha: 1)
     
+    static let cancelColor = UIColor(red: 187.0/255.0, green: 187.0/255.0, blue: 187.0/255.0, alpha: 1)
+
+    
     static let introlineColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/255.0, alpha: 1)
     
     static let radioUncheckColor = UIColor(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1)
@@ -230,6 +235,8 @@ struct AppColor {
     static let pollborder =  UIColor(red: 247.0/255.0, green: 251.0/255.0, blue: 253.0/255.0, alpha: 1)
     
     static let pollborderSelect =  UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1)
+
+    static let deniedColor =  UIColor(red: 246.0/255.0, green: 10.0/255.0, blue: 32.0/255.0, alpha: 1)
 
 
     // 828EA5

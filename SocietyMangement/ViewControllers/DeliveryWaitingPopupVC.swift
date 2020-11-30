@@ -153,6 +153,12 @@ class DeliveryWaitingPopupVC: UIViewController {
     }
     
     @IBAction func btnDeliveryatGatePressed(_ sender: UIButton){
+        
+//        if deliverydic.value(forKey: "VisitingFlatID") != nil {
+//          let VisitingID = String(format: "%d",(deliverydic.value(forKey: "VisitingFlatID"))! as! Int)
+        // VisitingFlatID = VisitingID
+//        }
+        
        // ApiCallDeliveryGate()
     }
     

@@ -134,7 +134,7 @@ struct Apicallhandler {
     
     func ApiCallGuestList(type:Int,token: String, onCompletion: @escaping ((_ response: DataResponse<GuestListResponse>) -> Void)) {
         
-        AF.request(webservices().baseurl + API_GUEST_LIST, method: .post,parameters:["type":type], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GuestListResponse>) in
+        AF.request(webservices().baseurl + API_GUEST_LIST, method: .post,parameters:["type":type], encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GuestListResponse>) in
             
             onCompletion(response)
         }
@@ -649,6 +649,16 @@ struct Apicallhandler {
         }
         
     }
+    
+    
+    func GetAllMembersSearch(URL: String,token:String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<MembersResponse>) -> Void)) {
+        
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MembersResponse>) in
+            onCompletion(response)
+        }
+        
+    }
+    
     
     //Mark : Api call Delete Notice
     func DeleteEvent(URL: String, id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {

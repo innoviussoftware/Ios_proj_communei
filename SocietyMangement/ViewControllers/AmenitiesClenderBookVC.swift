@@ -9,7 +9,7 @@
 import UIKit
 import FSCalendar
 
-class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
+class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDelegate {
     
     @IBOutlet weak var calenderView: FSCalendar!
     @IBOutlet weak var btnDone: UIButton!
@@ -40,6 +40,10 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    func maximumDate(for calendar: FSCalendar) -> Date {
+        return Date()
     }
     
     func setUpView() {

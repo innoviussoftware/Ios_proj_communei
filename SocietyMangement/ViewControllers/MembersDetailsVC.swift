@@ -109,7 +109,6 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
        @IBOutlet weak var constraintHightCollecProfession: NSLayoutConstraint!
     
     @IBOutlet weak var constraintHightAgeCollection: NSLayoutConstraint!
-
     
     @IBOutlet weak var filtrview: UIView!
     
@@ -118,9 +117,10 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     @IBOutlet weak var collectionProfession: UICollectionView!
 
     @IBOutlet weak var collectionAge: UICollectionView!
-
     
     var arrBloodGrp = NSMutableArray()
+    
+   // var arrBloodGrp = [BloodGroup]()
     
     var arrAge = NSMutableArray()
 
@@ -757,7 +757,6 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     
     override func viewWillAppear(_ animated: Bool) {
         
-    
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
         
         
@@ -1779,13 +1778,14 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
       //  let strSociId  = (SociId as NSNumber).stringValue
         
         let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
-        
-        let id = String(format: "%d",buildingid!)
 
         webservices().StartSpinner()
 
         
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
+      //  Apicallhandler().GetAllMembersSearch(URL: webservices().baseurl + API_MEMBER_LIST_SEARCH ,token:strToken as! String, param: <#Parameters#>) { JSON in
+        
+        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST ,token:strToken as! String) { JSON in
+
             switch JSON.result{
             
             

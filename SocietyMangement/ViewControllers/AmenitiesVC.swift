@@ -383,6 +383,8 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
             
             self.navigationController?.pushViewController(vc, animated: true)
+            
+            print("AmenitiesClenderBookVC")
         }
         
     }

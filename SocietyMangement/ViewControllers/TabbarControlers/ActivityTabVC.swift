@@ -276,11 +276,6 @@ class ActivityTabVC: BaseVC {
         
         Apicallhandler.sharedInstance.ApiCallUserActivityList(token: token as! String) { JSON in
             
-//
-//        }
-//
-//        Apicallhandler.sharedInstance.ApiCallGuestList(type:1, token: token as! String) { JSON in
-
             
             let statusCode = JSON.response?.statusCode
             
@@ -698,6 +693,38 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
     }
     
+    @objc func callmember(sender:UIButton)
+    {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
+        avc?.subtitleStr = "Are you sure you want to call: \((arrGuestList[sender.tag].activity?.phone )!)"
+        avc?.isfrom = 3
+
+                                   avc?.yesAct = {
+                                    self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
+
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+    }
+    
+    func dialNumber(number : String) {
+        
+        if let url = URL(string: "tel://\(number)"),
+            UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler:nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            // add error message here
+        }
+    }
+    
 }
 
 
@@ -715,6 +742,299 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         if arrGuestList[indexPath.row].activity?.name != nil {
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
         }
+        
+        if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+        }
+        
+        if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
+            cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
+            cell.imgviewCompanyLogo.isHidden = false
+        }else{
+            cell.imgviewCompanyLogo.isHidden = true
+        }
+        
+        if arrGuestList[indexPath.row].activity?.phone != nil {
+            cell.btncall.isHidden = false
+        }else{
+            cell.btncall.isHidden = true
+        }
+        
+        cell.btncall.tag = indexPath.item
+        
+        cell.btncall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+
+        
+         if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry"{
+            
+            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+
+            cell.lblguest.text = "Visitor"
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+
+            if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+            }else{
+                cell.lblapprovedby.isHidden = true
+            }
+            
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+            if arrGuestList[indexPath.row].activity?.out != nil {
+                cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+            }else{
+                cell.lblouttime.isHidden = true
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Pre-Approval"{
+            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+
+            cell.lblguest.text = "Visitor"
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+            if arrGuestList[indexPath.row].activity?.out != nil {
+                cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+            }else{
+                cell.lblouttime.isHidden = true
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Entry"{
+            cell.lblname.text = "Delivery"
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+            if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+            }else{
+                cell.lblapprovedby.isHidden = true
+            }
+            
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Pre-Approval"{
+            cell.lblname.text = "Delivery"
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.vendor
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+            if arrGuestList[indexPath.row].activity?.out != nil {
+                cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+            }else{
+                cell.lblouttime.isHidden = true
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Entry"{
+            cell.lblname.text = "Cab"
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Pre-Approval"{
+            
+            cell.lblname.text = "Cab"
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.vendor
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Daily Helper Entry"{
+            
+            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+            
+            cell.lblguest.text = "Daily Helper"
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+             if cell.lblStatus.text == "WAITING" || cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+            if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+            }else{
+                cell.lblapprovedby.isHidden = true
+            }
+            
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Daily Helper"{
+            
+            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+            
+            cell.lblguest.text = "Daily Helper"
+            
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+             if cell.lblStatus.text == "WAITING" || cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            }
+            
+            if arrGuestList[indexPath.row].activity?.removedBy != nil {
+                cell.lbladdedby.text = "Removed by " + (arrGuestList[indexPath.row].activity?.removedBy)!
+            }
+            
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Service Provider Entry"{
+            
+            cell.lblname.text = "Service Entry"
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+            
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+            
+            if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+            }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }
+            
+            if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            }
+            
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+            }else{
+                cell.lblintime.isHidden = true
+            }
+
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Vehicle Added"{
+            
+            if arrGuestList[indexPath.row].activity?.vehicleTypeID != nil {
+                cell.lblname.text = arrGuestList[indexPath.row].activity?.vehicleTypeID
+            }else{
+                cell.lblname.text = ""
+            }
+            
+            cell.lblguest.text = arrGuestList[indexPath.row].activity?.vehicleNumber
+
+            if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            }
+            
+            if arrGuestList[indexPath.row].activity?.creationDate != nil {
+                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.creationDate
+            }
+
+        }else{
+            if arrGuestList[indexPath.row].activity?.activityType != nil {
+                print("Activity ActivityType :- ",(arrGuestList[indexPath.row].activity?.activityType)!)
+            }else{
+                print("ActivityType :- ")
+            }
+        }
+
+        
+
         
       //  cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic!)!), placeholderImage: UIImage(named: "vendor-1"))
         

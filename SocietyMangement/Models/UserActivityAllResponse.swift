@@ -55,18 +55,22 @@ struct ActivityAll: Codable {
     let activityType: String?
     let name: String?
     let phone: String?
+    let vendor: String?
     let profilePic: String?
     let vehicle: String?
+    let vehicleTypeID: String?
+    let creationDate: String?
     let numberOfPeopleAccompanying: String?
     let status: String?
     let activityIn: String?
     let addedBy: String?
+    let removedBy: String?
     let out, leaveAtGate, vendorID, companyName: String?
     let companyLogoURL: String?
     let approvedBy: String?
     let societyName: String?
     let propertyFullName: String?
-    let isMulti, entryType, pic: String?
+    let isMulti, entryType: String?
     let visitorPreApprovalID, activityID: Int?
     let qr: String?
     let qrURL: String?
@@ -76,12 +80,16 @@ struct ActivityAll: Codable {
         case activityType = "ActivityType"
         case name = "Name"
         case phone = "Phone"
+        case vendor = "Vendor"
         case profilePic = "ProfilePic"
         case vehicle = "Vehicle"
+        case vehicleTypeID = "VehicleTypeID"
+        case creationDate = "CreationDate"
         case numberOfPeopleAccompanying = "NumberOfPeopleAccompanying"
         case status = "Status"
         case activityIn = "In"
         case addedBy = "AddedBy"
+        case removedBy = "RemovedBy"
         case out = "Out"
         case leaveAtGate = "LeaveAtGate"
         case vendorID = "VendorID"
@@ -92,7 +100,6 @@ struct ActivityAll: Codable {
         case propertyFullName = "PropertyFullName"
         case isMulti = "IsMulti"
         case entryType = "EntryType"
-        case pic = "Pic"
         case visitorPreApprovalID = "VisitorPreApprovalID"
         case activityID = "ActivityID"
         case qr = "QR"

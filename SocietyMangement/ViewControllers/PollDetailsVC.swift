@@ -22,6 +22,9 @@ class PollListDetailsCell: UITableViewCell {
 class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var tblView: UITableView!
+    
+    @IBOutlet weak var tableHeightConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var ViewBg: UIView!
     @IBOutlet weak var lblDemo: UILabel!
     @IBOutlet weak var lblTitel: UILabel!
@@ -31,6 +34,8 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
  //  var arrPollData : PollListResponseData?
     
     var arrPollData = [PollListResponseData]()
+    
+    var arrSelectionCheck = NSMutableArray()
     
     var indexPoll = Int()
 
@@ -62,10 +67,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         setData()
         
+        self.tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+
+        
         ViewBg.layer.cornerRadius = 12
         ViewBg.clipsToBounds = true
         // tblView.register(UINib(nibName: "PollDetailCell", bundle: nil), forCellReuseIdentifier: "PollDetailCell")
         
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        tblView.layer.removeAllAnimations()
+        print("tblView contentSize height :- ",tblView.contentSize.height + 5)
+        tableHeightConstraint.constant = tblView.contentSize.height + 5
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+            self.view.layoutIfNeeded()
+        }
+
     }
     
     @IBAction func actionNotification(_ sender: Any) {
@@ -465,8 +484,10 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         }
         
         
-        
-        
+    }
+    
+    @IBAction func btnSubmitPressed(_ sender: UIButton) {
+        print("btnSubmitPressed : ")
     }
     
     
@@ -611,21 +632,9 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
-        
-          /*  if cell.isSelected
-               {
-            cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
-            cell.bgView.layer.borderWidth = 3.0
-            
-            }
-               else
-               {
-                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
-                cell.bgView.layer.borderWidth = 1.0
-                
-               } */
-        
-       if selectedIndex == indexPath.row{
+          
+        if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+        {
             cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
             cell.bgView.layer.borderWidth = 3.0
         }else{
@@ -634,7 +643,6 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         }
         
         cell.lblOptionText.text = arrPollData[indexPoll].pollOptions?[indexPath.row].optionText
-        
         
         let lblVote = String(format: "%d",(arrPollData[indexPoll].pollOptions?[indexPath.row].votes)! as Int)
         
@@ -645,6 +653,13 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? ""){
+            arrSelectionCheck.remove(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+        }else{
+            arrSelectionCheck.add(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+        }
     
        /* let cell = tableView.cellForRow(at: indexPath)
                
@@ -656,7 +671,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
             //cell!.accessoryType = UITableViewCellAccessoryType.none
         } */
                   
-        selectedIndex = indexPath.row
+      //  selectedIndex = indexPath.row
 
         tblView.reloadData()
         
@@ -723,3 +738,63 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
 //
 //
 //}
+
+
+/*
+ 
+ {{url}}/user/notices/4/vote
+ 
+ NoticeID  = 192
+ 
+ OptionID  =  34
+ 
+ {
+     "data": {
+         "NoticeID": 192,
+         "NoticeTypeID": 4,
+         "Title": "My poll 20201030 002",
+         "Description": "My poll 20201030 002 description",
+         "PublishDate": "2020-11-20 15:22:58",
+         "VisibleTill": "2020-12-12 00:00:00",
+         "EventStartDate": null,
+         "EventEndDate": null,
+         "CreationDate": "2020-11-20 15:22:58",
+         "CreatedBy": "39e34b3e-d7e1-412b-a565-f23bc0babd59",
+         "PollEnabled": 1,
+         "MultiPollEnable": 0,
+         "SocietyID": 5,
+         "ReadAt": "2020-11-20 15:22:58",
+         "attachments": [],
+         "pollOptions": [
+             {
+                 "OptionText": "Option 20201030 0021",
+                 "Votes": 33,
+                 "NoticePollOptionID": 33,
+                 "NoticeID": 192
+             },
+             {
+                 "OptionText": "Option 20201030 0022",
+                 "Votes": 33,
+                 "NoticePollOptionID": 34,
+                 "NoticeID": 192
+             },
+             {
+                 "OptionText": "Option 20201030 0023",
+                 "Votes": 16,
+                 "NoticePollOptionID": 35,
+                 "NoticeID": 192
+             },
+             {
+                 "OptionText": "Option 20201030 0024",
+                 "Votes": 16,
+                 "NoticePollOptionID": 36,
+                 "NoticeID": 192
+             }
+         ],
+         "pollTotalVotes": 6
+     },
+     "status": 1,
+     "message": "Submitted your vote successfully"
+ }
+ 
+ */

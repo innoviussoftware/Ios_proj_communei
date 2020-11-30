@@ -772,10 +772,11 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
        func ApiCallGetBlood()
        {
              if !NetworkState().isInternetAvailable {
-                            ShowNoInternetAlert()
-                            return
-                        }
-               webservices().StartSpinner()
+                    ShowNoInternetAlert()
+                    return
+             }
+        
+        webservices().StartSpinner()
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         

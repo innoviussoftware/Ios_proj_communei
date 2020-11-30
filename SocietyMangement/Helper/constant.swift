@@ -103,6 +103,9 @@ let API_GET_EVENT = "user/notices/3" //"society/notices/3" //"user/getevent"
 let API_GET_FAMAILY_MEMBER = "user/family"  // "user/getfamilymember"
 let API_MEMBER_LIST =  "user/society-members/" //"user/memberlist"
 
+let API_MEMBER_LIST_SEARCH =  "user/search" //"user/society-members/" //"user/memberlist"
+
+
 let API_GET_FAMAILY_MEMBER_PROFILE = "society/family/"  // "user/getfamilymember"
 
 
