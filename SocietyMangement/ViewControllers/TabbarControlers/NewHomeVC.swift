@@ -181,6 +181,28 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
         
     }
     
+    @IBAction func btnDaily_HelperPressed(_ sender: UIButton) {
+        print("btnDaily_HelperPressed click")
+    }
+    
+    @IBAction func btnResidentSearchPressed(_ sender: UIButton) {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MembersVC") as! MembersVC
+        vc.isFromDash = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        print("btnResidentSearchPressed click")
+        
+    }
+    
+    @IBAction func btnHelp_CenterPressed(_ sender: UIButton) {
+        print("btnHelp_CenterPressed click")
+    }
+    
+    @IBAction func btnGuidePressed(_ sender: UIButton) {
+        print("btnGuidePressed click")
+    }
+    
     @IBAction func btnZendeskPressed(_ sender: Any) {
         // let vc =
         _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC

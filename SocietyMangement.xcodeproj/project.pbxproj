@@ -1647,7 +1647,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6;
+				CURRENT_PROJECT_VERSION = 1.7;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1674,7 +1674,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6;
+				CURRENT_PROJECT_VERSION = 1.7;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

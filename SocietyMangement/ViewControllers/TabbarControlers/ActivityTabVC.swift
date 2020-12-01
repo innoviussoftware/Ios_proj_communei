@@ -765,7 +765,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btncall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
 
         
-         if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry"{
+         if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry" {
             
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
 
@@ -777,6 +777,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
+                
+              /*  cell.btnWrong_Entry.isHidden = false
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true */
+                
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
             }else{
@@ -785,22 +795,44 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
                 cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                cell.lblapprovedby.isHidden = false
+                cell.imgview4.isHidden = false   // approvedby
             }else{
                 cell.lblapprovedby.isHidden = true
+                cell.imgview4.isHidden = true   // approvedby
             }
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
+                cell.imgview2.isHidden = false   // intime
             }else{
-                cell.lblintime.isHidden = true
+                cell.lblintime.isHidden = false
+                cell.imgview2.isHidden = true   // intime
             }
             
             if arrGuestList[indexPath.row].activity?.out != nil {
                 cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+                cell.lblouttime.isHidden = false
+                cell.imgview3.isHidden = false   // outtime
             }else{
                 cell.lblouttime.isHidden = true
+                cell.imgview3.isHidden = true   // outtime
+
             }
             
+            cell.imgview1.isHidden = true   // time
+           // cell.imgview2.isHidden = true   // intime
+           // cell.imgview3.isHidden = true   // outtime
+           // cell.imgview4.isHidden = true   // approvedby
+            cell.imgview5.isHidden = false   // addedby
+            cell.imgview6.isHidden = true   // parcel collection time
+            cell.imgview7.isHidden = true   // leave at gate
+            cell.imgview8.isHidden = true   // cancel by you
+            cell.imgview9.isHidden = true   // denied by you
+            cell.imgview10.isHidden = true  // No response
+            
+
         }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Pre-Approval"{
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
 
@@ -820,15 +852,29 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
             }else{
                 cell.lblintime.isHidden = true
             }
             
             if arrGuestList[indexPath.row].activity?.out != nil {
                 cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+                cell.lblouttime.isHidden = false
             }else{
                 cell.lblouttime.isHidden = true
             }
+            
+            cell.imgview1.isHidden = true   // time
+           // cell.imgview2.isHidden = true   // intime
+           // cell.imgview3.isHidden = true   // outtime
+           // cell.imgview4.isHidden = true   // approvedby
+            cell.imgview5.isHidden = false   // addedby
+          /*  cell.imgview6.isHidden = true   // parcel collection time
+            cell.imgview7.isHidden = true   // leave at gate
+            cell.imgview8.isHidden = true   // cancel by you
+            cell.imgview9.isHidden = true   // denied by you
+            cell.imgview10.isHidden = true  // No response */
+            
             
         }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Entry"{
             cell.lblname.text = "Delivery"
@@ -849,6 +895,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
                 cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                cell.lblapprovedby.isHidden = false
             }else{
                 cell.lblapprovedby.isHidden = true
             }
@@ -873,12 +920,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
             }else{
                 cell.lblintime.isHidden = true
             }
             
             if arrGuestList[indexPath.row].activity?.out != nil {
                 cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
+                cell.lblouttime.isHidden = false
+
             }else{
                 cell.lblouttime.isHidden = true
             }
@@ -943,12 +993,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
                 cell.lblapprovedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                cell.lblapprovedby.isHidden = false
             }else{
                 cell.lblapprovedby.isHidden = true
             }
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
+
             }else{
                 cell.lblintime.isHidden = true
             }
@@ -961,6 +1014,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
+
             }else{
                 cell.lblintime.isHidden = true
             }
@@ -1003,6 +1058,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
+                cell.lblintime.isHidden = false
+
             }else{
                 cell.lblintime.isHidden = true
             }
