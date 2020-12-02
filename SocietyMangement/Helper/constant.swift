@@ -121,6 +121,7 @@ let API_GUEST_LIST = "user/activity" //"user/guestlist"
 
 let API_USER_ACTIVITY_LIST = "user/activity" //"user/guestlist"
 
+let API_USER_ACTIVITY_LIST_FILTER_SEARCH = "user/activity/"
 
 let API_USER_ACTIVITYTYPES = "user/activity-types"
 

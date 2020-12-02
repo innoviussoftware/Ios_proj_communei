@@ -696,6 +696,13 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     }
     func showTimepPicker(){
         //Formate Date
+        
+        if #available(iOS 13.4, *) {
+            timePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        
         timePicker.datePickerMode = .time
         
         //ToolBar
@@ -747,8 +754,6 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             date2 = datePicker.date
             let cal = NSCalendar.current
             
-            
-            
             let components = cal.dateComponents([.day], from: date1, to: date2)
             
             if (components.day! >= 0)
@@ -770,7 +775,9 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             txtstartdate.text = formatter.string(from: datePicker.date)
             date1 = datePicker.date
             
+            
         }
+        txtstartdate.resignFirstResponder()
         self.view.endEditing(true)
     }
     
@@ -793,11 +800,18 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         if(textField == txtdate)
         {
             textfield = txtdate
+            viewbottom.isHidden = true
+
+           // txtdate.resignFirstResponder()
+
         }
         if(textField == txtstartdate)
         {
             //datePicker.minimumDate = Date()
             textfield = txtstartdate
+           // txtstartdate.resignFirstResponder()
+            viewbottom.isHidden = true
+
             
         }
         if(textField == txtenddate)
@@ -814,6 +828,9 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             let components = cal.dateComponents([.day], from: date1, to: date2)
           //  lbldays.text =  (components.day! as NSNumber).stringValue
             
+          //  txtenddate.resignFirstResponder()
+            viewbottom.isHidden = true
+
         }
         
     }

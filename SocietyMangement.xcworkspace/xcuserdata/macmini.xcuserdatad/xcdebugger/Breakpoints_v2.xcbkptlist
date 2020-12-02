@@ -111,5 +111,149 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "57630511-ABD2-49FB-A6C2-B2E5669CCCE7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "739"
+            endingLineNumber = "739"
+            landmarkName = "apicallUseractivityFilter(userActInd:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "57630511-ABD2-49FB-A6C2-B2E5669CCCE7 - 28fe9c6d15b32757"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.ActivityTabVC.apicallUseractivityFilter(userActInd: Swift.String) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "738"
+                  endingLineNumber = "738"
+                  offsetFromSymbolStart = "579">
+               </Location>
+               <Location
+                  uuid = "57630511-ABD2-49FB-A6C2-B2E5669CCCE7 - 49a1df416bf6fb28"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.UserActivityAllResponse&gt;) -&gt; () in Communei.ActivityTabVC.apicallUseractivityFilter(userActInd: Swift.String) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "740"
+                  endingLineNumber = "740"
+                  offsetFromSymbolStart = "220">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "83F0CC13-01A3-45BF-9F35-AF73A8B7D224"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "743"
+            endingLineNumber = "743"
+            landmarkName = "apicallUseractivityFilter(userActInd:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65F44CBF-686E-4E67-8B79-32F99DBF8743"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "ApiCallUserActivityListFilter(UserActivityTypeID:token:onCompletion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "65F44CBF-686E-4E67-8B79-32F99DBF8743 - 80d7246b0b0e5686"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.Apicallhandler.ApiCallUserActivityListFilter(UserActivityTypeID: Swift.String, token: Swift.String, onCompletion: (Alamofire.DataResponse&lt;Communei.UserActivityAllResponse&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "169"
+                  endingLineNumber = "169"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  uuid = "65F44CBF-686E-4E67-8B79-32F99DBF8743 - 9ce191f12e8f27ad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.UserActivityAllResponse&gt;) -&gt; () in Communei.Apicallhandler.ApiCallUserActivityListFilter(UserActivityTypeID: Swift.String, token: Swift.String, onCompletion: (Alamofire.DataResponse&lt;Communei.UserActivityAllResponse&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/Helper/ApiCallinstance.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "171"
+                  endingLineNumber = "171"
+                  offsetFromSymbolStart = "41">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "948A97FE-6F77-46BC-8AB3-C35C8FA6CF1C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "ApiCallUserActivityListFilter(UserActivityTypeID:token:onCompletion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2CBC842A-2F84-468A-9C5A-AF7EFCAA7701"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
+            landmarkName = "btnApplyfilteraction(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

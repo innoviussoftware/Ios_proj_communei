@@ -49,6 +49,8 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnNote_Guard: UIButton!
     @IBOutlet weak var btnOut: UIButton!
 
+    @IBOutlet weak var btnDeliveryInfo: UIButton!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -164,6 +164,15 @@ struct Apicallhandler {
         
     }
     
+    func ApiCallUserActivityListFilter(UserActivityTypeID:String,token: String, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_USER_ACTIVITY_LIST_FILTER_SEARCH + UserActivityTypeID, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserActivityAllResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     func ApiCallMyHelperList(token: String, onCompletion: @escaping ((_ response: DataResponse<MyHelperListResp>) -> Void)) {
         
         AF.request(webservices().baseurl + API_MY_HELPER_LIST, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MyHelperListResp>) in
