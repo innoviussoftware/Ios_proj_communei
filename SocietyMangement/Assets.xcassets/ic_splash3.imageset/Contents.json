@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "320-3.png",
+      "filename" : "Communei-screenshots-3.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "440-3.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "960-3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -60,7 +60,10 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var lblAnsPer3: UILabel!
     @IBOutlet weak var lblAnsPer4: UILabel!
     
-    
+    @IBOutlet weak var lblMessage: UILabel!
+
+    @IBOutlet weak var btnSubmit: UIButton!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +75,13 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         ViewBg.layer.cornerRadius = 12
         ViewBg.clipsToBounds = true
+        
+       /* if (arrPollData[indexPoll].pollOptions?[indexPoll].isanswerSubmit! == 0 ) {
+            btnSubmit.isHidden = false
+        }else{
+            btnSubmit.isHidden = true
+        } */
+        
         // tblView.register(UINib(nibName: "PollDetailCell", bundle: nil), forCellReuseIdentifier: "PollDetailCell")
         
     }
@@ -436,8 +446,8 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         
         
-        
     }
+    
     @IBAction func actionAns4(_ sender: UIButton) {
         
         if sender.isSelected == true{
@@ -632,15 +642,33 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
-          
-        if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
-        {
-            cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
-            cell.bgView.layer.borderWidth = 3.0
+        
+        if (arrPollData[indexPoll].multiPollEnable == 0) {
+            if(selectedIndex == indexPath.row){
+                
+                cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+                cell.bgView.layer.borderWidth = 3.0
+
+                //userActIndex = arrActivity[indexPath.row].userActivityTypeID
+            }else{
+                
+                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+                cell.bgView.layer.borderWidth = 1.0
+                
+              //  userActIndex = 0
+            }
         }else{
-            cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
-            cell.bgView.layer.borderWidth = 1.0
+            if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+            {
+                cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+                cell.bgView.layer.borderWidth = 3.0
+            }else{
+                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+                cell.bgView.layer.borderWidth = 1.0
+            }
         }
+          
+       
         
         cell.lblOptionText.text = arrPollData[indexPoll].pollOptions?[indexPath.row].optionText
         
@@ -654,13 +682,16 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-        if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? ""){
-            arrSelectionCheck.remove(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+        if arrPollData[indexPoll].multiPollEnable == 0 {
+            selectedIndex = indexPath.row
         }else{
-            arrSelectionCheck.add(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+            if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? ""){
+                arrSelectionCheck.remove(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+            }else{
+                arrSelectionCheck.add(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+            }
         }
-    
+       
        /* let cell = tableView.cellForRow(at: indexPath)
                
         if cell!.isSelected == true{

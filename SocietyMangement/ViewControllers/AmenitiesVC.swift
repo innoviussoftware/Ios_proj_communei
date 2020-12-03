@@ -23,6 +23,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     
     @IBOutlet weak var lblbooking: UILabel!
 
+    @IBOutlet weak var lblAmenities: UILabel!
     
     @IBOutlet weak var txtSearchbar: UITextField!
 
@@ -218,12 +219,14 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                             self.tblFacilities.reloadData()
                             
                         }else{
-                            
+                            self.lblAmenities.isHidden = false
+
                         }
 
                     }
                     else
                     {
+                        self.lblAmenities.isHidden = false
 
                     }
 

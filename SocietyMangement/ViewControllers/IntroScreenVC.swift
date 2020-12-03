@@ -112,9 +112,10 @@ extension IntroScreenVC:UICollectionViewDelegate,UICollectionViewDataSource, UIC
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width:collectionView.frame.width, height: 380)
+        return CGSize(width:collectionView.frame.width, height: collectionView.frame.height)
         
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
              return 0
      }

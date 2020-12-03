@@ -58,7 +58,7 @@ class ActivityTabVC: BaseVC {
    // var message = UILabel()
     var refreshControl = UIRefreshControl()
     
-    // MARK: - get Events
+    // MARK: - get Activity Types
     
     func apicallGetActivitytypes()
     {
@@ -837,6 +837,68 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         }
     }
     
+    // MARK: - Delete circulars
+    
+    func ApiCallCancelList(UserActivityID:Int,VisitorEntryTypeID : Int,VisitFlatPreApprovalID : Int)
+    {
+        
+        let strGuestId = (UserActivityID as NSNumber).stringValue
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        Apicallhandler().ApiAcceptGuestRequest(URL: webservices().baseurl + API_ACCEPT_DECLINE, token: token as! String,type: VisitorEntryTypeID, guest_id: strGuestId) { JSON in
+            switch JSON.result{
+            case .success(let resp):
+                webservices().StopSpinner()
+                
+                if(resp.status == 1)
+                {
+                    self.apicallGuestList()
+                }else if (resp.status == 0){
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                
+                
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                webservices().StopSpinner()
+                
+            }
+            
+        }
+        
+    }
+    
     @objc func ApiCallCancel(sender:UIButton)
     {
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
@@ -873,9 +935,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
         }
         
+        if arrGuestList[indexPath.row].userActivityID != nil {
+            
+        }
+        
         if arrGuestList[indexPath.row].activity?.profilePic != nil {
             cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
         }
+        
         
         if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
             cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))

@@ -116,7 +116,12 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     var arrCotact = NSMutableArray()
     var arrFinal = NSMutableArray()
     
+    var arrResent = [GetRecentEntryList]()
     
+   // var arrFinals = [GetRecentEntryList]()
+    
+    var arrSelectionCheck = NSMutableArray()
+
     
     var manuallyary = NSMutableArray()
     @IBAction func saveaction(_ sender: Any) {
@@ -197,6 +202,27 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     }
                     
                 }
+                
+                
+               /* for i in 0...arrFinals.count - 1{
+                      let dicc = (arrFinals[i] as! NSMutableDictionary)
+                      let namenew = dicc.value(forKey: "Name")
+                    if(selectedindex.contains(namenew))
+                    {
+                        let dict = NSMutableDictionary()
+                        dict.setValue(namenew, forKey: "Name")
+                        dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
+                        
+                        nameary.add(namenew)
+                        lblname.text = nameary.componentsJoined(by:", ")
+                        lblnamerec.text = nameary.componentsJoined(by:", ")
+                        lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                        arrContactName.add(dict)
+                        
+                    }
+                    
+                } */
                 
             }
             
@@ -349,6 +375,30 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                            
                                     }
                         
+                        
+                       /* for i in 0 ..< arrResent.count
+                        {
+                                             let dicc = (arrCotact[i] as! NSMutableDictionary)
+                                             let namenew = dicc.value(forKey: "Name") as! String
+                                           if(selectedindex.contains(namenew))
+                                           {
+                                               let dict = NSMutableDictionary()
+                                               dict.setValue(namenew, forKey: "Name")
+                                               dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
+                                               
+                                               nameary.add(namenew)
+                                               lblname.text = nameary.componentsJoined(by:", ")
+                                            
+                                            lblnamerec.text = nameary.componentsJoined(by:", ")
+                                                                   lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                                               
+                                               arrContactName.add(dict)
+                                               
+                                           }
+                                           
+                                    } */
+                        
          
                     }
                     
@@ -408,6 +458,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 
         
         self.fetchContacts()
+        
+        fetchRecentContacts()
         
         var strDateee = ""
                var endDate = ""
@@ -537,20 +589,22 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(tableView == tblcontact) ||  (tableView == tblrecent)
+        if(tableView == tblcontact) //||  (tableView == tblrecent)
         {
             return arrCotact.count
         }
+        else if (tableView == tblrecent) {
+            return arrResent.count
+        }
         else
         {
-            
             return manuallyary.count
-            
         }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(tableView == tblcontact) ||  (tableView == tblrecent)
+        if(tableView == tblcontact) // ||  (tableView == tblrecent)
         {
             let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! SidemenuCell
             
@@ -609,28 +663,37 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 //                }
 //            }
             
-            
             return cell
+            
         }else if (tableView == tblrecent)
         {
-                    
+                                
             let cell: SidemenuCell = tableView.dequeueReusableCell(withIdentifier:"cell", for: indexPath) as! SidemenuCell
-            
+
             tblrecent.separatorStyle = .none
             
+            
+            if (arrResent[indexPath.row].name != nil) {
+                cell.lblcontact.text = arrResent[indexPath.row].phone //(arrResent[indexPath.row] as! NSMutableDictionary).value(forKey: "Phone") as? String
+                cell.lblname.text = arrResent[indexPath.row].name
+                    //(arrResent[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
+                        
+                // Get The Name
+                let name = arrResent[indexPath.row].name
+                    //(arrResent[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
+                print(name!)
+               
+                 if(selectedindex.contains(name!)) {
                     
-            cell.lblcontact.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Mobile") as? String
-            cell.lblname.text = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
-                    
-            // Get The Name
-            let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
-            print(name)
-            if(selectedindex.contains(name)) {
-                cell.imagview.image = #imageLiteral(resourceName: "ic_checked")
+               // if(arrSelectionCheck.contains(arrResent[indexPath.row].name!)) {
+
+                    cell.imagview.image = #imageLiteral(resourceName: "ic_checked")
+                }
+                else{
+                    cell.imagview.image = #imageLiteral(resourceName: "ic_unchecked")
+                }
             }
-            else{
-                cell.imagview.image = #imageLiteral(resourceName: "ic_unchecked")
-            }
+            
                     
             return cell
                     
@@ -651,124 +714,167 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        // let namenew = results[indexPath.row].givenName + " " + results[indexPath.row].familyName
-        let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
-        
-        if(selectedindex.contains(namenew!))
+        if (tableView == tblrecent)
         {
-            selectedindex.remove(namenew)
-        }
-        else
-        {
-            selectedindex.add(namenew)
-        }
-        
-        // Get The Name
-        
-        let nameary = NSMutableArray()
-        
-        if(selectedindex.count > 0)
-        {
-//            for dic in finalresults
-//            {
-//                let namenew = dic.givenName + " " + dic.familyName
-//                if(selectedindex.contains(namenew))
-//                {
-//                 nameary.add(namenew)
-//                 lblname.text = nameary.componentsJoined(by:", ")
-//                }
-//
-//            }
+            print("tblrecent")
+        }else{
             
-            //Manish
+            let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
             
-            for i in 0 ..< arrFinal.count
+            if(selectedindex.contains(namenew!))
             {
-                let dict = arrFinal[i] as! NSMutableDictionary
-                let namenew = dict.value(forKey: "Name") as! String
-                if(selectedindex.contains(namenew))
+                selectedindex.remove(namenew!)
+            }
+            else
+            {
+                selectedindex.add(namenew!)
+            }
+            
+            // Get The Name
+            
+            let nameary = NSMutableArray()
+            
+            if(selectedindex.count > 0)
+            {
+    //            for dic in finalresults
+    //            {
+    //                let namenew = dic.givenName + " " + dic.familyName
+    //                if(selectedindex.contains(namenew))
+    //                {
+    //                 nameary.add(namenew)
+    //                 lblname.text = nameary.componentsJoined(by:", ")
+    //                }
+    //
+    //            }
+                
+                //Manish
+                
+                for i in 0 ..< arrFinal.count
                 {
-                 nameary.add(namenew)
-                 lblname.text = nameary.componentsJoined(by:", ")
+                    let dict = arrFinal[i] as! NSMutableDictionary
+                    let namenew = dict.value(forKey: "Name") as! String
+                    if(selectedindex.contains(namenew))
+                    {
+                     nameary.add(namenew)
+                     lblname.text = nameary.componentsJoined(by:", ")
+                        lblnamerec.text = nameary.componentsJoined(by:", ")
+                        lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                    }
+                    
+                }
+                
+               
+            }
+            
+          /*  if(arrResent.count > 0)
+            {
+                for i in 0...arrResent.count-1
+                {
+                    
+                    let dic = arrResent[i]
+                   // object(at:i) as! NSMutableDictionary
+                    nameary.add(dic.name!)
+                                //value(forKey:"Name") as! String)
+                    lblname.text = nameary.componentsJoined(by:", ")
                     lblnamerec.text = nameary.componentsJoined(by:", ")
                     lblnamemanu.text = nameary.componentsJoined(by:", ")
 
                 }
                 
+                
             }
             
-            
-            
-        }
-        
-      
-        if(manuallyary.count > 0)
-        {
-            for i in 0...manuallyary.count-1
+            if(arrResent.count > 0)
             {
+                if arrSelectionCheck.contains(arrResent[indexPath.row].name!){
+                     arrSelectionCheck.remove(arrResent[indexPath.row].name!)
+                    
+                    nameary.add(arrResent[indexPath.row].name!)
+
+                    lblname.text = nameary.componentsJoined(by:", ")
+                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                    lblnamemanu.text = nameary.componentsJoined(by:", ")
+                 }else{
+                     arrSelectionCheck.add(arrResent[indexPath.row].name!)
+                    
+                    lblname.text = nameary.componentsJoined(by:", ")
+                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                    lblnamemanu.text = nameary.componentsJoined(by:", ")
+                 }
+            } */
+           
+          
+            if(manuallyary.count > 0)
+            {
+                for i in 0...manuallyary.count-1
+                {
+                    
+                    let dic = manuallyary.object(at:i) as! NSMutableDictionary
+                    nameary.add(dic.value(forKey:"Name") as! String)
+                    lblname.text = nameary.componentsJoined(by:", ")
+                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                    lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                }
                 
-                let dic = manuallyary.object(at:i) as! NSMutableDictionary
-                nameary.add(dic.value(forKey:"Name") as! String)
-                lblname.text = nameary.componentsJoined(by:", ")
-                lblnamerec.text = nameary.componentsJoined(by:", ")
-                lblnamemanu.text = nameary.componentsJoined(by:", ")
+                
+            }
+            if(nameary.count > 6)
+            {
+                 hightcontactview.constant = 202
+                hightcontactview1.constant = 202
+                hightcontactview2.constant = 202
+
+                 
+            }
+             else if(nameary.count > 3)
+            {
+                hightcontactview.constant = 152
+                hightcontactview1.constant = 152
+                hightcontactview2.constant = 152
+
+                
+            }
+            else if(nameary.count > 0)
+            {
+                let top = CGAffineTransform(translationX: 0, y: 0)
+                
+                UIView.animate(withDuration: 0.7, delay: 0.0, options: [], animations: {
+                    // Add the transformation in this block
+                    // self.container is your view that you want to animate
+                    self.viewbottom.transform = top
+                    self.viewbottom.isHidden = false
+                    
+                    self.viewbottom1.transform = top
+                    self.viewbottom1.isHidden = false
+                    
+                    self.viewbottom2.transform = top
+                    self.viewbottom2.isHidden = false
+                    
+                }, completion: nil)
+                hightcontactview.constant = 102
+                hightcontactview1.constant = 102
+                hightcontactview2.constant = 102
+
+            }
+           
+            else{
+                self.viewbottom.isHidden = true
+                self.viewbottom1.isHidden = true
+                self.viewbottom2.isHidden = true
 
             }
             
+            if nameary.count > 1{
+                lblStaticAllowUser.text = "Allow to Visit"
+            }else{
+                lblStaticAllowUser.text = "Allow to Visit"
+            }
             
-        }
-        if(nameary.count > 6)
-        {
-             hightcontactview.constant = 202
-            hightcontactview1.constant = 202
-            hightcontactview2.constant = 202
-
-             
-        }
-         else if(nameary.count > 3)
-        {
-            hightcontactview.constant = 152
-            hightcontactview1.constant = 152
-            hightcontactview2.constant = 152
-
-            
-        }
-        else if(nameary.count > 0)
-        {
-            let top = CGAffineTransform(translationX: 0, y: 0)
-            
-            UIView.animate(withDuration: 0.7, delay: 0.0, options: [], animations: {
-                // Add the transformation in this block
-                // self.container is your view that you want to animate
-                self.viewbottom.transform = top
-                self.viewbottom.isHidden = false
-                
-                self.viewbottom1.transform = top
-                self.viewbottom1.isHidden = false
-                
-                self.viewbottom2.transform = top
-                self.viewbottom2.isHidden = false
-                
-            }, completion: nil)
-            hightcontactview.constant = 102
-            hightcontactview1.constant = 102
-            hightcontactview2.constant = 102
+            tableView.reloadData()
 
         }
-       
-        else{
-            self.viewbottom.isHidden = true
-            self.viewbottom1.isHidden = true
-            self.viewbottom2.isHidden = true
-
-        }
-        
-        if nameary.count > 1{
-            lblStaticAllowUser.text = "Allow to Visit"
-        }else{
-            lblStaticAllowUser.text = "Allow to Visit"
-        }
-        
-        tableView.reloadData()
         
         
     }
@@ -1034,9 +1140,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         self.tblcontact.reloadData()
                     }
                     
-                    DispatchQueue.main.async {
-                        self.tblrecent.reloadData()
-                    }
+//                    DispatchQueue.main.async {
+//                        self.tblrecent.reloadData()
+//                    }
                 }
                 catch let error as NSError {
                     print(error.localizedDescription)
@@ -1048,6 +1154,78 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             }
         }
 
+    }
+    
+    
+    // MARK: - get Events
+    
+    func fetchRecentContacts() {
+        
+         if !NetworkState().isInternetAvailable {
+                ShowNoInternetAlert()
+                return
+        }
+        
+           let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
+            
+            webservices().StartSpinner()
+        
+        Apicallhandler().GetAllResent(URL: webservices().baseurl + API_USER_RECENT_ENTRY, token:strToken) { JSON in
+        
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    
+                    {
+                        
+                        if(resp.data!.count == 0)
+                        {
+                            self.tblrecent.isHidden = true
+                        }
+                        else
+                        {
+                            self.arrResent = resp.data!
+                            
+                          //  self.arrFinals = resp.data!
+
+                            self.tblrecent.reloadData()
+                            self.tblrecent.isHidden = false
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        if(resp.data!.count == 0)
+                        {
+                            self.tblrecent.isHidden = true
+                        }
+                        else
+                        {
+                            self.arrResent = resp.data!
+                            
+                           // self.arrFinals = resp.data!
+
+                            self.tblrecent.reloadData()
+                            self.tblrecent.isHidden = false
+                        }
+                        
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+
+                     webservices().StopSpinner()
+                //    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                 //   self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                   
+                    
+                }
+                
+            }
+       
     }
 
   

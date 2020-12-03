@@ -51,11 +51,13 @@ struct PollListResponseData: Codable {
 struct PollOption: Codable {
     let optionText: String?
     let votes, noticePollOptionID, noticeID: Int?
+    let isanswerSubmit:Int?
 
     enum CodingKeys: String, CodingKey {
         case optionText = "OptionText"
         case votes = "Votes"
         case noticePollOptionID = "NoticePollOptionID"
         case noticeID = "NoticeID"
+        case isanswerSubmit = "isAnswerSubmitted"
     }
 }

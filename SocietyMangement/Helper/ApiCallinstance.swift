@@ -132,6 +132,17 @@ struct Apicallhandler {
         
     }
     
+    //Mark : Api call Activity-types
+
+    func GetAllResent(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<GetRecentContactResponse>) -> Void)) {
+        
+        AF.request(URL, method: .post, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GetRecentContactResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     func ApiCallGuestList(type:Int,token: String, onCompletion: @escaping ((_ response: DataResponse<GuestListResponse>) -> Void)) {
         
         AF.request(webservices().baseurl + API_GUEST_LIST, method: .post,parameters:["type":type], encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GuestListResponse>) in
