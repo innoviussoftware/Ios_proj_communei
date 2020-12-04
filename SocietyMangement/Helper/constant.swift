@@ -223,6 +223,8 @@ let API_ADD_PRODUCT = "user/addproduct"
 
 let API_GET_POLL_LIST =  "user/notices/4" // "user/pollslist"
 
+let API_GET_POLL_LIST_VOTE =  "user/notices/4/vote"
+
 
 let API_POLL_DETAIL = "user/pollsresult"
 

@@ -1934,7 +1934,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                 else
                 {
-                    if(resp.data!.count == 0)
+                  /*  if(resp.data!.count == 0)
                     {
                         self.tblMembers.isHidden = true
                         self.viewnoresult.isHidden = false
@@ -1944,7 +1944,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         self.tblMembers.isHidden = false
                         self.viewnoresult.isHidden = true
                         
-                    }
+                    } */
                     
                 }
                 

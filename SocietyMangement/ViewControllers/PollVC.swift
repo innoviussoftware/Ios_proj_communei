@@ -46,7 +46,7 @@ class PollVC: BaseVC {
         tblView.separatorStyle = .none
         
         tblView.register(UINib(nibName: "PollListCell", bundle: nil), forCellReuseIdentifier: "PollListCell")
-        apicallGetPollList()
+       // apicallGetPollList()
        
         
         if(revealViewController() != nil)
@@ -62,6 +62,10 @@ class PollVC: BaseVC {
                refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
                tblView.addSubview(refreshControl)
                
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        apicallGetPollList()
     }
     
     
@@ -106,7 +110,7 @@ class PollVC: BaseVC {
     
     
     
-    // MARK: - get Notices
+    // MARK: - Get Poll List
 
       func apicallGetPollList()
       {

@@ -245,6 +245,23 @@ struct Apicallhandler {
         }
     }
     
+    //Mark : Api call post Poll List Vote
+    
+    func apicallPollSubmitVote(URL: String, param:Parameters,token:String, onCompletion: @escaping ((_ response: DataResponse<PollListDetails>) -> Void))
+    {
+        //        let parameter:Parameters = [
+        //            "NoticeID":NoticeID,
+        //            "OptionID":OptionID
+        //        ]
+    
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<PollListDetails>) in
+            
+            onCompletion(response)
+    
+        }
+    }
+    
+
     //Mark : Api call poll Update
     func APIPollDetails(URL: String, param:Parameters,token:String, onCompletion: @escaping ((_ response: DataResponse<PollResultResponse>) -> Void)) {
        

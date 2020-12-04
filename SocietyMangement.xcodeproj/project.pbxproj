@@ -111,6 +111,7 @@
 		9A384554230E79E200B64AC2 /* NoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384553230E79E200B64AC2 /* NoticeVC.swift */; };
 		9A384556230E903C00B64AC2 /* AddNoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384555230E903C00B64AC2 /* AddNoticeVC.swift */; };
 		9A384558230E956300B64AC2 /* AddAnnounceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384557230E956300B64AC2 /* AddAnnounceVC.swift */; };
+		9A423119257A3A6600EF69D6 /* PollListDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A423118257A3A6600EF69D6 /* PollListDetails.swift */; };
 		9A460454255AA55700E5AA7D /* BookingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A460453255AA55700E5AA7D /* BookingsModel.swift */; };
 		9A532545230BCA0A003E5F29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A532544230BCA0A003E5F29 /* AppDelegate.swift */; };
 		9A53254A230BCA0B003E5F29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A532548230BCA0B003E5F29 /* Main.storyboard */; };
@@ -401,6 +402,7 @@
 		9A384553230E79E200B64AC2 /* NoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeVC.swift; sourceTree = "<group>"; };
 		9A384555230E903C00B64AC2 /* AddNoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoticeVC.swift; sourceTree = "<group>"; };
 		9A384557230E956300B64AC2 /* AddAnnounceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnnounceVC.swift; sourceTree = "<group>"; };
+		9A423118257A3A6600EF69D6 /* PollListDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollListDetails.swift; sourceTree = "<group>"; };
 		9A460453255AA55700E5AA7D /* BookingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingsModel.swift; sourceTree = "<group>"; };
 		9A532541230BCA0A003E5F29 /* Communei.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Communei.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A532544230BCA0A003E5F29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -678,6 +680,7 @@
 				9A92A2FD23150C740032AB2D /* VendorResponse.swift */,
 				9A92A301231526100032AB2D /* AnnouncementResponse.swift */,
 				D2DDD58124FE0EA00008BE6A /* PollList.swift */,
+				9A423118257A3A6600EF69D6 /* PollListDetails.swift */,
 				D2DDD58224FE0EA10008BE6A /* PollResultResp.swift */,
 				9ACED2C92330931000933A8C /* CityResponse.swift */,
 				9ACED2CD233094CD00933A8C /* SocietyResponse.swift */,
@@ -1456,6 +1459,7 @@
 				4E21D307235099A600457E1E /* OtherMemberPopUpVC.swift in Sources */,
 				9ACED2CA2330931000933A8C /* CityResponse.swift in Sources */,
 				9A2E089623519B4C00424797 /* PVSwitch.swift in Sources */,
+				9A423119257A3A6600EF69D6 /* PollListDetails.swift in Sources */,
 				4E1F9C2C233CC893000B84D3 /* InvitePopUpVC.swift in Sources */,
 				056179FE24BD8173002E2C3D /* SignUPStep2.swift in Sources */,
 				9ACED2D42330E71900933A8C /* ProfiledetailVC.swift in Sources */,

@@ -39,6 +39,8 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     var indexPoll = Int()
 
+    var dic:PollListData?
+
 
     var selectedIndex : Int! = -5
     var arrPollDetail = NSMutableArray()
@@ -63,6 +65,10 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var lblMessage: UILabel!
 
     @IBOutlet weak var btnSubmit: UIButton!
+    
+    var selectedaryNoticeOptionID = NSMutableArray()
+
+    var selectNoticeOptionID = Int()
 
     
     override func viewDidLoad() {
@@ -76,11 +82,11 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         ViewBg.layer.cornerRadius = 12
         ViewBg.clipsToBounds = true
         
-       /* if (arrPollData[indexPoll].pollOptions?[indexPoll].isanswerSubmit! == 0 ) {
+        if (arrPollData[indexPoll].isAnswerSubmitted == 0 ) {
             btnSubmit.isHidden = false
         }else{
             btnSubmit.isHidden = true
-        } */
+        }
         
         // tblView.register(UINib(nibName: "PollDetailCell", bundle: nil), forCellReuseIdentifier: "PollDetailCell")
         
@@ -149,12 +155,12 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
             lblExpireDate.isHidden = true
         }
         
-        if (arrPollData != nil) {
+        if (arrPollData.count == 0) {
+            tblView.isHidden = true
+        }else{
             tblView.delegate = self
             tblView.dataSource = self
             tblView.reloadData()
-        }else{
-            tblView.isHidden = true
         }
         
         /*
@@ -496,9 +502,101 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
     }
     
+    @available(iOS 13.0, *)
     @IBAction func btnSubmitPressed(_ sender: UIButton) {
+        apicallPollSubmitVotes()
+        
         print("btnSubmitPressed : ")
     }
+    
+    
+    // MARK: - get PollSubmitVotes
+    
+    @available(iOS 13.0, *)
+    @available(iOS 13.0, *)
+    @available(iOS 13.0, *)
+    func apicallPollSubmitVotes()
+    {
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+       
+        var parameter = Parameters()
+        
+        if arrPollData[indexPoll].multiPollEnable == 0 {
+            parameter = [
+                "NoticeID":arrPollData[indexPoll].noticeID!,
+                "OptionID":selectNoticeOptionID
+            ]
+        }else{
+            parameter = [
+                "NoticeID":arrPollData[indexPoll].noticeID!,
+                "OptionID":selectedaryNoticeOptionID.componentsJoined(by: ",")
+            ]
+        }
+        
+        print("parameter polldetails :- ",parameter)
+       
+        webservices().StartSpinner()
+        
+
+        Apicallhandler().apicallPollSubmitVote(URL: webservices().baseurl + API_GET_POLL_LIST_VOTE,  param: parameter, token:UserDefaults.standard.value(forKey: USER_TOKEN)! as! String) { JSON in
+                    switch JSON.result{
+                    case .success(let resp):
+
+                        webservices().StopSpinner()
+                       // self.refreshControl.endRefreshing()
+                        if(resp.status == 1)
+                        {
+                          self.dic = resp.data!
+                          
+                          if self.arrPollData.count > 0{
+                              self.lblMessage.isHidden = false
+                          self.lblMessage.text = "Submitted your vote successfully"
+                            self.lblMessage.textColor = UIColor.green
+                            self.btnSubmit.isHidden = true
+                              self.tblView.reloadData()
+                              
+                          }else{
+                            self.btnSubmit.isHidden = false
+                              self.lblMessage.isHidden = true
+                          }
+
+                        }
+                        else
+                        {
+
+                        }
+
+                        print(resp)
+                    case .failure(let err):
+
+                        webservices().StopSpinner()
+                        if JSON.response?.statusCode == 401{
+                            APPDELEGATE.ApiLogout(onCompletion: { int in
+                                if int == 1{
+                                   let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                               let navController = UINavigationController(rootViewController: aVC)
+                                                                               navController.isNavigationBarHidden = true
+                                                                  self.appDelegate.window!.rootViewController  = navController
+                                                                  
+                                }
+                            })
+
+                            return
+                        }
+
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      //  self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+
+                    }
+                }
+        }
+        
+    
     
     
     // MARK: - get Notices
@@ -649,6 +747,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
                 cell.bgView.layer.borderWidth = 3.0
 
+                
                 //userActIndex = arrActivity[indexPath.row].userActivityTypeID
             }else{
                 
@@ -684,11 +783,21 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         if arrPollData[indexPoll].multiPollEnable == 0 {
             selectedIndex = indexPath.row
+            
+            selectNoticeOptionID = (arrPollData[indexPoll].pollOptions?[indexPath.row].noticePollOptionID!)!
+
         }else{
             if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? ""){
+                
                 arrSelectionCheck.remove(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+                
+                selectedaryNoticeOptionID.remove(arrPollData[indexPoll].pollOptions?[indexPath.row].noticePollOptionID! ?? "")
+
             }else{
                 arrSelectionCheck.add(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+                
+                selectedaryNoticeOptionID.add(arrPollData[indexPoll].pollOptions?[indexPath.row].noticePollOptionID! ?? "")
+
             }
         }
        

@@ -18,32 +18,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "77E8F610-71C7-499B-B792-FC95E3CE1B82"
+            uuid = "DCDBB953-4C8A-4600-BBAB-EC9E63735E68"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/InviteVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SignUPStep2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "saveaction(_:)"
+            startingLineNumber = "603"
+            endingLineNumber = "603"
+            landmarkName = "apicallGetBuildings()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "38FC90E5-9911-4978-86BE-273E869A1A57"
+            uuid = "83CE2CC3-7D69-4621-B6FF-DEE1078E0D5F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/InviteVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SignUPStep2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
-            landmarkName = "actionNext(_:)"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
+            landmarkName = "apicallGetBuildings()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "09735012-91E9-4F86-95B8-C5DD9842AA4A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "GetAllBuidldings(URL:param:onCompletion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

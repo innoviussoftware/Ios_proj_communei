@@ -302,7 +302,7 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
                      let param : Parameters = [
-                         "Society" : SociId,
+                         "Society" : SociId
                        // "Parent" : UsermeResponse!.data!.society!.societyID!
                      ]
                     

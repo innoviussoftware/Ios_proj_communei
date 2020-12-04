@@ -443,12 +443,14 @@ class ActivityTabVC: BaseVC {
         }
         
     }
+    
     func apicallOutMember(strGaurdID:String,strRequestId:String,outTime:String,userTye:String,strbuildingID:String,strflatID:String,strType:String)
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
             return
         }
+        
         let societyID = UserDefaults.standard.value(forKey: USER_SOCIETY_ID)
         let param : Parameters = [
             "type" : "2",

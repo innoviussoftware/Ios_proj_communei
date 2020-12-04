@@ -42,9 +42,11 @@ class SignUPStep2: BaseVC {
     @IBOutlet weak var viewcheckbox: UIView!
     
     @IBOutlet weak var hightcheckboxview: NSLayoutConstraint!
+    
     @IBOutlet weak var tblbuilding: UITableView!
        
-       @IBOutlet weak var tblflat: UITableView!
+    @IBOutlet weak var tblflat: UITableView!
+    
     @IBOutlet weak var txtblockname: RSTextFieldCustomisation!
     @IBOutlet weak var txtflats: RSTextFieldCustomisation!
 
@@ -67,6 +69,11 @@ class SignUPStep2: BaseVC {
     var pickerview1 = UIPickerView()
     var pickerview2 = UIPickerView()
     var pickerview3 = UIPickerView()
+    
+    var pickerview4 = UIPickerView()
+    var pickerview5 = UIPickerView()
+    var pickerview6 = UIPickerView()
+
 
     @IBOutlet weak var viewbottom: UIView!
     @IBOutlet weak var hightbottomview: NSLayoutConstraint!
@@ -107,11 +114,13 @@ class SignUPStep2: BaseVC {
     
     override func viewDidLoad() {
         
-        setdefaultvalues()
         super.viewDidLoad()
-        checkbox(cb: cbother)
-        checkbox(cb: cbowner)
-        checkbox(cb: cbrenter)
+        
+        //  setdefaultvalues()
+
+       // checkbox(cb: cbother)
+       // checkbox(cb: cbowner)
+      //  checkbox(cb: cbrenter)
 
         ApiCallGetCity()
         
@@ -122,12 +131,23 @@ class SignUPStep2: BaseVC {
               
               pickerview3.delegate = self
               pickerview3.dataSource = self
-              txtflats.delegate = self
-              txtblockname.delegate = self
+        
+        pickerview4.delegate = self
+        pickerview4.dataSource = self
+        
+        pickerview5.delegate = self
+        pickerview5.dataSource = self
+        
+        pickerview6.delegate = self
+        pickerview6.dataSource = self
+        
+        txtcity.delegate = self
         txtarea.delegate = self
-                     txtcity.delegate = self
-                 txtcommunity.delegate = self
-                     txtblockname.delegate = self
+        txtcommunity.delegate = self
+        txtblockname.delegate = self
+        txtflats.delegate = self
+
+        
               let toolBar = UIToolbar()
               toolBar.barStyle = .default
               toolBar.isTranslucent = true
@@ -173,6 +193,34 @@ class SignUPStep2: BaseVC {
               toolBar2.sizeToFit()
               txtcommunity.inputAccessoryView = toolBar2
               txtcommunity.inputView = pickerview3
+        
+        
+        let toolBar3 = UIToolbar()
+        toolBar3.barStyle = .default
+        toolBar3.isTranslucent = true
+        toolBar3.tintColor = AppColor.appcolor
+        let donetxtblockname = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressedtxtblockname))
+        let canceltxtblockname = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spacetxtblockname = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar3.setItems([canceltxtblockname, spacetxtblockname, donetxtblockname], animated: false)
+        toolBar3.isUserInteractionEnabled = true
+        toolBar3.sizeToFit()
+        txtblockname.inputAccessoryView = toolBar3
+        txtblockname.inputView = pickerview4
+        
+        
+        let toolBar4 = UIToolbar()
+        toolBar4.barStyle = .default
+        toolBar4.isTranslucent = true
+        toolBar4.tintColor = AppColor.appcolor
+        let donetxtflats = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressedtxtflats))
+        let canceltxtflats = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spacetxtflats = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar4.setItems([canceltxtflats, spacetxtflats, donetxtflats], animated: false)
+        toolBar4.isUserInteractionEnabled = true
+        toolBar4.sizeToFit()
+        txtflats.inputAccessoryView = toolBar4
+        txtflats.inputView = pickerview5
         
         // Do any additional setup after loading the view.
     }
@@ -270,7 +318,8 @@ class SignUPStep2: BaseVC {
                   self.societyid =  self.societyary[row].SocietyID
                   self.apicallGetBuildings()
               }
-            self.viewbottom.isHidden = false
+            
+           /* self.viewbottom.isHidden = false
             self.hightbottomview.constant = 196
             self.hightflat.constant = 0
             self.highttxtfalt.constant = 0
@@ -278,7 +327,7 @@ class SignUPStep2: BaseVC {
             self.hightcheckboxview.constant = 0
             self.viewcheckbox.isHidden = true
             self.hightbuilding.constant = 137
-            self.tblbuilding.isHidden = false
+            self.tblbuilding.isHidden = false */
           }
           else
           {
@@ -291,7 +340,7 @@ class SignUPStep2: BaseVC {
                   self.societyid = self.societyary[row].SocietyID
                   self.apicallGetBuildings()
                 
-            self.viewbottom.isHidden = false
+          /*  self.viewbottom.isHidden = false
                 self.hightbottomview.constant = 196
                 self.hightflat.constant = 0
                 self.highttxtfalt.constant = 0
@@ -299,12 +348,80 @@ class SignUPStep2: BaseVC {
                self.hightcheckboxview.constant = 0
                 self.viewcheckbox.isHidden = true
                 self.hightbuilding.constant = 137
-                self.tblbuilding.isHidden = false
+                self.tblbuilding.isHidden = false */
                 
               }
           }
          
       }
+    
+    @objc func donePressedtxtblockname()
+        
+    {
+        if(txtblockname.text == "")
+        {
+          let row = self.pickerview4.selectedRow(inComponent: 0)
+
+            txtblockname.resignFirstResponder()
+            
+            txtblockname.text = buildingary[row].PropertyName
+            
+            buildingid = buildingary[row].PropertyID
+
+           // self.txtblockname.resignFirstResponder()
+            
+            apicallGetFlat()
+        }
+        else
+        {
+             let row = self.pickerview4.selectedRow(inComponent: 0)
+
+            txtblockname.resignFirstResponder()
+            
+            txtblockname.text = buildingary[row].PropertyName
+            
+            buildingid = buildingary[row].PropertyID
+            
+            apicallGetFlat()
+
+        }
+    }
+    
+    
+    @objc func donePressedtxtflats() {
+        
+        if(txtflats.text == "")
+        {
+          let row = self.pickerview5.selectedRow(inComponent: 0)
+
+            txtflats.resignFirstResponder()
+            
+            self.txtflats.resignFirstResponder()
+
+            self.txtflats.text = self.Flatary[row].PropertyName
+            
+            Flatid = self.Flatary[row].PropertyID!
+
+           // self.txtblockname.resignFirstResponder()
+            
+          //  apicallGetFlat()
+            
+        }
+        else
+        {
+             let row = self.pickerview5.selectedRow(inComponent: 0)
+
+            txtflats.resignFirstResponder()
+            
+            self.txtflats.text = self.Flatary[row].PropertyName
+            
+            Flatid = self.Flatary[row].PropertyID!
+
+          //  apicallGetFlat()
+
+        }
+        
+    }
       
       @objc  func cancelPressed() {
           view.endEditing(true) // or do something
@@ -504,7 +621,10 @@ class SignUPStep2: BaseVC {
                     {
                         self.buildingary = resp.data
                         self.newbuildingary = resp.data
-                        self.tblbuilding.reloadData()
+                      //  self.tblbuilding.reloadData()
+                        
+                        self.pickerview4.reloadAllComponents()
+
                     }
                         
                     else
@@ -560,7 +680,11 @@ class SignUPStep2: BaseVC {
                     {
                         self.Flatary = resp.data!
                         self.NewFlatary = resp.data!
-                        self.tblflat.reloadData()
+                       
+                      //  self.tblflat.reloadData()
+                        
+                        self.pickerview5.reloadAllComponents()
+                        
                     }
                         
                     else
@@ -750,7 +874,7 @@ extension SignUPStep2 :UITextFieldDelegate
                
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
                    UIViewAnimationOptions.curveEaseOut, animations: {
-                       self.viewbottom.isHidden = false
+                     /*  self.viewbottom.isHidden = false
                                   self.hightbottomview.constant = 250
                                   self.hightflat.constant = 0
                                   self.highttxtfalt.constant = 0
@@ -758,7 +882,7 @@ extension SignUPStep2 :UITextFieldDelegate
                                   self.hightcheckboxview.constant = 0
                                   self.viewcheckbox.isHidden = true
                                   self.hightbuilding.constant = 137
-                                  self.tblbuilding.isHidden = false
+                                  self.tblbuilding.isHidden = false */
                        
                }, completion: { finished in
                    
@@ -774,7 +898,7 @@ extension SignUPStep2 :UITextFieldDelegate
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
                    UIViewAnimationOptions.curveEaseOut, animations: {
                       
-                       self.viewbottom.isHidden = false
+                     /*  self.viewbottom.isHidden = false
                                             self.hightbottomview.constant = 250
                                             self.hightflat.constant = 137
                                             self.highttxtfalt.constant = 50
@@ -784,7 +908,7 @@ extension SignUPStep2 :UITextFieldDelegate
                                          self.hightbuilding.constant = 0
                                          self.tblbuilding.isHidden = true
                                          self.hightflat.constant = 137
-                                         self.tblflat.isHidden = false
+                                         self.tblflat.isHidden = false */
                        
                        
                }, completion: { finished in
@@ -810,13 +934,20 @@ extension SignUPStep2 :UITextFieldDelegate
                            buildingary.append(dic)
                        }
                        
-                       tblbuilding.reloadData()
+                      // tblbuilding.reloadData()
+                    
+                    self.pickerview4.reloadAllComponents()
+
                    }
                }
                else
                {
                    buildingary = newbuildingary
-                   tblbuilding.reloadData()
+                
+                  // tblbuilding.reloadData()
+                
+                  self.pickerview4.reloadAllComponents()
+
                    
                }
            }
@@ -835,13 +966,19 @@ extension SignUPStep2 :UITextFieldDelegate
                            Flatary.append(dic)
                        }
                        
-                       tblflat.reloadData()
+                      // tblflat.reloadData()
+                    
+                    self.pickerview5.reloadAllComponents()
+
                    }
                }
                else
                {
                    Flatary = NewFlatary
-                   tblflat.reloadData()
+                  // tblflat.reloadData()
+                
+                self.pickerview5.reloadAllComponents()
+
                    
                }
            }
@@ -869,10 +1006,27 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
             return arearary.count
             
         }
-        else
+        else if(pickerView == pickerview3)
         {
             return societyary.count
         }
+        else if(pickerView == pickerview4)
+        {
+            return buildingary.count
+        }
+        else if(pickerView == pickerview5)
+        {
+            return Flatary.count
+        }
+        
+        else{
+            return Flatary.count
+        }
+        // temp comment 4/12/20.
+//        else if(pickerView == pickerview6)
+//        {
+//
+//        }
     }
     
     // The data to return fopr the row and component (column) that's being passed in
@@ -885,12 +1039,28 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         {
             return arearary[row].AreaName
         }
-        else
+        else if(pickerView == pickerview3)
         {
             return societyary[row].SocietyName
-            
-            
         }
+        else if(pickerView == pickerview4)
+        {
+            return buildingary[row].PropertyName
+        }
+        else if(pickerView == pickerview5)
+        {
+            return Flatary[row].PropertyName
+        }
+        else
+        {
+            return Flatary[row].PropertyName
+        }
+        
+        // temp comment 4/12/20.
+//        else if(pickerView == pickerview6)
+//        {
+//
+//        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -910,11 +1080,27 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
             txtcommunity.text = societyary[row].SocietyName
             societyid =  societyary[row].SocietyID
         }
+        else if(pickerView == pickerview4)
+        {
+            txtblockname.text = buildingary[row].PropertyName
+            buildingid = buildingary[row].PropertyID
+        }
+        else if(pickerView == pickerview5)
+        {
+            self.txtflats.text = self.Flatary[row].PropertyName
+            Flatid = self.Flatary[row].PropertyID!
+        }
+        else if(pickerView == pickerview6)
+        {
+            
+        }
     }
     
     
     
 }
+
+/*
 @available(iOS 13.0, *)
 extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
 {
@@ -1115,3 +1301,6 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
     
     
 }
+
+
+*/
