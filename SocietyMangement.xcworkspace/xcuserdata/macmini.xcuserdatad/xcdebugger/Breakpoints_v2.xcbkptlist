@@ -18,48 +18,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DCDBB953-4C8A-4600-BBAB-EC9E63735E68"
+            uuid = "892B7A0E-DA66-4F95-8FEB-1183F187DD23"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocietyMangement/ViewControllers/SignUPStep2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
-            landmarkName = "apicallGetBuildings()"
+            startingLineNumber = "1441"
+            endingLineNumber = "1441"
+            landmarkName = "pickerView(_:didSelectRow:inComponent:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "83CE2CC3-7D69-4621-B6FF-DEE1078E0D5F"
+            uuid = "A8F17ABA-1CC8-4F75-BB0F-6BCDBE802442"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocietyMangement/ViewControllers/SignUPStep2.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "616"
-            endingLineNumber = "616"
-            landmarkName = "apicallGetBuildings()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "09735012-91E9-4F86-95B8-C5DD9842AA4A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/Helper/ApiCallinstance.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "GetAllBuidldings(URL:param:onCompletion:)"
+            startingLineNumber = "642"
+            endingLineNumber = "642"
+            landmarkName = "donePressedtxtflatTypeRole()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

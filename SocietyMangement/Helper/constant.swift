@@ -89,6 +89,13 @@ let API_USER_GET_CIRCULAR = "user/notices/2"  //"user/getcircular"
 let API_ADD_NOTICE = "society/notices/1/add"  // "user/addnotice"
 let API_GET_NOTICE =  "user/notices/1" //  "user/getnotice"  // "society/notices/1" // 
 let API_ACCEPT_DECLINE = "user/acceptreject"
+
+let API_ACTIVITY_CANCEL = "user/pre-approved/cancel"
+
+let API_ACTIVITY_EXIT_OUT = "user/pre-approved/exit"
+
+let API_ACTIVITY_WRONG_ENTRY  = "user/pre-approved/wrong-entry"
+
 let API_LOGOUT = "user/signout" //"logout"
 let API_IN_OUT = "InOut"
 
@@ -126,6 +133,12 @@ let API_USER_ACTIVITY_LIST_FILTER_SEARCH = "user/activity/"
 let API_USER_ACTIVITYTYPES = "user/activity-types"
 
 
+// GetAllCompanySelectDetails
+
+let API_USER_COMPANY_SELECT = "user/vendors/2"
+
+
+
 let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"
 let API_UPDATE_NOTICE = "society/notices/1/edit" // "user/editnotice"
 let API_UPDATE_EVENT = "society/notices/3/edit" // "user/editevent"
@@ -155,6 +168,8 @@ let API_GET_FREQUENTGUEST_LIST = "user/invitelist"
 
 
 let API_ADD_FREQUENTGUEST = "user/pre-approved/1/add" //"user/addFrequentEntry"
+
+let API_ADD_DELIVERYENTRY = "user/pre-approved/2/add" //"user/addFrequentEntry"
 
 
 let API_GET_MEMBERFAMILY_LIST = "user/memberfamily"

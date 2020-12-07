@@ -653,26 +653,6 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
               btnAddFrequentActionbtn()
     }
     
-    // MARK: -  Get Add Emergency Contact
-    
-    
-    func btnAddEmergencyAction() {
-        
-        print("btnAddEmergencyActionbtn new")
-        
-    }
-    
-    @IBAction func AddEmergencyConAction(_ sender: Any) {
-           btnAddEmergencyAction()
-    }
-    
-    @IBAction func AddEmergencyConAction_view_btn(_ sender: Any) {
-           btnAddEmergencyAction()
-    }
-    
-    @IBAction func AddEmergencyConAction_btn(_ sender: Any) {
-              btnAddEmergencyAction()
-    }
     
     func inviteaction(from: String) {
         

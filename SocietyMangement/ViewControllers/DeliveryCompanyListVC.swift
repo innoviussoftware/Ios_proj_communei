@@ -10,7 +10,10 @@ import UIKit
 
 protocol DeliveryCompanyListProtocol {
     
-    func deliveryList(name:String, selectNumber:Int)
+   // func deliveryList(name:String, selectNumber:Int)
+    
+    func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
+
     
   //  func deliveryList(name:[String])
     
@@ -44,25 +47,120 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     var selectedindex:Int?
     
     var selectedindex1:Int?
+    
+    var arrFrequent_Deliveries = [DeliveryCompanySelect]()
             
   //  var isfromNumber: Bool?
 
-    var entryary = ["Cab","Delivery","Visitor","Service provider"]
+    var entryary = [DeliveryCompanySelect]()
+
+        //["Cab","Delivery","Visitor","Service provider"]
     
-    var alertGuardary = ["Emergency Alerts","Message Guard","Cab","Complaint Management","Visitor","Message Guard","Complaint Management"]
+   // var alertGuardary = ["Emergency Alerts","Message Guard","Cab","Complaint Management","Visitor","Message Guard","Complaint Management"]
     
-    var iconentryary = [UIImage(named:"ic_cab"),UIImage (named:"ic_delivery"),UIImage (named:"ic_user"),UIImage (named:"ic_domestic")]
+  //  var iconentryary = [UIImage(named:"ic_cab"),UIImage (named:"ic_delivery"),UIImage (named:"ic_user"),UIImage (named:"ic_domestic")]
     
-    var iconalertGuardary = [UIImage(named:"ic_alerts"),UIImage (named:"ic_message"),UIImage (named:"ic_cab"),UIImage (named:"ic_complaint"),UIImage(named:"ic_user"),UIImage (named:"ic_message"),UIImage (named:"ic_complaint")]
+ //   var iconalertGuardary = [UIImage(named:"ic_alerts"),UIImage (named:"ic_message"),UIImage (named:"ic_cab"),UIImage (named:"ic_complaint"),UIImage(named:"ic_user"),UIImage (named:"ic_message"),UIImage (named:"ic_complaint")]
 
     
     @IBOutlet weak var collectionFrequent_Deliveries: UICollectionView!
 
-    @IBOutlet weak var collectionOther_Deliveries: UICollectionView!
+  //  @IBOutlet weak var collectionOther_Deliveries: UICollectionView!
     
     @IBOutlet weak var txtOtherName: UITextField!
     
+    // MARK: - get DeliveryCompanySelect
     
+    func apicallDeliveryCompanySelect()
+    {
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+            
+        let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
+        
+        webservices().StartSpinner()
+        
+            
+        Apicallhandler().GetAllCompanySelectDetails(URL: webservices().baseurl + API_USER_COMPANY_SELECT ,token:strToken as! String) { JSON in
+
+            switch JSON.result{
+            case .success(let resp):
+                
+                webservices().StopSpinner()
+                if(JSON.response?.statusCode == 200)
+                {
+                    self.entryary = resp.data!
+                    
+                    if(resp.data!.count == 0)
+                    {
+                        self.collectionFrequent_Deliveries.isHidden = true
+                    }
+                    else
+                    {
+
+                        self.collectionFrequent_Deliveries.delegate = self
+                        self.collectionFrequent_Deliveries.dataSource = self
+                        self.collectionFrequent_Deliveries.reloadData()
+                        self.collectionFrequent_Deliveries.isHidden = false
+                        
+                    }
+                }else if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                else
+                {
+                    if(resp.data!.count == 0)
+                    {
+                        self.collectionFrequent_Deliveries.isHidden = true
+                    }
+                    else
+                    {
+                        self.collectionFrequent_Deliveries.isHidden = false
+                    }
+                    
+                }
+                
+               //print(resp)
+            case .failure(let err):
+                webservices().StopSpinner()
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+              //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                
+                
+            }
+            
+        }
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,10 +172,13 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         txtOtherName.delegate = self
 
        // webservices.sharedInstance.PaddingTextfiled(textfield: txtOtherName)
+        
+        apicallDeliveryCompanySelect()
 
-        collectionFrequent_Deliveries.reloadData()
-        collectionOther_Deliveries.reloadData()
+      //  collectionFrequent_Deliveries.reloadData()
+       // collectionOther_Deliveries.reloadData()
 
+        
         // Do any additional setup after loading the view.
     }
     
@@ -116,22 +217,28 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     // MARK: - Collectionview delegate and datasource methods
       
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView == collectionFrequent_Deliveries){
+       /* if(collectionView == collectionFrequent_Deliveries){
             return entryary.count
-        }else{
-            return alertGuardary.count
-        }
+        } */
+        
+        return entryary.count
+
+//        else{
+//            return alertGuardary.count
+//        }
     }
     
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          
-         if(collectionView == collectionFrequent_Deliveries)
-         {
+        // if(collectionView == collectionFrequent_Deliveries) {
              
              let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
             
-            cell.imgview.image = iconentryary[indexPath.row]
-            cell.lblname.text = entryary[indexPath.row]
+            if entryary[indexPath.row].companyLogoURL != nil{
+                  cell.imgview.sd_setImage(with: URL(string: entryary[indexPath.item].companyLogoURL!), placeholderImage: UIImage(named: ""))
+            }
+            
+            cell.lblname.text = entryary[indexPath.row].companyName!
                         
             if(selectedindex == indexPath.row) &&  (cell.lblname.text!.contains(strlbl)) {
                 
@@ -150,7 +257,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         
              return cell
              
-         }
+        /* }
          else{
 
              let cell:ShortCutCells = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCells
@@ -172,7 +279,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
             }
             
              return cell
-         }
+         } */
                  
      }
           
@@ -199,15 +306,18 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
 
         if(collectionView == collectionFrequent_Deliveries){
             
-            delegate?.deliveryList(name: entryary[indexPath.row], selectNumber: selectedindex!)
+           // delegate?.deliveryList(name: entryary[indexPath.row].companyName!, selectNumber: selectedindex!)
             
-            strlbl = entryary[indexPath.row]
+            delegate?.deliveryList(name: entryary[indexPath.row].companyName!, VendorID: entryary[indexPath.row].vendorID!, IsPublic: entryary[indexPath.row].isPublic!, selectNumber: selectedindex!)
+            
+            strlbl = entryary[indexPath.row].companyName!
             print("strlbl : ",strlbl)
-        }else{
+        }
+       /* else{
             delegate?.deliveryList(name: alertGuardary[indexPath.row], selectNumber: selectedindex1!)
             strlbl = alertGuardary[indexPath.row]
             print("strlbl : ",strlbl)
-        }
+        } */
         
 
         self.navigationController?.popViewController(animated: true)

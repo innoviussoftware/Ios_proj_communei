@@ -228,7 +228,8 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
     // MARK: - deliveryList delegate methods
 
        //func deliveryList(name: String)
-       func deliveryList(name:String, selectNumber:Int)
+      // func deliveryList(name:String, selectNumber:Int)
+       func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
        {
             self.txtDeliveryCompanyName.text = name
             index = selectNumber

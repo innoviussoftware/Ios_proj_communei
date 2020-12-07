@@ -218,6 +218,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         txtEndTime.text = formatt.string(from: datee)
         time =  txtEndTime.text!
 
+        txtvaildtill.text = hourary[0]
+
 
         // Do any additional setup after loading the view.
     }
@@ -238,6 +240,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         datePicker_start.datePickerMode = .time
         
         datePicker_end.datePickerMode = .time
+        
 
         if #available(iOS 13.4, *) {
             datePicker_start.preferredDatePickerStyle = .wheels
@@ -475,6 +478,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
       }
          
       @IBAction func btnApply(_ sender: Any) {
+        
+           txtvaildtill.text = hourary[selectedindex]
+
+       // selectedindex = 0
+        
+             collectionHours.reloadData()
+        
              self.viewbottom.isHidden = true
       }
          
@@ -513,7 +523,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     // MARK: - deliveryList delegate methods
 
     //func deliveryList(name: String)
-    func deliveryList(name:String, selectNumber:Int)
+   // func deliveryList(name:String, selectNumber:Int)
+    func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
     {
            if(isfrom == "Single") {
                self.txtCabCompanyName.text = name

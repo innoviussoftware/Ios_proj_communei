@@ -35,26 +35,35 @@ class SignUPStep2: BaseVC {
        var role = ""
     var UserType = Int()
     
+    var IsFlatOccup = Int()
+
+    
+    var aryUserTypeOwn = ["Resident Owner","Resident Tenant", "Non Resident Owner"]
+    
+    var aryUserTypeNon = ["Flat has a Tenant","Flat is Empty"]
+
+    
    // var mobile = ""
 
     @IBOutlet weak var btnaddfarmviall: RSButtonCustomisation!
     
-    @IBOutlet weak var viewcheckbox: UIView!
+   // @IBOutlet weak var viewcheckbox: UIView!
     
-    @IBOutlet weak var hightcheckboxview: NSLayoutConstraint!
+  //  @IBOutlet weak var hightcheckboxview: NSLayoutConstraint!
     
-    @IBOutlet weak var tblbuilding: UITableView!
+  //  @IBOutlet weak var tblbuilding: UITableView!
        
-    @IBOutlet weak var tblflat: UITableView!
+  //  @IBOutlet weak var tblflat: UITableView!
     
     @IBOutlet weak var txtblockname: RSTextFieldCustomisation!
+    
     @IBOutlet weak var txtflats: RSTextFieldCustomisation!
 
-       @IBOutlet weak var cbowner: Checkbox!
+     //  @IBOutlet weak var cbowner: Checkbox!
        
-       @IBOutlet weak var cbrenter: Checkbox!
+    //   @IBOutlet weak var cbrenter: Checkbox!
        
-       @IBOutlet weak var cbother: Checkbox!
+    //   @IBOutlet weak var cbother: Checkbox!
     
     @IBOutlet weak var txtcity: RSTextFieldCustomisation!
       
@@ -62,8 +71,8 @@ class SignUPStep2: BaseVC {
       
       @IBOutlet weak var txtcommunity: RSTextFieldCustomisation!
     
-    @IBOutlet weak var btnOwner: UIButton!
-    @IBOutlet weak var btnRentingFlat: UIButton!
+  //  @IBOutlet weak var btnOwner: UIButton!
+  //  @IBOutlet weak var btnRentingFlat: UIButton!
     
 
     var pickerview1 = UIPickerView()
@@ -73,29 +82,47 @@ class SignUPStep2: BaseVC {
     var pickerview4 = UIPickerView()
     var pickerview5 = UIPickerView()
     var pickerview6 = UIPickerView()
+    
+    var pickerview7 = UIPickerView()
 
 
     @IBOutlet weak var viewbottom: UIView!
+    
     @IBOutlet weak var hightbottomview: NSLayoutConstraint!
-    @IBOutlet weak var hightflat: NSLayoutConstraint!
-    @IBOutlet weak var hightbuilding: NSLayoutConstraint!
+    
+    @IBOutlet weak var highttxtblockConst: NSLayoutConstraint!
+
+    
+  //  @IBOutlet weak var hightflat: NSLayoutConstraint!
+ 
+  //  @IBOutlet weak var hightbuilding: NSLayoutConstraint!
     
     @IBOutlet weak var highttxtfalt: NSLayoutConstraint!
     
     @IBOutlet weak var imgflatserarch: UIImageView!
     
-    @IBAction func BackAction(_ sender: Any) {
+    @IBOutlet weak var img_ic_role_type: UIImageView!
+
+    @IBOutlet weak var img_ic_role_status: UIImageView!
+
+        
+    @IBOutlet weak var txtflatTypeRole: RSTextFieldCustomisation!
+
+    @IBOutlet weak var txtflatTypeStatus: RSTextFieldCustomisation!
+
+    
+    @IBAction func BackAction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated:true)
     }
     
-    @IBAction func RenterAction(_ sender: Any) {
+  /*  @IBAction func RenterAction(_ sender: UIButton) {
         
         cbowner.isChecked = false
         cbrenter.isChecked = true
         cbother.isChecked = false
     }
     
-    @IBAction func OtherAction(_ sender: Any) {
+    @IBAction func OtherAction(_ sender: UIButton) {
         
         cbowner.isChecked = false
         cbrenter.isChecked = false
@@ -104,19 +131,19 @@ class SignUPStep2: BaseVC {
     }
     
     
-    @IBAction func OwnerAction(_ sender: Any) {
+    @IBAction func OwnerAction(_ sender: UIButton) {
         
         cbowner.isChecked = true
         cbrenter.isChecked = false
         cbother.isChecked = false
         
-    }
+    } */
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        //  setdefaultvalues()
+          setdefaultvalues()
 
        // checkbox(cb: cbother)
        // checkbox(cb: cbowner)
@@ -141,11 +168,17 @@ class SignUPStep2: BaseVC {
         pickerview6.delegate = self
         pickerview6.dataSource = self
         
+        pickerview7.delegate = self
+        pickerview7.dataSource = self
+        
         txtcity.delegate = self
         txtarea.delegate = self
         txtcommunity.delegate = self
         txtblockname.delegate = self
         txtflats.delegate = self
+        
+        txtflatTypeRole.delegate = self
+        txtflatTypeStatus.delegate = self
 
         
               let toolBar = UIToolbar()
@@ -222,17 +255,52 @@ class SignUPStep2: BaseVC {
         txtflats.inputAccessoryView = toolBar4
         txtflats.inputView = pickerview5
         
+        
+        let toolBar5 = UIToolbar()
+        toolBar5.barStyle = .default
+        toolBar5.isTranslucent = true
+        toolBar5.tintColor = AppColor.appcolor
+        let donetxtflatTypeRole = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressedtxtflatTypeRole))
+        let canceltxtflatTypeRole = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spacetxtflatTypeRole = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar5.setItems([canceltxtflatTypeRole, spacetxtflatTypeRole, donetxtflatTypeRole], animated: false)
+        toolBar5.isUserInteractionEnabled = true
+        toolBar5.sizeToFit()
+        txtflatTypeRole.inputAccessoryView = toolBar5
+        txtflatTypeRole.inputView = pickerview6
+        
+        
+        let toolBar6 = UIToolbar()
+        toolBar6.barStyle = .default
+        toolBar6.isTranslucent = true
+        toolBar6.tintColor = AppColor.appcolor
+        let donetxtflatTypeStatus = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressedtxtflatTypeStatus))
+        let canceltxtflatTypeStatus = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spacetxtflatTypeStatus = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar6.setItems([canceltxtflatTypeStatus, spacetxtflatTypeStatus, donetxtflatTypeStatus], animated: false)
+        toolBar6.isUserInteractionEnabled = true
+        toolBar6.sizeToFit()
+        txtflatTypeStatus.inputAccessoryView = toolBar6
+        txtflatTypeStatus.inputView = pickerview7
+        
+        
+        
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func signup(_ sender: Any) {
+    @IBAction func btnSignUpPressed(_ sender: UIButton) {
           
-          if cbowner.isChecked == false && cbrenter.isChecked == false{
+        // 5/12/20. temp comment
+        
+         /* if cbowner.isChecked == false && cbrenter.isChecked == false{
               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Select who you are")
               self.present(alert, animated: true, completion: nil)
           }else{
                ApiCallSignUp2()
-          }
+          } */
+        
+        ApiCallSignUp2()
+
           
       }
 
@@ -243,6 +311,9 @@ class SignUPStep2: BaseVC {
             self.viewbottom.isHidden = true
             self.hightbottomview.constant = 0
             
+            self.highttxtblockConst.constant = 0
+
+                        
           }
     
         func checkbox(cb:Checkbox)
@@ -270,6 +341,18 @@ class SignUPStep2: BaseVC {
             cityid = String(cityary[row].CityID!)
               txtcity.resignFirstResponder()
               ApiCallGetArea()
+            
+            self.hightbottomview.constant = 0
+            
+            self.viewbottom.isHidden = true
+
+            txtblockname.isHidden = true
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
           }
           else
           {
@@ -278,7 +361,18 @@ class SignUPStep2: BaseVC {
             cityid = String(cityary[row].CityID!)
                            txtcity.resignFirstResponder()
                            ApiCallGetArea()
+            
+            self.hightbottomview.constant = 0
+            
+            self.viewbottom.isHidden = true
+
+            txtblockname.isHidden = true
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
               
+            self.btnaddfarmviall.isHidden = true
+
           }
       }
       
@@ -293,6 +387,18 @@ class SignUPStep2: BaseVC {
               areaid = String(arearary[row].AreaID)
               txtarea.text = arearary[row].AreaName
               ApiCallGetSociety()
+            
+            self.viewbottom.isHidden = true
+
+            self.hightbottomview.constant = 0
+            
+            txtblockname.isHidden = true
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+    
+            self.btnaddfarmviall.isHidden = true
+
           }
           else
           {
@@ -302,8 +408,21 @@ class SignUPStep2: BaseVC {
                            areaid = String(arearary[row].AreaID)
                            txtarea.text = arearary[row].AreaName
                            ApiCallGetSociety()
+            
+                self.viewbottom.isHidden = true
+
+                self.hightbottomview.constant = 0
+                
+                txtblockname.isHidden = true
+                txtflats.isHidden = true
+                txtflatTypeRole.isHidden = true
+                txtflatTypeStatus.isHidden = true
+            
+               self.btnaddfarmviall.isHidden = true
+
           }
       }
+    
       @objc func donePressed2()
           
       {
@@ -319,12 +438,30 @@ class SignUPStep2: BaseVC {
                   self.apicallGetBuildings()
               }
             
-           /* self.viewbottom.isHidden = false
-            self.hightbottomview.constant = 196
-            self.hightflat.constant = 0
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 50
+            
+            self.highttxtblockConst.constant = 50
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+            
+          //  self.viewbottom.isHidden = false
+          //  self.hightbottomview.constant = 75 //125
+           // self.hightflat.constant = 0
             self.highttxtfalt.constant = 0
             self.imgflatserarch.isHidden = true
-            self.hightcheckboxview.constant = 0
+            
+            self.img_ic_role_type.isHidden = true
+            self.img_ic_role_status.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
+            
+          /*  self.hightcheckboxview.constant = 0
             self.viewcheckbox.isHidden = true
             self.hightbuilding.constant = 137
             self.tblbuilding.isHidden = false */
@@ -340,18 +477,33 @@ class SignUPStep2: BaseVC {
                   self.societyid = self.societyary[row].SocietyID
                   self.apicallGetBuildings()
                 
-          /*  self.viewbottom.isHidden = false
-                self.hightbottomview.constant = 196
-                self.hightflat.constant = 0
+           // self.viewbottom.isHidden = false
+              //  self.hightbottomview.constant = 75 //125
+              //  self.hightflat.constant = 0
                 self.highttxtfalt.constant = 0
                 self.imgflatserarch.isHidden = true
-               self.hightcheckboxview.constant = 0
+                self.img_ic_role_type.isHidden = true
+                self.img_ic_role_status.isHidden = true
+             /*  self.hightcheckboxview.constant = 0
                 self.viewcheckbox.isHidden = true
                 self.hightbuilding.constant = 137
                 self.tblbuilding.isHidden = false */
                 
+                self.btnaddfarmviall.isHidden = true
+
               }
+            
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 50
+            self.highttxtblockConst.constant = 50
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
           }
+        
          
       }
     
@@ -371,6 +523,23 @@ class SignUPStep2: BaseVC {
            // self.txtblockname.resignFirstResponder()
             
             apicallGetFlat()
+            
+          //  self.hightbottomview.constant = 125
+
+          self.highttxtfalt.constant = 50
+            self.imgflatserarch.isHidden = false
+            self.img_ic_role_type.isHidden = true
+            self.img_ic_role_status.isHidden = true
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 125
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
         }
         else
         {
@@ -383,7 +552,23 @@ class SignUPStep2: BaseVC {
             buildingid = buildingary[row].PropertyID
             
             apicallGetFlat()
+            
+            self.viewbottom.isHidden = false
 
+            self.hightbottomview.constant = 125
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+            
+           // self.hightbottomview.constant = 125
+                                
+            self.highttxtfalt.constant = 50
+            self.imgflatserarch.isHidden = false
+            self.img_ic_role_type.isHidden = true
+            self.img_ic_role_status.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
         }
     }
     
@@ -396,8 +581,6 @@ class SignUPStep2: BaseVC {
 
             txtflats.resignFirstResponder()
             
-            self.txtflats.resignFirstResponder()
-
             self.txtflats.text = self.Flatary[row].PropertyName
             
             Flatid = self.Flatary[row].PropertyID!
@@ -405,6 +588,23 @@ class SignUPStep2: BaseVC {
            // self.txtblockname.resignFirstResponder()
             
           //  apicallGetFlat()
+            
+            pickerview6.reloadAllComponents()
+            
+            btnaddfarmviall.isHidden = false
+            
+            self.viewbottom.isHidden = false
+            
+            self.highttxtfalt.constant = 50
+
+            self.hightbottomview.constant = 200
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = false
+            txtflatTypeStatus.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
             
         }
         else
@@ -417,11 +617,166 @@ class SignUPStep2: BaseVC {
             
             Flatid = self.Flatary[row].PropertyID!
 
+            pickerview6.reloadAllComponents()
+
+            btnaddfarmviall.isHidden = false
+
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 200
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = false
+            txtflatTypeStatus.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
+
           //  apicallGetFlat()
 
         }
         
     }
+    
+        @objc  func donePressedtxtflatTypeRole() {
+            if(txtflatTypeRole.text == "")
+            {
+              let row = self.pickerview6.selectedRow(inComponent: 0)
+
+                txtflatTypeRole.resignFirstResponder()
+                
+                self.txtflatTypeRole.text = self.aryUserTypeOwn[row]
+
+                if self.txtflatTypeRole.text == "Resident Owner" {
+                    UserType = 1
+                }else if self.txtflatTypeRole.text == "Resident Tenant" {
+                    UserType = 3
+                }else if self.txtflatTypeRole.text == "Non Resident Owner"{
+                    UserType = 2
+                }
+                
+                if UserType == 1 || UserType == 3 {
+                    txtflatTypeStatus.isHidden = true
+                    
+                    self.img_ic_role_type.isHidden = false
+                    self.img_ic_role_status.isHidden = true
+                }else{
+                    txtflatTypeStatus.isHidden = false
+                    
+                    self.img_ic_role_type.isHidden = false
+                    self.img_ic_role_status.isHidden = false
+                }
+                
+                self.btnaddfarmviall.isHidden = false
+                
+                pickerview7.reloadAllComponents()
+                
+            }
+            else
+            {
+                
+                  let row = self.pickerview6.selectedRow(inComponent: 0)
+
+                  txtflatTypeRole.resignFirstResponder()
+                  
+                  self.txtflatTypeRole.text = self.aryUserTypeOwn[row]
+
+                  if self.txtflatTypeRole.text == "Resident Owner" {
+                      UserType = 1
+                  }else if self.txtflatTypeRole.text == "Resident Tenant" {
+                      UserType = 3
+                  }else if self.txtflatTypeRole.text == "Non Resident Owner"{
+                      UserType = 2
+                  }
+                
+                if UserType == 1 || UserType == 3 {
+                    txtflatTypeStatus.isHidden = true
+                    
+                    self.viewbottom.isHidden = false
+
+                    self.hightbottomview.constant = 260
+                    txtblockname.isHidden = false
+                    txtflats.isHidden = false
+                    txtflatTypeRole.isHidden = false
+                    txtflatTypeStatus.isHidden = true
+                }else{
+                    self.viewbottom.isHidden = false
+
+                    self.hightbottomview.constant = 260
+                    txtblockname.isHidden = false
+                    txtflats.isHidden = false
+                    txtflatTypeRole.isHidden = false
+                    txtflatTypeStatus.isHidden = false
+                }
+                
+                self.btnaddfarmviall.isHidden = false
+
+                pickerview7.reloadAllComponents()
+
+            }
+        }
+    
+        @objc  func donePressedtxtflatTypeStatus() {
+            if(txtflatTypeStatus.text == "")
+            {
+                let row = self.pickerview7.selectedRow(inComponent: 0)
+
+                txtflatTypeStatus.resignFirstResponder()
+                
+                self.txtflatTypeStatus.text = self.aryUserTypeNon[row]
+                
+                if self.txtflatTypeStatus.text == "Flat has a Tenant" {
+                    IsFlatOccup = 1
+                }else if self.txtflatTypeStatus.text == "Flat is Empty" {
+                    IsFlatOccup = 0
+                }else {
+                    IsFlatOccup = 0
+                }
+                
+                self.btnaddfarmviall.isHidden = false
+
+            }
+            else
+            {
+                
+                  let row = self.pickerview7.selectedRow(inComponent: 0)
+                
+                txtflatTypeStatus.resignFirstResponder()
+                
+                self.txtflatTypeStatus.text = self.aryUserTypeNon[row]
+                
+                if self.txtflatTypeStatus.text == "Flat has a Tenant" {
+                    IsFlatOccup = 1
+                }else if self.txtflatTypeStatus.text == "Flat is Empty" {
+                    IsFlatOccup = 0
+                }else {
+                    IsFlatOccup = 0
+                }
+                
+                self.btnaddfarmviall.isHidden = false
+
+
+                 /* txtflatTypeRole.resignFirstResponder()
+                  
+                  self.txtflatTypeRole.text = self.aryUserTypeOwn[row]
+
+                  if self.txtflatTypeRole.text == "Resident Owner" {
+                      UserType = 1
+                  }else if self.txtflatTypeRole.text == "Resident Tenant" {
+                      UserType = 3
+                  }else if self.txtflatTypeRole.text == "Non Resident Owner"{
+                      UserType = 2
+                  }
+                
+                if UserType == 1 || UserType == 3 {
+                    txtflatTypeStatus.isHidden = true
+                }else{
+                    txtflatTypeStatus.isHidden = false
+                } */
+
+            }
+            
+        }
       
       @objc  func cancelPressed() {
           view.endEditing(true) // or do something
@@ -624,11 +979,19 @@ class SignUPStep2: BaseVC {
                       //  self.tblbuilding.reloadData()
                         
                         self.pickerview4.reloadAllComponents()
+                        
+                      //  self.txtblockname.isHidden = false
+                        
+                        self.viewbottom.isHidden = false
 
                     }
                         
                     else
                     {
+                      //  self.txtblockname.isHidden = true
+
+                      //  self.viewbottom.isHidden = true
+
                         let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
                         self.present(alert, animated: true, completion: nil)
                     }
@@ -647,7 +1010,7 @@ class SignUPStep2: BaseVC {
        
     }
     
-    /// MARK: - get Flat
+   // MARK: - get Flat
     
     func apicallGetFlat()
     {
@@ -655,9 +1018,8 @@ class SignUPStep2: BaseVC {
                          ShowNoInternetAlert()
                          return
                      }
-            webservices().StartSpinner()
         
-          //  Apicallhandler().ApiCallGetFlat(URL: webservices().baseurl + API_GET_FLAT, society_id:"", building_id: buildingid) { JSON in
+            webservices().StartSpinner()
         
           let secret = UserDefaults.standard.string(forKey: USER_SECRET)!
     
@@ -715,8 +1077,10 @@ class SignUPStep2: BaseVC {
                          }
             webservices().StartSpinner()
                 
-                
-                if(cbowner.isChecked)
+               
+            // 5/12/20. temp comment
+            
+             /*   if(cbowner.isChecked)
                 {
                     role = "Owner of flat"
                     UserType = 1
@@ -725,18 +1089,29 @@ class SignUPStep2: BaseVC {
                 {
                     role = "Renting the flat"
                     UserType = 3
-                }
+                } */
 //                if(cbother.isChecked)
 //                {
 //                    role = "Renting the flat with other tenants"
 //                }
-                
-     
+            
+            print("UserType :- ",UserType)
+            
+            if self.txtflatTypeRole.text == "Resident Owner" {
+                IsFlatOccup = 0
+            }else if self.txtflatTypeRole.text == "Resident Tenant" {
+                IsFlatOccup = 0
+            }else {
+            }
+             
+            
+            
                  var strFCmToken = ""
+            
                 if UserDefaults.standard.value(forKey: "FcmToken") != nil{
                     strFCmToken = UserDefaults.standard.value(forKey: "FcmToken") as! String
                 }else{
-                    strFCmToken = "abc"
+                    strFCmToken = ""
                 }
             //NEW
               //  let parameter:Parameters = ["phone":mobile!,"username":fullname!,"email":email!,"society_id":societyid,"building_id":buildingid,"flat_id":Flatid,"fcm_token":strFCmToken,"flatType" : role,"city_id":cityid,"area_id":areaid,"profession_detail":"","profession":""]
@@ -752,7 +1127,8 @@ class SignUPStep2: BaseVC {
                 "Building": buildingid,
                 "Flat": Flatid,
                 "UserType": UserType,
-                "FCMToken": strFCmToken
+                "FCMToken": strFCmToken,
+                "IsFlatOccupied": IsFlatOccup
             ]
                 
             print("parameter register :- ",parameter)
@@ -816,8 +1192,8 @@ extension SignUPStep2 :UITextFieldDelegate
            
            if(textField == txtcity)
            {
-            self.viewbottom.isHidden = true
-               self.hightbottomview.constant = 0
+           // self.viewbottom.isHidden = true
+             //  self.hightbottomview.constant = 0
                
                if(cityary.count == 0)
                           {
@@ -831,8 +1207,8 @@ extension SignUPStep2 :UITextFieldDelegate
            }
            if(textField == txtarea)
            {
-            self.viewbottom.isHidden = true
-                          self.hightbottomview.constant = 0
+           // self.viewbottom.isHidden = true
+                        //  self.hightbottomview.constant = 0
                if(arearary.count == 0)
                {
                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"No area found")
@@ -842,8 +1218,8 @@ extension SignUPStep2 :UITextFieldDelegate
                }
                if(txtcity.text == "" )
                {
-                self.viewbottom.isHidden = true
-                              self.hightbottomview.constant = 0
+               // self.viewbottom.isHidden = true
+                           //   self.hightbottomview.constant = 0
                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select city")
                    self.present(alert, animated: true, completion: nil)
                    
@@ -853,8 +1229,8 @@ extension SignUPStep2 :UITextFieldDelegate
            }
            if(textField == txtcommunity )
            {
-               self.viewbottom.isHidden = true
-                            self.hightbottomview.constant = 0
+              // self.viewbottom.isHidden = true
+                           // self.hightbottomview.constant = 0
                if(societyary.count == 0)
                {
                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"No Society found")
@@ -874,15 +1250,15 @@ extension SignUPStep2 :UITextFieldDelegate
                
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
                    UIViewAnimationOptions.curveEaseOut, animations: {
-                     /*  self.viewbottom.isHidden = false
-                                  self.hightbottomview.constant = 250
-                                  self.hightflat.constant = 0
-                                  self.highttxtfalt.constant = 0
+                      // self.viewbottom.isHidden = false
+                               //   self.hightbottomview.constant = 125
+                                 // self.hightflat.constant = 0
+                               //   self.highttxtfalt.constant = 0
                                   self.imgflatserarch.isHidden = true
-                                  self.hightcheckboxview.constant = 0
-                                  self.viewcheckbox.isHidden = true
-                                  self.hightbuilding.constant = 137
-                                  self.tblbuilding.isHidden = false */
+                              //    self.hightcheckboxview.constant = 0
+                              //    self.viewcheckbox.isHidden = true
+                              //    self.hightbuilding.constant = 137
+                               //   self.tblbuilding.isHidden = false
                        
                }, completion: { finished in
                    
@@ -898,17 +1274,18 @@ extension SignUPStep2 :UITextFieldDelegate
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
                    UIViewAnimationOptions.curveEaseOut, animations: {
                       
-                     /*  self.viewbottom.isHidden = false
-                                            self.hightbottomview.constant = 250
-                                            self.hightflat.constant = 137
-                                            self.highttxtfalt.constant = 50
+                      // self.viewbottom.isHidden = false
+                                          //  self.hightbottomview.constant = 125
+                                          //  self.hightflat.constant = 137
+                                         //   self.highttxtfalt.constant = 50
                                             self.imgflatserarch.isHidden = false
-                                            self.hightcheckboxview.constant = 0
-                                            self.viewcheckbox.isHidden = true
-                                         self.hightbuilding.constant = 0
-                                         self.tblbuilding.isHidden = true
-                                         self.hightflat.constant = 137
-                                         self.tblflat.isHidden = false */
+                    
+                                         //   self.hightcheckboxview.constant = 0
+                                        //    self.viewcheckbox.isHidden = true
+                                     //    self.hightbuilding.constant = 0
+                                        // self.tblbuilding.isHidden = true
+                                    //     self.hightflat.constant = 137
+                                       //  self.tblflat.isHidden = false
                        
                        
                }, completion: { finished in
@@ -1004,7 +1381,6 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         else if  (pickerView == pickerview2)
         {
             return arearary.count
-            
         }
         else if(pickerView == pickerview3)
         {
@@ -1018,15 +1394,14 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         {
             return Flatary.count
         }
-        
-        else{
-            return Flatary.count
+        else if(pickerView == pickerview6)
+        {
+            return aryUserTypeOwn.count
         }
-        // temp comment 4/12/20.
-//        else if(pickerView == pickerview6)
-//        {
-//
-//        }
+        else {
+            return aryUserTypeNon.count
+        }
+
     }
     
     // The data to return fopr the row and component (column) that's being passed in
@@ -1051,16 +1426,15 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         {
             return Flatary[row].PropertyName
         }
+        else if(pickerView == pickerview6)
+        {
+            return aryUserTypeOwn[row]
+        }
         else
         {
-            return Flatary[row].PropertyName
+            return aryUserTypeNon[row]
         }
-        
-        // temp comment 4/12/20.
-//        else if(pickerView == pickerview6)
-//        {
-//
-//        }
+       
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -1068,30 +1442,182 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         {
             txtcity.text = cityary[row].Name
             cityid = String(cityary[row].CityID!)
+            
+            self.hightbottomview.constant = 0
+            
+            self.highttxtfalt.constant = 0
+
+            self.viewbottom.isHidden = true
+
+            txtblockname.isHidden = true
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = true
+
+
         }
         if(pickerView == pickerview2)
         {
             txtarea.text = arearary[row].AreaName
             areaid = String(arearary[row].AreaID)
             
+            self.viewbottom.isHidden = true
+
+            self.hightbottomview.constant = 0
+            
+            txtblockname.isHidden = true
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+
+            self.btnaddfarmviall.isHidden = true
+
         }
         if(pickerView == pickerview3)
         {
             txtcommunity.text = societyary[row].SocietyName
             societyid =  societyary[row].SocietyID
+            
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 50
+            self.highttxtblockConst.constant = 50
+            self.highttxtfalt.constant = 0
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+
+            self.btnaddfarmviall.isHidden = true
+
         }
         else if(pickerView == pickerview4)
         {
             txtblockname.text = buildingary[row].PropertyName
             buildingid = buildingary[row].PropertyID
+            
+            self.viewbottom.isHidden = false
+
+            self.highttxtblockConst.constant = 50
+            self.highttxtfalt.constant = 50
+
+            self.hightbottomview.constant = 125
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+
+            self.btnaddfarmviall.isHidden = true
+
         }
         else if(pickerView == pickerview5)
         {
             self.txtflats.text = self.Flatary[row].PropertyName
             Flatid = self.Flatary[row].PropertyID!
+            
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 200
+            self.highttxtblockConst.constant = 50
+            self.highttxtfalt.constant = 50
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = false
+            txtflatTypeStatus.isHidden = true
+
+            self.btnaddfarmviall.isHidden = true
+            
+            self.btnaddfarmviall.isHidden = false
+
+
         }
         else if(pickerView == pickerview6)
         {
+            self.txtflatTypeRole.text = self.aryUserTypeOwn[row]
+            
+            if self.txtflatTypeRole.text == "Resident Owner" {
+                UserType = 1
+                
+                self.hightbottomview.constant = 200
+                self.highttxtblockConst.constant = 50
+                self.highttxtfalt.constant = 50
+
+                self.viewbottom.isHidden = false
+
+                txtblockname.isHidden = false
+                txtflats.isHidden = false
+                txtflatTypeRole.isHidden = false
+                txtflatTypeStatus.isHidden = true
+
+
+            }else if self.txtflatTypeRole.text == "Resident Tenant" {
+                UserType = 3
+                self.hightbottomview.constant = 200
+                self.highttxtblockConst.constant = 50
+                self.highttxtfalt.constant = 50
+
+                self.viewbottom.isHidden = false
+
+                txtblockname.isHidden = false
+                txtflats.isHidden = false
+                txtflatTypeRole.isHidden = false
+                txtflatTypeStatus.isHidden = true
+
+
+            }else if self.txtflatTypeRole.text == "Non Resident Owner"{
+                UserType = 2
+                
+                self.hightbottomview.constant = 260
+                self.highttxtblockConst.constant = 50
+                self.highttxtfalt.constant = 50
+
+                self.viewbottom.isHidden = false
+
+                txtblockname.isHidden = false
+                txtflats.isHidden = false
+                txtflatTypeRole.isHidden = false
+                txtflatTypeStatus.isHidden = false
+
+
+            }
+        }else if(pickerView == pickerview7) {
+                self.txtflatTypeStatus.text = self.aryUserTypeNon[row]
+            
+            self.hightbottomview.constant = 260
+            self.highttxtblockConst.constant = 50
+            self.highttxtfalt.constant = 50
+
+            self.viewbottom.isHidden = false
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = false
+            txtflatTypeRole.isHidden = false
+            txtflatTypeStatus.isHidden = false
+            
+            self.btnaddfarmviall.isHidden = false
+                 
+                 if self.txtflatTypeStatus.text == "Flat has a Tenant" {
+                     IsFlatOccup = 1
+                 }else if self.txtflatTypeStatus.text == "Flat is Empty" {
+                     IsFlatOccup = 0
+                 }else {
+                     IsFlatOccup = 0
+                 }
+            }else{
+            
+          /*  self.txtflatTypeStatus.text = self.aryUserTypeNon[row]
+            
+            if self.txtflatTypeStatus.text == "Flat has a Tenant" {
+                IsFlatOccup = 1
+            }else if self.txtflatTypeStatus.text == "Flat is Empty" {
+                IsFlatOccup = 0
+            }else {
+                IsFlatOccup = 0
+            } */
             
         }
     }
@@ -1154,7 +1680,7 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
                UIView.animate(withDuration: 0.3, delay: 0.2, options:
                    UIViewAnimationOptions.curveEaseOut, animations: {
                        self.viewbottom.isHidden = false
-                       self.hightbottomview.constant = 250
+                       self.hightbottomview.constant = 125 //
                        self.hightflat.constant = 137
                        self.highttxtfalt.constant = 50
                        self.imgflatserarch.isHidden = false

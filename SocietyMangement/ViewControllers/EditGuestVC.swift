@@ -168,7 +168,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     
     
     
-    // MARK: - get Members
+    // MARK: - get Entry
     
     func apicallFrequentEntry(id:String)
     {
@@ -247,6 +247,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
             after_add_time = dateFormatter.string(from: addminutes)
                 print("after add time --> ",after_add_time)
+            
+          //  after_add_time = "23:59:00"
+             
         }else{
             validtill.removeLast(3)
             

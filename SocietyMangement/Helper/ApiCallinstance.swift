@@ -184,6 +184,19 @@ struct Apicallhandler {
         
     }
     
+    func ApiCallUserActivityListcancel(URL: String,token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+       // webservices().baseurl + API_ACTIVITY_CANCEL
+        
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+
+      //  AF.request(webservices().baseurl + API_ACTIVITY_CANCEL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<Any>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     func ApiCallMyHelperList(token: String, onCompletion: @escaping ((_ response: DataResponse<MyHelperListResp>) -> Void)) {
         
         AF.request(webservices().baseurl + API_MY_HELPER_LIST, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MyHelperListResp>) in
@@ -771,6 +784,14 @@ struct Apicallhandler {
             
         }
     } */
+    
+    func GetAllCompanySelectDetails(URL: String,token:String, onCompletion: @escaping ((_ response: DataResponse<DeliveryCompanySelectResponse>) -> Void)) {
+        
+        AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryCompanySelectResponse>) in
+            onCompletion(response)
+        }
+        
+    }
     
     
     //Mark : Api user me api

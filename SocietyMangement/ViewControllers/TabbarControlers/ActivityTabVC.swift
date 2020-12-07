@@ -729,7 +729,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     
     func apicallUseractivityFilter(userActInd:String) {
         
-        
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
             return
@@ -839,12 +838,11 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         }
     }
     
-    // MARK: - Delete circulars
+    // MARK: - Api Cancel
     
     func ApiCallCancelList(UserActivityID:Int,VisitorEntryTypeID : Int,VisitFlatPreApprovalID : Int)
     {
-        
-        let strGuestId = (UserActivityID as NSNumber).stringValue
+                
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
         if !NetworkState().isInternetAvailable {
@@ -853,21 +851,28 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         }
         
         webservices().StartSpinner()
-        Apicallhandler().ApiAcceptGuestRequest(URL: webservices().baseurl + API_ACCEPT_DECLINE, token: token as! String,type: VisitorEntryTypeID, guest_id: strGuestId) { JSON in
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+            "VisitorEntryTypeID" : VisitorEntryTypeID,
+            "VisitFlatPreApprovalID" : VisitFlatPreApprovalID
+        ]
+        
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_CANCEL ,token: token as! String, param: param) { JSON in
+                    
+        let statusCode = JSON.response?.statusCode
+            
             switch JSON.result{
             case .success(let resp):
-                webservices().StopSpinner()
-                
-                if(resp.status == 1)
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
                 {
                     self.apicallGuestList()
-                }else if (resp.status == 0){
-                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
-                    self.present(alert, animated: true, completion: nil)
                 }
                 else
                 {
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
                     self.present(alert, animated: true, completion: nil)
                 }
                 
@@ -890,8 +895,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 }
                 
                 
-                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
                 print(err.asAFError!)
                 webservices().StopSpinner()
                 
@@ -904,10 +909,202 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     @objc func ApiCallCancel(sender:UIButton)
     {
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                   avc?.titleStr = "Call"
+                   avc?.titleStr = "Cancel"
         avc?.subtitleStr = "Are you sure you want to cancel this visitor enry?"
 
                                    avc?.yesAct = {
+                                    
+                                    if self.arrGuestList[sender.tag].visitingFlatID != nil {
+                                        self.ApiCallCancelList(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, VisitorEntryTypeID: 1, VisitFlatPreApprovalID: (self.arrGuestList[sender.tag].visitingFlatID!))
+
+                                    }
+                                    
+                                   // self.dialNumber(number: <#T##String#>)
+                                    
+                                   // self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
+
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+    }
+    
+    
+    // MARK: - Api Out/exit
+    
+    func ApiCallOutList(UserActivityID:Int,VisitorEntryTypeID : Int,VisitingFlatID : Int,GuardActivityID : Int)
+    {
+                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+            "VisitorEntryTypeID" : VisitorEntryTypeID,
+            "VisitingFlatID" : VisitingFlatID,
+            "GuardActivityID" : GuardActivityID
+        ]
+
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+            
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                
+                
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                webservices().StopSpinner()
+                
+            }
+            
+        }
+        
+    }
+    
+    @objc func ApiCallOut_Exit(sender:UIButton)
+    {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Out"
+        avc?.subtitleStr = "Are you sure you want to out this visitor enry?"
+
+                                   avc?.yesAct = {
+                                    
+                                    if self.arrGuestList[sender.tag].visitingFlatID != nil {
+                                        self.ApiCallOutList(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, VisitorEntryTypeID: 1, VisitingFlatID: (self.arrGuestList[sender.tag].visitingFlatID!), GuardActivityID: (self.arrGuestList[sender.tag].guardActivityID!))
+                                    }
+                                    
+                                   // self.dialNumber(number: <#T##String#>)
+                                    
+                                   // self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
+
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+    }
+    
+    
+    // MARK: - Api wrong-entry
+    
+    func ApiCallwrong_entryList(UserActivityID:Int)
+    {
+                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+        ]
+
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_WRONG_ENTRY ,token: token as! String, param: param) { JSON in
+            
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                
+                
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                webservices().StopSpinner()
+                
+            }
+            
+        }
+        
+    }
+    
+    @objc func ApiCallWrong_Entry(sender:UIButton)
+    {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Wrong_Entry"
+        avc?.subtitleStr = "Are you sure you want to out this Wrong Entry?"
+
+                                   avc?.yesAct = {
+                                    
+                                    if self.arrGuestList[sender.tag].userActivityID != nil {
+                                        self.ApiCallwrong_entryList(UserActivityID: self.arrGuestList[sender.tag].userActivityID!)
+                                    }
+                                    
+                                   // self.dialNumber(number: <#T##String#>)
                                     
                                    // self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
 
@@ -961,35 +1158,71 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         cell.btncall.tag = indexPath.item
         
-        cell.btncall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-
-        
          if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry" {
             
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
-
+            
             cell.lblguest.text = "Visitor"
             
-            cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                cell.lbladdedby.isHidden = false
+              cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            }else{
+                cell.lbladdedby.isHidden = true
+            }
             
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
             
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
                 
-              /*  cell.btnWrong_Entry.isHidden = false
+                cell.btnWrong_Entry.isHidden = true
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true */
+                cell.btnOut.isHidden = true
                 
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                
+            }else if cell.lblStatus.text == "APPROVED" {
+           // }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
+
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = false
+                
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                
             }
 
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
@@ -1043,9 +1276,31 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
-            }else if cell.lblStatus.text == "PRE-APPROVAL" {
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                
+            }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
                 cell.btnCancel.isHidden = false
@@ -1063,7 +1318,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
-                
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -1109,10 +1363,50 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                
+            }else if cell.lblStatus.text == "APPROVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = false
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
             }
             
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
@@ -1134,15 +1428,37 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+            
                
-            }else if cell.lblStatus.text == "PRE-APPROVAL" {
+           // }else if cell.lblStatus.text == "PRE-APPROVAL" {
+            }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
+
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
                 cell.btnCancel.isHidden = false
                 cell.btnEdit.isHidden = false
-                
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -1155,7 +1471,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
-                
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -1215,11 +1530,23 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+            }else if cell.lblStatus.text == "APPROVED" {
+                
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnCancel.isHidden = false
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
-                cell.btnCancel.isHidden = false
-                cell.btnEdit.isHidden = false
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
                 
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
@@ -1272,11 +1599,23 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
-            }else{
+            }else if cell.lblStatus.text == "PRE-APPROVAL" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
                 cell.btnCancel.isHidden = false
                 cell.btnEdit.isHidden = false
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+            }else{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
                 
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
@@ -1419,7 +1758,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
       //  cell.lblapprovedby.text = "INVITED by \(String.getString(UsermeResponse?.data?.name!))"
         
         
-        
         cell.btnCancel.tag = indexPath.item
         cell.btnEdit.tag = indexPath.item
         cell.btnWrong_Entry.tag = indexPath.item
@@ -1428,14 +1766,18 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btnNote_Guard.tag = indexPath.item
         cell.btnOut.tag = indexPath.item
 
+        cell.btncall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
         
         cell.btnCancel.addTarget(self, action:#selector(ApiCallCancel), for: .touchUpInside)
+        cell.btnOut.addTarget(self, action:#selector(ApiCallOut_Exit), for: .touchUpInside)
+        cell.btnWrong_Entry.addTarget(self, action:#selector(ApiCallWrong_Entry), for: .touchUpInside)
+        
       /* cell.btnEdit.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-        cell.btnWrong_Entry.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+        cell.btnWrong_Entry.addTarget(self, action:#selector(ApiCallWrong_Entry), for: .touchUpInside)
         cell.btnRenew.addTarget(self, action:#selector(callmember), for: .touchUpInside)
         cell.btnClose.addTarget(self, action:#selector(callmember), for: .touchUpInside)
         cell.btnNote_Guard.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-        cell.btnOut.addTarget(self, action:#selector(callmember), for: .touchUpInside) */
+        cell.btnOut.addTarget(self, action:#selector(ApiCallOut), for: .touchUpInside) */
 
         
         
@@ -1451,6 +1793,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
+
     
 //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
 //        return UITableViewAutomaticDimension  // 345
@@ -2084,4 +2427,4 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
     
     
     
-}
+ }

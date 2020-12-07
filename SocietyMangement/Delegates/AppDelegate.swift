@@ -254,7 +254,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     UserDefaults.standard.synchronize()
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                    let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                    
                     let initialViewController = storyboard.instantiateViewController(withIdentifier: IntroScreenVC.id()) as! IntroScreenVC
+                    
                    navigationController.pushViewController(initialViewController, animated: true)
                    self.window?.rootViewController = navigationController
                    self.window?.makeKeyAndVisible()
@@ -264,7 +266,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                               let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                    
                            let initialViewController = storyboard.instantiateViewController(withIdentifier: "IntroScreenVC") as! IntroScreenVC
+
                               navigationController.pushViewController(initialViewController, animated: true)
                               self.window?.rootViewController = navigationController
                               self.window?.makeKeyAndVisible()

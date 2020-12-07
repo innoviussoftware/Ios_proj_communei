@@ -582,7 +582,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     
     func setUpView() {
         
-        
         constraintHightCollecProfession.constant = 0
         constraintHightBLodGroupCollection.constant = 0
         constraintHightAgeCollection.constant = 0
@@ -1805,9 +1804,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                     return
                 }
-                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+              //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
                 
                 
             }
@@ -1924,7 +1923,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
                         self.tblMembers.reloadData()
                      //   self.hightcollectionbuilding.constant = 0
-                        
                         
                         self.collectionbuildings.isHidden = true
                     }

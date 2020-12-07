@@ -535,7 +535,8 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     // MARK: - DeliveryList delegate methods
 
        //func deliveryList(name: String)
-       func deliveryList(name:String, selectNumber:Int)
+     //  func deliveryList(name:String, selectNumber:Int)
+      func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
        {
               if(isfrom == "Single") {
                   self.txtCompanyName.text = name

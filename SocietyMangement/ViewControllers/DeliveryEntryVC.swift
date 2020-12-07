@@ -8,6 +8,8 @@
 
 import UIKit
 import ScrollPager
+import Alamofire
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -26,13 +28,23 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     var selectedindex : Int = 0
     
     var index:Int?
+    
+    var vendorID:Int?
+    var isPublic:Int?
 
     var isfrom = ""
     
+    var singleDeliveryCheckGate:Int?
+
+    var multipleDeliveryCheckGate:Int?
+
+    var arrSelectionCheck = NSMutableArray()
+
     var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
     
-    var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
+  //  var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
 
+    var arrDays = NSMutableArray()
     
     @IBOutlet weak var collectionHours: UICollectionView!
 
@@ -114,6 +126,10 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             pager.setSelectedIndex(index: 1, animated: true)
         }
         
+        singleDeliveryCheckGate = 0
+        
+        multipleDeliveryCheckGate = 0
+        
         btncheckMark.isSelected = false
 
         btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
@@ -129,7 +145,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.viewbottom.frame.size.width = self.view.frame.size.width
         self.viewbottom1.frame.size.width = self.view.frame.size.width
        
-
         
         setborders(textfield: txtdate)
         setborders(textfield: txttime)
@@ -142,7 +157,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         setborders(textfield: txtStartTime)
         setborders(textfield: txtEndTime)
         setborders(textfield: txtDeliveryCompanyName1)
-
         
         txtdate.delegate = self
         txttime.delegate = self
@@ -204,6 +218,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         txtEndTime.text = formatt.string(from: datee)
         time =  txtEndTime.text!
 
+        txtvaildtill.text = hourary[0]
 
     }
     
@@ -366,12 +381,15 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            datePicker.minimumDate = Date()
            
        }
+    
        func showTimepPicker(){
            //Formate Date
            timePicker.datePickerMode = .time
         
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
+            timePicker.preferredDatePickerStyle = .wheels
+
         } else {
             // Fallback on earlier versions
         }
@@ -454,11 +472,55 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.view.endEditing(true)
     }
     
+    func setUpDays_Grp() {
+                
+        let dict1 = NSMutableDictionary()
+        dict1.setValue("Sun", forKey: "days_grp")
+        dict1.setValue("0", forKey: "is_selected")
+        arrDays.add(dict1)
+        
+        let dict2 = NSMutableDictionary()
+        dict2.setValue("Mon", forKey: "days_grp")
+        dict2.setValue("0", forKey: "is_selected")
+        arrDays.add(dict2)
+        
+        let dict3 = NSMutableDictionary()
+        dict3.setValue("Tue", forKey: "days_grp")
+        dict3.setValue("0", forKey: "is_selected")
+        arrDays.add(dict3)
+        
+        let dict4 = NSMutableDictionary()
+        dict4.setValue("Wed", forKey: "days_grp")
+        dict4.setValue("0", forKey: "is_selected")
+        arrDays.add(dict4)
+        
+        let dict5 = NSMutableDictionary()
+        dict5.setValue("Thu", forKey: "days_grp")
+        dict5.setValue("0", forKey: "is_selected")
+        arrDays.add(dict5)
+        
+        let dict6 = NSMutableDictionary()
+        dict6.setValue("Fri", forKey: "days_grp")
+        dict6.setValue("0", forKey: "is_selected")
+        arrDays.add(dict6)
+        
+        let dict7 = NSMutableDictionary()
+        dict7.setValue("Sat", forKey: "days_grp")
+        dict7.setValue("0", forKey: "is_selected")
+        arrDays.add(dict7)
+        
+    }
+    
     @IBAction func btnClose_hour(_ sender: Any) {
            self.viewbottom.isHidden = true
     }
        
     @IBAction func btnApply(_ sender: Any) {
+        
+        txtvaildtill.text = hourary[selectedindex]
+
+        collectionHours.reloadData()
+     
            self.viewbottom.isHidden = true
     }
        
@@ -484,9 +546,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
           
        @IBAction func btnReset_days(_ sender: Any) {
               
-            txtAllWeek.text = (arrDays[0] as! String)
+        txtAllWeek.text = "" //arrDays[0]
+        
+       // arrDays.removeAllObjects()
+        arrSelectionCheck.removeAllObjects()
 
-              selectedindex = 0
+             // selectedindex = 0
               
               collectionDays.reloadData()
 
@@ -496,9 +561,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     @IBAction func btnCheckaction(_ sender: Any) {
         if btncheckMark.isSelected == false {
+            singleDeliveryCheckGate = 1
             btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
             btncheckMark.isSelected = true
         }else{
+            singleDeliveryCheckGate = 0
             btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
             btncheckMark.isSelected = false
           //  setView(view: filtrview, hidden: true)
@@ -509,9 +576,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     @IBAction func btnCheckaction_1(_ sender: Any) {
         if btncheckMark1.isSelected == false {
+            multipleDeliveryCheckGate = 1
             btncheckMark1.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
             btncheckMark1.isSelected = true
         }else{
+            multipleDeliveryCheckGate = 0
             btncheckMark1.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
             btncheckMark1.isSelected = false
           //  setView(view: filtrview, hidden: true)
@@ -520,12 +589,31 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.view.endEditing(true)
     }
     
-    @IBAction func btnaddDeliveryaction(_ sender: Any) {
+    @IBAction func btnaddDeliveryaction(_ sender: UIButton) {
+        
+        if txtDeliveryCompanyName.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Delivery Company Name")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            self.apicallDeliverySingleEntry()
+        }
         print("btnaddDeliveryaction")
-
     }
        
     @IBAction func btnaddDeliveryaction_1(_ sender: Any) {
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtDeliveryCompanyName.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Delivery Company Name")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+           // self.apicallDeliveryMultipleEntry()
+        }
+        
         print("btnaddDeliveryaction_1")
 
     }
@@ -533,16 +621,27 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     // MARK: - deliveryList delegate methods
 
     //func deliveryList(name: String)
-    func deliveryList(name:String, selectNumber:Int)
+  //  func deliveryList(name:String, selectNumber:Int)
+    
+    func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
     {
            if(isfrom == "Single") {
                self.txtDeliveryCompanyName.text = name
+               vendorID = VendorID
+                isPublic = IsPublic
            }else if(isfrom == "Multiple"){
                self.txtDeliveryCompanyName1.text = name
+                vendorID = VendorID
+                isPublic = IsPublic
            }else{
                self.txtDeliveryCompanyName.text = name
+                vendorID = VendorID
+               isPublic = IsPublic
            }
-            index = selectNumber
+//             index = selectNumber
+//             VendorID = VendorID
+//             IsPublic = IsPublic
+
                  
        }
     
@@ -658,6 +757,331 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
           
       }
     
+    func strChangeDateFormate(strDateeee:String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        let strDate = formatter.date(from: strDateeee)
+        var str = ""
+        if strDate != nil{
+            formatter.dateFormat = "yyyy-MM-dd"
+            str = formatter.string(from: strDate!)
+        }else{
+            str = strDateeee
+        }
+        
+        
+        return str
+    }
+    
+    // MARK: - get Delivery Multiple Entry
+
+    func apicallDeliveryMultipleEntry()
+    {
+        if !NetworkState().isInternetAvailable {
+                        ShowNoInternetAlert()
+                        return
+                    }
+           let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+       
+           var strDateee = ""
+           var endDate = ""
+        
+           date = txtdate.text!
+           enddate = txtenddate.text!
+        
+           strDateee = strChangeDateFormate(strDateeee: date)
+            endDate = strChangeDateFormate(strDateeee: enddate)
+        
+      /*  var after_add_time = ""
+        
+        if txtvaildtill.text == "Day End" {
+            validtill = time
+            
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = time
+
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+
+            let date = dateFormatter.date(from:isoDate)!
+            print("date :- ",date)
+ 
+            after_add_time = "11:59 PM" //"23:59:00"
+             
+        }else{
+            
+            txtvaildtill.text?.removeLast(3)
+
+            let myInt = Int(txtvaildtill.text!)!
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = time //validtill // valid  //"2016-04-14T10:44:00+0000"
+
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+
+            let date = dateFormatter.date(from:isoDate)!
+            
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+            
+            print("after add time 3 --> ",after_add_time)
+        } */
+        
+        var param = Parameters()
+        
+        var vendorServiceTypeID:Int?
+        vendorServiceTypeID = 2
+        
+            param  = [
+                "VisitStartDate": strDateee, // date = txtdate.text!
+                "VisitEndDate": endDate,
+                "FromTime": txtStartTime.text!, //time, // start time
+                "ToTime": txtEndTime.text!, //after_add_time,  //validtill,  // to time
+                "VendorID":vendorID!,
+                "VendorName": self.txtDeliveryCompanyName.text!,
+                "VendorServiceTypeID": vendorServiceTypeID!,
+                "IsLeaveAtGate": singleDeliveryCheckGate!,
+                "IsPublicVendor":isPublic!,
+                "DaysOfWeek": ""
+            ]
+        
+           print("param Multiple Entry : ",param)
+        
+           webservices().StartSpinner()
+        
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_DELIVERYENTRY, param: param, token: token as! String) { JSON in
+                
+                print(JSON)
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+                        let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+                                                
+                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                
+                    }
+                    else
+                    {
+                        
+                    }
+                case .failure(let err):
+                    if JSON.response?.statusCode == 401{
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        return
+                    }
+                    
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
+       
+    }
+    
+    // MARK: - get Delivery Single Entry
+    
+    func apicallDeliverySingleEntry()
+    {
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+         //  let SocietyId = UserDefaults.standard.value(forKey: USER_SOCIETY_ID) as! Int
+          //  let strsocietyId = (SocietyId as NSNumber).stringValue
+            
+            //            type, contact_array, society_id, start_date, end_date, maxhour, time
+            //            date format:- yyyy-mm-dd
+        
+          //  var string = ""
+        
+            var strDateee = ""
+           // var endDate = ""
+            
+          //  if frequencyType == "once"{
+        
+           date = txtdate.text!
+            strDateee = strChangeDateFormate(strDateeee: date)
+                
+        
+        var after_add_time = ""
+
+       // if validtill == "Day End" {
+        
+        if txtvaildtill.text == "Day End" {
+            validtill = time
+            
+           // let myInt = Int(validtill)!
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = time //strDateee //"2016-04-14T10:44:00+0000"
+
+            //dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd" // h:mm"
+            
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+
+
+          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            let date = dateFormatter.date(from:isoDate)!
+            print("date :- ",date)
+            
+//            let date2 = strDateee
+//            dateFormatter.dateFormat = "yyyy-MM-dd"
+//            var date = dateFormatter.date(from: date2)
+//
+//            date = dateFormatter.date(from:isoDate)!
+            
+          //  let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
+           // after_add_time = dateFormatter.string(from: addminutes)
+              //  print("after add time --> ",after_add_time)
+            
+            after_add_time = "11:59 PM" //"23:59:00"
+             
+        }else{
+          //  validtill.removeLast(3)
+            
+            txtvaildtill.text?.removeLast(3)
+
+            let myInt = Int(txtvaildtill.text!)!
+            
+            let dateFormatter = DateFormatter()
+            
+           // let valid =  time + ":00"
+            
+            let isoDate = time //validtill // valid  //"2016-04-14T10:44:00+0000"
+
+           // dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
+            
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+
+            let date = dateFormatter.date(from:isoDate)!
+            
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+            
+            print("after add time 3 --> ",after_add_time)
+        }
+       
+        var param = Parameters()
+        
+        var vendorServiceTypeID:Int?
+        vendorServiceTypeID = 2
+
+        
+       // if frequencyType == "once"{
+            param  = [
+                "VisitStartDate": strDateee, // date = txtdate.text!
+                "FromTime": time, // start time
+                "ToTime": after_add_time,  //validtill,  // to time
+                
+                "VendorID":vendorID!,
+                "VendorName": self.txtDeliveryCompanyName.text!,
+                "VendorServiceTypeID": vendorServiceTypeID!,
+                "IsLeaveAtGate": singleDeliveryCheckGate!,
+                "IsPublicVendor":isPublic!
+            ]
+        
+        print("param Single Entry : ",param)
+        
+//        }else{
+//            param  = [
+//                "VisitStartDate": strDateee,
+//                "VisitEndDate": endDate,
+//            ]
+//        }
+        
+//        if frequencyType == "once"{
+//              print("param once : ",param)
+//        }else{
+//             print("param multi : ",param)
+//        }
+            
+            webservices().StartSpinner()
+        
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_DELIVERYENTRY, param: param, token: token as! String) { JSON in
+                
+                print(JSON)
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+                        let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+                                                
+                        self.navigationController?.pushViewController(initialViewController, animated: true)
+
+                        
+                     /*   let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        
+                        let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+                        
+                        let initialViewController = storyboard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                   
+                        navigationController.pushViewController(initialViewController, animated: true)
+                        
+                        self.appDelegate.window?.rootViewController = navigationController
+                        
+                        self.appDelegate.window?.makeKeyAndVisible()
+                     
+                        */
+                    }
+                    else
+                    {
+                        
+                    }
+                case .failure(let err):
+                    if JSON.response?.statusCode == 401{
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        return
+                    }
+                    
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
+    }
+    
     
     // MARK: - Collectionview delegate and datasource methods
     
@@ -698,8 +1122,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         }else{
             let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
 
-                       cell.lblname.text = arrDays[indexPath.row] as! String
-                       if(selectedindex == indexPath.row)
+            cell.lblname.text = arrDays[indexPath.row] //as? String
+            
+             if(arrSelectionCheck.contains(arrDays[indexPath.row]))
+
+                     //  if(selectedindex == indexPath.row)
                        {
                            
                          //  cell.lblname.backgroundColor = AppColor.appcolor
@@ -741,8 +1168,15 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
               collectionHours.reloadData()
         }else{
             txtAllWeek.text = arrDays[indexPath.row]
+            
+            if arrSelectionCheck.contains(arrDays[indexPath.row]){
+                 arrSelectionCheck.remove(arrDays[indexPath.row])
+             }else{
+                 arrSelectionCheck.add(arrDays[indexPath.row])
+             }
               
-              selectedindex = indexPath.row
+             // selectedindex = indexPath.row
+            
              // viewbottom.isHidden = true
             //  viewmain.backgroundColor = UIColor.white
               collectionDays.reloadData()
