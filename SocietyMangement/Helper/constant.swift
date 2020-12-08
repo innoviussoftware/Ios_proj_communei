@@ -171,6 +171,9 @@ let API_ADD_FREQUENTGUEST = "user/pre-approved/1/add" //"user/addFrequentEntry"
 
 let API_ADD_DELIVERYENTRY = "user/pre-approved/2/add" //"user/addFrequentEntry"
 
+let API_GET_WEEKDAYD = "communei/weekdays"
+
+let API_ADD_CABENTRY = "user/pre-approved/3/add"
 
 let API_GET_MEMBERFAMILY_LIST = "user/memberfamily"
 

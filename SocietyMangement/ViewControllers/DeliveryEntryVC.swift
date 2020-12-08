@@ -39,12 +39,16 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     var multipleDeliveryCheckGate:Int?
 
     var arrSelectionCheck = NSMutableArray()
+    
+    var arrSelectionDayId = NSMutableArray()
+
 
     var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
     
   //  var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
 
-    var arrDays = NSMutableArray()
+    var arrDays = [GetDays]()
+        //NSMutableArray()
     
     @IBOutlet weak var collectionHours: UICollectionView!
 
@@ -184,6 +188,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
         webservices.sharedInstance.PaddingTextfiled(textfield: txtDeliveryCompanyName1)
 
+        self.apiCallGetDays()
         
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
         
@@ -338,7 +343,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
     }
     
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
+        view.endEditing(true) // or do something
+
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -416,6 +423,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            let formatter = DateFormatter()
            formatter.dateFormat = "hh:mm a"
            txttime.text = formatter.string(from: timePicker.date)
+        
+        print("txttime text :- ",txttime.text)
            //dismiss date picker dialog
            self.view.endEditing(true)
        }
@@ -472,7 +481,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.view.endEditing(true)
     }
     
-    func setUpDays_Grp() {
+   /* func setUpDays_Grp() {
                 
         let dict1 = NSMutableDictionary()
         dict1.setValue("Sun", forKey: "days_grp")
@@ -509,7 +518,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         dict7.setValue("0", forKey: "is_selected")
         arrDays.add(dict7)
         
-    }
+    } */
     
     @IBAction func btnClose_hour(_ sender: Any) {
            self.viewbottom.isHidden = true
@@ -521,7 +530,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
         collectionHours.reloadData()
      
-           self.viewbottom.isHidden = true
+        self.viewbottom.isHidden = true
     }
        
     @IBAction func btnReset(_ sender: Any) {
@@ -540,8 +549,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.viewbottom1.isHidden = true
     }
           
-    @IBAction func btnApply_days(_ sender: Any) {
+    @IBAction func btnApply_days(_ sender: UIButton) {
+        
+        self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+        collectionDays.reloadData()
+
         self.viewbottom1.isHidden = true
+
     }
           
        @IBAction func btnReset_days(_ sender: Any) {
@@ -601,17 +615,20 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     }
        
     @IBAction func btnaddDeliveryaction_1(_ sender: Any) {
-        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        if arrSelectionDayId.count == 0 {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtDeliveryCompanyName.text == "" {
+        }else if txtDeliveryCompanyName1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Delivery Company Name")
             self.present(alert, animated: true, completion: nil)
         }else{
-           // self.apicallDeliveryMultipleEntry()
+            self.apicallDeliveryMultipleEntry()
         }
         
         print("btnaddDeliveryaction_1")
@@ -633,11 +650,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                self.txtDeliveryCompanyName1.text = name
                 vendorID = VendorID
                 isPublic = IsPublic
-           }else{
-               self.txtDeliveryCompanyName.text = name
-                vendorID = VendorID
-               isPublic = IsPublic
            }
+           /* else{
+               self.txtDeliveryCompanyName.text = name
+               vendorID = VendorID
+               isPublic = IsPublic
+           } */
 //             index = selectNumber
 //             VendorID = VendorID
 //             IsPublic = IsPublic
@@ -792,11 +810,10 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            strDateee = strChangeDateFormate(strDateeee: date)
             endDate = strChangeDateFormate(strDateeee: enddate)
         
-      /*  var after_add_time = ""
+        var after_add_time = ""
         
         if txtvaildtill.text == "Day End" {
             validtill = time
-            
             
             let dateFormatter = DateFormatter()
             
@@ -827,7 +844,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             after_add_time = dateFormatter.string(from: addminutes)
             
             print("after add time 3 --> ",after_add_time)
-        } */
+        }
         
         var param = Parameters()
         
@@ -837,17 +854,17 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
                 "VisitEndDate": endDate,
-                "FromTime": txtStartTime.text!, //time, // start time
-                "ToTime": txtEndTime.text!, //after_add_time,  //validtill,  // to time
+                "FromTime": time, // txtStartTime.text!, // // start time
+                "ToTime": after_add_time, // txtEndTime.text!, // //validtill,  // to time
                 "VendorID":vendorID!,
-                "VendorName": self.txtDeliveryCompanyName.text!,
+                "VendorName": self.txtDeliveryCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
                 "IsLeaveAtGate": singleDeliveryCheckGate!,
                 "IsPublicVendor":isPublic!,
-                "DaysOfWeek": ""
+                "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
         
-           print("param Multiple Entry : ",param)
+           print("param Multiple Delivery Entry : ",param)
         
            webservices().StartSpinner()
         
@@ -1004,7 +1021,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 "IsPublicVendor":isPublic!
             ]
         
-        print("param Single Entry : ",param)
+        print("param Single Delivery Entry : ",param)
         
 //        }else{
 //            param  = [
@@ -1082,6 +1099,79 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
     }
     
+    // MARK: - APICallGetDays
+    
+    func apiCallGetDays() {
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+       
+        webservices().StartSpinner()
+    
+        Apicallhandler().APICallGetDays(URL: webservices().baseurl + API_GET_WEEKDAYD, token: token as! String) { JSON in
+            
+            let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                webservices().StopSpinner()
+                if statusCode == 200{
+                    
+                    self.arrDays = resp.data!
+                    if self.arrDays.count > 0{
+                        self.collectionDays.dataSource = self
+                        self.collectionDays.delegate = self
+                        self.collectionDays.reloadData()
+                    }else{
+                        self.collectionDays.isHidden = true
+                    }
+                    
+                }
+                if statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                }
+            case .failure(let err):
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    webservices().StopSpinner()
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError as Any)
+                    
+                    
+                }
+            }
+            
+            
+            
+        }
+        
+        
+    }
     
     // MARK: - Collectionview delegate and datasource methods
     
@@ -1099,7 +1189,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
             let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
 
-            cell.lblname.text = hourary[indexPath.row] as! String
+            cell.lblname.text = hourary[indexPath.row] as? String
             if(selectedindex == indexPath.row)
             {
                 
@@ -1122,9 +1212,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         }else{
             let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
 
-            cell.lblname.text = arrDays[indexPath.row] //as? String
+            cell.lblname.text = arrDays[indexPath.row].daysName
             
-             if(arrSelectionCheck.contains(arrDays[indexPath.row]))
+            if(arrSelectionCheck.contains(arrDays[indexPath.row].daysName!))
 
                      //  if(selectedindex == indexPath.row)
                        {
@@ -1149,11 +1239,18 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let numberOfSets = CGFloat(4.0)
-        
-        let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
-        
-        return CGSize(width:width,height: 42);
+        if (collectionView == collectionHours) {
+            let numberOfSets = CGFloat(4.0)
+            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 31))/numberOfSets
+            return CGSize(width:width,height: 42)
+        }else{
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = arrDays[indexPath.row].daysName
+            let expectedLabelSize = contentNSString?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+            
+            print("\(String(describing: expectedLabelSize))")
+            return CGSize(width:(expectedLabelSize?.size.width)! + 15, height: expectedLabelSize!.size.height + 25)
+        }
         
     }
     
@@ -1167,14 +1264,18 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             //  viewmain.backgroundColor = UIColor.white
               collectionHours.reloadData()
         }else{
-            txtAllWeek.text = arrDays[indexPath.row]
+           // txtAllWeek.text = arrDays[indexPath.row].daysName
             
-            if arrSelectionCheck.contains(arrDays[indexPath.row]){
-                 arrSelectionCheck.remove(arrDays[indexPath.row])
-             }else{
-                 arrSelectionCheck.add(arrDays[indexPath.row])
-             }
-              
+            if arrSelectionCheck.contains(arrDays[indexPath.row].daysName!){
+                arrSelectionCheck.remove(arrDays[indexPath.row].daysName!)
+                arrSelectionDayId.remove(arrDays[indexPath.row].daysTypeID!)
+            }else{
+                arrSelectionCheck.add(arrDays[indexPath.row].daysName!)
+                arrSelectionDayId.add(arrDays[indexPath.row].daysTypeID!)
+            }
+            
+            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+
              // selectedindex = indexPath.row
             
              // viewbottom.isHidden = true

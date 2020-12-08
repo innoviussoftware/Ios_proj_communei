@@ -143,6 +143,7 @@
 		9A78BB1E236AED27004B3022 /* FamilyMemberCellNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A78BB1C236AED27004B3022 /* FamilyMemberCellNew.swift */; };
 		9A78BB1F236AED27004B3022 /* FamilyMemberCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A78BB1D236AED27004B3022 /* FamilyMemberCellNew.xib */; };
 		9A79F84724D966AA00B46A31 /* CommunityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79F84624D966AA00B46A31 /* CommunityVC.swift */; };
+		9A9124FB257F4FA400BBEF36 /* GetDaysResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9124FA257F4FA400BBEF36 /* GetDaysResponse.swift */; };
 		9A929CD924DAC94300D53129 /* MyUnitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A929CD824DAC94300D53129 /* MyUnitVC.swift */; };
 		9A92A2FC2314E7A10032AB2D /* MemberRoleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92A2FB2314E7A10032AB2D /* MemberRoleVC.swift */; };
 		9A92A2FE23150C740032AB2D /* VendorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92A2FD23150C740032AB2D /* VendorResponse.swift */; };
@@ -443,6 +444,7 @@
 		9A79F84624D966AA00B46A31 /* CommunityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityVC.swift; sourceTree = "<group>"; };
 		9A80435B2334A66300852B81 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		9A80435D2334A66300852B81 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		9A9124FA257F4FA400BBEF36 /* GetDaysResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDaysResponse.swift; sourceTree = "<group>"; };
 		9A929CD824DAC94300D53129 /* MyUnitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUnitVC.swift; sourceTree = "<group>"; };
 		9A92A2FB2314E7A10032AB2D /* MemberRoleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberRoleVC.swift; sourceTree = "<group>"; };
 		9A92A2FD23150C740032AB2D /* VendorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorResponse.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 				D2DDD59124FE1CBB0008BE6A /* AmenitiesModel.swift */,
 				9A460453255AA55700E5AA7D /* BookingsModel.swift */,
 				9A955AB6230FEFDB004A4668 /* UpdateBuildingResponse.swift */,
+				9A9124FA257F4FA400BBEF36 /* GetDaysResponse.swift */,
 				9ABF596B2313993B007F7F61 /* MembersResponse.swift */,
 				9A92A2FD23150C740032AB2D /* VendorResponse.swift */,
 				9A92A301231526100032AB2D /* AnnouncementResponse.swift */,
@@ -1453,6 +1456,7 @@
 				9A92A2FE23150C740032AB2D /* VendorResponse.swift in Sources */,
 				4E617F2D234F25F8008EC601 /* EntryVehicleDetailPopUpVC.swift in Sources */,
 				9AD4235B2371540900FF4F4A /* HelperDeskCell.swift in Sources */,
+				9A9124FB257F4FA400BBEF36 /* GetDaysResponse.swift in Sources */,
 				4EC04D82235454BE00F4B4A2 /* AddSetting.swift in Sources */,
 				9A783DA8230C1065006B8E4F /* HomeVC.swift in Sources */,
 				4EBD8E9E23474ECC00F2A6F4 /* AddFamilyResponse.swift in Sources */,

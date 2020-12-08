@@ -442,7 +442,7 @@ class SignUPStep2: BaseVC {
 
             self.hightbottomview.constant = 50
             
-            self.highttxtblockConst.constant = 50
+            	
 
             txtblockname.isHidden = false
             txtflats.isHidden = true

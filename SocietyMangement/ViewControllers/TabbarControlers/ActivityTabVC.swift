@@ -1145,9 +1145,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
             cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
-            cell.imgviewCompanyLogo.isHidden = false
+          //  cell.imgviewCompanyLogo.isHidden = false
         }else{
-            cell.imgviewCompanyLogo.isHidden = true
+           // cell.imgviewCompanyLogo.isHidden = true
         }
         
         if arrGuestList[indexPath.row].activity?.phone != nil {
@@ -1742,6 +1742,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             }else{
                 print("ActivityType :- ")
             }
+            
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnCancel.isHidden = true
+            cell.btnEdit.isHidden = true
+            cell.btnRenew.isHidden = true
+            cell.btnClose.isHidden = true
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnNote_Guard.isHidden = true
+            cell.btnOut.isHidden = true
+            
         }
 
         

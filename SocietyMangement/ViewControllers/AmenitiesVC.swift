@@ -122,8 +122,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             apicallGetBookings()
         }
         
-
-        
     }
     
     @objc func actionViewDetailFacilities(sender:UIButton) {

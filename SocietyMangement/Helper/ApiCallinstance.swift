@@ -674,7 +674,15 @@ struct Apicallhandler {
           }
       }
     
+    //Mark : Api call get Days
     
+      func APICallGetDays(URL: String , token:String, onCompletion: @escaping ((_ response: DataResponse<GetDaysResponse>) -> Void)) {
+          
+          AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GetDaysResponse>) in
+              
+              onCompletion(response)
+          }
+      }
     
     //Mark : Api call add Frequent Entry
     func APIAddFrequentEntry(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
