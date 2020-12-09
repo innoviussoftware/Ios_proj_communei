@@ -53,8 +53,15 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
   //  var isfromNumber: Bool?
 
     var entryary = [DeliveryCompanySelect]()
+    
+    var api_Company_Selection = "" // String()
+    
+    @IBOutlet weak var lblTitleName: UILabel!
 
-        //["Cab","Delivery","Visitor","Service provider"]
+    var strTitleName = String()
+
+
+    //["Cab","Delivery","Visitor","Service provider"]
     
    // var alertGuardary = ["Emergency Alerts","Message Guard","Cab","Complaint Management","Visitor","Message Guard","Complaint Management"]
     
@@ -82,8 +89,9 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         
         webservices().StartSpinner()
         
+        // API_USER_COMPANY_SELECT
             
-        Apicallhandler().GetAllCompanySelectDetails(URL: webservices().baseurl + API_USER_COMPANY_SELECT ,token:strToken as! String) { JSON in
+        Apicallhandler().GetAllCompanySelectDetails(URL: webservices().baseurl + api_Company_Selection ,token:strToken as! String) { JSON in
 
             switch JSON.result{
             case .success(let resp):
@@ -170,6 +178,8 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         print("strlbl :- ",strlbl)
         
         txtOtherName.delegate = self
+        
+        lblTitleName.text = strTitleName
 
        // webservices.sharedInstance.PaddingTextfiled(textfield: txtOtherName)
         

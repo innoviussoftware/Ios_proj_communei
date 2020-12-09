@@ -476,7 +476,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
        }
 
     @IBAction func backaction(_ sender: Any) {
-        view.endEditing(true) // or do something
+        view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -719,7 +719,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
-                "FromTime": time, // start time
+                "FromTime": txttime.text!, //time, // start time
                 "ToTime": after_add_time,  //validtill,  // to time
                 "VendorID":vendorID!,
                 "VendorName": self.txtCabCompanyName.text!,
@@ -797,7 +797,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
            strDateee = strChangeDateFormate(strDateeee: date)
             endDate = strChangeDateFormate(strDateeee: enddate)
         
-        var after_add_time = ""
+      /*  var after_add_time = ""
         
         if txtvaildtill.text == "Day End" {
             validtill = time
@@ -832,7 +832,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             after_add_time = dateFormatter.string(from: addminutes)
             
             print("after add time 3 --> ",after_add_time)
-        }
+        } */
         
         var param = Parameters()
         
@@ -842,8 +842,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
                 "VisitEndDate": endDate,
-                "FromTime": time, //txtStartTime.text!, //time, // start time
-                "ToTime": after_add_time, // txtEndTime.text!, //validtill,  // to time
+                "FromTime": txtStartTime.text!, // time, //txtStartTime.text!, //time, // start time
+                "ToTime": txtEndTime.text!, // after_add_time, // txtEndTime.text!, //validtill,  // to time
                 "VendorID":vendorID!,
                 "VendorName": self.txtCabCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
@@ -928,7 +928,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             viewbottom1.isHidden = true
         }else if textfield == txtCabCompanyName1 {
             viewbottom.isHidden = true
-            viewbottom1.endEditing(true)
+            viewbottom1.isHidden = true
+        }else if textfield == txtvaildtill {
+            viewbottom.isHidden = false
+            viewbottom1.isHidden = true
+        }else if textfield == txtAllWeek {
+            viewbottom.isHidden = true
+            viewbottom1.isHidden = false
         }
         
         return true
@@ -950,6 +956,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 
                     popOverConfirmVC.selectedindex = index
                     popOverConfirmVC.selectedindex1 = index
+            
+            popOverConfirmVC.strTitleName = "Select Your Cab"
+
+            popOverConfirmVC.api_Company_Selection = "user/vendors/3"
 
                    if(txtCabCompanyName.text != "")
                    {
@@ -971,6 +981,12 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     popOverConfirmVC.selectedindex = index
                     popOverConfirmVC.selectedindex1 = index
                
+            popOverConfirmVC.strTitleName = "Select Your Cab"
+
+            popOverConfirmVC.api_Company_Selection = "user/vendors/3"
+            
+           // popOverConfirmVC. = "user/vendor/add"
+
                    if(txtCabCompanyName1.text != "")
                    {
                        // popOverConfirmVC.alertGuardary = self.nameary
@@ -981,7 +997,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         
         if(textField == txtAllWeek)
         {
-                
+            textfield = txtAllWeek
+
             viewbottom1.isHidden = false
             txtAllWeek.resignFirstResponder()
                 
@@ -991,6 +1008,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         if(textField == txtvaildtill)
         {
                 
+            textfield = txtvaildtill
+
             viewbottom.isHidden = false
             txtvaildtill.resignFirstResponder()
                 
@@ -1004,6 +1023,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         if(textField == txtStartTime)
         {
             textfield = txtStartTime
+        }
+        
+        if(textField == txttime)
+        {
+            textfield = txttime
         }
         
         if(textField == txtEndTime)

@@ -424,7 +424,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            formatter.dateFormat = "hh:mm a"
            txttime.text = formatter.string(from: timePicker.date)
         
-        print("txttime text :- ",txttime.text)
+        print("txttime text :- ",txttime.text!)
            //dismiss date picker dialog
            self.view.endEditing(true)
        }
@@ -678,7 +678,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                                 
                     popOverConfirmVC.selectedindex = index
                     popOverConfirmVC.selectedindex1 = index
+            
+            popOverConfirmVC.strTitleName = "Select Delivery Company"
                 
+            popOverConfirmVC.api_Company_Selection = "user/vendors/2"
+
                 popOverConfirmVC.strlbl = txtDeliveryCompanyName.text!
 
                    if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
@@ -700,7 +704,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 
                     popOverConfirmVC.selectedindex = index
                     popOverConfirmVC.selectedindex1 = index
-                
+            
+            popOverConfirmVC.strTitleName = "Select Delivery Company"
+
+            popOverConfirmVC.api_Company_Selection = "user/vendors/2"
+
                 popOverConfirmVC.strlbl = txtDeliveryCompanyName1.text!
 
                
@@ -854,8 +862,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
                 "VisitEndDate": endDate,
-                "FromTime": time, // txtStartTime.text!, // // start time
-                "ToTime": after_add_time, // txtEndTime.text!, // //validtill,  // to time
+                "FromTime": txtStartTime.text!, //time, // txtStartTime.text!, // // start time
+                "ToTime": txtEndTime.text!, //after_add_time, // txtEndTime.text!, // //validtill,  // to time
                 "VendorID":vendorID!,
                 "VendorName": self.txtDeliveryCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
@@ -954,7 +962,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             let dateFormatter = DateFormatter()
             
-            let isoDate = time //strDateee //"2016-04-14T10:44:00+0000"
+            let isoDate = txttime.text! // time //strDateee //"2016-04-14T10:44:00+0000"
 
             //dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd" // h:mm"
             
@@ -988,7 +996,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
            // let valid =  time + ":00"
             
-            let isoDate = time //validtill // valid  //"2016-04-14T10:44:00+0000"
+            let isoDate = txttime.text! //time //validtill // valid  //"2016-04-14T10:44:00+0000"
 
            // dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
             
@@ -1007,11 +1015,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         var vendorServiceTypeID:Int?
         vendorServiceTypeID = 2
 
-        
-       // if frequencyType == "once"{
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
-                "FromTime": time, // start time
+                "FromTime": txttime.text!, //time, // start time
                 "ToTime": after_add_time,  //validtill,  // to time
                 
                 "VendorID":vendorID!,

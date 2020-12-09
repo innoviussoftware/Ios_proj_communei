@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -19,6 +20,11 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
     @IBOutlet weak var textViewReasion: UITextView!
     
     @IBOutlet weak var btnattechment: UIButton!
+    
+    @IBOutlet weak var btnattechment_update: UIButton!
+    
+    @IBOutlet weak var viewCamera: UIView!
+
        
     var imgData : Data?
        
@@ -31,27 +37,50 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
         textViewReasion.layer.borderColor = AppColor.ratingBorderColor.cgColor // #828EA5
                  
         textViewReasion.layer.cornerRadius = 10
+        
+        viewCamera.isHidden = true
+        
+        btnattechment.isHidden = false
+
+        btnattechment_update.isHidden = true
+        
+        
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(tapviewCameraimage))
+        viewCamera.addGestureRecognizer(tap)
+
 
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func backaction(_ sender: Any) {
+    @objc func tapviewCameraimage() {
+        viewCamera.isHidden = true
+    }
+    
+    @IBAction func backaction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: false)
     }
     
-    @IBAction func btnMessageGuardClicked(_ sender: Any) {
+    @IBAction func btnMessageGuardClicked(_ sender: UIButton) {
+        if textViewReasion.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Message")
+            self.present(alert, animated: true, completion: nil)
+        }else if (btnattechment.imageView!.image == nil) || (self.imgData == nil) {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select Image")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            apiCallMessageToGuard()
+        }
+    }
+    
+    func messageGuardClicked() {
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
         avc?.titleStr =  "Successfully Sent"
         avc?.subtitleStr = "Your Message Sent Successfully"
         avc?.isfrom = 4
 
         avc?.yesAct = {
-           /* let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as? NewHomeVC
-                                                          
-            let navgitaionCon = UINavigationController(rootViewController: homeViewController!)
-
-            navgitaionCon.popViewController(animated: true) */
-            
+           
             let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
             
             self.navigationController?.pushViewController(nextViewController, animated: true)
@@ -63,16 +92,128 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
         
         present(avc!, animated: true)
     }
+
     
-    @IBAction func btnOpenCameraClicked(_ sender: Any) {
-                  
-         // viewCamera.isHidden = true
-               
-          camera()
-                  
+    func apiCallMessageToGuard() {
+        
+        if !NetworkState().isInternetAvailable {
+                ShowNoInternetAlert()
+                return
+        }
+       
+        webservices().StartSpinner()
+        
+        let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+
+       let param:Parameters = [
+            "Message": textViewReasion.text!,
+        ]
+    
+        print("param message : ",param)
+        
+        AF.upload(
+            multipartFormData: { MultipartFormData in
+                
+                for (key, value) in param {
+                    
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+                }
+                
+                let date = Date()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyyMMddHH:mm:ss"
+                let strFileName = formatter.string(from: date)
+                
+                if self.imgData!.count != 0{
+                    MultipartFormData.append(self.imgData!, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+                }
+
+                
+        }, to:  webservices().baseurl + "user/send/message-to-guard" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+            //Current upload progress of file
+            
+            print("Upload Progress message guard : \(progress.fractionCompleted)")
+        })
+            .responseJSON (completionHandler: { [self] (response:DataResponse<Any>) in
+                
+                webservices().StopSpinner()
+                let statusCode = response.response?.statusCode
+                switch(response.result) {
+                case .success(let resp):
+                    if statusCode == 200{
+                        print(resp)
+                        
+                        self.messageGuardClicked()
+                        
+                        // create the alert
+                     /*  let alert = UIAlertController(title: Alert_Titel, message:"Sent emergency alert." , preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
+                            self.navigationController?.popViewController(animated: true)
+                        }))
+                        // show the alert
+                        self.present(alert, animated: true, completion: nil) */
+                        
+                        self.textViewReasion.text = ""
+                       // self.imgview.setBackgroundImage(nil, for: .normal)
+                        
+                    }else{
+                    }
+                    
+                    break
+                case .failure(let err):
+                    print(err.localizedDescription)
+                    if statusCode == 401{
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        return
+                    }
+                    break
+                    
+                }
+                
+            })
+
+  
+    }
+    
+    
+    @IBAction func btnCameraClicked(_ sender: UIButton) {
+        viewCamera.isHidden = false
+    }
+
+    @IBAction func btnOpenCameraClicked(_ sender: UIButton) {
+        camera()
+        viewCamera.isHidden = true
+    }
+       
+    @IBAction func btnOpenGalleryClicked(_ sender: UIButton) {
+        photoLibrary()
+        viewCamera.isHidden = true
+     }
+    
+    //MARK:-User define photo
+    
+    func photoLibrary()
+    {
+        let myPickerController = UIImagePickerController()
+        myPickerController.delegate = self;
+        myPickerController.allowsEditing = true
+        myPickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        myPickerController.mediaTypes = ["public.image"]
+        
+        self.present(myPickerController, animated: true, completion: nil)
     }
       
-    //MARK:-User define functions
+    //MARK:-User define camera
          
     func camera() {
              let myPickerController = UIImagePickerController()
@@ -95,15 +236,22 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
       
          func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
              if (info[UIImagePickerControllerMediaType] as? String) != nil {
+                
+                let image = info[UIImagePickerControllerEditedImage] as! UIImage
+                
+                 btnattechment.setTitle("", for: .normal)
+                // btnattechment.setBackgroundImage(image, for: .normal)
+             
+                 btnattechment.isHidden = true
+             
+                 btnattechment_update.isHidden = false
+             
+                 btnattechment_update.setBackgroundImage(image, for: .normal)
+
+                 imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
+                
+                 self.dismiss(animated: true, completion: nil)
                  
-                 let image = info[UIImagePickerControllerEditedImage] as! UIImage
-                 
-                    // btnattechment.setTitle("", for: .normal)
-                     btnattechment.setBackgroundImage(image, for: .normal)
-                 
-                  imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
-                 
-                  self.dismiss(animated: true, completion: nil)
               }
              
          }

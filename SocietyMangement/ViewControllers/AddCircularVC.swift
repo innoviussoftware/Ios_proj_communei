@@ -478,9 +478,9 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
     
     //MARK:- imagePicker delegate methods
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let mediaType = info[UIImagePickerControllerMediaType] as? String {
+        if (info[UIImagePickerControllerMediaType] as? String) != nil {
             
-            var image = info[UIImagePickerControllerEditedImage] as! UIImage
+            let image = info[UIImagePickerControllerEditedImage] as! UIImage
             
             if(isfrom == 1){
                 btnattechment_update.setBackgroundImage(image, for: .normal)
@@ -686,7 +686,6 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                         
                         MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                     }
-                    
                     
                     let date = Date()
                     let formatter = DateFormatter()

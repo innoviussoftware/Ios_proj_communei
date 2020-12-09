@@ -138,7 +138,6 @@ let API_USER_ACTIVITYTYPES = "user/activity-types"
 let API_USER_COMPANY_SELECT = "user/vendors/2"
 
 
-
 let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"
 let API_UPDATE_NOTICE = "society/notices/1/edit" // "user/editnotice"
 let API_UPDATE_EVENT = "society/notices/3/edit" // "user/editevent"

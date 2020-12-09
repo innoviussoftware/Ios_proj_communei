@@ -124,7 +124,6 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
            overrideUserInterfaceStyle = .light
         }
         
-        
         tblview.register(UINib(nibName: "ResidentFamilymembersCell", bundle: nil), forCellReuseIdentifier: "cell")
         
         self.tblview.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
