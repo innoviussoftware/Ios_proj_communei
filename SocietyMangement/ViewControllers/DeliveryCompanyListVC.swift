@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Alamofire
+
 protocol DeliveryCompanyListProtocol {
     
    // func deliveryList(name:String, selectNumber:Int)
@@ -48,6 +50,8 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     
     var selectedindex1:Int?
     
+    var visitorTypeID:Int?
+    
     var arrFrequent_Deliveries = [DeliveryCompanySelect]()
             
   //  var isfromNumber: Bool?
@@ -59,7 +63,6 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     @IBOutlet weak var lblTitleName: UILabel!
 
     var strTitleName = String()
-
 
     //["Cab","Delivery","Visitor","Service provider"]
     
@@ -75,6 +78,73 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
   //  @IBOutlet weak var collectionOther_Deliveries: UICollectionView!
     
     @IBOutlet weak var txtOtherName: UITextField!
+    
+    // MARK: - get DeliveryCompanyAdd
+
+    
+    func apicallDeliveryCompanyAdd()
+    {
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+            
+        let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "VendorName" : txtOtherName.text!,
+            "VisitorEntryTypeID" : visitorTypeID!
+         ]
+        
+        Apicallhandler.sharedInstance.ApiCallAddCompanyDetails(VendorName: txtOtherName.text!, VisitorEntryTypeID: visitorTypeID!, token: strToken as! String, param: param) { JSON in
+                                     
+                             let statusCode = JSON.response?.statusCode
+                             
+                             switch JSON.result{
+                             case .success(let resp):
+                                
+                                print(resp)
+
+                                 webservices().StopSpinner()
+                                 
+                                 if statusCode == 200{
+                                  
+                                   self.apicallDeliveryCompanySelect()
+                                   
+                                    self.btnAddSuccessfully()
+                                
+                                 }
+                                
+                                self.txtOtherName.text! = ""
+                                 
+                             case .failure(let err):
+                                 webservices().StopSpinner()
+                                 if statusCode == 401{
+                                     APPDELEGATE.ApiLogout(onCompletion: { int in
+                                         if int == 1{
+                                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                                        let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                        let navController = UINavigationController(rootViewController: aVC)
+                                                                                        navController.isNavigationBarHidden = true
+                                                                           self.appDelegate.window!.rootViewController  = navController
+                                                                           
+                                         }
+                                     })
+                                     
+                                     return
+                                 }
+                                 
+                                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                                 self.present(alert, animated: true, completion: nil)
+                                 print(err.asAFError as Any)
+                                 
+                             }
+                         }
+              
+    }
+    
     
     // MARK: - get DeliveryCompanySelect
     
@@ -196,7 +266,17 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
          self.navigationController?.popViewController(animated: true)
      }
     
-    @IBAction func btnAddPressed(_ sender: Any) {
+    @IBAction func btnAddPressed(_ sender: UIButton) {
+        if txtOtherName.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Company Name")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            apicallDeliveryCompanyAdd()
+        }
+    }
+       
+    func btnAddSuccessfully() {
+        
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                   avc?.titleStr = "Successfully added"
         
@@ -209,9 +289,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                     let navgitaionCon = UINavigationController(rootViewController: homeViewController!)
 
                     navgitaionCon.popViewController(animated: true)
-                  
 
-                    //  self.ApiCallDeleteFrequentEntry(guestId: strGuestId!)
                   }
                   avc?.noAct = {
                     
@@ -294,12 +372,28 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
      }
           
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+      /*  let collectionViewWidth = self.view.bounds.width - 8
+        return CGSize(width: collectionViewWidth/4 - 4, height: collectionViewWidth/4
+                   + 4) */
+        
+            let noOfCellsInRow = 4
+
+           let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+
+           let totalSpace = flowLayout.sectionInset.left
+               + flowLayout.sectionInset.right
+               + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
+
+           let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
+
+           return CGSize(width: size, height: size)
           
-          if(collectionView == collectionFrequent_Deliveries){
+        /*  if(collectionView == collectionFrequent_Deliveries){
               return CGSize(width: 84, height: 92)
           }else{
               return CGSize(width: 84, height: 92)
-          }
+          } */
                   
       }
     

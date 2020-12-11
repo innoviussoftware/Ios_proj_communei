@@ -17,6 +17,7 @@ class AmenitiesFacilitiesCell: UITableViewCell {
     @IBOutlet weak var lblDescription: UILabel!
 
     @IBOutlet weak var imgService: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
        
@@ -26,8 +27,8 @@ class AmenitiesFacilitiesCell: UITableViewCell {
         btnViewAll.layer.cornerRadius = 8
         btnViewAll.clipsToBounds = true
         
-       // imgService.layer.cornerRadius = 45
-      //  imgService.clipsToBounds  = true
+        imgService.layer.cornerRadius = 45
+        imgService.clipsToBounds  = true
                
     }
 

@@ -103,6 +103,7 @@
 		9A1178B3235DBE730071C85A /* ProfessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1178B2235DBE730071C85A /* ProfessionResponse.swift */; };
 		9A17C5F42361A7DD00158271 /* AddRatingReviewPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17C5F32361A7DD00158271 /* AddRatingReviewPopUpVC.swift */; };
 		9A17C5F62361D8CA00158271 /* AddRatingReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17C5F52361D8CA00158271 /* AddRatingReview.swift */; };
+		9A2AC646258394CB0075CA57 /* AddBookingNowResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */; };
 		9A2E089423519B3400424797 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E089323519B3300424797 /* File.swift */; };
 		9A2E089623519B4C00424797 /* PVSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E089523519B4C00424797 /* PVSwitch.swift */; };
 		9A2E089823519E1700424797 /* UserSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2E089723519E1700424797 /* UserSettingsVC.swift */; };
@@ -396,6 +397,7 @@
 		9A1178B2235DBE730071C85A /* ProfessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessionResponse.swift; sourceTree = "<group>"; };
 		9A17C5F32361A7DD00158271 /* AddRatingReviewPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRatingReviewPopUpVC.swift; sourceTree = "<group>"; };
 		9A17C5F52361D8CA00158271 /* AddRatingReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRatingReview.swift; sourceTree = "<group>"; };
+		9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookingNowResponse.swift; sourceTree = "<group>"; };
 		9A2E089323519B3300424797 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9A2E089523519B4C00424797 /* PVSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PVSwitch.swift; sourceTree = "<group>"; };
 		9A2E089723519E1700424797 /* UserSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsVC.swift; sourceTree = "<group>"; };
@@ -670,6 +672,7 @@
 				9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */,
 				9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */,
 				9A9FF808257E331C007409AE /* DeliveryCompanySelectResponse.swift */,
+				9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */,
 				9A625FEF2578E50500F52C56 /* GetRecentContactResponse.swift */,
 				9ABCFA39256FE7E600DE476E /* UserActivityAllResponse.swift */,
 				9A955AAA230FA24A004A4668 /* CircularResponse.swift */,
@@ -1275,6 +1278,7 @@
 				4E9ED71E2358467E004FCE4E /* MemberCell.swift in Sources */,
 				D2DDD59924FE1CFF0008BE6A /* AmenitiesClenderBookVC.swift in Sources */,
 				9A78BB1B236AB670004B3022 /* GetNotifyCount.swift in Sources */,
+				9A2AC646258394CB0075CA57 /* AddBookingNowResponse.swift in Sources */,
 				D2567E11252B296900C93714 /* MembersDetailsVC.swift in Sources */,
 				9AA900B3230D2CC600697383 /* PinBoardCell.swift in Sources */,
 				9A53257C230BCAAF003E5F29 /* UITextField+Extension.swift in Sources */,

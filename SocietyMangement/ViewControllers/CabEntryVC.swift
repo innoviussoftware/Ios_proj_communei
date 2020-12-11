@@ -674,7 +674,6 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         if txtvaildtill.text == "Day End" {
             validtill = time
             
-            
             let dateFormatter = DateFormatter()
             
             let isoDate = time //strDateee //"2016-04-14T10:44:00+0000"
@@ -961,6 +960,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
             popOverConfirmVC.api_Company_Selection = "user/vendors/3"
 
+            popOverConfirmVC.visitorTypeID = 3
+
                    if(txtCabCompanyName.text != "")
                    {
 
@@ -985,6 +986,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
             popOverConfirmVC.api_Company_Selection = "user/vendors/3"
             
+            popOverConfirmVC.visitorTypeID = 3
+
            // popOverConfirmVC. = "user/vendor/add"
 
                    if(txtCabCompanyName1.text != "")
@@ -1068,6 +1071,16 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
           textfield.layer.borderWidth = 1.0
           
       }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        
+        if changedIndex == 0{
+            view.endEditing(true)
+        }else{
+            view.endEditing(true)
+        }
+        
+    }
     
     // MARK: - Change Date Formate
     

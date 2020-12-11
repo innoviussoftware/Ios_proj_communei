@@ -7,6 +7,9 @@
 //
 
 import UIKit
+
+import WebKit
+
 // 28/11/20 app live process
 
 /*
@@ -22,13 +25,15 @@ import CommonUISDK
 */
 
 
-class SupportZendeskVC: UIViewController {
+class SupportZendeskVC: UIViewController,  WKNavigationDelegate, WKUIDelegate {
     
     
-    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var webView : WKWebView!
     
-    @IBOutlet weak var contentView: UIView!
-    
+  //  var webView: WKWebView!
+    var activityIndicator: UIActivityIndicatorView!
+
+
     var isfrom = 1
 
     override func viewDidLoad() {
@@ -39,13 +44,39 @@ class SupportZendeskVC: UIViewController {
        // CommonTheme.currentTheme.primaryColor = UIColor.orange
         
         isfrom = 1
+        
+       /* let myBlog = "https://communei.zendesk.com/"
+            let url = NSURL(string: myBlog)
+        let request = NSURLRequest(url: url! as URL)
+
+            // init and load request in webview.
+         //   webView = WKWebView(frame: self.view.frame)
+            webView.navigationDelegate = self
+        webView.load(request as URLRequest) */
+         //   self.view.addSubview(webView)
+      //  self.view.sendSubview(toBack: webView)
+        
+       // webView = WKWebView(frame: CGRect.zero)
+                webView.navigationDelegate = self
+                webView.uiDelegate = self
+
+              //  view.addSubview(webView)
+
+                activityIndicator = UIActivityIndicatorView()
+                activityIndicator.center = self.view.center
+                activityIndicator.hidesWhenStopped = true
+                activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+
+                view.addSubview(activityIndicator)
+
+                webView.load(URLRequest(url: URL(string: "https://communei.zendesk.com/")!))
 
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
       
-        self.navigationController?.isNavigationBarHidden = true
+       // self.navigationController?.isNavigationBarHidden = true
 
         print("viewWillAppear")
     }
@@ -215,6 +246,25 @@ class SupportZendeskVC: UIViewController {
     
     }
     
+    func showActivityIndicator(show: Bool) {
+            if show {
+                activityIndicator.startAnimating()
+            } else {
+                activityIndicator.stopAnimating()
+            }
+        }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            showActivityIndicator(show: false)
+        }
+
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            showActivityIndicator(show: true)
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            showActivityIndicator(show: false)
+        }
     
 }
+

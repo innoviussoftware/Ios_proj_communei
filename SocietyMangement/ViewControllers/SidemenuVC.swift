@@ -132,9 +132,9 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                 cell.lblname.text = UsermeResponse?.data!.name
                 
                // if ((UsermeResponse!.data!.profilePhotoPath as? NSNull) != nil)  {
-//                    if UsermeResponse!.data!.profilePhotoPath != nil{
-//                    cell.imagview.sd_setImage(with: URL(string:webservices().imgurl + UsermeResponse!.data!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
-//                    }
+                    if UsermeResponse!.data!.profilePhotoPath != nil{
+                        cell.imagview.sd_setImage(with: URL(string: UsermeResponse!.data!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                  }
                 
             }
            

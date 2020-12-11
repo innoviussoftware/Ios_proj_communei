@@ -571,6 +571,21 @@ struct Apicallhandler {
 
        }
     
+    //Mark : Api add booking Entry
+    
+    func ApiAddBookingNow(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddBookingNowResponse>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_ADD_BOOKINGS_NOW, method: .post,parameters:param, headers:["Authorization": "Bearer "+token]).responseDecodable {
+            (response:DataResponse<AddBookingNowResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+        
+    
+    //Mark : Api call for get Flats
+    
     //Mark : Api call get Login
     
     func LogoutAPI(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
@@ -796,6 +811,19 @@ struct Apicallhandler {
     func GetAllCompanySelectDetails(URL: String,token:String, onCompletion: @escaping ((_ response: DataResponse<DeliveryCompanySelectResponse>) -> Void)) {
         
         AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryCompanySelectResponse>) in
+            onCompletion(response)
+        }
+        
+    }
+    
+    //Mark : Api call delete vehicle
+    
+    //Mark : Api call Add Company Details
+
+    func ApiCallAddCompanyDetails(VendorName: String,VisitorEntryTypeID:Int,token: String,param:Parameters,onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_ADD_COMPANY_ENTRY, method: .post,parameters:param, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
             onCompletion(response)
         }
         

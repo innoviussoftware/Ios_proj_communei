@@ -1299,7 +1299,7 @@ extension SignUPStep2 :UITextFieldDelegate
        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
            if(textField == txtblockname)
            {
-               var substring = (textField.text as! NSString).replacingCharacters(in: range, with: string)
+            let substring = (textField.text! as NSString).replacingCharacters(in: range, with: string)
                
                if(substring != ""){
                    buildingary.removeAll()

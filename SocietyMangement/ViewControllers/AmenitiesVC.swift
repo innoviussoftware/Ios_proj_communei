@@ -124,13 +124,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         
     }
     
-    @objc func actionViewDetailFacilities(sender:UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
-        //vc. = arrFacilities
-        self.navigationController?.pushViewController(vc, animated: true)
-
-    }
-    
     // MARK: - get Bookings
 
     func apicallGetBookings()
@@ -314,6 +307,30 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     
     
     
+    @objc func actionViewDetailFacilities(sender:UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
+        vc.isfrom = 1
+        
+        vc.amenityID = arrFacilities[sender.tag].amenityID!
+        vc.strName = arrFacilities[sender.tag].name!
+        vc.strNotes = arrFacilities[sender.tag].notes!
+        vc.strDescription = arrFacilities[sender.tag].datumDescription!
+        vc.amount = arrFacilities[sender.tag].amount!
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    @objc func actionAmenitiesBooking(sender:UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
+        
+        vc.isfrom = 2
+        //vc. = arrFacilities
+        self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    
     //MARK:- tableview delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -334,14 +351,17 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                     
         let cell = tableView.dequeueReusableCell(withIdentifier: "AmenitiesFacilitiesCell") as! AmenitiesFacilitiesCell
 
-        //          let pdffile = Circularary[sender.tag].attachments![0]
+        // let pdffile = Circularary[sender.tag].attachments![0]
+            
+            if arrFacilities[indexPath.row].attachments!.count > 0{
+                  if arrFacilities[indexPath.row].attachments?[0].attachment != nil
+                {
+                    cell.imgService.sd_setImage(with: URL(string: (arrFacilities[indexPath.row].attachments?[0].attachment!)!), placeholderImage: UIImage(named: "ic_Amenities"))
+                }
+                        
+            }
 
-            if arrFacilities[indexPath.row].attachments != nil{
-                cell.imgService.sd_setImage(with: URL(string:(arrFacilities[indexPath.row].attachments?[0].attachment!)!), placeholderImage: UIImage(named: "ic_Amenities"))
-                
-                // sd_setImage(with: URL(string: (arrFacilities[indexPath.row].attachments![0].attachment!)), completed: nil)
-        }
-        
+                    
         cell.selectionStyle = .none
         cell.btnViewAll.tag = indexPath.row
         
@@ -366,11 +386,10 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
             cell.lblDateTimeBooked.text = "\("Create on:" + arrBookings[indexPath.row].createdAt!)"
             
             cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
-            
 
             cell.btnCancel.addTarget(self, action: #selector(DeleteBookingEntry(sender:)), for: .touchUpInside)
             
-            cell.btnEdit.addTarget(self, action: #selector(actionViewDetailFacilities(sender:)), for: .touchUpInside)
+            cell.btnEdit.addTarget(self, action: #selector(actionAmenitiesBooking(sender:)), for: .touchUpInside)
 
             
             return cell

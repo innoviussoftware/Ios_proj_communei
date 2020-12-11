@@ -102,7 +102,7 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
         print("param emergency : ",param)
         
         AF.upload(
-            multipartFormData: { MultipartFormData in
+            multipartFormData: { [self] MultipartFormData in
                 
                 for (key, value) in param {
                     
@@ -114,8 +114,14 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
                 formatter.dateFormat = "yyyyMMddHH:mm:ss"
                 let strFileName = formatter.string(from: date)
                 
+                
                 if self.imgData!.count != 0{
-                    MultipartFormData.append(self.imgData!, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+                                        
+                    if let data = imgData{
+                        MultipartFormData.append(data, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
+                        }
+                        
+                  //  MultipartFormData.append(self.imgData!, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
                 }
 
                 

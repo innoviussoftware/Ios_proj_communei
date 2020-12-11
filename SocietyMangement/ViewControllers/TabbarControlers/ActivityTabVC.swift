@@ -100,20 +100,7 @@ class ActivityTabVC: BaseVC {
                     }
                     else
                     {
-                        if(resp.data!.count == 0)
-                        {
-                            self.collectionActivity.isHidden = true
-                            self.filtrview.isHidden = true
-                        }
-                        else
-                        {
-                            self.collectionActivity.reloadData()
-
-                            self.collectionActivity.isHidden = false
-                            self.filtrview.isHidden = false
-                            
-                        }
-                        
+                          //  self.filtrview.isHidden = true
                     }
                     
                     print(resp)

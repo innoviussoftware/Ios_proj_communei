@@ -635,6 +635,16 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
     }
     
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        
+        if changedIndex == 0{
+            view.endEditing(true)
+        }else{
+            view.endEditing(true)
+        }
+        
+    }
+    
     // MARK: - deliveryList delegate methods
 
     //func deliveryList(name: String)
@@ -684,6 +694,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             popOverConfirmVC.api_Company_Selection = "user/vendors/2"
 
                 popOverConfirmVC.strlbl = txtDeliveryCompanyName.text!
+            
+            popOverConfirmVC.visitorTypeID = 2
 
                    if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
                    {
@@ -710,6 +722,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             popOverConfirmVC.api_Company_Selection = "user/vendors/2"
 
                 popOverConfirmVC.strlbl = txtDeliveryCompanyName1.text!
+            
+            popOverConfirmVC.visitorTypeID = 2
 
                
                    if(txtDeliveryCompanyName1.text != "")
@@ -958,18 +972,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         if txtvaildtill.text == "Day End" {
             validtill = time
             
-           // let myInt = Int(validtill)!
-            
             let dateFormatter = DateFormatter()
             
             let isoDate = txttime.text! // time //strDateee //"2016-04-14T10:44:00+0000"
-
-            //dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd" // h:mm"
             
             dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
 
-
-          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             let date = dateFormatter.date(from:isoDate)!
             print("date :- ",date)
             
@@ -993,13 +1001,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             let myInt = Int(txtvaildtill.text!)!
             
             let dateFormatter = DateFormatter()
-            
-           // let valid =  time + ":00"
-            
-            let isoDate = txttime.text! //time //validtill // valid  //"2016-04-14T10:44:00+0000"
+                        
+            let isoDate = txttime.text!
 
-           // dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
-            
             dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
 
             let date = dateFormatter.date(from:isoDate)!

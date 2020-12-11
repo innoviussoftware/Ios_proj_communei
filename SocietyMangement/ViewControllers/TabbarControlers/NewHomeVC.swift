@@ -14,7 +14,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
+class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     
     @IBOutlet weak var lblflatno: UILabel!
     
@@ -22,9 +22,9 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     
     @IBOutlet weak var menuaction: UIButton!
     
-    @IBOutlet weak var message: UILabel!
+  //  @IBOutlet weak var message: UILabel!
 
-    @IBOutlet weak var collectionactivity: UICollectionView!
+  //  @IBOutlet weak var collectionactivity: UICollectionView!
     
     @IBOutlet weak var collectionshortcut: UICollectionView!
     
@@ -37,6 +37,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     
     var arrGuestList = [guestData]()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +49,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
         collectionshortcut.layer.masksToBounds = false
         */
       
+        
         if(revealViewController() != nil)
         {
             menuaction.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
@@ -58,6 +60,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
             print("revealViewController auto")
 
         }
+        
         
       //  dropShadow()
         
@@ -181,6 +184,14 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
         
     }
     
+    @IBAction func btnNoticeBoardPressed(_ sender: UIButton) {
+        
+        _ = self.pushViewController(withName:CommunityVC.id(), fromStoryboard: "Main") as! CommunityVC
+        
+        print("btnNoticeBoardPressed click")
+
+    }
+    
     @IBAction func btnDaily_HelperPressed(_ sender: UIButton) {
         print("btnDaily_HelperPressed click")
     }
@@ -196,16 +207,25 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     }
     
     @IBAction func btnHelp_CenterPressed(_ sender: UIButton) {
+        
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+
         print("btnHelp_CenterPressed click")
     }
     
     @IBAction func btnGuidePressed(_ sender: UIButton) {
+        
+        _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+
         print("btnGuidePressed click")
     }
     
     @IBAction func btnZendeskPressed(_ sender: Any) {
         // let vc =
         _ = self.pushViewController(withName:SupportZendeskVC.id(), fromStoryboard: "Main") as! SupportZendeskVC
+        
+        print("btnZendeskPressed click")
+
     }
     
     @IBAction func btnMenuActionPressed(_ sender: Any) {
@@ -334,7 +354,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
     
     // MARK: - Guest List
     
-    func apicallGuestList()
+   /* func apicallGuestList()
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -406,7 +426,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate {
             
             
         }
-    }
+    } */
     
     
     
@@ -426,42 +446,10 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
 {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-           if(collectionView == collectionactivity)
-           {
-               return arrGuestList.count
-             //  return 10
-           }
-           else
-           {
-               return shortcutary.count
-           }
+            return shortcutary.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if(collectionView == collectionactivity)
-        {
-            let cell:LatestActivityCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! LatestActivityCell
-            
-          //  let cell:UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath)
-
-            
-            cell.lblname.text = arrGuestList[indexPath.row].name
-            
-            cell.lblVisitor.text = "Frequent Visitor"
-            let dateFormatterGet = DateFormatter()
-            dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let date = dateFormatterGet.date(from: arrGuestList[indexPath.row].createAt!)
-            dateFormatterGet.dateFormat = "dd-MM-yyyy hh:mm a"
-            
-            cell.lbltime.text = dateFormatterGet.string(from: date!)
-            
-            cell.imgview.sd_setImage(with: URL(string: arrGuestList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
-            
-            return cell
-        }
-        else
-        {
             
             let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
 
@@ -470,8 +458,6 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
             
             return cell
             
-        }
-        
         
     }
     
@@ -484,9 +470,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if(collectionView == collectionactivity) {
-            print("Latest Activity")
-        }else{
+       
             if indexPath.item == 0{ // "Invite Visitor"
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddguestPopup") as! AddguestPopup
@@ -545,18 +529,11 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                 
             } */
             
-        }
 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if(collectionView == collectionactivity) {
-            return CGSize(width: 196, height: 86)
-        }else{
             return CGSize(width: 84, height: 92)
-        }
-                
     }
     
     

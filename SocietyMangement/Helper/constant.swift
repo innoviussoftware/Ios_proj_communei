@@ -137,6 +137,8 @@ let API_USER_ACTIVITYTYPES = "user/activity-types"
 
 let API_USER_COMPANY_SELECT = "user/vendors/2"
 
+let API_ADD_COMPANY_ENTRY = "user/vendor/add"
+
 
 let API_UPDATE_FAMILY_MEMBER = "user/family/edit" // "user/updatefamilymember"
 let API_UPDATE_NOTICE = "society/notices/1/edit" // "user/editnotice"
@@ -214,7 +216,6 @@ let API_DELETE_NOTIFICATION = "user/deletenotify"
 
 let API_DELETE_VEHICLE = "user/vehicles/delete"
 
-
 let API_REFER_FRIEND = "sendref"
 
 
@@ -251,3 +252,5 @@ let API_GET_AMENITIES_LIST = "society/amenities"  //"amenties"
 let API_GET_BOOKINGS_LIST = "user/amenity/bookings"  
 
 let API_DELETE_BOOKING_ENTRY = "user/amenity/bookings/delete"
+
+let API_ADD_BOOKINGS_NOW = "user/amenity/bookings/add"

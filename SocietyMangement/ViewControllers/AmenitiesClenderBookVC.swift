@@ -8,21 +8,41 @@
 
 import UIKit
 import FSCalendar
+import Alamofire
 
-class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDelegate {
+class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDelegate,FSCalendarDataSource {
     
     @IBOutlet weak var calenderView: FSCalendar!
     @IBOutlet weak var btnDone: UIButton!
     @IBOutlet weak var txtEndTime: UITextField!
     @IBOutlet weak var txtStartTime: UITextField!
+    
+    @IBOutlet weak var lblName: UILabel!
+    @IBOutlet weak var lblNotes: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
+
+    @IBOutlet weak var txtviewBookingNotes: UITextView!
 
    // let picker :UIDatePicker! = nil
    // let picker = UIDatePicker()
     
+    var isfrom = 1
+        
+    var amenityID:Int?
+    
+    var amount:Int?
+
+    var strName = ""
+
+    var strNotes = ""
+    
+    var strDescription = ""
+    
+    var dicAddBook : AddBookingNow?
+    
     let datePicker = UIDatePicker()
     
     let datePicker_end = UIDatePicker()
-
 
     var activeTexfield :UITextField! = nil
 
@@ -34,18 +54,58 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         
         setUpView()
         
-       
+        calenderView.dataSource = self
+        calenderView.delegate = self
+        
+       if isfrom == 1 {
+            lblName.text = strName
+            lblNotes.text = strNotes
+            lblDescription.text = strDescription
+        
+       // self.calenderView.deselect(currentDate)
+
+            btnDone.setTitle("Book Now", for: .normal)
+        // API_ADD_BOOKINGS_NOW
+        // user/amenity/bookings/add
+        }else{
+            btnDone.setTitle("Update", for: .normal)
+        }
 
     }
     
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    func maximumDate(for calendar: FSCalendar) -> Date {
+    func minimumDate(for calendar: FSCalendar) -> Date {
         return Date()
     }
     
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
+    }
+    
+    func calendar(calendar: FSCalendar!, appearance: FSCalendarAppearance, borderDefaultColorForDate date: NSDate!) -> UIColor {
+        if self.calenderView.contains(date as! UIFocusEnvironment) {
+            print("date is selectable")
+            return UIColor.gray.withAlphaComponent(0.5)
+           }
+        return UIColor.black.withAlphaComponent(0)
+       }
+
+    func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
+        if self.calenderView.contains(date as! UIFocusEnvironment) {
+               print("date is not selectable")
+               return false
+           }
+           return true
+    }
+    
+   /* func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int
+    {
+        return 1
+    } */
+        
     func setUpView() {
         
         txtStartTime.delegate = self
@@ -89,15 +149,14 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         }
 
 
-           
            //ToolBar
            let toolbar = UIToolbar();
            toolbar.sizeToFit()
            
            //done button & cancel button
-           let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(doneTimePicker))
+           let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker))
            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-           let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(cancelTimePicker))
+           let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker))
            toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
            //timePicker.minimumDate = Date()
            // add toolbar to textField
@@ -118,7 +177,6 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         txtStartTime.text = formatter.string(from: datePicker.date)
         
         txtEndTime.text = formatter.string(from: datePicker_end.date)
-
         
         //dismiss date picker dialog
         self.view.endEditing(true)
@@ -142,15 +200,94 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         picker.datePickerMode = .time
         activeTexfield.inputView = picker
         
-
     } */
     
+    func dateAndTimeCombine() {
+        let date = "2017-12-24"
+        let time = "7:00 AM"
 
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-mm-dd h:mm a"
+        let string = date + time                  // "2017-12-24 7:00 AM"
+        let finalDate = dateFormatter.date(from: string)
+        print("finalDate : ",finalDate!)
+
+        print("finalDate description : ",finalDate?.description(with: .current) ?? "")
+    }
+    
+    func ApiCallAmenityBookingsAdd() {
+            if !NetworkState().isInternetAvailable {
+                    ShowNoInternetAlert()
+                    return
+            }
+
+           webservices().StartSpinner()
+               
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                    let param : Parameters = [
+                        "AmenityID" : amenityID!,
+                        "BookingNotes" : txtviewBookingNotes.text!,
+                        "Amount" : amount!,
+                        "StartDate" : "",
+                        "EndDate" : ""
+                    ]
+                   
+                  print("Parameters : ",param)
+        
+                                   
+        Apicallhandler.sharedInstance.ApiAddBookingNow(token: token as! String, param: param) { JSON in
+            switch JSON.result{
+            case .success(let resp):
+                
+                webservices().StopSpinner()
+               // let nameary = NSMutableArray()
+                if(resp.status == 1)
+                {
+                    if(self.isfrom == 1)
+                    {
+                        print("1 : ")
+                    }else{
+                        print("2 : ")
+                    }
+                }else{
+                    
+                    print("1 & 2 : ")
+
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message!)
+                  //  self.present(alert, animated: true, completion: nil)
+                }
+                print(resp)
+            case .failure(let err):
+                
+                print("1 == 2 : ")
+
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+               // self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                webservices().StopSpinner()
+                
+            }
+                        
+        }
+                
+    }
     
     //MARK:- action method
     
-    @IBAction func actionDone(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func actionDone(_ sender: UIButton) {
+        
+        if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtviewBookingNotes.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please write reason why you want to book this amentity")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            ApiCallAmenityBookingsAdd()
+        }
+       // self.dismiss(animated: true, completion: nil)
     }
     
     

@@ -1870,7 +1870,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                     
                 else
                 {
-                    if(resp.data!.count == 0)
+                  /*  if(resp.data!.count == 0)
                     {
                         self.tblMembers.isHidden = true
                         self.viewnoresult.isHidden = false
@@ -1880,7 +1880,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                         self.tblMembers.isHidden = false
                         self.viewnoresult.isHidden = true
                         
-                    }
+                    } */
                     
                 }
                 

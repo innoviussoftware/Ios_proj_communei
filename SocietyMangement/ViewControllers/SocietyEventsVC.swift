@@ -266,15 +266,28 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
         
         cell.lblstartdate.text = "From: \( eventary[indexPath.row].eventStartDate!)"
         cell.lblenddate.text = "To: \(eventary[indexPath.row].eventEndDate!)"
-
-        //cell.lbldes.text = eventary[indexPath.row].datumDescription
-        //webservices.sharedInstance.setShadow(view:cell.innerview)
+        
         cell.btnEditNew.tag = indexPath.row
         cell.btnDeleteNew.tag = indexPath.row
         cell.btnreadmore.tag = indexPath.row
         cell.btnNotification.tag = indexPath.row
         cell.btnDownloadEvent.tag = indexPath.row
         
+            
+        if eventary[indexPath.row].attachments!.count > 0{
+                if eventary[indexPath.row].attachments?[0] != nil
+                {
+                    cell.btnDownloadEvent.isHidden = false
+                }else{
+                    cell.btnDownloadEvent.isHidden = true
+                }
+        }else{
+            cell.btnDownloadEvent.isHidden = true
+        }
+
+        //cell.lbldes.text = eventary[indexPath.row].datumDescription
+        //webservices.sharedInstance.setShadow(view:cell.innerview)
+       
 
                
         let hight = getLabelHeight(text: eventary[indexPath.row].datumDescription!, width:cell.bounds.width - 32 , font: UIFont(name:"Lato-Regular", size: 14)!)
@@ -292,12 +305,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                 cell.btnreadmore.setTitle("Read More >", for:.normal)
 
       
-        cell.btnEditNew.addTarget(self, action:#selector(editevent), for: .touchUpInside)
-        cell.btnDeleteNew.addTarget(self, action:#selector(deletevent), for: .touchUpInside)
-        cell.btnreadmore.addTarget(self, action:#selector(readmore(sender:)), for: .touchUpInside)
-        cell.btnNotification.addTarget(self, action: #selector(sendNotification(sender:)), for: .touchUpInside)
-         cell.btnDownloadEvent.addTarget(self, action: #selector(downloadaction(sender:)), for: .touchUpInside)
-        
+       
         if (eventary[indexPath.row].readAt) != nil {
             cell.lblcolor.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)  // F26101 orange
         }else{
@@ -329,6 +337,14 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
                 
             }
         }
+        
+        
+        cell.btnEditNew.addTarget(self, action:#selector(editevent), for: .touchUpInside)
+        cell.btnDeleteNew.addTarget(self, action:#selector(deletevent), for: .touchUpInside)
+        cell.btnreadmore.addTarget(self, action:#selector(readmore(sender:)), for: .touchUpInside)
+        cell.btnNotification.addTarget(self, action: #selector(sendNotification(sender:)), for: .touchUpInside)
+         cell.btnDownloadEvent.addTarget(self, action: #selector(downloadaction(sender:)), for: .touchUpInside)
+        
         
         
         

@@ -86,7 +86,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     
     @IBOutlet weak var txtGender: SkyFloatingLabelTextField!
 
-    @IBOutlet weak var txtflattype: SkyFloatingLabelTextField!
+  //  @IBOutlet weak var txtflattype: SkyFloatingLabelTextField!
     
     @IBOutlet weak var txtaddress: SkyFloatingLabelTextField!
     
@@ -158,10 +158,13 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
            
     }
     
-    @IBAction func saveaction(_ sender: Any) {
+    @IBAction func saveaction(_ sender: UIButton) {
         
         if !txtname.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter name")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtemail.text  == ""{
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter email")
             self.present(alert, animated: true, completion: nil)
         }else if txtemail.hasText{
             
@@ -170,11 +173,11 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild email")
             self.present(alert, animated: true, completion: nil)
             
-        }/*else if !txtcontact.hasText{
+        }
+        else if !txtcontact.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter mobile number")
             self.present(alert, animated: true, completion: nil)
-            
-        }*/
+        }
         else if(txtbirthDate.text == "")
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select birthdate")
@@ -199,7 +202,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             self.present(alert, animated: true, completion: nil)
             
         }
-        else if !txtprofession.hasText{
+       /* else if !txtprofession.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession")
             self.present(alert, animated: true, completion: nil)
             
@@ -207,8 +210,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter your profession details")
             self.present(alert, animated: true, completion: nil)
             
-        }
-         else if(UsermeResponse?.data!.userTypeName == "Resident Owner")
+        }*/
+       /* else if(UsermeResponse?.data!.userTypeName == "Resident Owner")
          {
            if !txtflattype.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
@@ -216,12 +219,12 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
            }else if !txtbloodgroup.hasText {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select bloodgroup")
             self.present(alert, animated: true, completion: nil)
-           }
+           } */
             else{
                 apicallUpdateProfile()
                 return
                }
-            }
+           // }
         
         }else if !txtcontact.hasText{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter mobile number")
@@ -240,7 +243,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             self.present(alert, animated: true, completion: nil)
             
         } // flatType = UserTypeName
-        else if(UsermeResponse?.data!.userTypeName == "Owner of flat")
+       /* else if(UsermeResponse?.data!.userTypeName == "Owner of flat")
                {
                  if !txtflattype.hasText{
                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
@@ -255,10 +258,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                              apicallUpdateProfile()
                             return
                          }
-        }
+        } */
         
         
-        else if !txtflattype.hasText{
+       /* else if !txtflattype.hasText{
            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
            self.present(alert, animated: true, completion: nil)
            }
@@ -266,7 +269,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter flat type")
             self.present(alert, animated: true, completion: nil)
-        }
+        } */
            else{
                apicallUpdateProfile()
                return
@@ -338,7 +341,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             txtcontact.isUserInteractionEnabled = true
             txtprofession.isUserInteractionEnabled = true
             txtprofdetail.isUserInteractionEnabled = true
-            txtflattype.isUserInteractionEnabled = true
+           // txtflattype.isUserInteractionEnabled = true
             txtbloodgroup.isUserInteractionEnabled = true
             txtmember.isUserInteractionEnabled = true
             txtaddress.isUserInteractionEnabled = true
@@ -373,7 +376,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                        txtcontact.isUserInteractionEnabled = false
                        txtprofession.isUserInteractionEnabled = true
                        txtprofdetail.isUserInteractionEnabled = true
-                       txtflattype.isUserInteractionEnabled = true
+                    //   txtflattype.isUserInteractionEnabled = true
                        txtbloodgroup.isUserInteractionEnabled = true
                        txtmember.isUserInteractionEnabled = true
                        txtaddress.isUserInteractionEnabled = true
@@ -408,7 +411,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             txtcontact.isUserInteractionEnabled = false
             txtprofession.isUserInteractionEnabled = false
             txtprofdetail.isUserInteractionEnabled = false
-            txtflattype.isUserInteractionEnabled = false
+         //   txtflattype.isUserInteractionEnabled = false
             txtbloodgroup.isUserInteractionEnabled = false
             txtmember.isUserInteractionEnabled = false
             txtaddress.isUserInteractionEnabled = false
@@ -480,8 +483,8 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         
         toolBar2.isUserInteractionEnabled = true
         toolBar2.sizeToFit()
-        txtflattype.inputAccessoryView = toolBar2
-        txtflattype.inputView = pickerview2
+      //  txtflattype.inputAccessoryView = toolBar2
+    //    txtflattype.inputView = pickerview2
         
         
         if(isfrom == 0) || (isfrom == 1)
@@ -527,6 +530,12 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 if(UsermeResponse?.data!.userTypeName != nil)
                 {
                     strFlatType = (UsermeResponse?.data!.userTypeName)!
+                }
+                
+                if(UsermeResponse?.data!.userTypeName != nil)
+                {
+                    UserType = (UsermeResponse?.data?.society?.userTypeID)!
+         //   txtflattype.text = UsermeResponse?.data!.userTypeName
                 }
 //                if(UsermeResponse?.data!.occupancy != nil)
 //                {
@@ -606,7 +615,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                             if(UsermeResponse?.data!.userTypeName != nil)
                             {
                                 UserType = (UsermeResponse?.data?.society?.userTypeID)!
-                        txtflattype.text = UsermeResponse?.data!.userTypeName
+                     //   txtflattype.text = UsermeResponse?.data!.userTypeName
                             }
                             if(UsermeResponse?.data!.bloodGroupID != nil)
                                          {
@@ -631,6 +640,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 imgview.sd_setImage(with: URL(string: (member?.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor profile"))
             }
             
+            if(UsermeResponse?.data!.userTypeName != nil)
+            {
+                UserType = (UsermeResponse?.data?.society?.userTypeID)!
+            }
             
             lblcontact.text = member?.phone
             
@@ -918,7 +931,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     @objc func donePressed2()
         
     {
-        if(txtflattype.text == "")
+     /*   if(txtflattype.text == "")
         {
            // UserType = (UsermeResponse?.data?.society?.userTypeID)!
             
@@ -930,7 +943,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         {
             txtflattype.resignFirstResponder()
             
-        }
+        } */
     }
     
     @objc func DoneGender()  {
@@ -1060,7 +1073,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
         }
         else if(pickerView == pickerview2)
         {
-            txtflattype.text = flatary[row]
+           // txtflattype.text = flatary[row]
             
         }
         else if(pickerView == pickerview3) {
@@ -1153,7 +1166,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             professiongroupId = 0
         }
         
-        if(txtflattype.text == "Owner"){
+       /* if(txtflattype.text == "Owner"){
             UserType = 1
         }else if(txtflattype.text == "Tenant"){
             UserType = 3
@@ -1161,7 +1174,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             UserType = 1
         }else{
             UserType = 3
-        }
+        } */
         
         webservices().StartSpinner()
 //        let param : Parameters = [
@@ -1190,7 +1203,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             "UserType": UserType //txtflattype.text!
         ]
         
-        print("param : ",param)
+        print("param profile : ",param)
         
         AF.upload(
             multipartFormData: { [self] MultipartFormData in
