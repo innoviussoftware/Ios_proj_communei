@@ -1098,7 +1098,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     
     //MARK:- imagePicker delegate methods
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let mediaType = info[UIImagePickerControllerMediaType] as? String {
+        if (info[UIImagePickerControllerMediaType] as? String) != nil {
             
             let image = info[UIImagePickerControllerEditedImage] as! UIImage
             imgview.image =  image
@@ -1226,7 +1226,10 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                 {
                    // let imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)
                     
-                    imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)!
+                   // imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)!
+                    
+                    imgData = (UIImagePNGRepresentation(self.imgview.image!)! as NSData) as Data
+
                     MultipartFormData.append(imgData, withName: "ProfilePicture", fileName: "\(strFileName).png", mimeType: "image/jpeg/png")
                 }
                 

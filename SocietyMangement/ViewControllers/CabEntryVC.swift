@@ -714,7 +714,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         var param = Parameters()
         
         var vendorServiceTypeID:Int?
-        vendorServiceTypeID = 3
+        vendorServiceTypeID = 2
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
@@ -785,6 +785,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                         ShowNoInternetAlert()
                         return
                     }
+        
            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
        
            var strDateee = ""
@@ -794,7 +795,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
            enddate = txtenddate.text!
         
            strDateee = strChangeDateFormate(strDateeee: date)
-            endDate = strChangeDateFormate(strDateeee: enddate)
+           endDate = strChangeDateFormate(strDateeee: enddate)
         
       /*  var after_add_time = ""
         
@@ -836,7 +837,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         var param = Parameters()
         
         var vendorServiceTypeID:Int?
-        vendorServiceTypeID = 3
+        vendorServiceTypeID = 2
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!

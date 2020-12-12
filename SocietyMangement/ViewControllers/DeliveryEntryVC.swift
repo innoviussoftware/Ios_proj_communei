@@ -871,7 +871,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         var param = Parameters()
         
         var vendorServiceTypeID:Int?
-        vendorServiceTypeID = 2
+        vendorServiceTypeID = 1
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
@@ -1017,7 +1017,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         var param = Parameters()
         
         var vendorServiceTypeID:Int?
-        vendorServiceTypeID = 2
+        vendorServiceTypeID = 1
 
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!

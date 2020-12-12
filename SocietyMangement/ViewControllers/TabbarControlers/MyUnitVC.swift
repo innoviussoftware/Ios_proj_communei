@@ -70,7 +70,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        apicallUserMe()
+      //  apicallUserMe()
         
         if(revealViewController() != nil)
         {
@@ -88,6 +88,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
+        
+        apicallUserMe()
+
            NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
         
      //   let strId = String(format: "%d", (UsermeResponse?.data?.guid)!)

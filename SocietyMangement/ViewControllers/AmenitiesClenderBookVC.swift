@@ -10,7 +10,8 @@ import UIKit
 import FSCalendar
 import Alamofire
 
-class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDelegate,FSCalendarDataSource {
+class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
+    //,FSCalendarDelegate,FSCalendarDataSource {
     
     @IBOutlet weak var calenderView: FSCalendar!
     @IBOutlet weak var btnDone: UIButton!
@@ -26,6 +27,11 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
    // let picker :UIDatePicker! = nil
    // let picker = UIDatePicker()
     
+    @IBOutlet weak var lblFinalAmenties: UILabel!
+    
+    @IBOutlet weak var viewFinalAmenties: UIView!
+
+    
     var isfrom = 1
         
     var amenityID:Int?
@@ -38,6 +44,13 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
     
     var strDescription = ""
     
+    var strdateandtimeFirst = ""
+    
+    var strdateandtimeEnd = ""
+    
+    var strSelectCalendarDate = ""
+
+    
     var dicAddBook : AddBookingNow?
     
     let datePicker = UIDatePicker()
@@ -46,6 +59,18 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
 
     var activeTexfield :UITextField! = nil
 
+    var selecteddates = [String]()
+       fileprivate let gregorian: Calendar = Calendar(identifier: .gregorian)
+       fileprivate lazy var dateFormatter1: DateFormatter = {
+           let formatter = DateFormatter()
+           formatter.dateFormat = "yyyy-MM-dd" //"dd-MM-yyyy"
+           return formatter
+       }()
+       fileprivate lazy var dateFormatter2: DateFormatter = {
+           let formatter = DateFormatter()
+           formatter.dateFormat = "yyyy-MM-dd" // "dd-MM-yyyy"
+           return formatter
+       }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,10 +79,28 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         
         setUpView()
         
-        calenderView.dataSource = self
-        calenderView.delegate = self
-        
+     
        if isfrom == 1 {
+        
+        calenderView.allowsMultipleSelection = false
+        calenderView.swipeToChooseGesture.isEnabled = true
+        calenderView.backgroundColor = UIColor.white
+      //  calenderView.appearance.weekdayTextColor = UIColor(red:0.89, green:0.45, blue:0.68, alpha:1.0)
+      //  calenderView.appearance.headerTitleColor = UIColor(red:0.89, green:0.45, blue:0.68, alpha:1.0)
+        calenderView.appearance.selectionColor = UIColor.orange
+   // calenderView.appearance.todayColor = UIColor.clear
+    //    calenderView.appearance.todaySelectionColor = UIColor.clear
+      //  calenderView.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesSingleUpperCase]
+  let date = NSDate()
+  let calendar = Calendar.current
+ 
+  
+  let year =  calendar.component(.year, from: date as Date)
+  let month = calendar.component(.month, from: date as Date)
+  let day = calendar.component(.day, from: date as Date)
+        
+        print("year:month:day : ",year,month,day)
+
             lblName.text = strName
             lblNotes.text = strNotes
             lblDescription.text = strDescription
@@ -70,6 +113,12 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         }else{
             btnDone.setTitle("Update", for: .normal)
         }
+        
+        viewFinalAmenties.isHidden = true
+        
+         calenderView.dataSource = self
+         calenderView.delegate = self
+         
 
     }
     
@@ -77,34 +126,11 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         self.navigationController?.popViewController(animated: true)
     }
     
-    func minimumDate(for calendar: FSCalendar) -> Date {
-        return Date()
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        
-    }
-    
-    func calendar(calendar: FSCalendar!, appearance: FSCalendarAppearance, borderDefaultColorForDate date: NSDate!) -> UIColor {
-        if self.calenderView.contains(date as! UIFocusEnvironment) {
-            print("date is selectable")
-            return UIColor.gray.withAlphaComponent(0.5)
-           }
-        return UIColor.black.withAlphaComponent(0)
-       }
+    @IBAction func btnClosePressed(_ sender: UIButton) {
+        viewFinalAmenties.isHidden = true
 
-    func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
-        if self.calenderView.contains(date as! UIFocusEnvironment) {
-               print("date is not selectable")
-               return false
-           }
-           return true
+        self.navigationController?.popViewController(animated: true)
     }
-    
-   /* func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int
-    {
-        return 1
-    } */
         
     func setUpView() {
         
@@ -137,7 +163,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
     
     func showTimepPicker(){
            //Formate Date
-           datePicker.datePickerMode = .time
+        datePicker.datePickerMode = .time
         
         datePicker_end.datePickerMode = .time
 
@@ -147,7 +173,6 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         } else {
             // Fallback on earlier versions
         }
-
 
            //ToolBar
            let toolbar = UIToolbar();
@@ -202,25 +227,48 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         
     } */
     
-    func dateAndTimeCombine() {
-        let date = "2017-12-24"
-        let time = "7:00 AM"
+    func dateAndTimeCombineStartTime() {
+        let date = strSelectCalendarDate //"2020-12-24 "
+        let time = txtStartTime.text! //"7:00 AM"
 
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-mm-dd h:mm a"
-        let string = date + time                  // "2017-12-24 7:00 AM"
-        let finalDate = dateFormatter.date(from: string)
-        print("finalDate : ",finalDate!)
+        let string = date + " " + time        // "2017-12-24 7:00 AM"
+       // let finalDate = dateFormatter.date(from: string)
+      //  print("finalDate : ",finalDate!)
+        
+        strdateandtimeFirst = string
 
-        print("finalDate description : ",finalDate?.description(with: .current) ?? "")
+       // print("finalDate description : ",finalDate?.description(with: .current) ?? "")
+    }
+    
+    func dateAndTimeCombineEndTime() {
+        let date = strSelectCalendarDate //"2020-12-24 "
+        let time = txtEndTime.text! //"7:00 AM"
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-mm-dd h:mm a"
+        let string = date + " " + time        // "2017-12-24 7:00 AM"
+     //   let finalDate = dateFormatter.date(from: string)
+      //  print("finalDate : ",finalDate!)
+        
+        strdateandtimeEnd = string
+
+       // print("finalDate description : ",finalDate?.description(with: .current) ?? "")
     }
     
     func ApiCallAmenityBookingsAdd() {
-            if !NetworkState().isInternetAvailable {
-                    ShowNoInternetAlert()
-                    return
-            }
+           
+        if !NetworkState().isInternetAvailable {
+                        ShowNoInternetAlert()
+                        return
+         }
+        
+        dateAndTimeCombineStartTime()
+        
+        dateAndTimeCombineEndTime()
 
            webservices().StartSpinner()
                
@@ -230,14 +278,14 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
                         "AmenityID" : amenityID!,
                         "BookingNotes" : txtviewBookingNotes.text!,
                         "Amount" : amount!,
-                        "StartDate" : "",
-                        "EndDate" : ""
+                        "StartDate" : strdateandtimeFirst,
+                        "EndDate" : strdateandtimeEnd
                     ]
                    
-                  print("Parameters : ",param)
+                  print("Parameters Booking : ",param)
         
                                    
-        Apicallhandler.sharedInstance.ApiAddBookingNow(token: token as! String, param: param) { JSON in
+        Apicallhandler.sharedInstance.ApiAddBookingNow(token: token as! String, param: param) { [self] JSON in
             switch JSON.result{
             case .success(let resp):
                 
@@ -247,8 +295,17 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
                 {
                     if(self.isfrom == 1)
                     {
+                        self.viewFinalAmenties.isHidden = false
+
+                        self.lblFinalAmenties.text = "Reservation for \(lblName.text!) sent for Approval on \(strSelectCalendarDate), \(txtStartTime.text!) to \(txtEndTime.text!)"
+                        
                         print("1 : ")
                     }else{
+                        
+                        self.viewFinalAmenties.isHidden = false
+
+                        self.lblFinalAmenties.text = "Updated Reservation for \(lblName.text!) sent for Approval on \(strSelectCalendarDate), \(txtStartTime.text!) to \(txtEndTime.text!)"
+                        
                         print("2 : ")
                     }
                 }else{
@@ -277,9 +334,15 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
     //MARK:- action method
     
     @IBAction func actionDone(_ sender: UIButton) {
-        
-        if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+        print("strSelectCalendarDate : ", strSelectCalendarDate)
+        if strSelectCalendarDate == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text! == txtEndTime.text! {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"start time and end time not same here")
             self.present(alert, animated: true, completion: nil)
         }else if txtviewBookingNotes.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please write reason why you want to book this amentity")
@@ -287,7 +350,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         }else{
             ApiCallAmenityBookingsAdd()
         }
-       // self.dismiss(animated: true, completion: nil)
+
     }
     
     
@@ -313,5 +376,46 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate,FSCalendarDe
         textfield.rightView = view
     }
     
+    
+}
+
+
+extension  AmenitiesClenderBookVC:FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance
+{
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+      //  if monthPosition == .previous || monthPosition == .next {
+            calendar.setCurrentPage(date, animated: true)
+            let calendarnew = Calendar.current
+
+            let year =  calendarnew.component(.year, from: date as Date)
+               let month = calendarnew.component(.month, from: date as Date)
+               let day = calendarnew.component(.day, from: date as Date)
+            
+            print("year:month:day :- ",year,month,day)
+        
+        let dot = "-"
+        
+        strSelectCalendarDate = "\(year)\(dot)\(month)\(dot)\(day)"
+        
+      //  }
+    }
+
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        
+        let key = self.dateFormatter1.string(from: date)
+            if(selecteddates.contains(key)) {
+                   print("date is not selectable")
+                   return false
+               }
+               return true
+    }
+ 
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderRadiusFor date: Date) -> CGFloat {
+        return 1.0
+    }
+    
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        return Date()
+    }
     
 }

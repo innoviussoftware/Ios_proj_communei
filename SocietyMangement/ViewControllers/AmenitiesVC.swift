@@ -32,7 +32,6 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     var arrSearchFinal = [AmenitiesListData]()
     
     var arrBookings = [BookingsListData]()
-
     
     var isfrom = 1
 
@@ -383,7 +382,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                 
             cell.lblStatus.text = arrBookings[indexPath.row].bookingStatusName
             
-            cell.lblDateTimeBooked.text = "\("Create on:" + arrBookings[indexPath.row].createdAt!)"
+            cell.lblDateTimeBooked.text = "\("Create on: " + arrBookings[indexPath.row].createdAt!)"
             
             cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
 
@@ -401,6 +400,14 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         
           if tableView == tblFacilities{
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
+            
+            vc.isfrom = 1
+            
+            vc.amenityID = arrFacilities[indexPath.row].amenityID!
+            vc.strName = arrFacilities[indexPath.row].name!
+            vc.strNotes = arrFacilities[indexPath.row].notes!
+            vc.strDescription = arrFacilities[indexPath.row].datumDescription!
+            vc.amount = arrFacilities[indexPath.row].amount!
             
             self.navigationController?.pushViewController(vc, animated: true)
             

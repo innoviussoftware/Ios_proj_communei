@@ -36,9 +36,9 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     @IBOutlet weak var lblnoproperty: UILabel!
     
     @IBOutlet weak var lblTitleName: UILabel!
-
     
-    @IBOutlet weak var txtbuilding: GBTextField!
+    //@IBOutlet weak var txtbuilding: GBTextField!
+    
     @IBOutlet var viewnoresult: UIView!
     
     @IBOutlet weak var btnadd: UIButton!
@@ -550,6 +550,8 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         txtSearchbar.layer.borderColor = UIColor.clear.cgColor
         
         txtSearchbar.borderStyle = .none
+        
+        txtSearchbar.delegate = self
 
                 let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
                                                                         verticalAlignment: .center)
@@ -873,13 +875,13 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        if(buildingary.count == 0)
+      /*  if(buildingary.count == 0)
         {
             textField.resignFirstResponder()
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"No Buildings Found")
             self.present(alert, animated: true, completion: nil)
             
-        }
+        } */
     }
     
     
@@ -1915,6 +1917,40 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     }
     
    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        let substring = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        
+        //self.allmembersary.removeAll()
+        // self.Finalallmembersary.removeAll()
+        
+            if(substring != ""){
+                allmembersary.removeAll()
+                for dic in Finalallmembersary
+                {
+                 let str = dic.name
+                    if((str?.lowercased().contains(substring.lowercased())) != nil)
+                    {
+                        allmembersary.append(dic)
+                    }
+                    
+                 
+                 self.tblMembers.reloadData()
+
+                }
+            }
+            else
+            {
+                allmembersary = Finalallmembersary
+             
+               self.tblMembers.reloadData()
+
+            }
+        
+        
+        return true
+    }
+    
 }
 
 
