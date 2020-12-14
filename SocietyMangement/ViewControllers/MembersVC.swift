@@ -321,7 +321,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         selectedbloodgrop = ""
         
         setUpAgeView()
-        searchActive = false
+       // searchActive = false
         
     }
 
@@ -336,7 +336,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 // 31/10/20. temp comment
      //   searchbar.text = ""
         
-        apicallGetAllMembers()
+       // apicallGetAllMembers()
 
         
         if btnFilter.isSelected == false {
@@ -431,7 +431,14 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         selectedbloodgrop = ""
         setUpAgeView()
 
-        searchActive = false
+        
+        collectionAge.reloadData()
+        CollectionBloodGrp.reloadData()
+        collectionProfession.reloadData()
+        
+        apicallGetBuildings()
+        
+       // searchActive = false
 
     }
     
@@ -501,6 +508,10 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         tblMembers.separatorStyle = .none
         
         tblMembers.isHidden = true
+        
+        tblMembers.estimatedRowHeight = 150
+        tblMembers.rowHeight = UITableViewAutomaticDimension
+        
 
         lblBlodShow.isHidden = true
         lblProfessionShow.isHidden = true
@@ -547,6 +558,10 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         
         txtSearchbar.borderStyle = .none
 
+        txtSearchbar.delegate = self
+
+        txtSearchbar.addTarget(self, action: #selector(searchRecordsAsPerText(_ :)), for: .editingChanged)
+
 
         // 30/10/20.
         
@@ -567,6 +582,47 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         } */
         
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func searchRecordsAsPerText(_ textfield:UITextField) {
+        allmembersary.removeAll()
+        
+       // searchActive = true
+        if textfield.text?.count != 0 {
+            for strCountry in membersary {
+                let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
+                
+                if range != nil {
+                    allmembersary.append(strCountry)
+                    
+                    searchActive = true
+                    collectionbuildings.isHidden = true
+                    tblMembers.isHidden = false
+                    tblMembers.reloadData()
+                }
+            }
+        }else if textfield.text?.count == 0 {
+           // searchActive = false
+            apicallGetBuildings()
+
+            collectionbuildings.isHidden = false
+        }
+        /*else if (allmembersary.count == 0){
+            // searchActive = false
+            
+            lblnoproperty.isHidden = false
+            
+            lblnoproperty.text  = "Member List Not Found"
+        } */
+        else {
+            allmembersary = membersary
+            
+            collectionbuildings.isHidden = true
+            tblMembers.isHidden = false
+            tblMembers.reloadData()
+            
+        }
+        
     }
     
     
@@ -804,7 +860,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                    case .failure(let err):
                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
+                 //   print(err.asAFError!)
                        webservices().StopSpinner()
                        
                    }
@@ -1516,8 +1572,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 //       }
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return UITableViewAutomaticDimension
-           // return 150
+           // return UITableViewAutomaticDimension
+            return 190
         }
     
     
@@ -1534,7 +1590,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         {
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                        avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
-                                       avc?.subtitleStr = "Are you sure you want to call: \(membersary[sender.tag].phone)"
+                                       avc?.subtitleStr = "Are you sure you want to call: \(membersary[sender.tag].phone!)"
             avc?.isfrom = 3
 
                                        avc?.yesAct = {
@@ -1552,7 +1608,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                        avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
-                                       avc?.subtitleStr = "Are you sure you want to call: \(allmembersary[sender.tag].phone)"
+                                       avc?.subtitleStr = "Are you sure you want to call: \(allmembersary[sender.tag].phone!)"
             avc?.isfrom = 3
 
                                        avc?.yesAct = {
@@ -1641,7 +1697,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                     if(resp.data.count > 0)
                     {
+                        
+                        self.collectionbuildings.isHidden = false
+                        
                         self.collectionbuildings.reloadData()
+                        
+                        self.tblMembers.isHidden = true
+                        
                         self.lblnoproperty.isHidden = true
                         //self.txtbuilding.text = resp.data[0].name
                         self.buildingid = resp.data[0].propertyID
@@ -1653,6 +1715,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                       //  self.apicallGetMembers()
                         
                     }else{
+                        
+                        self.collectionbuildings.isHidden = true
+
                         self.lblnoproperty.isHidden = false
                         
                         self.viewnoresult.isHidden = false
@@ -1700,7 +1765,10 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         
        // Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id: (self.buildingid! as! NSNumber).stringValue,token:strToken as! String) { JSON in
             
-            Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id,token:strToken as! String) { JSON in
+           // Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id,token:strToken as! String) { JSON in
+                
+            Apicallhandler().GetAllMembers(URL: webservices().baseurl + "user/society-members" ,token:strToken as! String) { JSON in
+
 
             switch JSON.result{
             case .success(let resp):
@@ -1837,7 +1905,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         let building_id =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
       //  let strSociId  = (building_id as NSNumber).stringValue
         
-        let id = String(format: "%d",building_id)
+      //  let id = String(format: "%d",building_id)
 
         
         let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
@@ -1846,10 +1914,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
       
         //Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST, societyid:strSociId, building_id:"0",token:strToken as! String) { JSON in
         
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
+      // Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST + id ,token:strToken as! String) { JSON in
             
       //  Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST ,token:strToken as! String) { JSON in
 
+         //   "user/society-members"
+            
+        Apicallhandler().GetAllMembers(URL: webservices().baseurl + "user/society-members" ,token:strToken as! String) { JSON in
 
             switch JSON.result{
             case .success(let resp):
@@ -1859,6 +1930,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 {
                     if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
                     {
+                        self.membersary = resp.data!
                         self.allmembersary = resp.data!
                         self.Finalallmembersary = resp.data!
                         
@@ -1932,17 +2004,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                 else
                 {
-                  /*  if(resp.data!.count == 0)
-                    {
-                        self.tblMembers.isHidden = true
-                        self.viewnoresult.isHidden = false
-                    }
-                    else
-                    {
-                        self.tblMembers.isHidden = false
-                        self.viewnoresult.isHidden = true
-                        
-                    } */
                     
                 }
                 

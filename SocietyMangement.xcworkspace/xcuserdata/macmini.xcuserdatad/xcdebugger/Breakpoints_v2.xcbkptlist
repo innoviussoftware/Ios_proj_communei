@@ -18,80 +18,128 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0AFF4C1C-DBAE-4160-B33E-F4F3DCA8B188"
+            uuid = "17649C20-D18E-4BEB-A054-60A1A2862413"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/AmenitiesClenderBookVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SplashVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
-            landmarkName = "calendar(_:didSelect:at:)"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "AcceptRequest(notification:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A867A468-E9F0-450D-A3B9-495A0D0FF934"
+            uuid = "D668AE98-789A-4248-87CC-E58982F1D9D7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/ProfiledetailVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SplashVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1225"
-            endingLineNumber = "1225"
-            landmarkName = "apicallUpdateProfile()"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "viewWillDisappear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DA634907-1E5F-4096-8E8C-09211845ADD4"
+            uuid = "B1EB2455-4F99-46B9-8056-C5C50FD0482A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/ProfiledetailVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SplashVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1241"
-            endingLineNumber = "1241"
-            landmarkName = "apicallUpdateProfile()"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "824B06DE-14C7-4296-8AC4-C250941EB48C"
+            uuid = "8E71CE52-FEF7-41AD-90FE-363850898828"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/ProfiledetailVC.swift"
+            filePath = "SocietyMangement/ViewControllers/MembersVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1250"
-            endingLineNumber = "1250"
-            landmarkName = "apicallUpdateProfile()"
+            startingLineNumber = "1925"
+            endingLineNumber = "1925"
+            landmarkName = "apicallGetAllMembers()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0D58100C-FA7C-4543-94B4-EEECA8E97B36"
+            uuid = "396256B6-00F8-4061-97D2-01DDE2FA7281"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/ProfiledetailVC.swift"
+            filePath = "SocietyMangement/ViewControllers/MembersVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1293"
-            endingLineNumber = "1293"
-            landmarkName = "apicallUserMe()"
+            startingLineNumber = "1336"
+            endingLineNumber = "1336"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "391A8D95-8473-4A57-A92E-A3B25ADA71EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/MembersVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "604"
+            endingLineNumber = "604"
+            landmarkName = "searchRecordsAsPerText(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A64D207A-DFB4-435B-9027-D732EB45D86B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/MembersVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "617"
+            endingLineNumber = "617"
+            landmarkName = "searchRecordsAsPerText(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3A6DF3C4-BF87-4680-A0D5-9E1A7F4D0C3C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/MembersVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "591"
+            endingLineNumber = "591"
+            landmarkName = "searchRecordsAsPerText(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

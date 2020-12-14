@@ -294,6 +294,13 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         viewCamera.addGestureRecognizer(tap)
         
         
+        ApiCallGetProfession()
+        
+        ApiCallGetBlood()
+
+        pickerview1.delegate = self
+        pickerview1.dataSource = self
+        
         if(isfrom == 1)
         {
             
@@ -310,6 +317,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             txtViewProfessionDetail.text = member?.professionDetails
             
             txtprofession.text = member?.professionName
+            
+            txtProfessionOther.text = member?.professionDetails
             
             let date =   member?.dateOfBirth // "2016-02-10 00:00:00"
             let dateFormatter = DateFormatter()
@@ -352,14 +361,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         setrightviewnew(textfield:txtGender, image: #imageLiteral(resourceName: "ic_downarrow"))
         setrightviewnew(textfield:txtRelation, image: #imageLiteral(resourceName: "ic_downorange")) */
         
-        ApiCallGetProfession()
-        
-        ApiCallGetBlood()
-
-        pickerview1.delegate = self
-        pickerview1.dataSource = self
-               
-
+       
         let toolBar1 = UIToolbar()
         toolBar1.barStyle = .default
         toolBar1.isTranslucent = true
@@ -1102,7 +1104,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
-        print("token : ",token as! String)
+        print("token Professsion : ",token as! String)
 
         Apicallhandler().ApiGetProfession(URL: webservices().baseurl + "communei/professions", token: token as! String) { JSON in
            

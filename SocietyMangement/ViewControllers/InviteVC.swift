@@ -47,7 +47,7 @@ class manuallycell:UITableViewCell
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 
-class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource , UISearchBarDelegate,ScrollPagerDelegate {
+class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource , UISearchBarDelegate,ScrollPagerDelegate, UITextFieldDelegate {
     
 //Manish
     
@@ -456,7 +456,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         
         txtSearchbar.borderStyle = .none
 
-        
+        txtSearchbar.delegate = self
+
         self.fetchContacts()
         
         fetchRecentContacts()
@@ -564,6 +565,39 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         {
             pager.setSelectedIndex(index: 0, animated: false) // 2
         }
+        
+        txtSearchbar.addTarget(self, action: #selector(searchRecordsAsPerText(_ :)), for: .editingChanged)
+
+
+    }
+    
+    
+    @objc func searchRecordsAsPerText(_ textfield:UITextField) {
+        arrCotact.removeAllObjects()
+        
+        if textfield.text?.count != 0 {
+          
+            for i in 0 ..< arrFinal.count
+            {
+                let dict = arrFinal[i] as! NSMutableDictionary
+                let namenew = dict.value(forKey: "Name") as! String
+                if(namenew.lowercased().contains(txtSearchbar.text!.lowercased()))
+                        {
+                            arrCotact.add(dict)
+                        }
+                        
+                        tblcontact.reloadData()
+                
+            }
+        }else{
+            //results = finalresults
+            arrCotact = arrFinal.mutableCopy() as! NSMutableArray
+            //arrCotact = arrFinal
+            tblcontact.reloadData()
+            
+        }
+        
+        self.tblcontact.reloadData()
         
     }
     
@@ -893,7 +927,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         print("scrollPager index changed: \(changedIndex)")
         
-
+        view.endEditing(true)
+        
        // pager.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
 
        /* if changedIndex == 0 {

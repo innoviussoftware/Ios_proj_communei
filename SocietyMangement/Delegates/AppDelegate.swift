@@ -372,7 +372,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                else if(state == .active && dic.value(forKey:"notification_type") as! String == "security")
                 {
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
+                } else if(state == .active && dic.value(forKey:"notification_type") as! String == "SocietyNotice")
+                {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)
                 }
+                
                 
               //  else{
                   //  NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Acceptnotification"), object: dic)

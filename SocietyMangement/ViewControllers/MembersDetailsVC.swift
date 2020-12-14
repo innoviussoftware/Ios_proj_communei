@@ -267,6 +267,8 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             constraintHightlblBlodShow.constant = 0
             constraintHightlblProfessionShow.constant = 0
             constraintHightlblAgeShow.constant = 25
+            
+            collectionAge.reloadData()
 
             
         }else{
@@ -379,7 +381,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         filtrview.isHidden = false
        // self.collectionmembers.reloadData()
                 
-        self.tblMembers.reloadData()
+       self.tblMembers.reloadData()
 
        // hightcollectionbuilding.constant = 0
         
@@ -394,19 +396,8 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         
     }
     
-    func clearlbl() {
-    
-        lblBlod.textColor = AppColor.lblFilterUnselect
-        lblProfession.textColor = AppColor.lblFilterUnselect
-        lblAge.textColor = AppColor.lblFilterUnselect
-
-        lblBlodShow.isHidden = true
-        lblProfessionShow.isHidden = true
-        lblAgeShow.isHidden = true
-
-    }
-    
-    @IBAction func clearaction(_ sender: Any) {
+  
+    @IBAction func clearaction(_ sender: Any) {  // reset
     //    arrBloodGrp.removeAllObjects()
 //        for i in 0..<bloodgroupary.count{
 //            arrTemp.add("0")
@@ -430,19 +421,43 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                arrBloodGrp.removeAllObjects()
                arrSelectionCheck.removeAllObjects()
                
-        arrAge.removeAllObjects()
+                arrAge.removeAllObjects()
+                
         
         filtrview.isHidden = true
         
         clearlbl()
         setUpView()
+        
+      //  setUpAgeView()
+
         selectedbloodgrop = ""
+        
         setUpAgeView()
+        
+        collectionAge.reloadData()
+        CollectionBloodGrp.reloadData()
+        collectionProfession.reloadData()
+        
+        apicallGetMembers()
+        
+      //  self.tblMembers.reloadData()
 
         searchActive = false
 
     }
     
+    func clearlbl() {
+    
+        lblBlod.textColor = AppColor.lblFilterUnselect
+        lblProfession.textColor = AppColor.lblFilterUnselect
+        lblAge.textColor = AppColor.lblFilterUnselect
+
+        lblBlodShow.isHidden = true
+        lblProfessionShow.isHidden = true
+        lblAgeShow.isHidden = true
+
+    }
     
     var bloodgroupary = [BloodGroup]()
     //["A+","A-","B+","B-","AB+","AB-","O+","O-"]
@@ -517,6 +532,10 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                 tblMembers.separatorStyle = .none
                 
                 tblMembers.isHidden = true
+        
+        tblMembers.estimatedRowHeight = 150
+        tblMembers.rowHeight = UITableViewAutomaticDimension
+        
 
                 lblBlodShow.isHidden = true
                 lblProfessionShow.isHidden = true
@@ -552,6 +571,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         txtSearchbar.borderStyle = .none
         
         txtSearchbar.delegate = self
+    
 
                 let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
                                                                         verticalAlignment: .center)
@@ -568,15 +588,45 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                                                                                 verticalAlignment: .center)
                        
                collectionAge.collectionViewLayout = alignedFlowLayout2
-                       
-                    
+        
+        txtSearchbar.addTarget(self, action: #selector(searchRecordsAsPerText(_ :)), for: .editingChanged)
+
+    }
+    
+    @objc func searchRecordsAsPerText(_ textfield:UITextField) {
+        allmembersary.removeAll()
+        
+        if textfield.text?.count != 0 {
+            searchActive = true
+
+            for strCountry in membersary {
+                let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
+                
+                if range != nil {
+                    allmembersary.append(strCountry)
+                }
+            }
+        }else if textfield.text?.count == 0 {
+            searchActive = false
+            
+        }else if (allmembersary.count == 0){
+            // searchActive = false
+            
+            lblnoproperty.isHidden = false
+            
+            lblnoproperty.text  = "Member List Not Found"
+        }else {
+            allmembersary = membersary
+        }
+        
+        tblMembers.reloadData()
     }
     
 
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
-        
     }
+    
     func setView(view: UIView, hidden: Bool) {
         UIView.transition(with: view, duration: 0.5, options: .transitionCrossDissolve, animations: {
             view.isHidden = hidden
@@ -1062,12 +1112,20 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         }
             else if(collectionView == collectionAge)
             {
-                let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-                let contentNSString = agegroupary[indexPath.row]
-                let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+                
+                let numberOfSets = CGFloat(3.0)
+                 
+                 let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
+                 
+                 return CGSize(width:width,height: 31)
+                
+              /* let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+                let contentNSString = arrAge[indexPath.row]
+                //agegroupary[indexPath.row]
+                let expectedLabelSize = (contentNSString as! String).boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
                 
                 print("\(expectedLabelSize)")
-                return CGSize(width:expectedLabelSize.size.width + 30, height: expectedLabelSize.size.height + 12) //31
+                return CGSize(width:expectedLabelSize.size.width + 30, height: expectedLabelSize.size.height + 12) */
                 
             }
          else {
@@ -1623,7 +1681,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     
     // MARK: - get Members
     
-    func apicallGetMembers()
+    func apicallGetMembers() // right
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -1775,18 +1833,20 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         }
         
         
-        
+        let id = String(format: "%d",buildingid!)
+
        // let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
       //  let strSociId  = (SociId as NSNumber).stringValue
         
         let strToken =  UserDefaults.standard.value(forKey:USER_TOKEN)
-
         webservices().StartSpinner()
 
         
       //  Apicallhandler().GetAllMembersSearch(URL: webservices().baseurl + API_MEMBER_LIST_SEARCH ,token:strToken as! String, param: <#Parameters#>) { JSON in
         
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST ,token:strToken as! String) { JSON in
+        Apicallhandler().GetAllMembers(URL: webservices().baseurl + API_MEMBER_LIST  + id,token:strToken as! String) { JSON in
+            
+
 
             switch JSON.result{
             
@@ -1798,8 +1858,12 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                 {
                     if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
                     {
+                        self.membersary = resp.data!
+
                         self.allmembersary = resp.data!
                         self.Finalallmembersary = resp.data!
+                        
+                      //  self.tblMembers.reloadData()
                         
                       //  self.hightcollectionbuilding.constant = 60
                      //   self.collectionbuildings.isHidden = false
@@ -1917,7 +1981,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     }
     
    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+   /* func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
         let substring = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         
@@ -1949,7 +2013,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         
         
         return true
-    }
+    } */
     
 }
 

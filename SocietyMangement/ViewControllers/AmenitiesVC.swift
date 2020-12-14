@@ -321,11 +321,11 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     }
     
     @objc func actionAmenitiesBooking(sender:UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
+       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
         
         vc.isfrom = 2
         //vc. = arrFacilities
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true) */
 
     }
     
