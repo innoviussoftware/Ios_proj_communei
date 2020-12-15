@@ -16,7 +16,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
+class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource, URLSessionDownloadDelegate {
 
     @IBOutlet weak var vwbtnadd: UIView!
 
@@ -393,24 +393,43 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
        {
         let pdffile = eventary[sender.tag].attachments![0]
            
+        guard let url = URL(string: pdffile)else {return}
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+               let downloadTask = urlSession.downloadTask(with: url)
+               downloadTask.resume()
         
-         guard let url = URL(string: pdffile) else {
-               return //be safe
-           }
-        
-//            let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-//            let downloadTask = urlSession.downloadTask(with: url)
-//            downloadTask.resume()
-//
         
         // 6/11/20. temp comment 2 line
 
-           if #available(iOS 10.0, *) {
+         /*  if #available(iOS 10.0, *) {
                UIApplication.shared.open(url, options: [:], completionHandler: nil)
            } else {
                UIApplication.shared.openURL(url)
-           }
+           } */
            
+       }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+           print("File Downloaded Location- ",  location)
+           
+        var pdfUrl : URL?
+
+           guard let url = downloadTask.originalRequest?.url else {
+               return
+           }
+        
+           let docsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+           let destinationPath = docsPath.appendingPathComponent(url.lastPathComponent)
+           
+           try? FileManager.default.removeItem(at: destinationPath)
+           
+           do{
+               try FileManager.default.copyItem(at: location, to: destinationPath)
+               pdfUrl = destinationPath
+               print("File Downloaded Location- ",  pdfUrl ?? "NOT")
+           }catch let error {
+               print("Copy Error: \(error.localizedDescription)")
+           }
        }
     
     
@@ -693,28 +712,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource{
 
 
 @available(iOS 13.0, *)
-extension SocietyEventsVC : URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("File Downloaded Location- ",  location)
-        
-        guard let url = downloadTask.originalRequest?.url else {
-            return
-        }
-        let docsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let destinationPath = docsPath.appendingPathComponent(url.lastPathComponent)
-        
-        try? FileManager.default.removeItem(at: destinationPath)
-        
-        do{
-            try FileManager.default.copyItem(at: location, to: destinationPath)
-           // self.pdfUrl = destinationPath
-           // print("File Downloaded Location- ",  self.pdfUrl ?? "NOT")
-        }catch let error {
-            print("Copy Error: \(error.localizedDescription)")
-        }
-    }
-}
-
 
 extension Array {
     public func toDictionary<Key: Hashable>(with selectKey: (Element) -> Key) -> [Key:Element] {

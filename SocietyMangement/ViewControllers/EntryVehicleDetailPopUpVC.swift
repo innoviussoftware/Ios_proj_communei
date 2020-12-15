@@ -206,7 +206,7 @@ class EntryVehicleDetailPopUpVC: BaseVC {
     }
     
     
-    // MARK: - get Notices
+    // MARK: - get Add Vehicle
     
     func apicallAddVehicle()
     {

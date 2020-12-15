@@ -8,6 +8,7 @@
 
 import UIKit
 import SWRevealViewController
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -17,7 +18,7 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
+class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessionDownloadDelegate {
     
     var selectedindexary = NSMutableArray()
     
@@ -245,14 +246,12 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CircularNewCell", for: indexPath) as! CircularNewCell
         
-        
         cell.btnReadMore.tag = indexPath.row
         cell.btnNotification.tag = indexPath.row
         
         cell.lblTitel.text = Circularary[indexPath.row].title
         cell.lblDate.text = strChangeDateFormate(strDateeee: Circularary[indexPath.row].creationDate!)
         
-
         
         // 4/9/20.
       //  let str = Circularary[indexPath.row].name
@@ -291,10 +290,24 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
             cell.btnDownload.isHidden = true
         } */
         
-        cell.btnDownload.isHidden = false
+       // cell.btnDownload.isHidden = false
 
         cell.btnEdit.tag = indexPath.row
         cell.btnDelete.tag = indexPath.row
+        cell.btnDownload.tag = indexPath.row
+
+        
+        if Circularary[indexPath.row].attachments!.count > 0{
+                if Circularary[indexPath.row].attachments?[0] != nil
+                {
+                    cell.btnDownload.isHidden = false
+                }else{
+                    cell.btnDownload.isHidden = true
+                }
+        }else{
+            cell.btnDownload.isHidden = true
+        }
+        
         
         cell.btnEdit.addTarget(self, action:#selector(editcircular), for: .touchUpInside)
         cell.btnDelete.addTarget(self, action:#selector(deletecircular), for: .touchUpInside)
@@ -303,7 +316,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
         cell.btnNotification.addTarget(self, action:#selector(sendNotification(sender:)), for: .touchUpInside)
         
         
-        cell.btnDownload.tag = indexPath.row
         cell.btnDownload.addTarget(self, action:#selector(downloadaction), for: .touchUpInside)
         
         if (Circularary[indexPath.row].readAt) != nil {
@@ -397,8 +409,13 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
     @objc func downloadaction(sender:UIButton)
     {
         let pdffile = Circularary[sender.tag].attachments![0]
+       
+        guard let url = URL(string: pdffile)else {return}
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+               let downloadTask = urlSession.downloadTask(with: url)
+               downloadTask.resume()
         
-        guard let url = URL(string: pdffile) else {
+      /*  guard let url = URL(string: pdffile) else {
             return //be safe
         }
         
@@ -406,9 +423,65 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
             UIApplication.shared.openURL(url)
-        }
+        } */
         
     }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+           print("File Downloaded Location - ",  location)
+           
+        var pdfUrl : URL?
+
+           guard let url = downloadTask.originalRequest?.url else {
+               return
+           }
+           let docsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+           let destinationPath = docsPath.appendingPathComponent(url.lastPathComponent)
+           
+           try? FileManager.default.removeItem(at: destinationPath)
+           
+           do{
+               try FileManager.default.copyItem(at: location, to: destinationPath)
+               pdfUrl = destinationPath
+               print("File Downloaded Location :- ",  pdfUrl ?? "NOT")
+           }catch let error {
+               print("Copy Error: \(error.localizedDescription)")
+           }
+
+        let fileName = String((pdfUrl!.lastPathComponent)) as NSString
+
+        do {
+            let documentsURL = try
+                FileManager.default.url(for: .documentDirectory,
+                                        in: .userDomainMask,
+                                        appropriateFor: nil,
+                                        create: false)
+
+            let savedURL = documentsURL.appendingPathComponent("\(fileName)")
+            try FileManager.default.moveItem(at: location, to: savedURL)
+        } catch {
+            print ("file error: \(error)")
+        }
+        
+        
+       }
+    
+    func saveImage(image: UIImage) -> Bool {
+        guard let data = UIImageJPEGRepresentation(image, 1) ?? UIImagePNGRepresentation(image) else {
+            return false
+        }
+        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
+            return false
+        }
+        do {
+            try data.write(to: directory.appendingPathComponent("fileName.png")!)
+            return true
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
+    }
+    
     @objc func editcircular(sender:UIButton)
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)

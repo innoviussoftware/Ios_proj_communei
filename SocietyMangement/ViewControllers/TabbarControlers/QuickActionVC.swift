@@ -107,8 +107,8 @@ class QuickActionVC: BaseVC ,Invite {
     }
         
     @IBAction func btnParcelPickupPressed(_ sender: UIButton) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
-        self.navigationController?.pushViewController(vc, animated: true)
+       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
+        self.navigationController?.pushViewController(vc, animated: true) */
         print("Parcel Pickup")
     }
     

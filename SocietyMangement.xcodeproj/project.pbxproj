@@ -187,6 +187,8 @@
 		9ACED2D42330E71900933A8C /* ProfiledetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2D32330E71900933A8C /* ProfiledetailVC.swift */; };
 		9ACED2D62330F1F900933A8C /* AddFamilyMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2D52330F1F900933A8C /* AddFamilyMemberVC.swift */; };
 		9ACED2D82330FE3300933A8C /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2D72330FE3300933A8C /* ProfileVC.swift */; };
+		9AD31C022588CEAB00F91958 /* SingleEditDateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD31C012588CEAB00F91958 /* SingleEditDateVC.swift */; };
+		9AD31C072588E11D00F91958 /* MultiEditDateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD31C062588E11D00F91958 /* MultiEditDateVC.swift */; };
 		9AD4235B2371540900FF4F4A /* HelperDeskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD423592371540900FF4F4A /* HelperDeskCell.swift */; };
 		9AD4235C2371540900FF4F4A /* HelperDeskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD4235A2371540900FF4F4A /* HelperDeskCell.xib */; };
 		9AEC3884230D58A300C713B4 /* MembersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC3883230D58A300C713B4 /* MembersVC.swift */; };
@@ -489,6 +491,8 @@
 		9ACED2D32330E71900933A8C /* ProfiledetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfiledetailVC.swift; sourceTree = "<group>"; };
 		9ACED2D52330F1F900933A8C /* AddFamilyMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyMemberVC.swift; sourceTree = "<group>"; };
 		9ACED2D72330FE3300933A8C /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		9AD31C012588CEAB00F91958 /* SingleEditDateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleEditDateVC.swift; sourceTree = "<group>"; };
+		9AD31C062588E11D00F91958 /* MultiEditDateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiEditDateVC.swift; sourceTree = "<group>"; };
 		9AD423592371540900FF4F4A /* HelperDeskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperDeskCell.swift; sourceTree = "<group>"; };
 		9AD4235A2371540900FF4F4A /* HelperDeskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelperDeskCell.xib; sourceTree = "<group>"; };
 		9AEC3883230D58A300C713B4 /* MembersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersVC.swift; sourceTree = "<group>"; };
@@ -856,6 +860,8 @@
 				9A384555230E903C00B64AC2 /* AddNoticeVC.swift */,
 				9A384557230E956300B64AC2 /* AddAnnounceVC.swift */,
 				9AEC3883230D58A300C713B4 /* MembersVC.swift */,
+				9AD31C012588CEAB00F91958 /* SingleEditDateVC.swift */,
+				9AD31C062588E11D00F91958 /* MultiEditDateVC.swift */,
 				D2567E10252B296700C93714 /* MembersDetailsVC.swift */,
 				9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */,
 				9AEC3885230D5FBF00C713B4 /* MemberdetailVC.swift */,
@@ -1293,6 +1299,7 @@
 				D2B9DA7224F535F100FF9BF0 /* ProductAddImgCollectionCell.swift in Sources */,
 				9ACED2D02330A60B00933A8C /* FlatResponse.swift in Sources */,
 				D2DDD58424FE0EA20008BE6A /* PollResultResp.swift in Sources */,
+				9AD31C072588E11D00F91958 /* MultiEditDateVC.swift in Sources */,
 				9AA900B5230D3DE800697383 /* SocietyEventsVC.swift in Sources */,
 				9A955AB5230FE9DA004A4668 /* AddBuidingResponse.swift in Sources */,
 				9A384556230E903C00B64AC2 /* AddNoticeVC.swift in Sources */,
@@ -1381,6 +1388,7 @@
 				9A9380002331EEC20078B5AC /* FamilyMemberResponse.swift in Sources */,
 				D22FAE482514BDE600707966 /* GuestWaitingPopupVC.swift in Sources */,
 				D2B9DA6D24F5296200FF9BF0 /* BuySellVC.swift in Sources */,
+				9AD31C022588CEAB00F91958 /* SingleEditDateVC.swift in Sources */,
 				9A955AB7230FEFDB004A4668 /* UpdateBuildingResponse.swift in Sources */,
 				D25CDD382547E5EA0099B1C2 /* BuildingAddResponse.swift in Sources */,
 				4EC1A23D235F22C20060A507 /* WorkingWithPopUpCell.swift in Sources */,

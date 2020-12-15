@@ -111,6 +111,9 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         // API_ADD_BOOKINGS_NOW
         // user/amenity/bookings/add
         }else{
+            
+            calenderView.select(self.dateFormatter1.date(from: "2021-11-25"))
+
             btnDone.setTitle("Update", for: .normal)
         }
         
