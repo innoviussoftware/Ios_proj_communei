@@ -401,16 +401,16 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource, UR
         
         // 6/11/20. temp comment 2 line
 
-         /*  if #available(iOS 10.0, *) {
+           if #available(iOS 10.0, *) {
                UIApplication.shared.open(url, options: [:], completionHandler: nil)
            } else {
                UIApplication.shared.openURL(url)
-           } */
+           }
            
        }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-           print("File Downloaded Location- ",  location)
+           print("File Downloaded Location - ",  location)
            
         var pdfUrl : URL?
 
@@ -426,7 +426,7 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource, UR
            do{
                try FileManager.default.copyItem(at: location, to: destinationPath)
                pdfUrl = destinationPath
-               print("File Downloaded Location- ",  pdfUrl ?? "NOT")
+               print("File Downloaded Location -- ",  pdfUrl ?? "NOT")
            }catch let error {
                print("Copy Error: \(error.localizedDescription)")
            }

@@ -1259,7 +1259,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             let expectedLabelSize = contentNSString?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
             
             print("\(String(describing: expectedLabelSize))")
-            return CGSize(width:(expectedLabelSize?.size.width)! + 15, height: expectedLabelSize!.size.height + 25)
+            return CGSize(width:(expectedLabelSize?.size.width)! + 25, height: expectedLabelSize!.size.height + 25)
         }
         
     }

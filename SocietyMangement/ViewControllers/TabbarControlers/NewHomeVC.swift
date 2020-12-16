@@ -130,7 +130,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
                 navigationController?.pushViewController(nextViewController, animated: true)
                 
             }
-            else  if object.value(forKey: "notification_type") as! String == "alert"{
+            else if object.value(forKey: "notification_type") as! String == "alert"{
                        
               let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                             

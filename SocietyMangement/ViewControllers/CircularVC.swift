@@ -18,7 +18,8 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessionDownloadDelegate {
+class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessionDownloadDelegate
+{
     
     var selectedindexary = NSMutableArray()
     
@@ -417,13 +418,13 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
         
       /*  guard let url = URL(string: pdffile) else {
             return //be safe
-        }
+        } */
         
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
             UIApplication.shared.openURL(url)
-        } */
+        }
         
     }
     
@@ -459,10 +460,16 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
 
             let savedURL = documentsURL.appendingPathComponent("\(fileName)")
             try FileManager.default.moveItem(at: location, to: savedURL)
+            
+           // saveImage(image: UIImage(named: "\(pdfUrl!)")!)
+            
+           // saveImage(image: UIImage(named: (String((pdfUrl!.lastPathComponent))as String))!)
+
         } catch {
             print ("file error: \(error)")
         }
         
+           // saveImage(image: UIImage(named: saved))
         
        }
     

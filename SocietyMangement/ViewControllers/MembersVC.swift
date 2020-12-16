@@ -326,14 +326,16 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     }
 
     
-    @IBAction func filteraction(_ sender: Any) {
+    @IBAction func filteraction(_ sender: UIButton) {
        
         self.viewnoresult.isHidden = true
         setView(view: filtrview, hidden: false)
         
+        txtSearchbar.text = ""
+        
         clearlbl()
         
-// 31/10/20. temp comment
+        // 31/10/20. temp comment
      //   searchbar.text = ""
         
        // apicallGetAllMembers()

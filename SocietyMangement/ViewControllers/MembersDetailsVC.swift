@@ -27,7 +27,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     @IBOutlet weak var tblMembers: UITableView!
 
     
-    @IBOutlet weak var searchbar: UISearchBar!
+  //  @IBOutlet weak var searchbar: UISearchBar!
 
     @IBOutlet weak var txtSearchbar: UITextField!
 
@@ -334,14 +334,16 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     }
 
     
-    @IBAction func filteraction(_ sender: Any) {
+    @IBAction func filteraction(_ sender: UIButton) {
        
         self.viewnoresult.isHidden = true
         setView(view: filtrview, hidden: false)
         
+        txtSearchbar.text = ""
+
         clearlbl()
 
-        searchbar.text = ""
+      // searchbar.text = ""
         
       //  apicallGetAllMembers()
 
@@ -609,13 +611,15 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         }else if textfield.text?.count == 0 {
             searchActive = false
             
-        }else if (allmembersary.count == 0){
+        }
+        /*else if (allmembersary.count == 0){
             // searchActive = false
             
             lblnoproperty.isHidden = false
             
             lblnoproperty.text  = "Member List Not Found"
-        }else {
+        }*/
+        else {
             allmembersary = membersary
         }
         
@@ -2018,7 +2022,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
 }
 
 
-
+/*
 @available(iOS 13.0, *)
 extension MembersDetailsVC : UISearchBarDelegate
 {
@@ -2203,4 +2207,4 @@ extension MembersDetailsVC : UISearchBarDelegate
         
         
     }
-}
+} */

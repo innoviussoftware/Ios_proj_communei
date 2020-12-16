@@ -21,7 +21,7 @@ struct UserActivityAll: Codable {
     let userActivityID, userActivityTypeID: Int?
     let guardActivityID: Int?
     let societyID: Int?
-    let visitorEntryID, visitingFlatID: Int?
+    let visitorEntryID, visitingFlatID, visitorEntryTypeID: Int?
     let propertyID: Int?
     let dateLastUpadted: String?
     let inTime: String?
@@ -37,6 +37,7 @@ struct UserActivityAll: Codable {
         case societyID = "SocietyID"
         case visitorEntryID = "VisitorEntryID"
         case visitingFlatID = "VisitingFlatID"
+        case visitorEntryTypeID = "VisitorEntryTypeID"
         case propertyID = "PropertyID"
         case dateLastUpadted = "DateLastUpadted"
         case inTime = "InTime"

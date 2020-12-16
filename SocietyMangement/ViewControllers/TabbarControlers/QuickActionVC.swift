@@ -106,11 +106,6 @@ class QuickActionVC: BaseVC ,Invite {
         print("On Demand Helper")
     }
         
-    @IBAction func btnParcelPickupPressed(_ sender: UIButton) {
-       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
-        self.navigationController?.pushViewController(vc, animated: true) */
-        print("Parcel Pickup")
-    }
     
     @IBAction func btnEmergencyAlertsPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "EmergencyAlertVC") as! EmergencyAlertVC

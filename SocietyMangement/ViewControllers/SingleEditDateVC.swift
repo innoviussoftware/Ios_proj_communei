@@ -9,68 +9,122 @@
 import UIKit
 import Alamofire
 
-protocol addDate {
+protocol addSingleDate {
     func addedSingleDate()
 }
 
-class SingleEditDateVC: UIViewController, UITextFieldDelegate{
+class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout  {
+
+    var delegate : addSingleDate?
     
-    var delegate : addDate?
+    var isfrom = 1
     
+    @IBOutlet weak var viewinnerHeightCons: NSLayoutConstraint!
+    
+    @IBOutlet weak var btnUpdateTopCons: NSLayoutConstraint!
+
+
     @IBOutlet weak var viewinner: UIView!
-
-    @IBOutlet weak var txtstartdate: UITextField!
     
-    @IBOutlet weak var txtenddate: UITextField!
+    @IBOutlet weak var viewbottom: UIView!
 
-    var datePicker = UIDatePicker()
-
-    var textfield = UITextField()
+    @IBOutlet weak var txtdate: UITextField!
     
+    @IBOutlet weak var txttime: UITextField!
+    
+    @IBOutlet weak var txtvaildtill: UITextField!
+    
+    @IBOutlet weak var collectionHours: UICollectionView!
+    
+    @IBOutlet weak var btncheckMark: UIButton!
+
+    @IBOutlet weak var lblDeliveryName: UILabel!
+
+
+    var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
+    
+    var selectedindex : Int = 0
+
     var VisitFlatPreApprovalID:Int?
     var UserActivityID:Int?
     var VisitorEntryTypeID:Int?
-
     
-    var strStartDate = ""
-    var StrEndDate = ""
+    var multipleDeliveryCheckGate:Int?
+    
+    var textfield = UITextField()
+    
+    var datePicker = UIDatePicker()
+    var timePicker = UIDatePicker()
 
-    var date1 = Date()
-    var date2 = Date()
+    var strStartDate = ""
+    var StrTime = ""
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewbottom.isHidden = true
 
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        self.showAnimate()
+        setborders(textfield: txtdate)
+        setborders(textfield: txttime)
+        setborders(textfield: txtvaildtill)
         
-        setborders(textfield: txtstartdate)
-        setborders(textfield: txtenddate)
+        txtdate.delegate = self
+        txttime.delegate = self
+        txtvaildtill.delegate = self
         
-        txtstartdate.delegate = self
-        txtenddate.delegate = self
+        webservices.sharedInstance.PaddingTextfiled(textfield: txtdate)
+        webservices.sharedInstance.PaddingTextfiled(textfield: txttime)
+        webservices.sharedInstance.PaddingTextfiled(textfield: txtvaildtill)
         
-        webservices.sharedInstance.PaddingTextfiled(textfield: txtstartdate)
-        webservices.sharedInstance.PaddingTextfiled(textfield: txtenddate)
+        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
+               
+        collectionHours.collectionViewLayout = alignedFlowLayout
         
-       // let datee = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
-        
-        let date = formatter.date(from:strStartDate)!
+        txtvaildtill.text = hourary[0]
 
-        let date1 = formatter.date(from:StrEndDate)!
+         let formatter = DateFormatter()
+         formatter.dateFormat = "dd-MM-yyyy"
 
-        txtstartdate.text = formatter.string(from: date)
-        txtenddate.text = formatter.string(from: date1)
+        txtdate.text = strStartDate
+        
+        let formatter1 = DateFormatter()
+        formatter1.dateFormat = "h:mm a"
+                
+        var Msg_Date = StrTime
+
+           let dateFormatterGet = DateFormatter()
+           dateFormatterGet.dateFormat = "HH:mm:ss"
+           let dateFormatterPrint = DateFormatter()
+           dateFormatterPrint.dateFormat = "h:mm a"  //"MMM d, h:mm a" for  Sep 12, 2:11 PM
+           let datee = dateFormatterGet.date(from: Msg_Date)
+           Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
+        
+        txttime.text = Msg_Date
+        
+        showDatePicker()
+        
+        showTimepPicker()
+        
+        if isfrom == 1 {
+            viewinnerHeightCons.constant = 255
+            btncheckMark.isHidden = true
+            lblDeliveryName.isHidden = true
+            btnUpdateTopCons.constant = 20
+        }else if isfrom == 2 {
+            btncheckMark.isHidden = false
+            lblDeliveryName.isHidden = false
+            viewinnerHeightCons.constant = 300
+            btnUpdateTopCons.constant = 60
+
+        }
         
         // Do any additional setup after loading the view.
     }
     
-    
     func showDatePicker() {
-              //Formate Date
-              datePicker.datePickerMode = .date
+        //Formate Date
+        datePicker.datePickerMode = .date
         
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
@@ -83,23 +137,17 @@ class SingleEditDateVC: UIViewController, UITextFieldDelegate{
               toolbar.sizeToFit()
               
               //done button & cancel button
-              let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(donedatePicker))
+             let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donedatePicker))
               let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-              let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(cancelDatePicker))
+             let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
               toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
               
-              
               // add toolbar to textField
-              txtenddate.inputAccessoryView = toolbar
+              txtdate.inputAccessoryView = toolbar
               // add datepicker to textField
-              txtenddate.inputView = datePicker
-              
-              // add toolbar to textField
-              txtstartdate.inputAccessoryView = toolbar
-              // add datepicker to textField
-              txtstartdate.inputView = datePicker
+             txtdate.inputView = datePicker
              
-              datePicker.minimumDate = Date()
+            datePicker.minimumDate = Date()
               
     }
     
@@ -108,40 +156,98 @@ class SingleEditDateVC: UIViewController, UITextFieldDelegate{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
         
-        if(textfield == txtenddate)
+        if(textfield == txtdate)
         {
-            txtenddate.text = formatter.string(from: datePicker.date)
-            date2 = datePicker.date
-            let cal = NSCalendar.current
-            
-            let components = cal.dateComponents([.day], from: date1, to: date2)
-            
-            if (components.day! >= 0)
-            {
-               // lbldays.text =  (components.day! as NSNumber).stringValue + "days"
-             //   days = lbldays.text!
-            }
-            else{
-                let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                    self.txtenddate.text = ""
-                }))
-                self.present(alert, animated: true, completion: nil)
-            }
-            
+            txtdate.text = formatter.string(from: datePicker.date)
+           // date1 = datePicker.date
         }
-        if(textfield == txtstartdate)
-        {
-            txtstartdate.text = formatter.string(from: datePicker.date)
-            date1 = datePicker.date
-            
-        }
+        
         self.view.endEditing(true)
     }
-    
+        
     @objc func cancelDatePicker(){
            //cancel button dismiss datepicker dialog
         self.view.endEditing(true)
+    }
+    
+    func showTimepPicker() {
+        //Formate Date
+        timePicker.datePickerMode = .time
+      
+      if #available(iOS 13.4, *) {
+          timePicker.preferredDatePickerStyle = .wheels
+      } else {
+          // Fallback on earlier versions
+      }
+        
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        
+        //done button & cancel button
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker))
+        toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
+        //timePicker.minimumDate = Date()
+        // add toolbar to textField
+        txttime.inputAccessoryView = toolbar
+        // add datepicker to textField
+        txttime.inputView = timePicker
+        
+    }
+    
+    @objc  func doneTimePicker(){
+        //For date formate
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        txttime.text = formatter.string(from: timePicker.date)
+        //dismiss date picker dialog
+        self.view.endEditing(true)
+    }
+    
+    @objc func cancelTimePicker(){
+        //cancel button dismiss datepicker dialog
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func btnCheckaction(_ sender: Any) {
+        if btncheckMark.isSelected == false {
+           // multipleDeliveryCheckGate = 1
+            btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
+            btncheckMark.isSelected = true
+        }else{
+           // multipleDeliveryCheckGate = 0
+            btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
+            btncheckMark.isSelected = false
+        }
+        
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func btnApply(_ sender: UIButton) {
+        
+        txtvaildtill.text = hourary[selectedindex]
+
+       // selectedindex = 0
+        
+        collectionHours.reloadData()
+
+        self.viewbottom.isHidden = true
+    }
+    
+    @IBAction func btnReset(_ sender: UIButton) {
+        
+        txtvaildtill.text = hourary[0]
+
+        self.viewbottom.isHidden = true
+    }
+    
+    @IBAction func btnClose_hour(_ sender: UIButton) {
+        
+        txtvaildtill.text = hourary[0]
+
+        self.viewbottom.isHidden = true
     }
     
     func showAnimate()
@@ -176,9 +282,16 @@ class SingleEditDateVC: UIViewController, UITextFieldDelegate{
     }
     
     @IBAction func btnUpdatePressed(_ sender: UIButton) {
-
-        apicallAddDate()
-       // removeAnimate()
+        if txtdate.text! == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Select Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txttime.text! == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Select Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            apicallAddSingleDate()
+            removeAnimate()
+        }
     }
     
     @IBAction func btnClosePressed(_ sender: UIButton) {
@@ -186,24 +299,80 @@ class SingleEditDateVC: UIViewController, UITextFieldDelegate{
         removeAnimate()
     }
     
-    // MARK: - get Add Date single
+    // MARK: - get Add Date Single
     
-    func apicallAddDate()
+    func apicallAddSingleDate()
     {
           if !NetworkState().isInternetAvailable {
                          ShowNoInternetAlert()
                          return
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        var after_add_time = ""
+
+        if txtvaildtill.text == "Day End" {
+            txtvaildtill.text = time
+            
+            
+            let dateFormatter = DateFormatter()
+            
+           // let isoDate = time
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd" // h:mm"
+
+          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+          //  let date = dateFormatter.date(from:isoDate)!
+            
+//            let date2 = strDateee
+//            dateFormatter.dateFormat = "yyyy-MM-dd"
+//            var date = dateFormatter.date(from: date2)
+//
+//            date = dateFormatter.date(from:isoDate)!
+            
+         //   let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
+        //    after_add_time = dateFormatter.string(from: addminutes)
+         //       print("after add time --> ",after_add_time)
+            
+            after_add_time = "11:59 PM" //"23:59:00"
+            
+            print("after add time --> ",after_add_time)
+
+        }else{
+            txtvaildtill.text?.removeLast(3)
+
+            let myInt = Int(txtvaildtill.text!)!
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = txttime.text!
+
+            dateFormatter.dateFormat = "hh:mm a" // "yyyy-MM-dd"  //h:mm"
+
+            let date = dateFormatter.date(from:isoDate)!
+                        
+          //  let isoDate = "\(myInt):00" //validtill // valid  //"2016-04-14T10:44:00+0000"
+
+          //  dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+          
+          //  let date = dateFormatter.date(from:isoDate)!
+                            
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+            
+            print("after add time 3 --> ",after_add_time)
+        }
             
             let param : Parameters = [
-                "VisitStartDate": txtstartdate.text!,
-                "VisitEndDate": txtenddate.text!,
+                "VisitStartDate": txtdate.text!,
+                "FromTime": txttime.text!,
+                "ToTime": after_add_time,
                 "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
-                "UserActivityID": userActivity!,
+                "UserActivityID": UserActivityID!,
                 "VisitorEntryTypeID": VisitorEntryTypeID!
             ]
         
+        print("param Single add date : ",param)
+
             webservices().StartSpinner()
             
             
@@ -250,29 +419,87 @@ class SingleEditDateVC: UIViewController, UITextFieldDelegate{
           textfield.layer.borderWidth = 1.0
           
       }
-   
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
-            if(textField == txtstartdate)
-            {
-                //datePicker.minimumDate = Date()
-                textfield = txtstartdate
-                
-            }
-            if(textField == txtenddate)
-            {
-        //            let formatter = DateFormatter()
-        //            if txtstartdate.hasText{
-        //                 datePicker.minimumDate = formatter.date(from: txtstartdate.text!)
-        //            }
-                
-                textfield = txtenddate
-                
-                let cal = NSCalendar.current
-                
-                let components = cal.dateComponents([.day], from: date1, to: date2)
-              //  lbldays.text =  (components.day! as NSNumber).stringValue
-                
-            }
+        
+        if(textField == txtvaildtill)
+        {
+            
+            viewbottom.isHidden = false
+            txtvaildtill.resignFirstResponder()
+            
+           // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        }
+        if(textField == txtdate)
+        {
+            textfield = txtdate
+            viewbottom.isHidden = true
+
+           // txtdate.resignFirstResponder()
+
+        }
+        
+        
     }
+    
+    
+    // MARK: - Collectionview delegate and datasource methods
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return hourary.count
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
+        
+        cell.lblname.text = hourary[indexPath.row] as? String
+        if(selectedindex == indexPath.row)
+        {
+            
+          //  cell.lblname.backgroundColor = AppColor.appcolor
+            
+            cell.lblname.backgroundColor = AppColor.borderColor
+            cell.lblname.textColor = UIColor.white
+           // cell.lblname.layer.borderWidth = 0.0
+        }
+        else{
+            
+            cell.lblname.backgroundColor = AppColor.lblFilterUnselect
+            cell.lblname.textColor = UIColor.white
+           // cell.lblname.layer.borderColor = UIColor.lightGray.cgColor
+          //  cell.lblname.layer.borderWidth = 1.0
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+       /* let numberOfSets = CGFloat(4.0)
+        
+        let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
+        
+        return CGSize(width:width,height: 42) */
+        
+        let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+        let contentNSString = hourary[indexPath.row]
+        let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+        
+        print("\(expectedLabelSize)")
+        return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 25) //31
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        txtvaildtill.text = hourary[indexPath.row]
+        
+        selectedindex = indexPath.row
+       // viewbottom.isHidden = true
+     //   viewmain.backgroundColor = UIColor.white
+        collectionHours.reloadData()
+    }
+    
 
 }
