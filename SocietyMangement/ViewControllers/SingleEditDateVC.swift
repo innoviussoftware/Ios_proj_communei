@@ -13,7 +13,7 @@ protocol addSingleDate {
     func addedSingleDate()
 }
 
-class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout  {
+class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout   {
 
     var delegate : addSingleDate?
     
@@ -49,7 +49,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
     var UserActivityID:Int?
     var VisitorEntryTypeID:Int?
     
-    var multipleDeliveryCheckGate:Int?
+    var singleDeliveryCheckGate = ""
     
     var textfield = UITextField()
     
@@ -96,7 +96,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
            let dateFormatterGet = DateFormatter()
            dateFormatterGet.dateFormat = "HH:mm:ss"
            let dateFormatterPrint = DateFormatter()
-           dateFormatterPrint.dateFormat = "h:mm a"  //"MMM d, h:mm a" for  Sep 12, 2:11 PM
+           dateFormatterPrint.dateFormat = "h:mm a"
            let datee = dateFormatterGet.date(from: Msg_Date)
            Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
         
@@ -117,6 +117,14 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
             viewinnerHeightCons.constant = 300
             btnUpdateTopCons.constant = 60
 
+            if singleDeliveryCheckGate == "0" {
+                btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
+                btncheckMark.isSelected = false
+            }else if singleDeliveryCheckGate == "1" {
+                btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
+                btncheckMark.isSelected = true
+
+            }
         }
         
         // Do any additional setup after loading the view.
@@ -213,11 +221,11 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
     
     @IBAction func btnCheckaction(_ sender: Any) {
         if btncheckMark.isSelected == false {
-           // multipleDeliveryCheckGate = 1
+            singleDeliveryCheckGate = "1"
             btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
             btncheckMark.isSelected = true
         }else{
-           // multipleDeliveryCheckGate = 0
+            singleDeliveryCheckGate = "0"
             btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
             btncheckMark.isSelected = false
         }
@@ -362,14 +370,30 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
             print("after add time 3 --> ",after_add_time)
         }
             
-            let param : Parameters = [
-                "VisitStartDate": txtdate.text!,
-                "FromTime": txttime.text!,
-                "ToTime": after_add_time,
-                "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
-                "UserActivityID": UserActivityID!,
-                "VisitorEntryTypeID": VisitorEntryTypeID!
-            ]
+        var param = Parameters()
+
+        if isfrom == 1 {
+            param  = [
+               "VisitStartDate": txtdate.text!,
+               "FromTime": txttime.text!,
+               "ToTime": after_add_time,
+               "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
+               "UserActivityID": UserActivityID!,
+               "VisitorEntryTypeID": VisitorEntryTypeID!
+           ]
+        }else if isfrom == 2 {
+            param  = [
+               "VisitStartDate": txtdate.text!,
+               "FromTime": txttime.text!,
+               "ToTime": after_add_time,
+               "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
+               "UserActivityID": UserActivityID!,
+               "VisitorEntryTypeID": VisitorEntryTypeID!,
+                "IsLeaveAtGate": singleDeliveryCheckGate
+           ]
+        }
+        
+            
         
         print("param Single add date : ",param)
 
@@ -500,6 +524,5 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate , UICollectionVie
      //   viewmain.backgroundColor = UIColor.white
         collectionHours.reloadData()
     }
-    
-
+   
 }

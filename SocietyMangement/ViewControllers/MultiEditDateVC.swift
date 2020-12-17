@@ -52,32 +52,10 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         
         webservices.sharedInstance.PaddingTextfiled(textfield: txtstartdate)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtenddate)
-        
-       // let isoDate = strStartDate
-
-       // let dateFormatter = DateFormatter()
-       // dateFormatter.dateFormat = "dd-MM-yyyy"
-       // let date1 = dateFormatter.date(from:isoDate)!
-        
-     //   txtstartdate.text = dateFormatter.string(from: date1)
          
         txtstartdate.text = strStartDate
         
         txtenddate.text = StrEndDate
-        
-       // let isoDate1 = StrEndDate
-
-       // let date2 = dateFormatter.date(from:isoDate1)!
-        
-      //  txtenddate.text = dateFormatter.string(from: date2)
-        
-        
-       // let date = formatter.date(from:strStartDate)!
-
-       // let date1 = formatter.date(from:StrEndDate)!
-
-      //  txtstartdate.text = formatter.string(from: date)
-      //  txtenddate.text = formatter.string(from: date1)
         
         showDatePicker()
         

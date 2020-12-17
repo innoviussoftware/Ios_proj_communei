@@ -15,6 +15,8 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
     @IBOutlet weak var collectionEmergencyAlert: UICollectionView!
     
     @IBOutlet weak var collHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var collectionEmergImage: UICollectionView!
 
     @IBOutlet weak var textViewReasion: UITextView!
 
@@ -24,8 +26,9 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
     
     @IBOutlet weak var viewCamera: UIView!
 
-    
-    var imgData : Data?
+    var arrEmergImg = NSMutableArray()
+
+  //  var imgData : Data?
     
     var selectedindex : Int?
     
@@ -109,20 +112,31 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                let date = Date()
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyyMMddHH:mm:ss"
-                let strFileName = formatter.string(from: date)
+//                let date = Date()
+//                let formatter = DateFormatter()
+//                formatter.dateFormat = "yyyyMMddHH:mm:ss"
+//                let strFileName = formatter.string(from: date)
                 
+                for img in self.arrEmergImg{
+                                                       let date = Date()
+                                                       let formatter = DateFormatter()
+                                                       formatter.dateFormat = "yyyyMMddHHmmss"
+                                                       let strFileName = formatter.string(from: date)
+                                                       
+                                                        let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
+                                                        
+                                                         MultipartFormData.append(imgData, withName: "Attachments[]", fileName: "\(strFileName)", mimeType:"image/png/jpeg/application/pdf")
+                                                       
+                                                    }
                 
-                if self.imgData!.count != 0{
+               /* if self.imgData!.count != 0{
                                         
                     if let data = imgData{
                         MultipartFormData.append(data, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
                         }
                         
                   //  MultipartFormData.append(self.imgData!, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
-                }
+                } */
 
                 
         }, to:  webservices().baseurl + "user/send/emergency-alert" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
@@ -191,7 +205,8 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
         }else if textViewReasion.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Message")
             self.present(alert, animated: true, completion: nil)
-        }else if (btnattechment.imageView!.image == nil) || (self.imgData == nil) {
+       // }else if (btnattechment.imageView!.image == nil) || (self.imgData == nil) {
+        }else if arrEmergImg.count == 0{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select Image")
             self.present(alert, animated: true, completion: nil)
         }else{
@@ -249,34 +264,51 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
     //MARK:- imagePicker delegate methods
     
        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-           if (info[UIImagePickerControllerMediaType] as? String) != nil {
+          // if (info[UIImagePickerControllerMediaType] as? String) != nil {
+            
+            if let originalimage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+
                
-               let image = info[UIImagePickerControllerEditedImage] as! UIImage
-               
-                btnattechment.setTitle("", for: .normal)
+             //  let image = info[UIImagePickerControllerEditedImage] as! UIImage
+            
+            arrEmergImg.add(originalimage)
+
+                collectionEmergImage.reloadData()
+
+              /* btnattechment.setTitle("", for: .normal)
                // btnattechment.setBackgroundImage(image, for: .normal)
             
                 btnattechment.isHidden = true
             
                 btnattechment_update.isHidden = false
             
-                btnattechment_update.setBackgroundImage(image, for: .normal)
+                btnattechment_update.setBackgroundImage(image, for: .normal) */
 
-                imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
+               // imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
+                
+               // self.dismiss(animated: true, completion: nil)
                
-                self.dismiss(animated: true, completion: nil)
             }
+        
+        self.dismiss(animated: true, completion: nil)
+
            
        }
     
     // MARK: - Collectionview delegate and datasource methods
       
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == collectionEmergencyAlert {
             return EmergencyAlertary.count
+        }else{
+            return arrEmergImg.count
+        }
     }
     
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          
+        if collectionView == collectionEmergencyAlert {
+
              let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
             
             cell.imgview.image = iconEmergencyAlertary[indexPath.row]
@@ -328,9 +360,18 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
                 
             }
         }
-
     
             return cell
+        }else{
+            
+            let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
+                       
+            cell.imgview.image = arrEmergImg[indexPath.row] as? UIImage
+
+            
+            return cell
+
+        }
              
      }
           
@@ -341,9 +382,10 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        selectedindex = indexPath.row
-        collectionEmergencyAlert.reloadData()
-                
+        if collectionView == collectionEmergencyAlert {
+            selectedindex = indexPath.row
+            collectionEmergencyAlert.reloadData()
+        }
     }
     
 

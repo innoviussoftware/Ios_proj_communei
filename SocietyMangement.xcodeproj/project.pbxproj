@@ -179,6 +179,7 @@
 		9ABF596E2313AB6C007F7F61 /* AddMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */; };
 		9ABF59702313E5C3007F7F61 /* SearchMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ABF596F2313E5C3007F7F61 /* SearchMemberVC.swift */; };
 		9AC7B306232A6375001717C2 /* SignUPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC7B305232A6375001717C2 /* SignUPVC.swift */; };
+		9ACB6EE2258B31710003719D /* DeliveryMultiEditDateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACB6EE1258B31710003719D /* DeliveryMultiEditDateVC.swift */; };
 		9ACED2CA2330931000933A8C /* CityResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2C92330931000933A8C /* CityResponse.swift */; };
 		9ACED2CC2330940E00933A8C /* AreaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2CB2330940E00933A8C /* AreaResponse.swift */; };
 		9ACED2CE233094CD00933A8C /* SocietyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACED2CD233094CD00933A8C /* SocietyResponse.swift */; };
@@ -483,6 +484,7 @@
 		9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberVC.swift; sourceTree = "<group>"; };
 		9ABF596F2313E5C3007F7F61 /* SearchMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMemberVC.swift; sourceTree = "<group>"; };
 		9AC7B305232A6375001717C2 /* SignUPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUPVC.swift; sourceTree = "<group>"; };
+		9ACB6EE1258B31710003719D /* DeliveryMultiEditDateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryMultiEditDateVC.swift; sourceTree = "<group>"; };
 		9ACED2C92330931000933A8C /* CityResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityResponse.swift; sourceTree = "<group>"; };
 		9ACED2CB2330940E00933A8C /* AreaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaResponse.swift; sourceTree = "<group>"; };
 		9ACED2CD233094CD00933A8C /* SocietyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocietyResponse.swift; sourceTree = "<group>"; };
@@ -862,6 +864,7 @@
 				9AEC3883230D58A300C713B4 /* MembersVC.swift */,
 				9AD31C012588CEAB00F91958 /* MultiEditDateVC.swift */,
 				9AD31C062588E11D00F91958 /* SingleEditDateVC.swift */,
+				9ACB6EE1258B31710003719D /* DeliveryMultiEditDateVC.swift */,
 				D2567E10252B296700C93714 /* MembersDetailsVC.swift */,
 				9ABF596D2313AB6C007F7F61 /* AddMemberVC.swift */,
 				9AEC3885230D5FBF00C713B4 /* MemberdetailVC.swift */,
@@ -1397,6 +1400,7 @@
 				9A929CD924DAC94300D53129 /* MyUnitVC.swift in Sources */,
 				9ACED2CE233094CD00933A8C /* SocietyResponse.swift in Sources */,
 				9A07B6C2230EAADD00ED5C6C /* LoginResponse.swift in Sources */,
+				9ACB6EE2258B31710003719D /* DeliveryMultiEditDateVC.swift in Sources */,
 				D23C3A09252474A600366CCB /* ComplaintManagementMessageVC.swift in Sources */,
 				D258E10425499ACA004405DE /* AddEventTypeResponse.swift in Sources */,
 				D241442E2531884D0018704F /* ServiceTypeVC.swift in Sources */,

@@ -25,7 +25,7 @@ var BuidigResponse:BuidingResponse?
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ActivityTabVC: BaseVC , addSingleDate , addMultiDate {
+class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDate {
     
     @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var tblview: UITableView!
@@ -834,6 +834,10 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     func addedMultiDate() {
         apicallGuestList()
     }
+    
+    func addedDeliveryMultiDate()  {
+        apicallGuestList()
+    }
         
     @objc func ApiCallEdit(sender:UIButton)
     {
@@ -900,7 +904,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.delegate = self
                 
                 popOverConfirmVC.isfrom = 2
-
+                
                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                     let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
                 
@@ -913,6 +917,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -925,8 +930,9 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 
             }else if arrGuestList[sender.tag].activity?.isMulti == "1" { // Multi
                           
-                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "MultiEditDateVC") as! MultiEditDateVC
+                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryMultiEditDateVC") as! DeliveryMultiEditDateVC
                 popOverConfirmVC.delegate = self
+                
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
@@ -937,7 +943,18 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                   let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
                     popOverConfirmVC.StrEndDate = out!
                 }
+                
+                if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
+                  let activityIn = arrGuestList[sender.tag].activity?.allowedInTime!
+                    popOverConfirmVC.strStartTime = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.allowedOutTime) != nil {
+                  let out = arrGuestList[sender.tag].activity?.allowedOutTime!
+                    popOverConfirmVC.strEndTime = out!
+                }
                
+                popOverConfirmVC.multiDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID!
@@ -950,6 +967,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
             }
         }
+        
+    }
+    
+    // MARK: - Api AlertInfo
+
+    @objc func ApiCallAlertInfo(sender:UIButton) {
         
     }
     
@@ -1119,7 +1142,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     {
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                    avc?.titleStr = "Out"
-        avc?.subtitleStr = "Are you sure you want to out this visitor enry?"
+        avc?.subtitleStr = "Are you sure you want to out this visitor entry?"
 
                                    avc?.yesAct = {
                                     
@@ -1297,7 +1320,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
                 
@@ -1308,7 +1332,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "VISITED" {
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
                 
@@ -1319,6 +1344,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }
             else if cell.lblStatus.text == "APPROVED" {
            // }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
@@ -1332,7 +1359,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = false
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -1343,7 +1371,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }
 
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
@@ -1407,7 +1436,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
                 
@@ -1420,7 +1450,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }
             else if cell.lblStatus.text == "VISITED" {
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
@@ -1432,6 +1463,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }
             else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
@@ -1446,6 +1479,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -1458,6 +1493,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -1502,10 +1539,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnEdit.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
-                cell.btnWrong_Entry.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
                 
@@ -1514,10 +1551,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnEdit.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
-                cell.btnWrong_Entry.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
-                
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "APPROVED" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -1529,6 +1566,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -1540,6 +1579,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }
             
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
@@ -1571,6 +1612,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }else if cell.lblStatus.text == "CANCELLED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "NOT RESPONDED" || cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED"{
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
                 
@@ -1583,7 +1626,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
-            
+                cell.btnAlertInfo.isHidden = true
+
                
            // }else if cell.lblStatus.text == "PRE-APPROVAL" {
             }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
@@ -1599,6 +1643,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -1611,32 +1657,63 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
             }
 
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                cell.lblintime.text =  "\(arrGuestList[indexPath.row].activity?.activityIn!.components(separatedBy:" ")[0] ?? "") , \(arrGuestList[indexPath.row].activity?.activityIn!.components(separatedBy:" ")[1] ?? "")"
 
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
-                cell.lblintime.isHidden = false
-            }else{
-                cell.lblintime.isHidden = true
+            }else if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                cell.lblintime.text =  "\(arrGuestList[indexPath.row].activity?.activityIn!.components(separatedBy:" ")[0] ?? "") - \(arrGuestList[indexPath.row].activity?.out!.components(separatedBy:" ")[0] ?? "")"
+            
+                cell.lblouttime.text = "\(arrGuestList[indexPath.row].activity?.allowedInTime! ?? "") - \(arrGuestList[indexPath.row].activity?.allowedOutTime! ?? "")"
             }
             
-            if arrGuestList[indexPath.row].activity?.out != nil {
-                cell.lblouttime.text =  arrGuestList[indexPath.row].activity?.out
-                cell.lblouttime.isHidden = false
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Emergency Alert "{
+            cell.lblname.text = "Emergency"
 
-            }else{
-                cell.lblouttime.isHidden = true
-            }
+            cell.lblguest.text = "Alert"
             
-        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Entry"{
+            cell.lblintime.text =  "\(arrGuestList[indexPath.row].inTime!.components(separatedBy:" ")[0]) - \(arrGuestList[indexPath.row].inTime!.components(separatedBy:" ")[0])"
+
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
+
+            cell.lblouttime.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
+            
+             if cell.lblStatus.text == "RESOLVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+             }else if cell.lblStatus.text == "SENT" {
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+             }
+            
+            cell.btnCancel.isHidden = true
+            cell.btnEdit.isHidden = true
+            
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnRenew.isHidden = true
+            cell.btnClose.isHidden = true
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnNote_Guard.isHidden = true
+            cell.btnOut.isHidden = true
+            cell.btnDeliveryInfo.isHidden = true
+            cell.btnAlertInfo.isHidden = false
+
+            
+        }
+        
+        
+        else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Entry"{
             cell.lblname.text = "Cab"
             
             cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
             
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
             
+            cell.btnAlertInfo.isHidden = true
+
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
                 
@@ -1706,6 +1783,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
             
+            cell.btnAlertInfo.isHidden = true
+
             if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = AppColor.deniedColor
                 
@@ -1906,6 +1985,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btnWrong_Entry.tag = indexPath.item
         cell.btnRenew.tag = indexPath.item
         cell.btnClose.tag = indexPath.item
+        cell.btnAlertInfo.tag = indexPath.item
+
         cell.btnNote_Guard.tag = indexPath.item
         cell.btnOut.tag = indexPath.item
 
@@ -1916,6 +1997,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btnWrong_Entry.addTarget(self, action:#selector(ApiCallWrong_Entry), for: .touchUpInside)
         
         cell.btnEdit.addTarget(self, action:#selector(ApiCallEdit), for: .touchUpInside)
+        
+        cell.btnAlertInfo.addTarget(self, action:#selector(ApiCallAlertInfo), for: .touchUpInside)
+
         
         /* cell.btnWrong_Entry.addTarget(self, action:#selector(ApiCallWrong_Entry), for: .touchUpInside)
         cell.btnRenew.addTarget(self, action:#selector(callmember), for: .touchUpInside)

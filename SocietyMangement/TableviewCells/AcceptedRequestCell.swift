@@ -51,7 +51,8 @@ class AcceptedRequestCell: UITableViewCell {
 
     @IBOutlet weak var btnDeliveryInfo: UIButton!
 
-    
+    @IBOutlet weak var btnAlertInfo: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

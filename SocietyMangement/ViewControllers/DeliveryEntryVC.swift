@@ -71,9 +71,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     @IBOutlet weak var txtvaildtill: UITextField!
 
-    
     @IBOutlet weak var txtAllWeek: UITextField!
-
 
     @IBOutlet weak var txtstartdate: UITextField!
     
@@ -227,7 +225,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
     }
     
-    func showTimepPicker_Multiple(){
+    func showTimepPicker_Multiple() {
               //Formate Date
            datePicker_start.datePickerMode = .time
            
@@ -245,9 +243,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
               toolbar.sizeToFit()
               
               //done button & cancel button
-              let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(doneTimePicker_Multiple))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker_Multiple))
               let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-              let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(cancelTimePicker_Multiple))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker_Multiple))
               toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
               //timePicker.minimumDate = Date()
               // add toolbar to textField
@@ -881,7 +879,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 "VendorID":vendorID!,
                 "VendorName": self.txtDeliveryCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
-                "IsLeaveAtGate": singleDeliveryCheckGate!,
+                "IsLeaveAtGate": multipleDeliveryCheckGate!,
                 "IsPublicVendor":isPublic!,
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
