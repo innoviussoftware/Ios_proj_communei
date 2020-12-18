@@ -974,6 +974,28 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
     @objc func ApiCallAlertInfo(sender:UIButton) {
         
+        let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AlertInfoVC") as! AlertInfoVC
+         
+        popOverConfirmVC.strName = (arrGuestList[sender.tag].activity?.messageBy!)!
+        popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+        popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
+
+        popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
+        
+        popOverConfirmVC.strtxtview = (arrGuestList[sender.tag].activity?.message!)!
+
+        if (arrGuestList[sender.tag].activity?.messageAttachment!) != nil {
+            let str = (arrGuestList[sender.tag].activity?.messageAttachment)!
+            let array = str.components(separatedBy: ",")
+            popOverConfirmVC.getImage = array[0]
+        }
+        
+        self.addChildViewController(popOverConfirmVC)
+        popOverConfirmVC.view.frame = self.view.frame
+        self.view.center = popOverConfirmVC.view.center
+        self.view.addSubview(popOverConfirmVC.view)
+        popOverConfirmVC.didMove(toParentViewController: self)
+        
     }
     
     // MARK: - Api Cancel
@@ -1282,9 +1304,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
             cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
-          //  cell.imgviewCompanyLogo.isHidden = false
+            cell.imgviewCompanyLogo.isHidden = false
         }else{
-           // cell.imgviewCompanyLogo.isHidden = true
+            cell.imgviewCompanyLogo.isHidden = true
         }
         
         if arrGuestList[indexPath.row].activity?.phone != nil {
@@ -1302,8 +1324,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblguest.text = "Visitor"
             
             if arrGuestList[indexPath.row].activity?.addedBy != nil {
-                cell.lbladdedby.isHidden = false
               cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+              cell.lbladdedby.isHidden = false
             }else{
                 cell.lbladdedby.isHidden = true
             }
@@ -1381,7 +1403,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
               //  cell.imgview4.isHidden = false   // approvedby
             }else{
                 cell.lblapprovedby.isHidden = true
-               // cell.imgview4.isHidden = true   // approvedby
+             //  cell.imgview4.isHidden = true   // approvedby
             }
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -1677,10 +1699,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblguest.text = "Alert"
             
-            cell.lblintime.text =  "\(arrGuestList[indexPath.row].inTime!.components(separatedBy:" ")[0]) - \(arrGuestList[indexPath.row].inTime!.components(separatedBy:" ")[0])"
+            cell.lblintime.text = arrGuestList[indexPath.row].inTime!
 
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
 
+            cell.lbladdedby.isHidden = true
+            
             cell.lblouttime.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
             
              if cell.lblStatus.text == "RESOLVED" {

@@ -807,7 +807,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             str = strDateeee
         }
         
-        
         return str
     }
     

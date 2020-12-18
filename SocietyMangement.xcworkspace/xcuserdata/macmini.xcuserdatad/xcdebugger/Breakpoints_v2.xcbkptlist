@@ -98,16 +98,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3D58D864-5F78-49FA-80A8-96C77CC72915"
+            uuid = "0A1B18DA-BF6E-4E33-81BE-30E5EDCE0C7C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/SingleEditDateVC.swift"
+            filePath = "SocietyMangement/ViewControllers/ServiceProviderEntryVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "724"
+            endingLineNumber = "724"
+            landmarkName = "apicallServiceProvideSingleEntry()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3F9B496B-AACD-4069-92A6-6F85260BC1FC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/ServiceProviderEntryVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "718"
+            endingLineNumber = "718"
+            landmarkName = "apicallServiceProvideSingleEntry()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

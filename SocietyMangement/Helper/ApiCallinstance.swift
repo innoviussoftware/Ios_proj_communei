@@ -453,6 +453,19 @@ struct Apicallhandler {
 
     }
     
+    //Mark : Api call get Service Type
+    
+    func GetAllServiceType(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<ServiceTypeResponse>) -> Void)) {
+        //var parameter:Parameters = ["society_id":societyid]
+        
+        AF.request(webservices().baseurl + API_SERVICE_TYPES, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<ServiceTypeResponse>) in
+            
+            onCompletion(response)
+        }
+        
+
+    }
+    
     //Mark : Api call get Buildings
     func DeleteCircular(URL: String, id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
         let parameter:Parameters = ["NoticeID":id]

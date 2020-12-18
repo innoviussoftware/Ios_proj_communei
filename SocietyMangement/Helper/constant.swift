@@ -101,6 +101,7 @@ let API_IN_OUT = "InOut"
 
 let API_DELIVERY_LEAVE_GATE = "user/pre-approved/2/leave-at-gate"
 
+let API_SERVICE_TYPES = "user/vendor-service-types"
 
 let API_ADD_CIRCULAR = "society/notices/2/add" //"user/addcircular"
 let API_ADD_EVENT = "society/notices/3/add" // "user/addevent"
@@ -175,6 +176,8 @@ let API_ADD_DELIVERYENTRY = "user/pre-approved/2/add" //"user/addFrequentEntry"
 let API_GET_WEEKDAYD = "communei/weekdays"
 
 let API_ADD_CABENTRY = "user/pre-approved/3/add"
+
+let API_ADD_SERVICE_PROVIDER = "user/pre-approved/5/add"
 
 let API_GET_MEMBERFAMILY_LIST = "user/memberfamily"
 

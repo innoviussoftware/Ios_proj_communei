@@ -101,6 +101,8 @@
 		9A1178AF235DAC140071C85A /* ProfessionPopUP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1178AE235DAC140071C85A /* ProfessionPopUP.swift */; };
 		9A1178B1235DB1560071C85A /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1178B0235DB1550071C85A /* UIStoryboardExtensions.swift */; };
 		9A1178B3235DBE730071C85A /* ProfessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1178B2235DBE730071C85A /* ProfessionResponse.swift */; };
+		9A17A57E258C7342004DCB07 /* AlertInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17A57D258C7342004DCB07 /* AlertInfoVC.swift */; };
+		9A17A5A1258CC666004DCB07 /* ServiceTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17A5A0258CC666004DCB07 /* ServiceTypeResponse.swift */; };
 		9A17C5F42361A7DD00158271 /* AddRatingReviewPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17C5F32361A7DD00158271 /* AddRatingReviewPopUpVC.swift */; };
 		9A17C5F62361D8CA00158271 /* AddRatingReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A17C5F52361D8CA00158271 /* AddRatingReview.swift */; };
 		9A2AC646258394CB0075CA57 /* AddBookingNowResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */; };
@@ -398,6 +400,8 @@
 		9A1178AE235DAC140071C85A /* ProfessionPopUP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessionPopUP.swift; sourceTree = "<group>"; };
 		9A1178B0235DB1550071C85A /* UIStoryboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtensions.swift; sourceTree = "<group>"; };
 		9A1178B2235DBE730071C85A /* ProfessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessionResponse.swift; sourceTree = "<group>"; };
+		9A17A57D258C7342004DCB07 /* AlertInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInfoVC.swift; sourceTree = "<group>"; };
+		9A17A5A0258CC666004DCB07 /* ServiceTypeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTypeResponse.swift; sourceTree = "<group>"; };
 		9A17C5F32361A7DD00158271 /* AddRatingReviewPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRatingReviewPopUpVC.swift; sourceTree = "<group>"; };
 		9A17C5F52361D8CA00158271 /* AddRatingReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRatingReview.swift; sourceTree = "<group>"; };
 		9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookingNowResponse.swift; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 				9A07B6C5230EB75F00ED5C6C /* NoticeResponse.swift */,
 				D258E10325499AC5004405DE /* AddEventTypeResponse.swift */,
 				9A07B6C7230EBBF200ED5C6C /* EventResponse.swift */,
+				9A17A5A0258CC666004DCB07 /* ServiceTypeResponse.swift */,
 				9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */,
 				9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */,
 				9A9FF808257E331C007409AE /* DeliveryCompanySelectResponse.swift */,
@@ -863,6 +868,7 @@
 				9A384557230E956300B64AC2 /* AddAnnounceVC.swift */,
 				9AEC3883230D58A300C713B4 /* MembersVC.swift */,
 				9AD31C012588CEAB00F91958 /* MultiEditDateVC.swift */,
+				9A17A57D258C7342004DCB07 /* AlertInfoVC.swift */,
 				9AD31C062588E11D00F91958 /* SingleEditDateVC.swift */,
 				9ACB6EE1258B31710003719D /* DeliveryMultiEditDateVC.swift */,
 				D2567E10252B296700C93714 /* MembersDetailsVC.swift */,
@@ -1308,6 +1314,7 @@
 				9A384556230E903C00B64AC2 /* AddNoticeVC.swift in Sources */,
 				9AC7B306232A6375001717C2 /* SignUPVC.swift in Sources */,
 				05B1B1BF24BC785C00AABF5E /* SignUPOTPVC.swift in Sources */,
+				9A17A57E258C7342004DCB07 /* AlertInfoVC.swift in Sources */,
 				4E693C772356001200F24584 /* GetFrequentEntryList.swift in Sources */,
 				D23C3A0B2525B27E00366CCB /* LeaveNoteGuardVC.swift in Sources */,
 				D2B9DA6824F5287500FF9BF0 /* BuySellProductDelete.swift in Sources */,
@@ -1389,6 +1396,7 @@
 				4EBE8027233BA03000AC94A2 /* CategoryListCell.swift in Sources */,
 				9A384552230E6F7600B64AC2 /* AddVendorVC.swift in Sources */,
 				9A9380002331EEC20078B5AC /* FamilyMemberResponse.swift in Sources */,
+				9A17A5A1258CC666004DCB07 /* ServiceTypeResponse.swift in Sources */,
 				D22FAE482514BDE600707966 /* GuestWaitingPopupVC.swift in Sources */,
 				D2B9DA6D24F5296200FF9BF0 /* BuySellVC.swift in Sources */,
 				9AD31C022588CEAB00F91958 /* MultiEditDateVC.swift in Sources */,

@@ -723,7 +723,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 "VendorID":vendorID!,
                 "VendorName": self.txtCabCompanyName.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
-                "IsPublicVendor":isPublic!
+                "IsPublicVendor":isPublic!,
+                "VehicleNumber": txtVehicleNumber.text!
+
             ]
         
         print("param Single Cab Entry : ",param)
