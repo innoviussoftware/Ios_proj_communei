@@ -120,22 +120,22 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                 case .failure(let err):
                     webservices().StopSpinner()
                     if statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        APPDELEGATE.ApiLogout1() //(onCompletion: { int in
+                           // if int == 1{
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                         //   }
+                       // })
                         
                         return
                     }
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
                     print(err.asAFError as Any)
                     
                 }
@@ -388,18 +388,13 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                     }else if indexPath.item == 4{
-                        
-                        // temp comment live app 26/11/20.
-
-                       /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
                         vc.isfrom = 1
-                        self.navigationController?.pushViewController(vc, animated: true) */
+                        self.navigationController?.pushViewController(vc, animated: true)
                     }else{  // DomesticHelpVC
-                        // temp comment live app 26/11/20.
-
-                      /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+                       let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
                         vc.isfrom = 1
-                        self.navigationController?.pushViewController(vc, animated: true) */
+                        self.navigationController?.pushViewController(vc, animated: true)
                     }
                
                 

@@ -573,6 +573,9 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
                 
                 
                 for (key, value) in param {
+                    
+                   // MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
                      MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
                 }
                 

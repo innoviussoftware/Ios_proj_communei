@@ -15,13 +15,12 @@ import Alamofire
 @available(iOS 13.0, *)
 class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegate, UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, DeliveryCompanyListProtocol, ServiceTypeListProtocol {
     
-    
     var selectedindex : Int = 0
       
-      var index:Int?
+    var index:Int?
+    var index1:Int?
     
     var indexservice:Int?
-
     var indexservice1:Int?
     
     var vendorServiceID:Int?
@@ -33,7 +32,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
       
       var arrDays = [GetDays]()
 
-        //  var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
+    //  var arrDays = ["Mon" , "Tue" , "Wed" , "Thu" , "Fri" , "Sat"  ,"Sun"]
 
   //  var ServiceTypeAry = ["Service Type","Service 1", "Service 2", "Service 3"]
 
@@ -88,6 +87,10 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     
     var vendorID:Int?
     var isPublic:Int?
+    
+    var vendorID1:Int?
+    var isPublic1:Int?
+
 
     var pickerview = UIPickerView()
 
@@ -105,7 +108,9 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     
     var arrSelectionDayId = NSMutableArray()
 
-    var arrCotact = NSMutableArray()
+    var arrCotactSingle = NSMutableArray()
+
+    var arrCotactMultiple = NSMutableArray()
 
     
     // MARK: - APICallGetDays
@@ -574,15 +579,13 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     
     @IBAction func btnaddServiceProvideraction(_ sender: UIButton) {
         
-        arrCotact.removeAllObjects()
-        
-                
-        let dict = NSMutableDictionary()
-        dict.setValue(txtFullName.text, forKey: "Name")
-        dict.setValue(txtMobileNumber.text, forKey: "Mobile")
-        arrCotact.add(dict)
-        
-        if txtCompanyName.text == "" {
+        if txtdate.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txttime.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtCompanyName.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Company Name")
             self.present(alert, animated: true, completion: nil)
         }else if txtServiceType.text == "" {
@@ -598,6 +601,12 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
             self.present(alert, animated: true, completion: nil)
         }else{
+            arrCotactSingle.removeAllObjects()
+            
+            let dict = NSMutableDictionary()
+            dict.setValue(txtFullName.text, forKey: "Name")
+            dict.setValue(txtMobileNumber.text, forKey: "Mobile")
+            arrCotactSingle.add(dict)
             
             self.apicallServiceProvideSingleEntry()
         }
@@ -606,6 +615,50 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     }
        
     @IBAction func btnaddServiceProvideraction_1(_ sender: UIButton) {
+        
+        if arrSelectionDayId.count == 0 {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtstartdate.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Start Date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtenddate.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter End Date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Start Time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtEndTime.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter End Time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtCompanyName1.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Company Name")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtServiceType1.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Service Name")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtFullName1.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Name")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtMobileNumber1.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Mobile Number")
+            self.present(alert, animated: true, completion: nil)
+        }else if (txtMobileNumber1.text!.count < 10){
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else{
+            
+            arrCotactMultiple.removeAllObjects()
+
+            let dict = NSMutableDictionary()
+            dict.setValue(txtFullName1.text, forKey: "Name")
+            dict.setValue(txtMobileNumber1.text, forKey: "Mobile")
+            arrCotactMultiple.add(dict)
+            
+            self.apicallServiceProvideMultipleEntry()
+        }
+                    
         print("btnaddServiceProvideraction_1")
 
     }
@@ -634,6 +687,27 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
            }
            return String(data: dataInvestigation, encoding: String.Encoding.utf8)
        }
+    
+    
+    func messageClicked() {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr =  "Successfully Added"
+        avc?.subtitleStr = "Your Service Provider will be allowed an entry"
+        avc?.isfrom = 4
+
+        avc?.yesAct = {
+           
+            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                         
+        }
+        avc?.noAct = {
+            
+        }
+        
+        present(avc!, animated: true)
+    }
     
     // MARK: - get ServiceProvide Single Entry
     
@@ -700,15 +774,15 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
       //  var vendorServiceTypeID:Int?
        // vendorServiceTypeID = 5
         
-        var strJsonInvetigation = ""
+        var strJsonInvetigationSingle = ""
         
-        strJsonInvetigation = GetJsonString(arrObje: arrCotact)!
+        strJsonInvetigationSingle = GetJsonString(arrObje: arrCotactSingle)!
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!
                 "FromTime": txttime.text!, //time, // start time
                 "ToTime": after_add_time,  //validtill,  // to time
-                "Visitors":strJsonInvetigation,
+                "Visitors":strJsonInvetigationSingle,
                 "VendorID":vendorID!,
                 "VendorName": self.txtServiceType.text!,
                 "VendorServiceTypeID": vendorServiceID!,
@@ -728,17 +802,19 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        self.messageClicked()
+
+                       /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                                                 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
                      
                     }
                     else
                     {
                         
-                    }https://i.diawi.com/eYCJti
+                    }
                 case .failure(let err):
                     if JSON.response?.statusCode == 401{
                         APPDELEGATE.ApiLogout(onCompletion: { int in
@@ -766,7 +842,104 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
             
     }
     
+    
+    // MARK: - get ServiceProvide Multiple Entry
+
+    func apicallServiceProvideMultipleEntry()
+    {
+        if !NetworkState().isInternetAvailable {
+                        ShowNoInternetAlert()
+                        return
+                    }
+        
+           let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+       
+           var strDateee = ""
+           var endDate = ""
+        
+           date = txtdate.text!
+           enddate = txtenddate.text!
+        
+           strDateee = strChangeDateFormate(strDateeee: date)
+           endDate = strChangeDateFormate(strDateeee: enddate)
+        
+        var strJsonInvetigationMuliple = ""
+        
+        strJsonInvetigationMuliple = GetJsonString(arrObje: arrCotactMultiple)!
+        
+        var param = Parameters()
+      
+            param  = [
+                "VisitStartDate": strDateee, // date = txtdate.text!
+                "VisitEndDate": endDate,
+                "FromTime": txtStartTime.text!, // time, //txtStartTime.text!, //time, // start time
+                "ToTime": txtEndTime.text!, // after_add_time, // txtEndTime.text!, //validtill,  // to time
+                "VendorID":vendorID1!,
+                "VendorName": self.txtServiceType1.text!,
+                "VendorServiceTypeID": vendorServiceID1!,
+                "IsPublicVendor":isPublic1!,
+                "Visitors":strJsonInvetigationMuliple,
+                "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
+
+            ]
+        
+           print("param Multiple ServiceType Entry : ",param)
+        
+           webservices().StartSpinner()
+        
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_DELIVERYENTRY, param: param, token: token as! String) { JSON in
+                
+                print(JSON)
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        self.messageClicked()
+                        
+                      /*  let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+                        let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+                                                
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
+                
+                    }
+                    else
+                    {
+                        
+                    }
+                case .failure(let err):
+                    if JSON.response?.statusCode == 401{
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        return
+                    }
+                    
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
+       
+    }
+    
+    
     @IBAction func backaction(_ sender: UIButton) {
+        view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -818,6 +991,16 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
 
         self.viewbottom1.isHidden = true
     }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        
+        if changedIndex == 0{
+            view.endEditing(true)
+        }else{
+            view.endEditing(true)
+        }
+        
+    }
                    
     
     // MARK: - DeliveryList delegate methods
@@ -827,17 +1010,30 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
       func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
        {
             index = selectNumber
+        
         if(isfrom == "Single") {
             self.txtCompanyName.text = name
             vendorID = VendorID
              isPublic = IsPublic
-        }else if(isfrom == "Multiple"){
-            self.txtCompanyName1.text = name
-             vendorID = VendorID
-             isPublic = IsPublic
         }
-                    
-       }
+        
+        print("txtCompanyName vendorID isPublic",txtCompanyName.text! , vendorID! , isPublic!)
+
+      }
+    
+    func deliveryList1(name1:String,VendorID1:Int,IsPublic1:Int, selectNumber1:Int)
+    {
+        index1 = selectNumber1
+
+        if(isfrom == "Multiple"){
+            self.txtCompanyName1.text = name1
+             vendorID1 = VendorID1
+             isPublic1 = IsPublic1
+        }
+        
+        print("txtCompanyName1 vendorID1 isPublic1",txtCompanyName1.text! , vendorID1! , isPublic1!)
+
+    }
         
     
     // MARK: - ServiceTypeList delegate methods
@@ -846,22 +1042,18 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         if(isfrom == "Single") {
             self.txtServiceType.text = name
             vendorServiceID = vendorServiceTypeID
-        }else{
-            self.txtServiceType.text = name
-            vendorServiceID = vendorServiceTypeID
         }
         indexservice = selectNumber
+        
     }
        
-    func serviceTypeList1(name:String,vendorServiceTypeID:Int, selectNumber:Int) {
+    func serviceTypeList1(name1:String,vendorServiceTypeID1:Int, selectNumber1:Int) {
          if(isfrom == "Multiple"){
-            self.txtServiceType1.text = name
-            vendorServiceID1 = vendorServiceTypeID
-         }else{
-            self.txtServiceType1.text = name
-            vendorServiceID1 = vendorServiceTypeID
+            self.txtServiceType1.text = name1
+            vendorServiceID1 = vendorServiceTypeID1
          }
-        indexservice1 = selectNumber
+        indexservice1 = selectNumber1
+        
     }
     
     
@@ -872,12 +1064,15 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
            if(textField == txtCompanyName)
                {
                       txtCompanyName.resignFirstResponder()
-                      let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
+            
+            let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
+
                       popOverConfirmVC.delegate = self
                        isfrom = "Single"
                    
                        popOverConfirmVC.selectedindex = index
-                       popOverConfirmVC.selectedindex1 = index
+            
+            popOverConfirmVC.isfrom = "Single"
 
             popOverConfirmVC.strTitleName = "Select Service Provider"
 
@@ -902,9 +1097,10 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                       popOverConfirmVC.delegate = self
                    isfrom = "Multiple"
                    
-                       popOverConfirmVC.selectedindex = index
-                       popOverConfirmVC.selectedindex1 = index
+                       popOverConfirmVC.selectedindex1 = index1
                   
+            popOverConfirmVC.isfrom = "Multiple"
+
             popOverConfirmVC.strTitleName = "Select Service Provider"
 
             popOverConfirmVC.api_Company_Selection = "user/vendors/5"
@@ -916,7 +1112,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                           // popOverConfirmVC.alertGuardary = self.nameary
                       }
                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
-
+            
            }
         
         if(textField == txtServiceType)
@@ -965,9 +1161,6 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
             viewbottom.isHidden = true
             viewbottom1.isHidden = false
             
-            // 2/11/20. temp comment
-            
-              // viewbottom1.isHidden = false
                txtAllWeek.resignFirstResponder()
                    
                   // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -976,10 +1169,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
            if(textField == txtvaildtill)
            {
                  
-            viewbottom1.isHidden = true
-            
-            // 2/11/20. temp comment
-            
+               viewbottom1.isHidden = true
                viewbottom.isHidden = false
                txtvaildtill.resignFirstResponder()
                    

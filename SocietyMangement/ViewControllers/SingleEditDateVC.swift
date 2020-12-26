@@ -59,6 +59,16 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     var strStartDate = ""
     var StrTime = ""
 
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,8 +95,10 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 
          let formatter = DateFormatter()
          formatter.dateFormat = "dd-MM-yyyy"
+        
+        txtdate.text =  strChangeDateFormate(strDateeee: strStartDate)
 
-        txtdate.text = strStartDate
+        // txtdate.text = strStartDate
         
         let formatter1 = DateFormatter()
         formatter1.dateFormat = "h:mm a"

@@ -163,6 +163,8 @@
 		9A96591E232CCCC0008B702E /* Buildingcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A96591D232CCCC0008B702E /* Buildingcell.swift */; };
 		9A9FF809257E331C007409AE /* DeliveryCompanySelectResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9FF808257E331C007409AE /* DeliveryCompanySelectResponse.swift */; };
 		9AA06068255574DF009F48D7 /* SocietyEventResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */; };
+		9AA0855F2595AC0500B805FC /* EmergencyNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0855D2595AC0500B805FC /* EmergencyNumberCell.swift */; };
+		9AA085602595AC0500B805FC /* EmergencyNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AA0855E2595AC0500B805FC /* EmergencyNumberCell.xib */; };
 		9AA81661233489DE007E3CE9 /* GuestPopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA81660233489DE007E3CE9 /* GuestPopVC.swift */; };
 		9AA900AF230D0ED900697383 /* SidemenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA900AE230D0ED900697383 /* SidemenuCell.swift */; };
 		9AA900B1230D2CB400697383 /* UpcomingEventsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA900B0230D2CB400697383 /* UpcomingEventsCell.swift */; };
@@ -470,6 +472,8 @@
 		9A96591D232CCCC0008B702E /* Buildingcell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buildingcell.swift; sourceTree = "<group>"; };
 		9A9FF808257E331C007409AE /* DeliveryCompanySelectResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryCompanySelectResponse.swift; sourceTree = "<group>"; };
 		9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocietyEventResponse.swift; sourceTree = "<group>"; };
+		9AA0855D2595AC0500B805FC /* EmergencyNumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyNumberCell.swift; sourceTree = "<group>"; };
+		9AA0855E2595AC0500B805FC /* EmergencyNumberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmergencyNumberCell.xib; sourceTree = "<group>"; };
 		9AA81660233489DE007E3CE9 /* GuestPopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestPopVC.swift; sourceTree = "<group>"; };
 		9AA900AE230D0ED900697383 /* SidemenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidemenuCell.swift; sourceTree = "<group>"; };
 		9AA900B0230D2CB400697383 /* UpcomingEventsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsCell.swift; sourceTree = "<group>"; };
@@ -938,6 +942,8 @@
 			children = (
 				D2DDD59324FE1CE00008BE6A /* AmenitiesFacilitiesCell.swift */,
 				D2DDD59B24FE2B2C0008BE6A /* AmenitiesFacilitiesCell.xib */,
+				9AA0855D2595AC0500B805FC /* EmergencyNumberCell.swift */,
+				9AA0855E2595AC0500B805FC /* EmergencyNumberCell.xib */,
 				D2DDD59424FE1CE20008BE6A /* AmenitiesPasstBookingCell.swift */,
 				D2DDD59D24FE75FC0008BE6A /* AmenitiesPasstBookingCell.xib */,
 				D24D06A925074DFE00544487 /* ResidentFamilymembersCell.swift */,
@@ -1172,6 +1178,7 @@
 				4EBE801E233B6DEE00AC94A2 /* categoryCell.xib in Resources */,
 				D22FAE40251331F100707966 /* Gotham Medium Regular.ttf in Resources */,
 				D2DDD58C24FE0F060008BE6A /* PollListCell.xib in Resources */,
+				9AA085602595AC0500B805FC /* EmergencyNumberCell.xib in Resources */,
 				9A78BB1F236AED27004B3022 /* FamilyMemberCellNew.xib in Resources */,
 				4E67AE722359A84600DE8D90 /* CircularNewCell.xib in Resources */,
 				D23DF19624F62CE200888ADE /* BuycategoryCell.xib in Resources */,
@@ -1309,6 +1316,7 @@
 				9ACED2D02330A60B00933A8C /* FlatResponse.swift in Sources */,
 				D2DDD58424FE0EA20008BE6A /* PollResultResp.swift in Sources */,
 				9AD31C072588E11D00F91958 /* SingleEditDateVC.swift in Sources */,
+				9AA0855F2595AC0500B805FC /* EmergencyNumberCell.swift in Sources */,
 				9AA900B5230D3DE800697383 /* SocietyEventsVC.swift in Sources */,
 				9A955AB5230FE9DA004A4668 /* AddBuidingResponse.swift in Sources */,
 				9A384556230E903C00B64AC2 /* AddNoticeVC.swift in Sources */,

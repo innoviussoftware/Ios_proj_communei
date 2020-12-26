@@ -107,7 +107,13 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
         }
         
         apiBuySellList()
-        apiProductList(type: "1")//default Buy
+        
+        apiProductListBuy()
+        
+        apiProductList1()
+        
+       // apiProductList(type: "1")//default Buy
+        
         
         //        let dict = NSMutableDictionary()
         //        dict.setValue("Furniture", forKey: "cat_name")
@@ -216,15 +222,13 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
             return
         }
         
-        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        
-        print("SociId : ",SociId)
-        
-        //let strSociId  = (SociId as NSNumber).stringValue
-        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
         webservices().StartSpinner()
-        Apicallhandler().GetBuySellList(URL: webservices().baseurl + API_BUY_SELL_LIST, societyid:"") { JSON in
+        
+        Apicallhandler().GetBuySellList(URL: webservices().baseurl + API_BUY_SELL_LIST, token: token as! String) { JSON in
             switch JSON.result{
+            
             case .success(let resp):
                 webservices().StopSpinner()
                 if(JSON.response?.statusCode == 200)
@@ -248,7 +252,7 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                 }
                 else
                 {
-                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
                     self.present(alert, animated: true, completion: nil)
                 }
                 
@@ -256,22 +260,22 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
             case .failure(let err):
                 webservices().StopSpinner()
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                       // if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                      //  }
+                   // })
                     
                     return
                 }
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
             }
         }
@@ -281,7 +285,11 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     
     
     
-    func apiProductList(type:String)
+    func apiProductList(type:String) {
+        
+    }
+    
+    func apiProductListBuy()
     {
         if !NetworkState().isInternetAvailable {
             ShowNoInternetAlert()
@@ -290,17 +298,9 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
-        let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-        let strSociId  = (SociId as NSNumber).stringValue
-        
-        let pram:Parameters = [
-            "category_id":"0",
-            "society_id" : strSociId,
-            "type":type
-        ]
-        
         webservices().StartSpinner()
-        Apicallhandler().GetProductList(URL: webservices().baseurl + API_BUY_SELL_PRODUCT, param:pram, token: token as! String) { JSON in
+        
+        Apicallhandler().GetProductList(URL: webservices().baseurl + API_BUY_SELL_RECOMMENDATIONS, token: token as! String) { JSON in
             switch JSON.result{
             case .success(let resp):
                 webservices().StopSpinner()
@@ -308,14 +308,14 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                 {
                     self.arrRecommend.removeAll()
                     self.arrRecommend = resp.data!
-                    if type == "1"{
+                    
+                   // if type == "1"{
                         if self.arrRecommend.count > 0{
                         
                            //   collectionBuyRecommendation
                             self.tblBuyRecommendation.isHidden = false
                             self.lblNoDataFound.isHidden = true
                             
-
                             self.tblBuyRecommendation.delegate = self
                             self.tblBuyRecommendation.dataSource = self
                             self.tblBuyRecommendation.reloadData()
@@ -326,7 +326,7 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                             
                         }
                         
-                    }else{
+                  /*  }else{
                         if self.arrRecommend.count > 0{
                             // CollectionMyListing
                             self.tblMyListing.isHidden = false
@@ -342,13 +342,105 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                             self.lblNoDataFound.isHidden = false
                             
                         }
-                    }
+                    } */
                     
                     
                 }
                 else
                 {
-                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+                
+            case .failure(let err):
+                webservices().StopSpinner()
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                       // if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                    //    }
+                 //   })
+                    
+                    return
+                }
+                
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                
+            }
+        }
+        
+        
+    }
+    
+    func apiProductList1()
+    {
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        webservices().StartSpinner()
+        
+        Apicallhandler().GetProductList(URL: webservices().baseurl + API_BUY_SELL_PRODUCT, token: token as! String) { JSON in
+            switch JSON.result{
+            case .success(let resp):
+                webservices().StopSpinner()
+                if(JSON.response?.statusCode == 200)
+                {
+                    self.arrSellData.removeAll()
+                    self.arrSellData = resp.data!
+                    
+                   // if type == "1"{
+                        if self.arrSellData.count > 0{
+                        
+                           //   collectionBuyRecommendation
+                            self.tblMyListing.isHidden = false
+                            self.lblNoDataFound.isHidden = true
+                            
+                            self.tblMyListing.delegate = self
+                            self.tblMyListing.dataSource = self
+                            self.tblMyListing.reloadData()
+                            
+                        }else{
+                            self.tblMyListing.isHidden = true
+                            self.lblNoDataFound.isHidden = false
+                            
+                        }
+                        
+                  /*  }else{
+                        if self.arrRecommend.count > 0{
+                            // CollectionMyListing
+                            self.tblMyListing.isHidden = false
+                            self.lblNoDataFound.isHidden = true
+                            
+                            
+                            self.tblMyListing.delegate = self
+                            self.tblMyListing.dataSource = self
+                            self.tblMyListing.reloadData()
+                            
+                        }else{
+                            self.tblMyListing.isHidden = true
+                            self.lblNoDataFound.isHidden = false
+                            
+                        }
+                    } */
+                    
+                    
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
                     self.present(alert, animated: true, completion: nil)
                 }
                 
@@ -370,9 +462,10 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                     
                     return
                 }
+                
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
             }
         }
@@ -381,7 +474,7 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     }
     
     
-    func apiProductDelete(id:String)
+    func apiProductDelete(id:Int)
        {
            if !NetworkState().isInternetAvailable {
                ShowNoInternetAlert()
@@ -390,7 +483,7 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
            
            let pram:Parameters = [
-               "id":id
+               "ProductID":id
            ]
            
            webservices().StartSpinner()
@@ -401,11 +494,15 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                    if(JSON.response?.statusCode == 200)
                    {
                       
-                    if self.strType == "1"{
+                    self.apiProductListBuy()
+                    
+                   // self.apiProductList1()
+                    
+                    /*if self.strType == "1"{
                         self.apiProductList(type: "1")
                        }else{
                           self.apiProductList(type: "2")
-                       }
+                       } */
                    }
                    else
                    {
@@ -417,22 +514,22 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                case .failure(let err):
                    webservices().StopSpinner()
                    if JSON.response?.statusCode == 401{
-                       APPDELEGATE.ApiLogout(onCompletion: { int in
-                           if int == 1{
+                       APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                         //  if int == 1{
                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                let navController = UINavigationController(rootViewController: aVC)
                                navController.isNavigationBarHidden = true
                                self.appDelegate.window!.rootViewController  = navController
                                
-                           }
-                       })
+                          // }
+                     //  })
                        
                        return
                    }
                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                    self.present(alert, animated: true, completion: nil)
-                   print(err.asAFError)
+                   print(err.asAFError!)
                    
                }
            }
@@ -442,14 +539,12 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     
     
     
-    
-    
-    
     //MARK:- action Delete/Edit
+    
     @objc func actionDelete(sender:UIButton) {
-        let strId = (arrRecommend[sender.tag].id! as NSNumber).stringValue
+        let strId = (arrSellData[sender.tag].productID!) // as NSNumber).stringValue
         
-        let _ : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+       // let _ : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
         avc?.isfrom = 2
         avc?.titleStr = "Listing"
@@ -468,17 +563,17 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
            
         if #available(iOS 13.0, *) {
             let vc = self.storyboard?.instantiateViewController(identifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
-            vc.arrRecommendData = arrRecommend[sender.tag]
+            vc.arrRecommendData = arrSellData[sender.tag]
             vc.isEditProdcut = true
-            vc.strCategoryID = (arrRecommend[sender.tag].categoryID! as NSNumber).stringValue
-            vc.strProductId = (arrRecommend[sender.tag].id! as NSNumber).stringValue
+            vc.CategoryID = (arrSellData[sender.tag].productCategoryID!) // as NSNumber).stringValue
+           vc.ProductId = (arrSellData[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
-            vc.arrRecommendData = arrRecommend[sender.tag]
-            vc.strCategoryID = (arrRecommend[sender.tag].categoryID! as NSNumber).stringValue
+            vc.arrRecommendData = arrSellData[sender.tag]
+           vc.CategoryID = (arrSellData[sender.tag].productCategoryID!) // as NSNumber).stringValue
             vc.isEditProdcut = true
-            vc.strProductId = (arrRecommend[sender.tag].id! as NSNumber).stringValue
+            vc.ProductId = (arrSellData[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -502,12 +597,17 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         
         if changedIndex == 0{//Buy
-            apiProductList(type: "1")
-            strType = "1"
+           // apiProductList(type: "1")
+           // strType = "1"
+            
+            apiProductListBuy()
             
         }else{
-            apiProductList(type: "2")
-            strType = "2"
+          //  apiProductList(type: "2")
+          //  strType = "2"
+            
+            apiProductList1()
+
         }
         
     }
@@ -542,32 +642,26 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
             
             if(arrCategory[indexPath.row].icon != nil)
             {
-                // 1/9/20.
-                
-                cell.imgProduct.sd_setImage(with: URL(string:webservices().BuySellImgUrl + arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
-                
-              //  cell.imgProduct.sd_setImage(with: URL(string: webservices().imgurl + arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
-
+                cell.imgProduct.sd_setImage(with: URL(string: arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
             }
+            
             cell.lblCategoryName.text = arrCategory[indexPath.row].name!
             
             return cell
+            
         }else if collectionView == collectionSellCategory{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! categoryCell
             
             
             if(arrCategory[indexPath.row].icon != nil)
             {
-                // 1/9/20.
-
-                cell.imgProduct.sd_setImage(with: URL(string:webservices().BuySellImgUrl + arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
-                
-              //  cell.imgProduct.sd_setImage(with: URL(string: webservices().imgurl + arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
-
+                cell.imgProduct.sd_setImage(with: URL(string: arrCategory[indexPath.row].icon!), placeholderImage: UIImage(named: "vendor-1"))
             }
+            
             cell.lblCategoryName.text = arrCategory[indexPath.row].name!
             
             return cell
+            
       /*  }else if collectionView == collectionBuyRecommendation{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendationCell", for: indexPath) as! RecommendationCell
     
@@ -613,15 +707,19 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
             
             
             if arrRecommend[indexPath.row].productsimages!.count > 0{
-                if arrRecommend[indexPath.row].productsimages?[0].image != nil
+                if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
                 {
-                    cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor profile"))
+                    cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "vendor profile"))
                 }
             }
             
+            cell.btnEdit.tag = indexPath.row
+            
+            cell.btnDelete.tag = indexPath.row
       
             
-            cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].price!)
+            cell.lblPrice.text = "\(arrRecommend[indexPath.row].amount!)"
+            // String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
             cell.lblDiscription.text = arrRecommend[indexPath.row].title
             
             cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
@@ -639,11 +737,17 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
             let vc  = self.storyboard?.instantiateViewController(withIdentifier: "CategoryDetailsVC") as! CategoryDetailsVC
             vc.strCategoryName = arrCategory[indexPath.row].name!
             vc.strCategoryId = (arrCategory[indexPath.row].id! as NSNumber).stringValue
+            
+            vc.ProductCategoryID = arrCategory[indexPath.row].id
+            
             vc.strCategoryType = strType
             self.navigationController?.pushViewController(vc, animated: true)
         }else if collectionView == collectionSellCategory{
             let vc  = self.storyboard?.instantiateViewController(withIdentifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
-            vc.strCategoryID = (arrCategory[indexPath.row].id! as NSNumber).stringValue
+            vc.CategoryID = (arrCategory[indexPath.row].id!) // as NSNumber).stringValue
+            
+            vc.ProductId = (arrRecommend[indexPath.row].productID!) // as NSNumber).stringValue
+
             vc.isEditProdcut = false
             self.navigationController?.pushViewController(vc, animated: true)
        /* }else if collectionView == collectionBuyRecommendation{
@@ -657,8 +761,8 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
         else{
            let vc  = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC") as! BuySellProductDetailsVC
             vc.arrProductDetails = arrRecommend[indexPath.row]
-            vc.strCategoryId = (arrRecommend[indexPath.row].categoryID! as NSNumber).stringValue
-            vc.strProductID = (arrRecommend[indexPath.row].id! as NSNumber).stringValue
+            vc.CategoryId = (arrRecommend[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+            vc.ProductID = (arrRecommend[indexPath.row].productID!) // as NSNumber).stringValue
             vc.strCategoryName = arrRecommend[indexPath.row].title!
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -691,7 +795,11 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
 extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return arrRecommend.count
+            if tableView == tblBuyRecommendation{
+               return arrRecommend.count
+            }else{
+                return arrSellData.count
+            }
        }
        
        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -705,21 +813,24 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
           cell.stkviw.isHidden = true
                   
           if arrRecommend[indexPath.row].productsimages!.count > 0{
-                if arrRecommend[indexPath.row].productsimages?[0].image != nil
+                if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
                       {
-                          cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                          cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                       
                   }
                   
                   //            let rupee = "\u{20B9}"
-        cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].price!)
+       // cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
+            
+        cell.lblPrice.text = "\(arrRecommend[indexPath.row].amount!)"
+
         cell.lblName.text = arrRecommend[indexPath.row].title
                   
-        cell.lblQuality.text = arrRecommend[indexPath.row].quality
-
+        cell.lblQuality.text = arrRecommend[indexPath.row].qualityStatus
                   
         cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
+            
         cell.btnEdit.addTarget(self, action: #selector(actionEdit(sender:)), for: .touchUpInside)
         
         
@@ -729,28 +840,31 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
             
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BuycategoryCell") as! BuycategoryCell
 
-                    
-                    if strType == "1"{
+            cell.selectionStyle = .none
+
+                  /*  if strType == "1"{
                         cell.stkviw.isHidden = true
-                    }else{
-        //                if UsermeResponse?.data?.relation == "self"{
-                            cell.btnEdit.tag = indexPath.row
-                            cell.btnDelete.tag = indexPath.row
-                       // }
-                    }
+                    }else{ */
+            
+                         cell.stkviw.isHidden = false
+                         cell.btnEdit.tag = indexPath.row
+                         cell.btnDelete.tag = indexPath.row
+                  //  }
                     
                     
-                    if arrRecommend[indexPath.row].productsimages!.count > 0{
-                        if arrRecommend[indexPath.row].productsimages?[0].image != nil
+                    if arrSellData[indexPath.row].productsimages!.count > 0{
+                        if arrSellData[indexPath.row].productsimages?[0].attachment != nil
                         {
-                            cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                            cell.imgProduct.sd_setImage(with: URL(string: (arrSellData[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                     }
-                    
-              
-                    
-                    cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].price!)
-                    cell.lblName.text = arrRecommend[indexPath.row].title
+                                        
+                    cell.lblPrice.text = "\(arrSellData[indexPath.row].amount!)"
+                // String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
+            
+            cell.lblQuality.text = arrSellData[indexPath.row].qualityStatus
+            
+                    cell.lblName.text = arrSellData[indexPath.row].title
                     
                     cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
                     cell.btnEdit.addTarget(self, action: #selector(actionEdit(sender:)), for: .touchUpInside)
@@ -767,17 +881,17 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
 
             let vc  = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC") as! BuySellProductDetailsVC
             vc.arrProductDetails = arrRecommend[indexPath.row]
-            vc.strCategoryId = (arrRecommend[indexPath.row].categoryID! as NSNumber).stringValue
-            vc.strProductID = (arrRecommend[indexPath.row].id! as NSNumber).stringValue
+            vc.CategoryId = (arrRecommend[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+            vc.ProductID = (arrRecommend[indexPath.row].productID!) // as NSNumber).stringValue
             vc.strCategoryName = arrRecommend[indexPath.row].title!
             self.navigationController?.pushViewController(vc, animated: true)
         
           }else{
               let vc  = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC") as! BuySellProductDetailsVC
-               vc.arrProductDetails = arrRecommend[indexPath.row]
-               vc.strCategoryId = (arrRecommend[indexPath.row].categoryID! as NSNumber).stringValue
-               vc.strProductID = (arrRecommend[indexPath.row].id! as NSNumber).stringValue
-               vc.strCategoryName = arrRecommend[indexPath.row].title!
+               vc.arrProductDetails = arrSellData[indexPath.row]
+               vc.CategoryId = (arrSellData[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+               vc.ProductID = (arrSellData[indexPath.row].productID!) // as NSNumber).stringValue
+               vc.strCategoryName = arrSellData[indexPath.row].title!
                self.navigationController?.pushViewController(vc, animated: true)
            }
         

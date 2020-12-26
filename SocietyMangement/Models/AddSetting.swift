@@ -8,34 +8,33 @@
 
 import Foundation
 
-//
-//// MARK: - add setting
-//struct AddSettingResponse: Codable {
-//    let data: AddSettingData
-//    let status: Int
-//    let message: String
-//}
-//
-//// MARK: - DataClass
-//struct AddSettingData: Codable {
-//    let userID: Int
-//    let receiverID, event, notice, circular: String?
-//    let contactDetails, familyDetails, updatedAt, createdAt: String?
-//    let id: Int
-//
-//    enum CodingKeys: String, CodingKey {
-//        case userID = "user_id"
-//        case receiverID = "receiver_id"
-//        case event, notice, circular
-//        case contactDetails = "contact_details"
-//        case familyDetails = "family_details"
-//        case updatedAt = "updated_at"
-//        case createdAt = "created_at"
-//        case id
-//    }
-//}
+// MARK: - AddSettingResponse
+struct AddSettingResponse: Codable {
+    let data: AddSettingData?
+    let status: Int
+    let message: String
+}
 
+// MARK: - DataClass
+struct AddSettingData: Codable {
+    let doNotDisturb, visitorNotifyOnEntry, domesticNotifyOnEntry, shareContactDetails: Int
+    let shareFamilyMemberDetails, domesticNotifyOnExit, visitorNotifyOnExit, othersNotifyOnEntry: Int
+    let othersNotifyOnExit: Int
 
+    enum CodingKeys: String, CodingKey {
+        case doNotDisturb = "DoNotDisturb"
+        case visitorNotifyOnEntry = "VisitorNotifyOnEntry"
+        case domesticNotifyOnEntry = "DomesticNotifyOnEntry"
+        case shareContactDetails = "ShareContactDetails"
+        case shareFamilyMemberDetails = "ShareFamilyMemberDetails"
+        case domesticNotifyOnExit = "DomesticNotifyOnExit"
+        case visitorNotifyOnExit = "VisitorNotifyOnExit"
+        case othersNotifyOnEntry = "OthersNotifyOnEntry"
+        case othersNotifyOnExit = "OthersNotifyOnExit"
+    }
+}
+
+/*
 // MARK: - GetSettings
 struct AddSettingResponse: Codable {
     let data: AddSettingData
@@ -62,3 +61,5 @@ struct AddSettingData: Codable {
         case updatedAt = "updated_at"
     }
 }
+
+ */

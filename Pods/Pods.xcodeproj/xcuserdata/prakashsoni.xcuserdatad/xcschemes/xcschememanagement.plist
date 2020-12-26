@@ -70,7 +70,7 @@
 		<key>FirebaseInstallations.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>43</integer>
+			<integer>42</integer>
 		</dict>
 		<key>FirebaseInstanceID.xcscheme</key>
 		<dict>
@@ -187,7 +187,7 @@
 		<key>PromisesObjC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>42</integer>
+			<integer>43</integer>
 		</dict>
 		<key>Protobuf.xcscheme</key>
 		<dict>

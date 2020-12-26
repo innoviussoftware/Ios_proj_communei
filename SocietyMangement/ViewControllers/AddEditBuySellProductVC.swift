@@ -39,8 +39,13 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
     var picker : UIPickerView!
     var selectedCondition : Int! = 0
     var activeTexfield : UITextField!
-    var strCategoryID = ""
-    var strProductId = ""
+   
+   // var strCategoryID = ""
+   // var strProductId = ""
+    
+    var CategoryID : Int?
+    var ProductId : Int?
+    
     
     var arrRecommendData : BuySellProductListData!
     var arrEditProductImg = NSMutableArray()//[Productsimage]()
@@ -56,11 +61,8 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
         
         txtperice.placeholder = "Price(\u{20B9})"
         txtItemCondition.text = "Brand New"
-        
-        
-        
+                
         arrItemCondition = ["Brand New","Like New","Very Good","Good"]
-        
         
         txtItemCondition.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
         txtItemCondition.addDoneOnKeyboardWithTarget(self, action: #selector(DoneItemSelection), shouldShowPlaceholder: true)
@@ -85,16 +87,18 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                 btnUpdate.setTitle("UPDATE", for: .normal)
                 lblTitel.text = "Update Details" // "Update Item Details"
                    txttitel.text = arrRecommendData.title
-                   txtperice.text = arrRecommendData.price
-                   txtItemCondition.text = arrRecommendData.quality
+                txtperice.text = "\(arrRecommendData.amount!)"
+                txtItemCondition.text = arrRecommendData.qualityStatus
                    txtDescription.text = arrRecommendData.datumDescription
                 
                 for img in arrRecommendData.productsimages!{
-                    let str =  img.image!
+                    let str =  img.attachment!
                     let img = UIImageView()
-                    img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor-1"))
+                    img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor profile"))
                     arrEditProductImg.add(img.image!)
                 }
+                
+                
                 
                 collectionImg.reloadData()
                 
@@ -340,25 +344,25 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
     
     let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
     
-    let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-    let strSociId  = (SociId as NSNumber).stringValue
-    
-    
        webservices().StartSpinner()
+    
        let param : Parameters = [
-           "category_id":strCategoryID,
-           "title":txttitel.text!,
-           "price":txtperice.text!,
-           "description":txtDescription.text!,
-           "quality":txtItemCondition.text!,
-           "society_id":strSociId
+            "ProductCategoryID":CategoryID!,
+           "Title":txttitel.text!,
+           "Description":txtDescription.text!,
+           "Amount":txtperice.text!,
+           "QualityStatus":txtItemCondition.text!,
+           "VisibleTill":"2021-12-31 23:00:00"
        ]
        
        AF.upload(
            multipartFormData: { MultipartFormData in
                
                for (key, value) in param {
-                   MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
+                  // MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
                }
             
             if self.isEditProdcut == false{
@@ -370,7 +374,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                                                        
                                                         let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
                                                         
-                                                         MultipartFormData.append(imgData, withName: "product_photos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                                                         MultipartFormData.append(imgData, withName: "ProductPhotos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                                                        
                                                     }
                 
@@ -384,7 +388,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                                                        
                                                         let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
                                                         
-                                                         MultipartFormData.append(imgData, withName: "product_photos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                                                         MultipartFormData.append(imgData, withName: "ProductPhotos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                                                        
                                                     }
                 
@@ -392,11 +396,11 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
             
                
                
-       }, to:  webservices().baseurl + API_ADD_PRODUCT,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+       }, to:  webservices().baseurl + API_ADD_PRODUCT,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
            //Current upload progress of file
            
-           
            print("Upload Progress: \(progress.fractionCompleted)")
+        
        })
            .responseJSON (completionHandler: { (response:DataResponse<Any>) in
                
@@ -449,26 +453,27 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
     func apicallUpdateProduct() {
           
           let strtoken = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
-        
-           let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-           let strSociId  = (SociId as NSNumber).stringValue
-        
+          
           webservices().StartSpinner()
+        
           let param : Parameters = [
-              "product_id":strProductId,
-              "category_id":strCategoryID,
-              "title":txttitel.text!,
-              "price":txtperice.text!,
-              "description":txtDescription.text!,
-              "quality":txtItemCondition.text!,
-              "society_id":strSociId
+              "ProductID":ProductId!,
+              "ProductCategoryID":CategoryID!,
+              "Title":txttitel.text!,
+              "Amount":txtperice.text!,
+              "Description":txtDescription.text!,
+              "QualityStatus":txtItemCondition.text!,
+               "VisibleTill":"2021-12-31 23:00:00"
           ]
           
           AF.upload(
               multipartFormData: { MultipartFormData in
                   
                   for (key, value) in param {
-                      MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
+                    
+                    MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+
+                    //  MultipartFormData.append(((value as? String)?.data(using: .utf8))!, withName: key)
                   }
                
                if self.isEditProdcut == false{
@@ -480,7 +485,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                                                           
                                                            let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
                                                            
-                                                            MultipartFormData.append(imgData, withName: "product_photos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                                                            MultipartFormData.append(imgData, withName: "ProductPhotos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                                                           
                                                        }
                    
@@ -494,7 +499,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                                                           
                                                            let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
                                                            
-                                                            MultipartFormData.append(imgData, withName: "product_photos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
+                                                            MultipartFormData.append(imgData, withName: "ProductPhotos[]", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                                                           
                                                        }
                    
@@ -502,7 +507,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                
                   
                   
-          }, to:  webservices().baseurl + API_BUY_SELL_PRODUCT_EDIT,headers:["Accept": "application/json","Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+          }, to:  webservices().baseurl + API_BUY_SELL_PRODUCT_EDIT,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
               //Current upload progress of file
               
               
@@ -526,7 +531,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                        self.collectionImg.reloadData()
                        
                        // create the alert
-                       let alert = UIAlertController(title: Alert_Titel, message:"Product added for sell successfully" , preferredStyle: UIAlertController.Style.alert)
+                       let alert = UIAlertController(title: Alert_Titel, message:"Product updated for sell successfully" , preferredStyle: UIAlertController.Style.alert)
                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
                                                        self.navigationController?.popViewController(animated: true)
                                                   }))

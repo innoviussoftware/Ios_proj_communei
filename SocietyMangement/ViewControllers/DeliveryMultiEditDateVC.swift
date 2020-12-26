@@ -184,7 +184,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker.date)
-            date2 = datePicker.date
+          /*  date2 = datePicker.date
             let cal = NSCalendar.current
             
             let components = cal.dateComponents([.day], from: date1, to: date2)
@@ -200,13 +200,13 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                     self.txtenddate.text = ""
                 }))
                 self.present(alert, animated: true, completion: nil)
-            }
+            } */
             
         }
         if(textfield == txtstartdate)
         {
             txtstartdate.text = formatter.string(from: datePicker.date)
-            date1 = datePicker.date
+           // date1 = datePicker.date
             
         }
         self.view.endEditing(true)

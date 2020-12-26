@@ -193,11 +193,13 @@ class MaidProfileDetailsVC: UIViewController {
                             ShowNoInternetAlert()
                             return
                         }
-              let userid = UserDefaults.standard.value(forKey: USER_ID) as! Int
+             
+            let userid = UserDefaults.standard.value(forKey: USER_ID) as! Int
             
             let strId = "\(userid)"
                 
-               webservices().StartSpinner()
+            webservices().StartSpinner()
+        
             Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",userId:strId) { JSON in
                    switch JSON.result{
                    case .success(let resp):

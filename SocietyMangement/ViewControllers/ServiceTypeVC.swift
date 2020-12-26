@@ -11,7 +11,7 @@ import UIKit
 protocol ServiceTypeListProtocol {
     func serviceTypeList(name:String,vendorServiceTypeID:Int, selectNumber:Int)
     
-    func serviceTypeList1(name:String,vendorServiceTypeID:Int, selectNumber:Int)
+    func serviceTypeList1(name1:String,vendorServiceTypeID1:Int, selectNumber1:Int)
 
 }
 
@@ -169,7 +169,7 @@ class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSour
         
             tblServiceType.reloadData()
         
-            delegate?.serviceTypeList1(name: serviceArry[indexPath.row].type!, vendorServiceTypeID: serviceArry[indexPath.row].vendorServiceTypeID!, selectNumber: selectedindex1!)
+            delegate?.serviceTypeList1(name1: serviceArry[indexPath.row].type!, vendorServiceTypeID1: serviceArry[indexPath.row].vendorServiceTypeID!, selectNumber1: selectedindex1!)
         }
         
         self.navigationController?.popViewController(animated: true)

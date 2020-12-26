@@ -49,8 +49,13 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
     var strdateandtimeEnd = ""
     
     var strSelectCalendarDate = ""
-
     
+    var strStartTime = ""
+    
+    var strEndTime = ""
+    
+   // var startBookinEditDate = ""
+
     var dicAddBook : AddBookingNow?
     
     let datePicker = UIDatePicker()
@@ -79,7 +84,8 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         
         setUpView()
         
-     
+        calenderView.placeholderType = .none
+        
        if isfrom == 1 {
         
         calenderView.allowsMultipleSelection = false
@@ -112,8 +118,21 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         // user/amenity/bookings/add
         }else{
             
-            calenderView.select(self.dateFormatter1.date(from: "2021-11-25"))
-
+            // user/amenity/bookings/edit
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let result = formatter.string(from: date)
+                        
+            if result <= strSelectCalendarDate {
+                calenderView.select(self.dateFormatter1.date(from: strSelectCalendarDate))
+            }else{
+                strSelectCalendarDate = ""
+            }
+            
+            lblName.text = strName
+            lblNotes.text = strNotes
+            
             btnDone.setTitle("Update", for: .normal)
         }
         
@@ -154,10 +173,17 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         formater.dateFormat = "hh:mm a"
         let outTime = formater.string(from: date)
         
-        txtStartTime.text = outTime
-        
-        txtEndTime.text = outTime
+        if isfrom == 1 {
+            txtStartTime.text = outTime
             
+            txtEndTime.text = outTime
+                
+        }else {
+            txtStartTime.text = strStartTime
+            
+            txtEndTime.text = strEndTime
+        }
+        
        // opentimePicker(txt: txtStartTime)
         
        // opentimePicker(txt: txtEndTime)
@@ -188,13 +214,15 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
            toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
            //timePicker.minimumDate = Date()
            // add toolbar to textField
-           txtStartTime.inputAccessoryView = toolbar
-           // add datepicker to textField
-           txtStartTime.inputView = datePicker
         
-            txtEndTime.inputAccessoryView = toolbar
-                  // add datepicker to textField
-            txtEndTime.inputView = datePicker_end
+            txtStartTime.inputAccessoryView = toolbar
+            // add datepicker to textField
+            txtStartTime.inputView = datePicker
+         
+             txtEndTime.inputAccessoryView = toolbar
+                   // add datepicker to textField
+             txtEndTime.inputView = datePicker_end
+           
         
        }
     
@@ -276,19 +304,39 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
            webservices().StartSpinner()
                
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        var param = Parameters()
 
-                    let param : Parameters = [
+        if isfrom == 1 {
+
+            param  = [
                         "AmenityID" : amenityID!,
                         "BookingNotes" : txtviewBookingNotes.text!,
                         "Amount" : amount!,
                         "StartDate" : strdateandtimeFirst,
                         "EndDate" : strdateandtimeEnd
                     ]
+        }else{
+            param  = [
+                        "AmenitiesBookingID" : amenityID!,
+                        "BookingNotes" : txtviewBookingNotes.text!,
+                        "Amount" : amount!,
+                        "StartDate" : strdateandtimeFirst,
+                        "EndDate" : strdateandtimeEnd
+                    ]
+        }
                    
                   print("Parameters Booking : ",param)
         
-                                   
-        Apicallhandler.sharedInstance.ApiAddBookingNow(token: token as! String, param: param) { [self] JSON in
+        var strAmenity = ""
+
+        if isfrom == 1 {
+            strAmenity = "user/amenity/bookings/add"
+        }else{
+            strAmenity = "user/amenity/bookings/edit"
+        }
+        
+        Apicallhandler.sharedInstance.ApiAddBookingNow(URL: webservices().baseurl + strAmenity, token: token as! String, param: param) { [self] JSON in
             switch JSON.result{
             case .success(let resp):
                 
@@ -338,21 +386,21 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func actionDone(_ sender: UIButton) {
         print("strSelectCalendarDate : ", strSelectCalendarDate)
-        if strSelectCalendarDate == "" {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select date")
-            self.present(alert, animated: true, completion: nil)
-        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
-            self.present(alert, animated: true, completion: nil)
-        }else if txtStartTime.text! == txtEndTime.text! {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"start time and end time not same here")
-            self.present(alert, animated: true, completion: nil)
-        }else if txtviewBookingNotes.text == "" {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please write reason why you want to book this amentity")
-            self.present(alert, animated: true, completion: nil)
-        }else{
-            ApiCallAmenityBookingsAdd()
-        }
+            if strSelectCalendarDate == "" {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select date")
+                self.present(alert, animated: true, completion: nil)
+            }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+                self.present(alert, animated: true, completion: nil)
+            }else if txtStartTime.text! == txtEndTime.text! {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"start time and end time not same here")
+                self.present(alert, animated: true, completion: nil)
+            }else if txtviewBookingNotes.text == "" {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please write reason why you want to book this amentity")
+                self.present(alert, animated: true, completion: nil)
+            }else{
+                ApiCallAmenityBookingsAdd()
+            }
 
     }
     

@@ -28,9 +28,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     var selectedindex : Int = 0
     
     var index:Int?
-    
+    var index1:Int?
+
     var vendorID:Int?
     var isPublic:Int?
+
+    var vendorID1:Int?
+    var isPublic1:Int?
 
     var isfrom = ""
     
@@ -650,25 +654,24 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
     {
+        index = selectNumber
+
            if(isfrom == "Single") {
                self.txtDeliveryCompanyName.text = name
                vendorID = VendorID
                 isPublic = IsPublic
-           }else if(isfrom == "Multiple"){
-               self.txtDeliveryCompanyName1.text = name
-                vendorID = VendorID
-                isPublic = IsPublic
            }
-           /* else{
-               self.txtDeliveryCompanyName.text = name
-               vendorID = VendorID
-               isPublic = IsPublic
-           } */
-//             index = selectNumber
-//             VendorID = VendorID
-//             IsPublic = IsPublic
+    }
+    
+    func deliveryList1(name1:String,VendorID1:Int,IsPublic1:Int, selectNumber1:Int)
+    {
+        index1 = selectNumber1
 
-                 
+           if(isfrom == "Multiple"){
+               self.txtDeliveryCompanyName1.text = name1
+                vendorID1 = VendorID1
+                isPublic1 = IsPublic1
+           }                 
        }
     
     
@@ -684,8 +687,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
                                 
+            popOverConfirmVC.isfrom = "Single"
+
                     popOverConfirmVC.selectedindex = index
-                    popOverConfirmVC.selectedindex1 = index
             
             popOverConfirmVC.strTitleName = "Select Delivery Company"
                 
@@ -712,8 +716,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
                 
-                    popOverConfirmVC.selectedindex = index
-                    popOverConfirmVC.selectedindex1 = index
+            popOverConfirmVC.isfrom = "Multiple"
+
+                    popOverConfirmVC.selectedindex1 = index1
             
             popOverConfirmVC.strTitleName = "Select Delivery Company"
 
@@ -734,30 +739,39 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         if(textField == txtAllWeek)
         {
-                
             viewbottom1.isHidden = false
+            
+            viewbottom.isHidden = true
+
             txtAllWeek.resignFirstResponder()
-                
-               // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+                    
+            // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
         
         if(textField == txtvaildtill)
         {
-                
             viewbottom.isHidden = false
+            
+            viewbottom1.isHidden = true
+            
             txtvaildtill.resignFirstResponder()
-                
+
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
             if(textField == txtdate)
             {
                 textfield = txtdate
+                viewbottom.isHidden = true
+                viewbottom1.isHidden = true
+
             }
             if(textField == txtstartdate)
             {
                 //datePicker.minimumDate = Date()
                 textfield = txtstartdate
-                
+                viewbottom.isHidden = true
+                viewbottom1.isHidden = true
+
             }
             if(textField == txtenddate)
             {
@@ -772,15 +786,25 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 
                 let components = cal.dateComponents([.day], from: date1, to: date2)
               //  lbldays.text =  (components.day! as NSNumber).stringValue
-                
+                viewbottom.isHidden = true
+                viewbottom1.isHidden = true
+
             }
         
         if(textField == txtStartTime) {
             textfield = txtStartTime
+            
+            viewbottom.isHidden = true
+            viewbottom1.isHidden = true
+
         }
              
         if(textField == txtEndTime) {
             textfield = txtEndTime
+            
+            viewbottom.isHidden = true
+            viewbottom1.isHidden = true
+
         }
             
     }
@@ -808,6 +832,26 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         }
         
         return str
+    }
+    
+    func messageClicked() {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr =  "Successfully Added"
+        avc?.subtitleStr = "Your delivery will be allowed"
+        avc?.isfrom = 4
+
+        avc?.yesAct = {
+           
+            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                         
+        }
+        avc?.noAct = {
+            
+        }
+        
+        present(avc!, animated: true)
     }
     
     // MARK: - get Delivery Multiple Entry
@@ -875,11 +919,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 "VisitEndDate": endDate,
                 "FromTime": txtStartTime.text!, //time, // txtStartTime.text!, // // start time
                 "ToTime": txtEndTime.text!, //after_add_time, // txtEndTime.text!, // //validtill,  // to time
-                "VendorID":vendorID!,
+                "VendorID":vendorID1!,
                 "VendorName": self.txtDeliveryCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
                 "IsLeaveAtGate": multipleDeliveryCheckGate!,
-                "IsPublicVendor":isPublic!,
+                "IsPublicVendor":isPublic1!,
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
         
@@ -896,11 +940,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        self.messageClicked()
+                        
+                      /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                                                 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
                 
                     }
                     else
@@ -1054,11 +1100,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        self.messageClicked()
+
+                       /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                                                 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
 
                         
                      /*   let storyboard = UIStoryboard(name: "Main", bundle: nil)

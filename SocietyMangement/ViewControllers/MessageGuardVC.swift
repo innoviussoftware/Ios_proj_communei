@@ -15,7 +15,9 @@ import Alamofire
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 
-class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+class MessageGuardVC: UIViewController, UICollectionViewDelegate , UICollectionViewDataSource, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
+    
+    @IBOutlet weak var collectionMessageImage: UICollectionView!
 
     @IBOutlet weak var textViewReasion: UITextView!
     
@@ -25,9 +27,10 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
     
     @IBOutlet weak var viewCamera: UIView!
 
-       
     var imgData : Data?
        
+    var arrMessageImg = NSMutableArray()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +68,9 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
         if textViewReasion.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Message")
             self.present(alert, animated: true, completion: nil)
-        }else if (btnattechment.imageView!.image == nil) || (self.imgData == nil) {
+        }
+        //else if (btnattechment.imageView!.image == nil) || (self.imgData == nil) {
+        else if arrMessageImg.count == 0{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please Select Image")
             self.present(alert, animated: true, completion: nil)
         }else{
@@ -119,14 +124,27 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                let date = Date()
+               /* let date = Date()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyyMMddHH:mm:ss"
                 let strFileName = formatter.string(from: date)
                 
                 if self.imgData!.count != 0{
                     MultipartFormData.append(self.imgData!, withName: "Attachments[]", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
-                }
+                } */
+                
+                
+                for img in self.arrMessageImg{
+                                                       let date = Date()
+                                                       let formatter = DateFormatter()
+                                                       formatter.dateFormat = "yyyyMMddHHmmss"
+                                                       let strFileName = formatter.string(from: date)
+                                                       
+                                                        let imgData = UIImageJPEGRepresentation(img as! UIImage, 0.2)!
+                                                        
+                                                         MultipartFormData.append(imgData, withName: "Attachments[]", fileName: "\(strFileName)", mimeType:"image/png/jpeg/application/pdf")
+                                                       
+                                                    }
 
                 
         }, to:  webservices().baseurl + "user/send/message-to-guard" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
@@ -235,6 +253,21 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
       //MARK:- imagePicker delegate methods
       
          func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+            // if (info[UIImagePickerControllerMediaType] as? String) != nil {
+              
+              if let originalimage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                 
+                  arrMessageImg.add(originalimage)
+
+                collectionMessageImage.reloadData()
+                
+              }
+          
+            self.dismiss(animated: true, completion: nil)
+             
+         }
+    
+    /* {
              if (info[UIImagePickerControllerMediaType] as? String) != nil {
                 
                 let image = info[UIImagePickerControllerEditedImage] as! UIImage
@@ -254,7 +287,28 @@ class MessageGuardVC: UIViewController, UIImagePickerControllerDelegate , UINavi
                  
               }
              
-         }
+         } */
+    
+    
+    // MARK: - Collectionview delegate and datasource methods
       
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            return arrMessageImg.count
+        }
+
+    
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+                     
+            let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
+                       
+            cell.imgview.image = arrMessageImg[indexPath.row] as? UIImage
+            
+            return cell
+             
+     }
+          
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: 84, height: 92)
+      }
 
 }

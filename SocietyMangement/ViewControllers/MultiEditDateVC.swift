@@ -24,6 +24,9 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var txtenddate: UITextField!
 
     var datePicker = UIDatePicker()
+    
+    var datePicker1 = UIDatePicker()
+
 
     var textfield = UITextField()
     
@@ -67,8 +70,13 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         //Formate Date
         datePicker.datePickerMode = .date
         
+        datePicker1.datePickerMode = .date
+
+        
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
+            datePicker1.preferredDatePickerStyle = .wheels
+
         } else {
             // Fallback on earlier versions
         }
@@ -90,10 +98,13 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
        
         datePicker.minimumDate = Date()
         
+        datePicker1.minimumDate = Date()
+
+        
               // add toolbar to textField
               txtenddate.inputAccessoryView = toolbar
               // add datepicker to textField
-              txtenddate.inputView = datePicker
+              txtenddate.inputView = datePicker1
               
              
               
@@ -102,18 +113,24 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
     @objc  func donedatePicker(){
         //For date formate
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+      //  formatter.dateFormat = "yyyy-MM-dd"
         
+        formatter.dateFormat = "dd MMM"
+
         if(textfield == txtenddate)
         {
-            txtenddate.text = formatter.string(from: datePicker.date)
-            date2 = datePicker.date
+            txtenddate.text = formatter.string(from: datePicker1.date)
+            formatter.dateFormat = "yyyy MM dd"
+
+            date2 = datePicker1.date
             let cal = NSCalendar.current
             
             let components = cal.dateComponents([.day], from: date1, to: date2)
             
             if (components.day! >= 0)
             {
+                print("Please select date")
+                
                // lbldays.text =  (components.day! as NSNumber).stringValue + "days"
              //   days = lbldays.text!
             }
@@ -171,8 +188,38 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         }
     }
     
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMM"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
+    
     @IBAction func btnUpdatePressed(_ sender: UIButton) {
-        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        
+        let strStartDate = txtstartdate.text! // first date
+        let strEndDate = txtenddate.text! // end date
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        
+        let startdate = formatter.date(from: strStartDate)
+        let enddate = formatter.date(from: strEndDate)
+        
+        print("startdate ",date1)
+        print("enddate ",date2)
+
+       // if startdate!.compare(enddate!) != .orderedDescending {
+        if self.txtenddate.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"enter end date")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if(date2 > date1) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else{
@@ -195,6 +242,16 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
                          return
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        
+        
+        txtstartdate.text = formatter.string(from: datePicker.date)
+           // date1 = datePicker.date
+
+        txtenddate.text = formatter.string(from: datePicker1.date)
+        
             
             let param : Parameters = [
                 "VisitStartDate": txtstartdate.text!,

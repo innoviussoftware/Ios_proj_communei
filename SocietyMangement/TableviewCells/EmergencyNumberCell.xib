@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Gotham Book Regular.otf">
+            <string>Gotham-Book</string>
+        </array>
+        <array key="Gotham Medium Regular.ttf">
+            <string>GothamMedium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EmergencyNumberCell" id="KGk-i7-Jjw" customClass="EmergencyNumberCell" customModule="Communei" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZS-MD-U0F" customClass="RSViewCustomisation" customModule="Communei" customModuleProvider="target">
+                        <rect key="frame" x="8" y="5" width="304" height="90"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 16679" translatesAutoresizingMaskIntoConstraints="NO" id="TwY-bf-n9M">
+                                <rect key="frame" x="10" y="15" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="6eL-T5-Vpo"/>
+                                    <constraint firstAttribute="width" secondItem="TwY-bf-n9M" secondAttribute="height" multiplier="1:1" id="9M4-dN-yCZ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Police" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwE-fr-6Zz">
+                                <rect key="frame" x="80" y="20" width="150" height="16.5"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DA8-M3-DOK">
+                                <rect key="frame" x="80" y="36.5" width="150" height="17.5"/>
+                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="16"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cg6-Ws-O3f">
+                                <rect key="frame" x="80" y="56" width="150" height="17.5"/>
+                                <fontDescription key="fontDescription" name="Gotham-Book" family="Gotham" pointSize="16"/>
+                                <color key="textColor" red="0.1019607843" green="0.21176470589999999" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j8u-yk-ZQL">
+                                <rect key="frame" x="234" y="15" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="j8u-yk-ZQL" secondAttribute="height" multiplier="1:1" id="7TP-sm-iPg"/>
+                                    <constraint firstAttribute="width" constant="60" id="9C3-tX-K3v"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="Component 410 – 1"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="j8u-yk-ZQL" secondAttribute="trailing" constant="10" id="0Dk-PX-n0G"/>
+                            <constraint firstItem="j8u-yk-ZQL" firstAttribute="centerY" secondItem="1ZS-MD-U0F" secondAttribute="centerY" id="4Px-U0-xxq"/>
+                            <constraint firstItem="TwY-bf-n9M" firstAttribute="centerY" secondItem="1ZS-MD-U0F" secondAttribute="centerY" id="5qg-Rt-qqu"/>
+                            <constraint firstItem="j8u-yk-ZQL" firstAttribute="leading" secondItem="LwE-fr-6Zz" secondAttribute="trailing" constant="4" id="6fu-3i-dGj"/>
+                            <constraint firstItem="j8u-yk-ZQL" firstAttribute="leading" secondItem="cg6-Ws-O3f" secondAttribute="trailing" constant="4" id="HLb-CQ-K5e"/>
+                            <constraint firstItem="cg6-Ws-O3f" firstAttribute="top" secondItem="DA8-M3-DOK" secondAttribute="bottom" constant="2" id="Jtz-n8-tDB"/>
+                            <constraint firstItem="TwY-bf-n9M" firstAttribute="leading" secondItem="1ZS-MD-U0F" secondAttribute="leading" constant="10" id="Moa-om-3n9"/>
+                            <constraint firstItem="cg6-Ws-O3f" firstAttribute="leading" secondItem="DA8-M3-DOK" secondAttribute="leading" id="OBF-OT-BQc"/>
+                            <constraint firstItem="LwE-fr-6Zz" firstAttribute="top" secondItem="1ZS-MD-U0F" secondAttribute="top" constant="20" id="Rlz-8f-nfE"/>
+                            <constraint firstItem="DA8-M3-DOK" firstAttribute="leading" secondItem="LwE-fr-6Zz" secondAttribute="leading" id="agK-tq-iac"/>
+                            <constraint firstItem="DA8-M3-DOK" firstAttribute="top" secondItem="LwE-fr-6Zz" secondAttribute="bottom" id="ijP-Wf-gAw"/>
+                            <constraint firstItem="LwE-fr-6Zz" firstAttribute="leading" secondItem="TwY-bf-n9M" secondAttribute="trailing" constant="10" id="lJ1-xT-LQc"/>
+                            <constraint firstItem="j8u-yk-ZQL" firstAttribute="leading" secondItem="DA8-M3-DOK" secondAttribute="trailing" constant="4" id="mBk-24-uc6"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="1ZS-MD-U0F" secondAttribute="bottom" constant="5" id="468-OF-Q3v"/>
+                    <constraint firstItem="1ZS-MD-U0F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="Dho-82-H1x"/>
+                    <constraint firstAttribute="trailing" secondItem="1ZS-MD-U0F" secondAttribute="trailing" constant="8" id="ImI-dk-Ljg"/>
+                    <constraint firstItem="1ZS-MD-U0F" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="pII-4f-0V5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="btnCall" destination="j8u-yk-ZQL" id="mxe-Cz-HkY"/>
+                <outlet property="imgview" destination="TwY-bf-n9M" id="rxp-xi-Ccd"/>
+                <outlet property="lblCallNumbber" destination="cg6-Ws-O3f" id="L5B-h9-Nh8"/>
+                <outlet property="lblName" destination="LwE-fr-6Zz" id="KUn-jl-SXa"/>
+                <outlet property="lblType" destination="DA8-M3-DOK" id="Xtf-X6-W9V"/>
+            </connections>
+            <point key="canvasLocation" x="-45" y="44"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Component 410 – 1" width="60" height="60"/>
+        <image name="Group 16679" width="60" height="60"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

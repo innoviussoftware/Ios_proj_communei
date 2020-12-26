@@ -28,6 +28,8 @@ class AcceptedRequestCell: UITableViewCell {
     
     @IBOutlet weak var lblStatus: UILabel!
     
+    @IBOutlet weak var lblLeaveatGate: UILabel!
+
     @IBOutlet weak var btnapproved: RSButtonCustomisation!
     
     @IBOutlet weak var imgview1: UIImageView!
@@ -41,6 +43,19 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgview9: UIImageView!
     @IBOutlet weak var imgview10: UIImageView!
     
+    @IBOutlet weak var viewHight1: NSLayoutConstraint!
+    @IBOutlet weak var viewHight2: NSLayoutConstraint!
+    @IBOutlet weak var viewHight3: NSLayoutConstraint!
+    @IBOutlet weak var viewHight4: NSLayoutConstraint!
+    @IBOutlet weak var viewHight5: NSLayoutConstraint!
+
+    @IBOutlet weak var view1: UIView!
+    @IBOutlet weak var view2: UIView!
+    @IBOutlet weak var view3: UIView!
+    @IBOutlet weak var view4: UIView!
+    @IBOutlet weak var view5: UIView!
+
+    
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var btnRenew: UIButton!
@@ -52,6 +67,13 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnDeliveryInfo: UIButton!
 
     @IBOutlet weak var btnAlertInfo: UIButton!
+    
+    @IBOutlet weak var constraintHightStackBtn: NSLayoutConstraint!
+
+    @IBOutlet weak var constraintHightStacklbl: NSLayoutConstraint!
+
+    @IBOutlet weak var lblHightStacklblMiddle: UILabel!
+
 
     override func awakeFromNib() {
         super.awakeFromNib()

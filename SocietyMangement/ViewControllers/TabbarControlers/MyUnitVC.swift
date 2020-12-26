@@ -53,6 +53,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     @IBOutlet weak var  helperView_Main: UIView!
 
+    @IBOutlet weak var btnaddfamily1: UIButton!
+    @IBOutlet weak var btnaddfamily11: UIButton!
 
 
     var refreshControl = UIRefreshControl()
@@ -90,6 +92,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
            super.viewWillAppear(animated)
         
         apicallUserMe()
+        
+        if UsermeResponse?.data?.relation == nil {
+            btnaddfamily1.isHidden = false
+            btnaddfamily11.isHidden = false
+        }else{
+            btnaddfamily1.isHidden = true
+            btnaddfamily11.isHidden = true
+        }
+        
 
            NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
         
@@ -233,7 +244,6 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
           //  Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
                 
                 Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
-
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -264,6 +274,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         {
                             self.imgview.sd_setImage(with: URL(string: (UsermeResponse!.data!.profilePhotoPath)!), placeholderImage: UIImage(named: "vendor-1"))
                         }
+                        
                         //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                         
                         // 22/10/20. temp comment
@@ -291,23 +302,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 case .failure(let err):
                     webservices().StopSpinner()
                     if statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                            // if int == 1{
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                          //  }
+                       // })
                         
                         return
                     }
                     
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError as Any)
+                    print(err.asAFError!)
                     
                 }
             }
@@ -516,9 +527,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     func btnAddHelperAction() {
         
-      /*  let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         vc.isfrom = 1
-        self.navigationController?.pushViewController(vc, animated: true) */
+        self.navigationController?.pushViewController(vc, animated: true) 
         
         print("btnAddHelperAction new")
     }
@@ -653,7 +664,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     }
     
     @IBAction func AddFrequentAction_btn(_ sender: Any) {
-              btnAddFrequentActionbtn()
+       btnAddFrequentActionbtn()
     }
     
     
@@ -830,6 +841,28 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
                  cell.lblname.text =  familymeberary[indexPath.row].name
                  cell.lblMobilenumber.text = familymeberary[indexPath.row].phone
+                
+                if UsermeResponse?.data?.relation == nil {
+                    cell.btnEdit.isHidden = false
+                    cell.lblline.isHidden = false
+                    cell.lblline1.isHidden = true
+                    cell.lblline2.isHidden = false
+                    
+                    cell.vwCall.isHidden = false
+                    cell.vwEdit.isHidden = false
+                    cell.vwDelete.isHidden = false
+
+                }else{
+                    cell.btnEdit.isHidden = true
+                    cell.lblline.isHidden = true
+                    cell.lblline1.isHidden = false
+                    cell.lblline2.isHidden = true
+                    
+                    cell.vwCall.isHidden = false
+                    cell.vwEdit.isHidden = true
+                    cell.vwDelete.isHidden = false
+                }
+                
                  cell.btnEdit.tag = indexPath.row
                  cell.btnCall.tag = indexPath.row
                  cell.btnDelete.tag = indexPath.row

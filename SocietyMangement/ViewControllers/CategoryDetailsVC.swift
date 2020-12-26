@@ -81,6 +81,8 @@ class CategoryDetailsVC: UIViewController {
    // @IBOutlet weak var collectionCategory: UICollectionView!
     
     @IBOutlet weak var tblCategory: UITableView!
+    
+    var ProductCategoryID: Int?
 
     var strCategoryName = ""
     var strCategoryId = ""
@@ -94,8 +96,10 @@ class CategoryDetailsVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
-      apiProductList(type: "")
-     self.lblNoDataFound.isHidden = true
+        apiProductList(ProductCategoryID: ProductCategoryID!)
+        
+        self.lblNoDataFound.isHidden = true
+        
    //   collectionCategory.register(UINib(nibName: "RecommendationCell", bundle: nil), forCellWithReuseIdentifier: "RecommendationCell")
         
         tblCategory.register(UINib(nibName: "BuycategoryCell", bundle: nil), forCellReuseIdentifier: "BuycategoryCell")
@@ -111,7 +115,7 @@ class CategoryDetailsVC: UIViewController {
     
     //MARK:- action Delete/Edit
     @objc func actionDelete(sender:UIButton) {
-        let strId = (arrCategoryDetails[sender.tag].id! as NSNumber).stringValue
+        let strId = (arrCategoryDetails[sender.tag].productCategoryID! as NSNumber).stringValue
         
         let _ : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
@@ -148,7 +152,7 @@ class CategoryDetailsVC: UIViewController {
     //webservice
     
       
-        func apiProductList(type:String)
+        func apiProductList(ProductCategoryID:Int)
         {
               if !NetworkState().isInternetAvailable {
                              ShowNoInternetAlert()
@@ -159,12 +163,15 @@ class CategoryDetailsVC: UIViewController {
                 let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             let pram:Parameters = [
-                "category_id":strCategoryId,
-                "type":strCategoryType,
+                "ProductCategoryID":ProductCategoryID,
+               // "type":strCategoryType,
             ]
               
             webservices().StartSpinner()
-            Apicallhandler().GetProductList(URL: webservices().baseurl + API_BUY_SELL_PRODUCT, param:pram, token: token as! String) { JSON in
+            
+            Apicallhandler().GetProductListBuy(URL: webservices().baseurl + API_BUY_SELL_LISTING_SEPRATED, param: pram, token: token as! String) { JSON in
+
+           // Apicallhandler().GetProductList(URL: webservices().baseurl + API_BUY_SELL_PRODUCT, param:pram, token: token as! String) { JSON in
                     switch JSON.result{
                     case .success(let resp):
                         webservices().StopSpinner()
@@ -188,7 +195,7 @@ class CategoryDetailsVC: UIViewController {
                         }
                         else
                         {
-                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
                             self.present(alert, animated: true, completion: nil)
                         }
                         
@@ -210,7 +217,7 @@ class CategoryDetailsVC: UIViewController {
                         }
                         let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                         self.present(alert, animated: true, completion: nil)
-                        print(err.asAFError)
+                        print(err.asAFError!)
                         
                     }
                 }
@@ -239,9 +246,9 @@ class CategoryDetailsVC: UIViewController {
                    {
                       
                     if self.strCategoryType == "1"{
-                        self.apiProductList(type: "1")
+                        self.apiProductList(ProductCategoryID: 1)
                        }else{
-                          self.apiProductList(type: "2")
+                          self.apiProductList(ProductCategoryID: 2)
                        }
                    }
                    else
@@ -317,14 +324,14 @@ extension CategoryDetailsVC : UICollectionViewDataSource,UICollectionViewDelegat
         //}
         
         if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
-                       if arrCategoryDetails[indexPath.row].productsimages?[0].image != nil
+                       if arrCategoryDetails[indexPath.row].productsimages?[0].attachment != nil
                        {
-                           cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "vendor-1"))
+                           cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "vendor-1"))
                        }
                    }
   
                
-        cell.lblPrice.text =  String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].price!)
+        cell.lblPrice.text =  String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].amount!)
         cell.lblDiscription.text = arrCategoryDetails[indexPath.row].title
         
 
@@ -339,8 +346,8 @@ extension CategoryDetailsVC : UICollectionViewDataSource,UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc  = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC")  as! BuySellProductDetailsVC
                    vc.arrProductDetails = arrCategoryDetails[indexPath.row]
-                   vc.strCategoryId = (arrCategoryDetails[indexPath.row].categoryID! as NSNumber).stringValue
-                   vc.strProductID = (arrCategoryDetails[indexPath.row].id! as NSNumber).stringValue
+                   vc.CategoryId = (arrCategoryDetails[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+                   vc.ProductID = (arrCategoryDetails[indexPath.row].productID!) // as NSNumber).stringValue
                    vc.strCategoryName = arrCategoryDetails[indexPath.row].title!
                    self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -379,9 +386,6 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
             
                         cell.stkviw.isHidden = true
         
-        
-
-                     
                  // }else{
                       //if UsermeResponse?.data?.relation == "self"{
           //                cell.ViewDelete.isHidden = false
@@ -397,16 +401,16 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
                   //}
                   
                   if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
-                                 if arrCategoryDetails[indexPath.row].productsimages?[0].image != nil
+                                 if arrCategoryDetails[indexPath.row].productsimages?[0].attachment != nil
                                  {
-                                     cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                                     cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                                  }
                              }
             
                          
-                  cell.lblPrice.text =  String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].price!)
+                  cell.lblPrice.text =  "\(arrCategoryDetails[indexPath.row].amount!)"
                   cell.lblName.text = arrCategoryDetails[indexPath.row].title
-                  cell.lblQuality.text = arrCategoryDetails[indexPath.row].quality
+                  cell.lblQuality.text = arrCategoryDetails[indexPath.row].qualityStatus
 
 
                   cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
@@ -420,8 +424,8 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
         
                     let vc  = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC")  as! BuySellProductDetailsVC
                     vc.arrProductDetails = arrCategoryDetails[indexPath.row]
-                    vc.strCategoryId = (arrCategoryDetails[indexPath.row].categoryID! as NSNumber).stringValue
-                    vc.strProductID = (arrCategoryDetails[indexPath.row].id! as NSNumber).stringValue
+                    vc.CategoryId = (arrCategoryDetails[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+                    vc.ProductID = (arrCategoryDetails[indexPath.row].productID!) //  as NSNumber).stringValue
                     vc.strCategoryName = arrCategoryDetails[indexPath.row].title!
                     self.navigationController?.pushViewController(vc, animated: true)
         

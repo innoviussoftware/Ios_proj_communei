@@ -18,6 +18,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     var selectedindex : Int = 0
     
     var index:Int?
+    var index1:Int?
 
     var isfrom = ""
     
@@ -595,23 +596,23 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     
                 }
                 if statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                      //  if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                     //   }
+                  //  })
                     
                 }
             case .failure(let err):
                 
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() //(onCompletion: { int in
+                      //  if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
@@ -619,14 +620,14 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                             self.appDelegate.window!.rootViewController  = navController
                             
                         }
-                    })
+                   // })
                     webservices().StopSpinner()
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError as Any)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                  //  print(err.asAFError!)
                     
                     
-                }
+               // }
             }
             
             
@@ -640,17 +641,45 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
     func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
     {
+        index = selectNumber
+
         if(isfrom == "Single") {
             self.txtCabCompanyName.text = name
             vendorID = VendorID
              isPublic = IsPublic
-        }else if(isfrom == "Multiple"){
-            self.txtCabCompanyName1.text = name
-             vendorID = VendorID
-             isPublic = IsPublic
         }
     }
     
+    func deliveryList1(name1:String,VendorID1:Int,IsPublic1:Int, selectNumber1:Int)
+        {
+           index1 = selectNumber1
+
+         if(isfrom == "Multiple"){
+            self.txtCabCompanyName1.text = name1
+             vendorID = VendorID1
+             isPublic = IsPublic1
+        }
+    }
+    
+    func messageClicked() {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr =  "Successfully Added"
+        avc?.subtitleStr = "Your Cab will be allowed"
+        avc?.isfrom = 4
+
+        avc?.yesAct = {
+           
+            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                         
+        }
+        avc?.noAct = {
+            
+        }
+        
+        present(avc!, animated: true)
+    }
     
     // MARK: - get Cab Single Entry
     
@@ -740,12 +769,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     webservices().StopSpinner()
                     if(JSON.response?.statusCode == 200)
                     {
+                        self.messageClicked()
                         
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                       /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                                                 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
                      
                     }
                     else
@@ -754,16 +784,16 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     }
                 case .failure(let err):
                     if JSON.response?.statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                           // if int == 1{
                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                        //    }
+                       // })
                         
                         return
                     }
@@ -867,11 +897,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     if(JSON.response?.statusCode == 200)
                     {
                         
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        self.messageClicked()
+
+                      /*  let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                                                 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                        self.navigationController?.pushViewController(initialViewController, animated: true) */
                 
                     }
                     else
@@ -880,16 +912,16 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     }
                 case .failure(let err):
                     if JSON.response?.statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                          //  if int == 1{
                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                         //   }
+                      //  })
                         
                         return
                     }
@@ -934,9 +966,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         }else if textfield == txtvaildtill {
             viewbottom.isHidden = false
             viewbottom1.isHidden = true
+           // self.view.endEditing(true)
         }else if textfield == txtAllWeek {
             viewbottom.isHidden = true
             viewbottom1.isHidden = false
+           // self.view.endEditing(true)
         }
         
         return true
@@ -957,8 +991,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                     isfrom = "Single"
                 
                     popOverConfirmVC.selectedindex = index
-                    popOverConfirmVC.selectedindex1 = index
             
+            popOverConfirmVC.isfrom = "Single"
+
             popOverConfirmVC.strTitleName = "Select Your Cab"
 
             popOverConfirmVC.api_Company_Selection = "user/vendors/3"
@@ -982,9 +1017,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
                 
-                    popOverConfirmVC.selectedindex = index
-                    popOverConfirmVC.selectedindex1 = index
+                    popOverConfirmVC.selectedindex1 = index1
                
+            popOverConfirmVC.isfrom = "Multiple"
+
             popOverConfirmVC.strTitleName = "Select Your Cab"
 
             popOverConfirmVC.api_Company_Selection = "user/vendors/3"
@@ -999,6 +1035,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                    }
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
+            viewbottom1.isHidden = true
+
         }
         
         if(textField == txtAllWeek)
@@ -1008,6 +1046,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             viewbottom1.isHidden = false
             txtAllWeek.resignFirstResponder()
                 
+            txtAllWeek.endEditing(true)
+
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
         
@@ -1018,34 +1058,45 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
             viewbottom.isHidden = false
             txtvaildtill.resignFirstResponder()
-                
+            
+            txtvaildtill.endEditing(true)
+
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
             if(textField == txtdate)
             {
                 textfield = txtdate
+                
+              //  txtdate.endEditing(false)
             }
         
         if(textField == txtStartTime)
         {
             textfield = txtStartTime
+            
+          //  txtStartTime.endEditing(false)
         }
         
         if(textField == txttime)
         {
             textfield = txttime
+            
+          //  txttime.endEditing(false)
         }
         
         if(textField == txtEndTime)
         {
             textfield = txtEndTime
+           // txtEndTime.endEditing(false)
+
         }
         
             if(textField == txtstartdate)
             {
                 //datePicker.minimumDate = Date()
                 textfield = txtstartdate
-                
+              //  txtstartdate.endEditing(false)
+
             }
             if(textField == txtenddate)
             {
@@ -1060,7 +1111,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 
                 let components = cal.dateComponents([.day], from: date1, to: date2)
               //  lbldays.text =  (components.day! as NSNumber).stringValue
-                
+             //   txtenddate.endEditing(false)
+
             }
             
     }

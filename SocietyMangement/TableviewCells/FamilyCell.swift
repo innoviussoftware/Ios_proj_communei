@@ -35,9 +35,20 @@ class FamilyCell: UICollectionViewCell {
     @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var lblMobilenumber: UILabel!
     @IBOutlet weak var btnCall: UIButton!
-    @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
+    @IBOutlet weak var btnDelete: UIButton!
+
+    @IBOutlet weak var lblline: UILabel!
+
+    @IBOutlet weak var lblline1: UILabel!
+    @IBOutlet weak var lblline2: UILabel!
     
+    @IBOutlet weak var vwCall: UIView!
+
+    @IBOutlet weak var vwEdit: UIView!
+    @IBOutlet weak var vwDelete: UIView!
+
+
     @IBOutlet weak var widthedit: NSLayoutConstraint!
     
     override func awakeFromNib() {

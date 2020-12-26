@@ -17,6 +17,10 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 class ReferalDetailVC: BaseVC {
     
+    @IBOutlet weak var vwrefer: UIView!
+    @IBOutlet weak var vwrefer1: UIView!
+
+    
     @IBOutlet weak var imguser: UIImageView!
     @IBOutlet weak var lblflatno: UILabel!
     @IBOutlet weak var lblcontact: UILabel!
@@ -41,39 +45,45 @@ class ReferalDetailVC: BaseVC {
     @IBAction func SendAction(_ sender: Any) {
         if(txtname.text == "")
         {
-            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Please enter society name")
+            let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Please enter Community name")
             self.present(alert, animated: true, completion: nil)
             
         }
         else if (txtcontact.text == "")
         {
-            
             let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Please enter contact number")
             self.present(alert, animated: true, completion: nil)
             
-            
         }
         else if (txtcontact.text!.count < 10)
-            
         {
             let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Please enter valid contact number")
             self.present(alert, animated: true, completion: nil)
             
-            
         }
         else
         {
-           // apicallReferFriend()
+            apicallReferFriend()
             
         }
         
     }
     
+    @IBAction func btnOkAction(_ sender: UIButton) {
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //txtcontact.text = UsermeResponse?.data!.phone
+        
+        vwrefer.isHidden = false
+        vwrefer1.isHidden = true
         
         lblname.text = UsermeResponse?.data!.name
         
@@ -113,18 +123,16 @@ class ReferalDetailVC: BaseVC {
         }
         webservices().StartSpinner()
         
-        let strSocietyName = UserDefaults.standard.value(forKey:USER_ID) as! Int
-        let strUserId = (strSocietyName as NSNumber).stringValue
-        
-        
+       
+        let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+
         let param : Parameters = [
-            "user_id":strUserId,
-            "society_name":txtname.text!,
-            "phone":txtcontact.text!
+            "CommunityName":txtname.text!,
+            "ContactNumber":txtcontact.text!
         ]
         
         
-        Apicallhandler().APIReferFriend(URL: webservices().baseurl + API_REFER_FRIEND, param:param) { JSON in
+        Apicallhandler().APIReferFriend(URL: webservices().baseurl + API_REFER_FRIEND, param:param, token: token) { JSON in
             switch JSON.result{
             case .success(let resp):
                 
@@ -132,10 +140,16 @@ class ReferalDetailVC: BaseVC {
                 if(resp.status == 1)
                 {
                     
-                    //                    let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon")
-                    //                    self.present(alert, animated: true, completion: nil)
+                    // Referral added successfully
                     
-                    let alert = UIAlertController(title: Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon", preferredStyle: UIAlertController.Style.alert)
+                  //  let alert = UIAlertController(title: Alert_Titel, message:"Thank you for referring \(self.txtname.text!), we will get back to you soon", preferredStyle: UIAlertController.Style.alert)
+                    
+                    self.vwrefer.isHidden = true
+                    self.vwrefer1.isHidden = false
+                    
+                    
+                  /*  let alert = UIAlertController(title: Alert_Titel, message:resp.message, preferredStyle: UIAlertController.Style.alert)
+
                     alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
                         
                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -146,7 +160,7 @@ class ReferalDetailVC: BaseVC {
                         
                     }))
                     // show the alert
-                    self.present(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil) */
                     
                     self.txtname.text = ""
                     self.txtcontact.text = ""
@@ -161,23 +175,23 @@ class ReferalDetailVC: BaseVC {
                 
                 webservices().StopSpinner()
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                       // if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                      //  }
+                   // })
                     
                     return
                 }
                 
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
                 
             }

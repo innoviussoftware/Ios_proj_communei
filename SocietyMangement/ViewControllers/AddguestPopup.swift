@@ -326,10 +326,10 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         txtdate.text = "Today"
         
         let formatt = DateFormatter()
-        formatt.dateFormat = "hh:mm:ss a"
+       // formatt.dateFormat = "hh:mm:ss a"
+        formatt.dateFormat = "hh:mm a"
         txttime.text = formatt.string(from: datee)
         time =  txttime.text!
-        
        
 
         
@@ -728,7 +728,8 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     @objc  func doneTimePicker(){
         //For date formate
         let formatter = DateFormatter()
-        formatter.dateFormat = "hh:mm:ss a"
+      //  formatter.dateFormat = "hh:mm:ss a"
+        formatter.dateFormat = "hh:mm a"
         txttime.text = formatter.string(from: timePicker.date)
         //dismiss date picker dialog
         self.view.endEditing(true)
@@ -857,6 +858,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         lbllineSingle.textColor = AppColor.borderColor
         lbllineMulti.textColor = AppColor.lineSingleColor
 
+        view.endEditing(true)
         
     }
     
@@ -876,7 +878,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         viewonce.isHidden = true
         viewfrequent.isHidden = false
         
-        
+        view.endEditing(true)
     }
     
     

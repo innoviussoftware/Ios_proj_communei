@@ -492,7 +492,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             print("Bearer token : ",token as! String)
             
-            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { response in
+            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { [self] response in
                 switch(response.result) {
                 case .success(let resp):
                     if resp.status == 1{
@@ -509,11 +509,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         UserDefaults.standard.removeObject(forKey:USER_SECRET)
                         UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
 
+                    }else{
+                         print("\(resp.message)")
+                        onCompletion(0)
+                    }
+                    
+                    break
+                case .failure(let err):
+                    self.ApiLogout1()
+                    
+                    print(err.localizedDescription)
+                }
+            }
+        }
+        else
+        {
+            webservices.sharedInstance.nointernetconnection()
+        }
+        
+    }
+    
+    func ApiLogout1()//(onCompletion: @escaping ((_ response: Int) -> Void))
+    {
+        
+        if(webservices().isConnectedToNetwork())
+        {
+            
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+            print("Bearer token : ",token as! String)
+            
+            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { response in
+                switch(response.result) {
+                case .success(let resp):
+                    if resp.status == 1{
+                        
+                    // onCompletion(1)
+                        
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+
                         
                         
                     }else{
                          print("\(resp.message)")
-                        onCompletion(0)
+                       // onCompletion(0)
                     }
                     
                     break

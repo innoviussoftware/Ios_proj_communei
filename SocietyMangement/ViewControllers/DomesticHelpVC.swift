@@ -20,7 +20,7 @@ import ScrollPager
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate {
+class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         
     @IBOutlet weak var btnNotification: UIButton!
     
@@ -105,7 +105,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
         tblView.separatorStyle = .none
         tblView.frame = CGRect(x: 0, y: 86, width: view.frame.size.width, height: tblView.frame.size.height)
         
-        tblView_OnDemand.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellReuseIdentifier: "DomesticHelpCell")
+        tblView_OnDemand.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellR euseIdentifier: "DomesticHelpCell")
         tblView_OnDemand.separatorStyle = .none
         tblView_OnDemand.frame = CGRect(x: view.frame.size.width, y: 86, width: view.frame.size.width, height: tblView_OnDemand.frame.size.height)
 
@@ -113,7 +113,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
                
         ViewOnDemand.frame = CGRect(x: view.frame.size.width, y: 0, width: view.frame.size.width, height: ViewOnDemand.frame.size.height)
         
-        setUpView()
+        
         apicallGetDomestichelperList()
         
         /*
@@ -214,17 +214,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
     
     
     
-    func setUpView() {
-        
-        searchbar.layer.cornerRadius = 30
-        searchbar.clipsToBounds = true
-       // if #available(iOS 13.0, *) {
-        searchbar.searchTextField.backgroundColor = UIColor.white
-      //  }
-        
-        
-        
-    }
+   
     @IBAction func actionMenu(_ sender: Any) {
         if isfrom == 1{
             self.navigationController?.popViewController(animated: true)
@@ -263,18 +253,19 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
                          ShowNoInternetAlert()
                          return
                      }
-            let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-            let strSociId  = (SociId as NSNumber).stringValue
             
+        let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+
             webservices().StartSpinner()
-            Apicallhandler().GetHelperList(URL: webservices().baseurl + API_HELPER_LIST, societyid:strSociId) { JSON in
+        
+            Apicallhandler().GetHelperList(URL: webservices().baseurl + API_HELPER_LIST, token:token) { JSON in
                 switch JSON.result{
                 case .success(let resp):
                     webservices().StopSpinner()
                     if(JSON.response?.statusCode == 200)
                     {
-                        self.arrHelper = resp.data
-                        self.arrFinal = resp.data
+                        self.arrHelper = resp.data!
+                        self.arrFinal = resp.data!
                         
                         if self.arrHelper.count > 0{
                             self.lblNoDataFound.isHidden = true
@@ -296,7 +287,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
                     }
                     else
                     {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
                         self.present(alert, animated: true, completion: nil)
                     }
                     
@@ -319,7 +310,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
                     }
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    print(err.asAFError!)
                     
                 }
             }
@@ -327,6 +318,9 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
         
     }
     
+    /*
+     
+     
        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             print("searchText \(searchBar.text)")
             searchBar.resignFirstResponder()
@@ -389,7 +383,7 @@ class DomesticHelpVC: UIViewController, UISearchBarDelegate, ScrollPagerDelegate
 
         }
         
-      
+      */
     
     
     
@@ -411,14 +405,14 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "DomesticHelpCell") as! DomesticHelpCell
         
         cell.selectionStyle = .none
-        if arrHelper[indexPath.row].photos != nil
+        if arrHelper[indexPath.row].profilePicture != nil
         {
-            cell.imgUser.sd_setImage(with: URL(string: arrHelper[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imgUser.sd_setImage(with: URL(string: arrHelper[indexPath.row].profilePicture!), placeholderImage: UIImage(named: "vendor-1"))
         }
         
         cell.lblName.text = arrHelper[indexPath.row].name
-        cell.lblProfession.text = arrHelper[indexPath.row].typename
-        cell.lblRatingNumber.text = String(format: "%.1f", arrHelper[indexPath.row].averageRating!)
+        cell.lblProfession.text = arrHelper[indexPath.row].vendorServiceType
+        cell.lblRatingNumber.text = String(format: "%.1f", arrHelper[indexPath.row].rating!)
         
         
         
@@ -429,7 +423,7 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
-        vc.HelperId = arrHelper[indexPath.row].id
+        vc.HelperId = arrHelper[indexPath.row].dailyHelperID
         
         self.navigationController?.pushViewController(vc, animated: true)
     }

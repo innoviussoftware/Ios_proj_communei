@@ -284,7 +284,7 @@ struct Apicallhandler {
         }
     }
     
-    //Mark : Api call get notice
+    //Mark : Api call get Amenties
        func GetAmenitiesList(URL: String, token:String , onCompletion: @escaping ((_ response: DataResponse<AmenitiesList>) -> Void)) {
         
           AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AmenitiesList>) in
@@ -319,19 +319,31 @@ struct Apicallhandler {
        }
     
     //Mark : Api call Buy/Sell
-    func GetBuySellList(URL: String, societyid:String, onCompletion: @escaping ((_ response: DataResponse<BuySellCategoryList>) -> Void)) {
+    func GetBuySellList(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<BuySellCategoryList>) -> Void)) {
         
-        AF.request(URL, method: .get, parameters:nil).responseDecodable { (response:DataResponse<BuySellCategoryList>) in
+        AF.request(URL, method: .get, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BuySellCategoryList>) in
             
             onCompletion(response)
             
         }
     }
     
-    //Mark : Api call ProductList
-    func GetProductList(URL: String, param:Parameters,token:String, onCompletion: @escaping ((_ response: DataResponse<BuySellProductList>) -> Void)) {
+    //Mark : Api call ProductList // Fresh Recommendation
+    
+    func GetProductList(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<BuySellProductList>) -> Void)) {
         
-        AF.request(URL, method: .post, parameters:param,headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BuySellProductList>) in
+        AF.request(URL, method: .post,headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BuySellProductList>) in
+            
+            onCompletion(response)
+            
+        }
+    }
+    
+    //Mark : Api call ProductList Buy
+    
+    func GetProductListBuy(URL: String,param:Parameters, token:String, onCompletion: @escaping ((_ response: DataResponse<BuySellProductList>) -> Void)) {
+        
+        AF.request(URL, method: .post, parameters:param, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BuySellProductList>) in
             
             onCompletion(response)
             
@@ -351,9 +363,10 @@ struct Apicallhandler {
     
     /////////////////////////// ////////
     
-    func ApiCallGetHelpDesk(param:Parameters,onCompletion: @escaping ((_ response: DataResponse<GetHelpDeskResponse>) -> Void)) {
+    func ApiCallGetHelpDesk(URL: String, token:String ,onCompletion: @escaping ((_ response: DataResponse<GetHelpDeskResponse>) -> Void)) {
            
-           AF.request(webservices().baseurl + API_GET_HELP_DESK, method: .post,parameters:param).responseDecodable { (response:DataResponse<GetHelpDeskResponse>) in
+
+           AF.request(URL, method: .post, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<GetHelpDeskResponse>) in
                
                onCompletion(response)
            }
@@ -480,21 +493,20 @@ struct Apicallhandler {
     
     
     //Mark : Api call get Buildings
-    func APIReferFriend(URL: String, param:Parameters, onCompletion: @escaping ((_ response: DataResponse<ReferFriendModel>) -> Void)) {
+    func APIReferFriend(URL: String, param:Parameters,token: String , onCompletion: @escaping ((_ response: DataResponse<ReferFriendModel>) -> Void)) {
         
-        AF.request(URL, method: .post, parameters:param).responseDecodable { (response:DataResponse<ReferFriendModel>) in
+        AF.request(URL, method: .post, parameters:param,  encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<ReferFriendModel>) in
             onCompletion(response)
             
         }
     }
     
     
-    
     //Mark : Api call Get Helper
-      func GetHelperList(URL: String, societyid:String, onCompletion: @escaping ((_ response: DataResponse<HelperListResp>) -> Void)) {
-          let parameter:Parameters = ["society_id":societyid]
+    
+      func GetHelperList(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<HelperListResp>) -> Void)) {
           
-          AF.request(URL, method: .post, parameters:parameter).responseDecodable { (response:DataResponse<HelperListResp>) in
+          AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<HelperListResp>) in
               
               onCompletion(response)
               
@@ -586,9 +598,9 @@ struct Apicallhandler {
     
     //Mark : Api add booking Entry
     
-    func ApiAddBookingNow(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddBookingNowResponse>) -> Void)) {
+    func ApiAddBookingNow(URL: String,token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddBookingNowResponse>) -> Void)) {
         
-        AF.request(webservices().baseurl + API_ADD_BOOKINGS_NOW, method: .post,parameters:param, headers:["Authorization": "Bearer "+token]).responseDecodable {
+        AF.request(URL, method: .post,parameters:param, headers:["Authorization": "Bearer "+token]).responseDecodable {
             (response:DataResponse<AddBookingNowResponse>) in
             
             onCompletion(response)
@@ -844,9 +856,19 @@ struct Apicallhandler {
     
     
     //Mark : Api user me api
-    func ApiCallAddSettings(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddSettingResponse>) -> Void)) {
+    
+  /*  func ApiCallAddSettings(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddSettingResponse>) -> Void)) {
         
-        AF.request(webservices().baseurl + API_ADD_SETTING, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AddSettingResponse>) in
+        AF.request(webservices().baseurl + API_ADD_SETTING, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AddSettingResponse>) in
+            
+                 onCompletion(response)
+            }
+
+    } */
+    
+    func ApiCallAddSettings(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+                
+        AF.request(webservices().baseurl + API_ADD_SETTING, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
             
                  onCompletion(response)
             }

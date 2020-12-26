@@ -14,6 +14,7 @@ class NoInternetVC: UIViewController {
     var TryAgian:(()->())?
 
     @IBOutlet weak var btntragain: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 13.0, *) {

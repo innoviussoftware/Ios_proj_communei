@@ -20,7 +20,9 @@ class ComplaintManagementVC: UIViewController, UITableViewDelegate , UITableView
     
     @IBOutlet weak var tblComplaintManage: UITableView!
 
-    var aryComplaintManage = ["Fire","Lift Service","Water leakage","Wrong Parking", "Common Area","Noise Pollution"]
+    var aryComplaintManage = ["Fire","Lift","Animal","Human","Accident","Medical","Water","SOS", "Common Area","Noise Pollution","Wrong Parking","Others"]
+
+    var aryComplaintManageNumber = ["1","2","3","4","5","6","7","8", "9","10","11","12"]
 
 
     override func viewDidLoad() {
@@ -55,6 +57,10 @@ class ComplaintManagementVC: UIViewController, UITableViewDelegate , UITableView
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ComplaintManagementMessageVC") as! ComplaintManagementMessageVC
 
         vc.strlbl = aryComplaintManage[indexPath.row]
+                
+        vc.alertTypeID = (aryComplaintManageNumber[indexPath.row] as NSString).integerValue
+
+        print("alertTypeID ",vc.alertTypeID!)
         
         self.navigationController?.pushViewController(vc, animated: true)
 

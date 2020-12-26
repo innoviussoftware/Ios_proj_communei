@@ -14,37 +14,14 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class HelpDeskVC: UIViewController {
+class HelpDeskVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
+    
+    @IBOutlet weak var tblHelpDesk: UITableView!
     
     @IBOutlet weak var btnNotification: UIButton!
-    @IBOutlet weak var scrollview: UIScrollView!
     @IBOutlet weak var btnMenu: UIButton!
     
     @IBOutlet weak var lblNoDataFound: UILabel!
-    @IBOutlet weak var viewSociety1: UIView!
-    @IBOutlet weak var lblSocietyName1: UILabel!
-    @IBOutlet weak var lblnumberSociety1: UILabel!
-    
-    
-    @IBOutlet weak var viewSociety2: UIView!
-    @IBOutlet weak var lblSocietyName2: UILabel!
-    @IBOutlet weak var lblnumberSociety2: UILabel!
-    
-    @IBOutlet weak var lblFire: UILabel!
-    @IBOutlet weak var lblnumberFire: UILabel!
-    
-    @IBOutlet weak var lblnamePoliceStatic: UILabel!
-     @IBOutlet weak var lblnamePolice: UILabel!
-    @IBOutlet weak var lblnumberPolice: UILabel!
-    
-    @IBOutlet weak var lblNameHospital: UILabel!
-    @IBOutlet weak var lblNAmeHospital: UILabel!
-    
-    @IBOutlet weak var lblNameAmbulance: UILabel!
-       @IBOutlet weak var lblnumberAmbulance: UILabel!
-    
-    @IBOutlet weak var lblHospitalNum: UILabel!
-    
     
     var arrDictDataHelpDesk = [GetHelpDeskData]()
     
@@ -59,7 +36,6 @@ class HelpDeskVC: UIViewController {
         }
         
         if isfrom == 1{
-                // btnMenu.setImage(UIImage(named: "menu"), for: .normal)
                 btnMenu.setImage(UIImage(named:"ic_back-1"), for: .normal)
         }else{
                 btnMenu.setImage(UIImage(named:"menu"), for: .normal)
@@ -74,6 +50,15 @@ class HelpDeskVC: UIViewController {
                 self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
             }
         }
+        
+        tblHelpDesk.register(UINib(nibName: "EmergencyNumberCell", bundle: nil), forCellReuseIdentifier: "EmergencyNumberCell")
+        
+        tblHelpDesk.separatorStyle = .none
+
+
+       // tblHelpDesk.estimatedRowHeight = 100
+        
+      //  tblHelpDesk.rowHeight = UITableViewAutomaticDimension
         
        apicallGethelpDesk()
         
@@ -174,8 +159,9 @@ class HelpDeskVC: UIViewController {
                  
       }
     
-    @IBAction func actionCall(_ sender: UIButton) {
         
+        @objc func actionCall(sender:UIButton) {
+
         
           //   let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
@@ -184,77 +170,19 @@ class HelpDeskVC: UIViewController {
      
         avc?.isfrom = 3
 
-        if sender.tag == 1{
-               avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].societyPhone1!)"
-        }else if sender.tag == 2{ //society 2
-               avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].societyPhone2!)"
-        }else if sender.tag == 3{//Hospital
-                avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].hostipalPhone!)"
-        }else if sender.tag == 4{//ambulance
-           avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].ambulance!)"
-        }else if sender.tag == 5{//police
-              avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].policenumber!)"
-        }else if sender.tag == 6{//fire
-            avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[0].fire!)"
-        }
+            avc?.subtitleStr = "Are you sure you want to call:\(self.arrDictDataHelpDesk[sender.tag].number!)"
 
                             avc?.yesAct = {
-                                       
-                                         if sender.tag == 1{ // society 1
 
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone1!)
-
-                                         }else if sender.tag == 2{ //society 2
-
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone2!)
-
-                                         }else if sender.tag == 3{//Hospital
-
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].hostipalPhone!)
-
-                                         }else if sender.tag == 4{//ambulance
-
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].ambulance!)
-
-                                         }else if sender.tag == 5{//police
-
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].policenumber!)
-                                         }else if sender.tag == 6{//fire
-
-                                             self.dialNumber(number:self.arrDictDataHelpDesk[0].fire!)
-                                         }
+                                    self.dialNumber(number:self.arrDictDataHelpDesk[sender.tag].number!)
+                                         
                                 }
 
                             avc?.noAct = {
                               
                             }
                             present(avc!, animated: true)
-        
-        
-        
-        
-//        let alert = UIAlertController(title: Alert_Titel, message:"Are you sure you want to call?" , preferredStyle: UIAlertController.Style.alert)
-//        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { alert in
-//
-//            if sender.tag == 1{ // society 1
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone1!)
-//            }else if sender.tag == 2{ //society 2
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].societyPhone2!)
-//            }else if sender.tag == 3{//Hospital
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].hostipalPhone!)
-//            }else if sender.tag == 4{//ambulance
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].ambulance!)
-//            }else if sender.tag == 5{//police
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].policenumber!)
-//            }else if sender.tag == 6{//fire
-//                self.dialNumber(number:self.arrDictDataHelpDesk[0].fire!)
-//            }
-//        }))
-//        alert.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: nil))
-//        self.present(alert, animated: true, completion: nil)
-//
-        
-        
+            
     }
     
     func dialNumber(number : String) {
@@ -277,55 +205,46 @@ class HelpDeskVC: UIViewController {
                             ShowNoInternetAlert()
                             return
                         }
-               
-            let societyID = UserDefaults.standard.value(forKey: USER_SOCIETY_ID)
-            let param : Parameters = [
-                "society_id" : "\(societyID!)"
-             ]
+                           
             
             webservices().StartSpinner()
-            Apicallhandler.sharedInstance.ApiCallGetHelpDesk(param: param) { JSON in
-                   
-                   let statusCode = JSON.response?.statusCode
-                   
-                   switch JSON.result{
-                   case .success(let resp):
-                       webservices().StopSpinner()
-                       if statusCode == 200{
+        
+        //         Apicallhandler.sharedInstance.ApiCallGetHelpDesk(URL: webservices().baseurl + API_GET_HELP_DESK) { JSON in
+
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+        Apicallhandler().ApiCallGetHelpDesk(URL: webservices().baseurl + API_GET_HELP_DESK, token: token as! String) { JSON in
+            
+            //   let statusCode = JSON.response?.statusCode
+
+            switch JSON.result{
+            case .success(let resp):
+
+                webservices().StopSpinner()
+                if(resp.status == 1) {
+                      
+                    self.arrDictDataHelpDesk = resp.data!
                         
-                        self.arrDictDataHelpDesk = resp.data
                         if(self.arrDictDataHelpDesk.count > 0)
                         {
-                        self.lblNoDataFound.isHidden = true
-                            self.scrollview.isHidden = false
-                            
-                        self.lblSocietyName1.text = self.arrDictDataHelpDesk[0].societyName1
-                        self.lblnumberSociety1.text = self.arrDictDataHelpDesk[0].societyPhone1
-                        
-                        self.lblSocietyName2.text = self.arrDictDataHelpDesk[0].societyName2
-                        self.lblnumberSociety2.text = self.arrDictDataHelpDesk[0].societyPhone2
-                        
-                        self.lblnumberFire.text = self.arrDictDataHelpDesk[0].fire
-                        
-                        self.lblnamePolice.text = self.arrDictDataHelpDesk[0].police
-                         self.lblnumberPolice.text = self.arrDictDataHelpDesk[0].policenumber
-                        
-                        
-                        self.lblNAmeHospital.text = self.arrDictDataHelpDesk[0].hostipalName
-                        self.lblHospitalNum.text = self.arrDictDataHelpDesk[0].hostipalPhone
-                        self.lblnumberAmbulance.text = self.arrDictDataHelpDesk[0].ambulance
+                            self.tblHelpDesk.isHidden = false
+                            self.lblNoDataFound.isHidden = true
+                            self.tblHelpDesk.delegate = self
+                            self.tblHelpDesk.dataSource = self
+                            self.tblHelpDesk.reloadData()
                         }else{
-                            self.scrollview.isHidden = true
                             self.lblNoDataFound.isHidden = false
-                            self.lblNoDataFound.text = "No Help Desk numbers are available"
+                            self.tblHelpDesk.isHidden = true
                         }
+                        
+                           
                        }
                    case .failure(let err):
                        
                        webservices().StopSpinner()
                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        self.present(alert, animated: true, completion: nil)
-                       print(err.asAFError)
+                       print(err.asAFError!)
                        
                        
                    }
@@ -335,13 +254,45 @@ class HelpDeskVC: UIViewController {
        }
        
     
+    //MARK:- tableview delegate
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arrDictDataHelpDesk.count
+    }
     
     
-    
-    
-    
-    
-    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EmergencyNumberCell") as! EmergencyNumberCell
+            
+            if arrDictDataHelpDesk[indexPath.row].icon!.count > 0{
+                    cell.imgview.sd_setImage(with: URL(string: (arrDictDataHelpDesk[indexPath.row].icon)!), placeholderImage: UIImage(named: ""))
+                }
+            
+                    
+        cell.lblName.text = arrDictDataHelpDesk[indexPath.row].name
+            
+        cell.lblType.text = arrDictDataHelpDesk[indexPath.row].type
+        
+        cell.lblCallNumbber.text = arrDictDataHelpDesk[indexPath.row].number
+        
+        cell.selectionStyle = .none
+        
+        cell.btnCall.tag = indexPath.row
 
+        cell.btnCall.addTarget(self, action: #selector(actionCall(sender:)), for: .touchUpInside)
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100 // UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100 // UITableViewAutomaticDimension
+    }
+    
 
 }

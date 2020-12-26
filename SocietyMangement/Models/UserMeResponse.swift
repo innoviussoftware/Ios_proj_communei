@@ -29,6 +29,7 @@ struct UserMe: Codable {
     let relation: String?
     let resident: Int?
     let role: String?
+    let settings: Settings?
     let sinceDevice: String?
     let society: SocietyNew?
     let userTypeName: String?
@@ -53,6 +54,7 @@ struct UserMe: Codable {
         case relation = "Relation"
         case resident = "Resident"
         case role = "Role"
+        case settings = "Settings"
         case sinceDevice = "SinceDevice"
         case society = "Society"
         case userTypeName = "UserTypeName"
@@ -60,6 +62,26 @@ struct UserMe: Codable {
         case email, guid, name
         case profilePhotoPath = "profile_photo_path"
         case updatedAt = "updated_at"
+    }
+}
+
+
+// MARK: - Settings
+struct Settings: Codable {
+    let doNotDisturb, visitorNotifyOnEntry, domesticNotifyOnEntry, shareContactDetails: Int?
+    let shareFamilyMemberDetails, domesticNotifyOnExit, visitorNotifyOnExit, othersNotifyOnEntry: Int?
+    let othersNotifyOnExit: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case doNotDisturb = "DoNotDisturb"
+        case visitorNotifyOnEntry = "VisitorNotifyOnEntry"
+        case domesticNotifyOnEntry = "DomesticNotifyOnEntry"
+        case shareContactDetails = "ShareContactDetails"
+        case shareFamilyMemberDetails = "ShareFamilyMemberDetails"
+        case domesticNotifyOnExit = "DomesticNotifyOnExit"
+        case visitorNotifyOnExit = "VisitorNotifyOnExit"
+        case othersNotifyOnEntry = "OthersNotifyOnEntry"
+        case othersNotifyOnExit = "OthersNotifyOnExit"
     }
 }
 

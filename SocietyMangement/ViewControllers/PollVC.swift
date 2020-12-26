@@ -152,23 +152,23 @@ class PollVC: BaseVC {
 
                       webservices().StopSpinner()
                       if JSON.response?.statusCode == 401{
-                          APPDELEGATE.ApiLogout(onCompletion: { int in
-                              if int == 1{
+                          APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                            //  if int == 1{
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                              let navController = UINavigationController(rootViewController: aVC)
                                                                              navController.isNavigationBarHidden = true
                                                                 self.appDelegate.window!.rootViewController  = navController
                                                                 
-                              }
-                          })
+                          //    }
+                        //  })
 
                           return
                       }
 
                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                       self.present(alert, animated: true, completion: nil)
-                      print(err.asAFError)
+                      print(err.asAFError!)
 
                   }
               }

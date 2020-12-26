@@ -52,6 +52,9 @@ class BuySellProductDetailsVC: BaseVC {
     @IBOutlet weak var btnBack: UIButton!
    
     @IBOutlet weak var lblCategorNameTitel: UILabel!
+    
+    @IBOutlet weak var lblQuality: UILabel!
+
     @IBOutlet weak var pagerView: FSPagerView!{
     didSet {
            self.pagerView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -79,8 +82,13 @@ class BuySellProductDetailsVC: BaseVC {
     var arrProductDetails : BuySellProductListData!
     var arrRelatedProduct = [BuySellProductListData]()
     var arrProductImage = [Productsimage]()
-    var strProductID = ""
-    var strCategoryId = ""
+    
+    var ProductID : Int?
+    var CategoryId : Int?
+    
+    
+   // var strProductID = ""
+   // var strCategoryId = ""
     
     var strProductName = ""
     var strCategoryName = ""
@@ -99,7 +107,7 @@ class BuySellProductDetailsVC: BaseVC {
         
         lblCategorNameTitel.text = strCategoryName
         
-        
+        lblQuality.text = arrProductDetails.qualityStatus!
         
       //  collectionview.register(UINib(nibName: "RecommendationCell", bundle: nil), forCellWithReuseIdentifier: "RecommendationCell")
         
@@ -122,27 +130,29 @@ class BuySellProductDetailsVC: BaseVC {
             constraintPagerViewHight.constant = 0
             page.isHidden = true
         }else{
-            constraintPagerViewHight.constant = 180
+            constraintPagerViewHight.constant = 200
             page.isHidden = false
-            
         }
        
         pagerView.contentMode = .right
         page.numberOfPages = arrProductImage.count
         
-        lblPrice.text = String(format: "Price: \u{20B9} %@", arrProductDetails.price!)
+      // lblPrice.text = String(format: "Price: \u{20B9} %@", arrProductDetails.amount!)
+        
+        lblPrice.text = "\(arrProductDetails.amount!)"
+
         
        // lblBloodGroup.text =  arrProductDetails.bloodgroup!
         lblDescription.text = arrProductDetails.datumDescription!
-        lblSellerName.text = arrProductDetails.username!
-        lblFlatNo.text = arrProductDetails.buildingname
+        lblSellerName.text = arrProductDetails.userName!
+        lblFlatNo.text = arrProductDetails.propertyFullName
        // lblMobileNo.text = arrProductDetails.phone
         
-        if(arrProductDetails.image != nil)
+        if(arrProductDetails.productsimages != nil)
         {
-            imgSeller.sd_setImage(with: URL(string: arrProductDetails.image!), placeholderImage: UIImage(named: "profile_magic"))
+           // imgSeller.sd_setImage(with: URL(string: arrProductDetails.productsimages!), placeholderImage: UIImage(named: "profile_magic"))
         }
-        apiProductList(productID: strProductID, categoryId: strCategoryId)
+        apiProductList(productID: ProductID!, categoryId: CategoryId!)
 
     }
     
@@ -196,7 +206,7 @@ class BuySellProductDetailsVC: BaseVC {
        }
         
     //webServices
-    func apiProductList(productID:String,categoryId:String)
+    func apiProductList(productID:Int,categoryId:Int)
        {
            if !NetworkState().isInternetAvailable {
                ShowNoInternetAlert()
@@ -204,16 +214,14 @@ class BuySellProductDetailsVC: BaseVC {
            }
            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
-           let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
-           let strSociId  = (SociId as NSNumber).stringValue
            
            let pram:Parameters = [
-               "category_id":categoryId,
-               "product_id":productID,
-               "society_id":strSociId
+               "ProductCategoryID":categoryId,
+               "ProductID":productID,
            ]
            
            webservices().StartSpinner()
+        
            Apicallhandler().GetRelatedProduct(URL: webservices().baseurl + API_RELATED_PRODUCT, param:pram, token: token as! String) { JSON in
                switch JSON.result{
                case .success(let resp):
@@ -237,8 +245,8 @@ class BuySellProductDetailsVC: BaseVC {
                    }
                    else
                    {
-                       let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
-                       self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
+                     //  self.present(alert, animated: true, completion: nil)
                    }
                    
                    print(resp)
@@ -258,9 +266,9 @@ class BuySellProductDetailsVC: BaseVC {
                        
                        return
                    }
-                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                   self.present(alert, animated: true, completion: nil)
-                   print(err.asAFError)
+                  // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  // self.present(alert, animated: true, completion: nil)
+                   print(err.asAFError!)
                    
                }
            }
@@ -272,7 +280,7 @@ class BuySellProductDetailsVC: BaseVC {
     func shareImage() {
        // let messageStr = "Product Detail:\nName:\(arrProductDetails.categoryname!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)\nContact No:\(lblMobileNo.text!)"
         
-        let messageStr = "Product Detail:\nName:\(arrProductDetails.categoryname!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)"//"\nContact No:\(lblMobileNo.text!)"
+        let messageStr = "Product Detail:\nName:\(arrProductDetails.productCategoryName!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)"//"\nContact No:\(lblMobileNo.text!)"
 
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems:  [imgSeller.image!, messageStr], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityType.print, UIActivityType.postToWeibo, UIActivityType.copyToPasteboard, UIActivityType.addToReadingList, UIActivityType.postToVimeo]
@@ -308,13 +316,13 @@ class BuySellProductDetailsVC: BaseVC {
 //                             self.apiProductList(type: "2")
 //                          }
                         
-                        self.apiProductList(productID: self.strProductID, categoryId: self.strCategoryId)
+                        self.apiProductList(productID: self.ProductID!, categoryId: self.CategoryId!)
 
                       }
                       else
                       {
-                          let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
-                          self.present(alert, animated: true, completion: nil)
+                         // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                         // self.present(alert, animated: true, completion: nil)
                       }
                       
                       print(resp)
@@ -334,9 +342,9 @@ class BuySellProductDetailsVC: BaseVC {
                           
                           return
                       }
-                      let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                      self.present(alert, animated: true, completion: nil)
-                      print(err.asAFError)
+                     // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                     // self.present(alert, animated: true, completion: nil)
+                      print(err.asAFError!)
                       
                   }
               }
@@ -347,7 +355,7 @@ class BuySellProductDetailsVC: BaseVC {
     
     //MARK:- action Delete/Edit
     @objc func actionDelete(sender:UIButton) {
-        let strId = (arrRelatedProduct[sender.tag].id! as NSNumber).stringValue
+        let strId = (arrRelatedProduct[sender.tag].productCategoryID! as NSNumber).stringValue
         
         let _ : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
@@ -370,15 +378,15 @@ class BuySellProductDetailsVC: BaseVC {
             let vc = self.storyboard?.instantiateViewController(identifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
             vc.arrRecommendData = arrRelatedProduct[sender.tag]
             vc.isEditProdcut = true
-            vc.strCategoryID = (arrRelatedProduct[sender.tag].categoryID! as NSNumber).stringValue
-            vc.strProductId = (arrRelatedProduct[sender.tag].id! as NSNumber).stringValue
+            vc.CategoryID = (arrRelatedProduct[sender.tag].productCategoryID!) // as NSNumber).stringValue
+            vc.ProductId = (arrRelatedProduct[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
             vc.arrRecommendData = arrRelatedProduct[sender.tag]
-            vc.strCategoryID = (arrRelatedProduct[sender.tag].categoryID! as NSNumber).stringValue
+            vc.CategoryID = (arrRelatedProduct[sender.tag].productCategoryID!) //  as NSNumber).stringValue
             vc.isEditProdcut = true
-            vc.strProductId = (arrRelatedProduct[sender.tag].id! as NSNumber).stringValue
+            vc.ProductId = (arrRelatedProduct[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -499,9 +507,9 @@ extension BuySellProductDetailsVC : FSPagerViewDelegate,FSPagerViewDataSource{
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
         
-        if(arrProductImage[index].image != nil)
+        if(arrProductImage[index].attachment != nil)
         {
-            cell.imageView?.sd_setImage(with: URL(string: arrProductImage[index].image!), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imageView?.sd_setImage(with: URL(string: arrProductImage[index].attachment!), placeholderImage: UIImage(named: "vendor-1"))
         }
         
         return cell
@@ -539,18 +547,19 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
            cell.stkviw.isHidden = true
                   
           if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
-                if arrRelatedProduct[indexPath.row].productsimages?[0].image != nil
+                if arrRelatedProduct[indexPath.row].productsimages?[0].attachment != nil
                       {
-                          cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                          cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                         }
                       
                   }
                   
                   //            let rupee = "\u{20B9}"
-        cell.lblPrice.text = String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].price!)
+        cell.lblPrice.text = "\(arrRelatedProduct[indexPath.row].amount!)"
+            //String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
         cell.lblName.text = arrRelatedProduct[indexPath.row].title
                   
-        cell.lblQuality.text = arrRelatedProduct[indexPath.row].quality
+        cell.lblQuality.text = arrRelatedProduct[indexPath.row].qualityStatus
 
                   
         cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
@@ -575,15 +584,18 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                     
                     
                     if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
-                        if arrRelatedProduct[indexPath.row].productsimages?[0].image != nil
+                        if arrRelatedProduct[indexPath.row].productsimages?[0].attachment != nil
                         {
-                          //  cell.imgProduct.sd_setImage(with: (arrRelatedProduct[indexPath.row].productsimages?[0].image!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                            
+                            cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                            
                         }
                     }
                     
               
                     
-                    cell.lblPrice.text = String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].price!)
+                    cell.lblPrice.text = "\(arrRelatedProduct[indexPath.row].amount!)"
+            // String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
                     cell.lblName.text = arrRelatedProduct[indexPath.row].title
                     
                     cell.btnDelete.addTarget(self, action: #selector(actionDelete(sender:)), for: .touchUpInside)
@@ -598,22 +610,26 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
             if tableView == tblview {
-                
-
                     
                     if #available(iOS 13.0, *) {
                         let vc = self.storyboard?.instantiateViewController(identifier: "BuySellProductDetailsVC") as! BuySellProductDetailsVC
                         vc.arrProductDetails = arrRelatedProduct[indexPath.row]
-                                  vc.strCategoryId = (arrRelatedProduct[indexPath.row].categoryID! as NSNumber).stringValue
-                                  vc.strProductID = (!(arrRelatedProduct[indexPath.row].id != nil) as NSNumber).stringValue
-                        vc.strCategoryName = arrRelatedProduct[indexPath.row].categoryname!
+                                  vc.CategoryId = (arrRelatedProduct[indexPath.row].productCategoryID!) //as NSNumber).stringValue
+                        
+                        vc.ProductID = (arrRelatedProduct[indexPath.row].productID!)
+
+                                 // vc.ProductID = (!(arrRelatedProduct[indexPath.row].productID != nil) as NSNumber).stringValue
+                        vc.strCategoryName = arrRelatedProduct[indexPath.row].productCategoryName!
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                     } else {
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "BuySellProductDetailsVC") as! BuySellProductDetailsVC
                         vc.arrProductDetails = arrRelatedProduct[indexPath.row]
-                                  vc.strCategoryId = (arrRelatedProduct[indexPath.row].categoryID! as NSNumber).stringValue
-                                  vc.strProductID = (!(arrRelatedProduct[indexPath.row].id != nil) as NSNumber).stringValue
+                                  vc.CategoryId = (arrRelatedProduct[indexPath.row].productCategoryID!) // as NSNumber).stringValue
+                        
+                        vc.ProductID = (arrRelatedProduct[indexPath.row].productID!)
+
+                                //  vc.ProductID = (!(arrRelatedProduct[indexPath.row].productID != nil) as NSNumber).stringValue
                                   self.navigationController?.pushViewController(vc, animated: true)
                     }
                     

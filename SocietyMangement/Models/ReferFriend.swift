@@ -11,6 +11,14 @@ import Foundation
 
 // MARK: - ReferFriendModel
 struct ReferFriendModel: Codable {
+   // let data: [JSONAny]
+    let status: Int
+    let message: String
+}
+
+/*
+// MARK: - ReferFriendModel
+struct ReferFriendModel: Codable {
     let data: ReferFriendModelData?
     let status: Int?
     let message: String?
@@ -31,3 +39,5 @@ struct ReferFriendModelData: Codable {
         case id
     }
 }
+
+*/

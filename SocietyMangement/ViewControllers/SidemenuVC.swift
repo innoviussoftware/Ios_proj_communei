@@ -52,7 +52,12 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         
         selectedimagesary = ["","ic_home_selected","ic_profile","ic_help_desk_menu_gray","ic-actions-settings","domestic_help_gray","ic-shopping-bag","ic-sport-yard","ic_referfriend","ic_Amenities","logout",""]
            
-                tblview.reloadData()
+        if UsermeResponse?.data != nil {
+            tblview.isHidden = false
+            tblview.reloadData()
+        }else{
+            tblview.isHidden = true
+        }
     }
     
     @objc func taplblTC(sender: UITapGestureRecognizer)
@@ -129,13 +134,23 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         {
             if(indexPath.row == 0)
             {
-                cell.lblname.text = UsermeResponse?.data!.name
-                
-               // if ((UsermeResponse!.data!.profilePhotoPath as? NSNull) != nil)  {
+                if UsermeResponse?.data != nil {
+                    
+                    if UsermeResponse?.data?.name != nil {
+                        cell.lblname.text = UsermeResponse?.data!.name
+                    }
+                    
+                   // if ((UsermeResponse!.data!.profilePhotoPath as? NSNull) != nil)  {
                     if UsermeResponse!.data!.profilePhotoPath != nil{
                         cell.imagview.sd_setImage(with: URL(string: UsermeResponse!.data!.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
-                  }
-                
+                    }else{
+                        cell.imagview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor profile"))
+                    }
+                }else{
+                    cell.lblname.text = ""
+                    cell.imagview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor profile"))
+                }
+
             }
            
         }
@@ -176,7 +191,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         
         // temp comment live app 26/11/20.
         
-      /*  if(indexPath.row == 3) {
+        if(indexPath.row == 3) {
       
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
            
@@ -249,7 +264,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                            //  tabBarController.tabBar.isHidden = false
                                                   self.revealViewController().pushFrontViewController(nextViewController, animated: true)
                                 
-        } */
+        }
         
         if(indexPath.row == 7)
         {
@@ -284,12 +299,11 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
         if(indexPath.row == 10)
             {
 
-                               let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                               let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+
+                 let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                                avc?.titleStr = "Communei"  //"Society Buddy"
                                avc?.subtitleStr = "Are you sure you want to logout?"
                                avc?.yesAct = {
-                                
                                 
                                 APPDELEGATE.ApiLogout(onCompletion: { int in
                                                          //  if int == 1{
@@ -305,6 +319,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
 
                                                      //      }
                                                        })
+                                                                
                                 
                               /*  let token = UserDefaults.standard.value(forKey: USER_TOKEN)
                                 

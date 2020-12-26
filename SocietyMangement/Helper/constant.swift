@@ -161,7 +161,7 @@ let API_GET_EVENTLISTTYPE = "society/notices/3/types"
 let API_UPDATE_PROFILE = "user/profile"  // "user/updateprofile"
 
 
-let API_ADD_SETTING = "user/addsettings"
+let API_ADD_SETTING = "user/settings" // "user/addsettings"
 
 let API_GET_SETTING = "user/getsettings"
 
@@ -183,7 +183,7 @@ let API_GET_MEMBERFAMILY_LIST = "user/memberfamily"
 
 let API_DELETE_FREQUENTGUEST_ENTRY = "user/deletefrequent"
 
-let API_HELPER_LIST = "helperslist"
+let API_HELPER_LIST = "user/daily-helper/list/4" // "helperslist"
 
 let API_HELPER_DETAIL = "helpersdetails"
 
@@ -200,7 +200,7 @@ let API_NOTIFY_COUNT = "user/notice/details"  // "user/notify_count"
 
 let API_UPDATE_NOTIFY_COUNT = "user/updatenotify"
 
-let API_GET_HELP_DESK = "gethelpdesk"
+let API_GET_HELP_DESK = "society/emergency-numbers" // "gethelpdesk"
 
 
 let API_MY_HELPER_LIST = "user/myhelperslist"
@@ -219,33 +219,31 @@ let API_DELETE_NOTIFICATION = "user/deletenotify"
 
 let API_DELETE_VEHICLE = "user/vehicles/delete"
 
-let API_REFER_FRIEND = "sendref"
+let API_REFER_FRIEND = "society/refer" // "sendref"
 
 
-// 25/8/20.
+// 25/8/20. BUY_SELL
 
-let API_BUY_SELL_LIST = "categorieslist"
+let API_BUY_SELL_LIST = "communei/buy-sell/categories"  // "categorieslist"
 
-let API_BUY_SELL_PRODUCT = "user/getproduct"
+let API_BUY_SELL_PRODUCT = "communei/buy-sell/my-listings" // "user/getproduct"
 
-let API_BUY_SELL_PRODUCT_DELETE = "user/deleteproduct"
+let API_BUY_SELL_RECOMMENDATIONS = "communei/buy-sell/listings"
 
-let API_BUY_SELL_PRODUCT_EDIT = "user/editproduct"
+let API_BUY_SELL_LISTING_SEPRATED = "communei/buy-sell/listings"
 
+let API_BUY_SELL_PRODUCT_DELETE =  "communei/buy-sell/delete-product" // "user/deleteproduct"
 
-let API_RELATED_PRODUCT = "user/relatedproduct"
+let API_BUY_SELL_PRODUCT_EDIT = "communei/buy-sell/edit-product" // "user/editproduct"
 
+let API_RELATED_PRODUCT = "communei/buy-sell/related-listings" // "user/relatedproduct"
 
-
-let API_ADD_PRODUCT = "user/addproduct"
-
-
+let API_ADD_PRODUCT = "communei/buy-sell/add-product" // "user/addproduct"
 
 
 let API_GET_POLL_LIST =  "user/notices/4" // "user/pollslist"
 
 let API_GET_POLL_LIST_VOTE =  "user/notices/4/vote"
-
 
 let API_POLL_DETAIL = "user/pollsresult"
 

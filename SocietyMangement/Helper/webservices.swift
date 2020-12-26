@@ -340,7 +340,9 @@ extension UIViewController {
 
 func ShowNoInternetAlert() {
     
-    if isNointernetVCShown { return }
+    if isNointernetVCShown {
+        return
+    }
     
     let objVC = storyboard?.instantiateViewController(withIdentifier: "NoInternetVC") as! NoInternetVC
     isNointernetVCShown = true

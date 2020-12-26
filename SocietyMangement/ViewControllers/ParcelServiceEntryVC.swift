@@ -11,7 +11,8 @@ import SkyFloatingLabelTextField
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, DeliveryCompanyListProtocol {
+class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+//, DeliveryCompanyListProtocol {
     
     var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
     
@@ -108,9 +109,10 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(donedatePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(donedatePicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(cancelDatePicker))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelDatePicker))
+
         toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
         
         // add toolbar to textField
@@ -132,9 +134,9 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(doneTimePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(cancelTimePicker))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker))
         toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
         //timePicker.minimumDate = Date()
         // add toolbar to textField
@@ -227,8 +229,6 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
     
     // MARK: - deliveryList delegate methods
 
-       //func deliveryList(name: String)
-      // func deliveryList(name:String, selectNumber:Int)
        func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
        {
             self.txtDeliveryCompanyName.text = name
@@ -244,10 +244,9 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
               {
                      txtDeliveryCompanyName.resignFirstResponder()
                      let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
-                     popOverConfirmVC.delegate = self
+                   //  popOverConfirmVC.delegate = self
                   
                       popOverConfirmVC.selectedindex = index
-                      popOverConfirmVC.selectedindex1 = index
 
                      if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
                      {

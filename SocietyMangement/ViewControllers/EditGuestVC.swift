@@ -225,7 +225,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         var after_add_time = ""
 
         if validtill == "Day End" {
-            validtill = time
+           /* validtill = time
             
            // let myInt = Int(validtill)!
             
@@ -233,7 +233,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             let isoDate = time //strDateee //"2016-04-14T10:44:00+0000"
 
-            dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd" // h:mm"
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd" // h:mm"
 
           //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             let date = dateFormatter.date(from:isoDate)!
@@ -246,10 +246,10 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
             after_add_time = dateFormatter.string(from: addminutes)
-                print("after add time --> ",after_add_time)
+                print("after add time --> ",after_add_time) */
             
-          //  after_add_time = "23:59:00"
-             
+            after_add_time = "11:59 PM" //"23:59:00"
+
         }else{
             validtill.removeLast(3)
             
@@ -261,7 +261,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             let isoDate = time //validtill // valid  //"2016-04-14T10:44:00+0000"
 
-            dateFormatter.dateFormat = "h:mm:ss a" // "yyyy-MM-dd"  //h:mm"
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
 
           //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             

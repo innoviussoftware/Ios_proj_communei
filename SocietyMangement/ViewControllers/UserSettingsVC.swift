@@ -7,7 +7,6 @@
 //
 
 
-
  
 import UIKit
 import Alamofire
@@ -73,22 +72,28 @@ class UserSettingsVC: BaseVC {
     @IBOutlet weak var cbself: Checkbox!
     
     @IBOutlet weak var btncbself: UIButton!
-
         
    // @IBOutlet weak var imgviewcheckself: UIImageView!
-
     
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblFlatNo: UILabel!
     @IBOutlet weak var lblFlatType: UILabel!
     @IBOutlet weak var imgUser: UIImageView!
     
-    var strNoticeShow = "0"
-    var strCircularShow = "0"
-    var strEventShow = "0"
-    var strContactDetailShow = "0"
-    var strFamilyDetailShow = "0"
+    var ShareContactDetails:Int?
+    var ShareFamilyMemberDetails :Int?
     
+    var DoNotDisturb :Int?
+
+    var DomesticNotifyOnEntry :Int?
+    var DomesticNotifyOnExit :Int?
+    
+    var VisitorNotifyOnEntry :Int?
+    var VisitorNotifyOnExit :Int?
+
+    var OthersNotifyOnEntry :Int?
+    var OthersNotifyOnExit :Int?
+
     var selectedCell = -1
     
     var arrGetSetting = [getSettingData]()
@@ -117,14 +122,24 @@ class UserSettingsVC: BaseVC {
     
     @IBOutlet weak var switchNotice: UISwitch!
 
-    @IBOutlet weak var switchEvent: UISwitch!
+  //  @IBOutlet weak var switchEvent: UISwitch!
     
-    @IBOutlet weak var switchcircular: UISwitch!
+    @IBOutlet weak var switchDailyNoticeEntry: UISwitch!
+    
+    @IBOutlet weak var switchDailyNoticeExit: UISwitch!
 
     @IBOutlet weak var switchContactDetails: UISwitch!
     
     @IBOutlet weak var switchFamily: UISwitch!
+    
+    @IBOutlet weak var switchVisitorOnEntry: UISwitch!
+    
+    @IBOutlet weak var switchVisitorOnExit: UISwitch!
 
+    @IBOutlet weak var switchOtherEntry: UISwitch!
+    
+    @IBOutlet weak var switchOtherExit: UISwitch!
+    
     @IBOutlet weak var lblDnd: UILabel!
 
     @IBOutlet weak var viewPopUp: UIView!
@@ -150,13 +165,12 @@ class UserSettingsVC: BaseVC {
 
     
     var strDNDStatus = "1"
-
     
     var isSelf : Bool!
     
     var nameary = ["raj","tanvi","Jiinalll","raj","tanvi","Jiinalll","raj","tanvi","Jiinalll","raj","tanvi","Jiinalll","raj","tanvi","Jiinalll"]
         
-    @IBAction func actionSelfCheckMark(_ sender: Any) {
+    @IBAction func actionSelfCheckMark(_ sender: UIButton) {
         
         if isSelf == true{
             
@@ -274,6 +288,79 @@ class UserSettingsVC: BaseVC {
         
         apicallGetFamilyMembers(id: "")
         //apicallGetSettings()
+        
+        if UsermeResponse?.data?.settings?.shareContactDetails == 0 {
+            switchContactDetails.isOn = false
+            ShareContactDetails = 0
+        }else {
+            switchContactDetails.isOn = true
+            ShareContactDetails = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.shareFamilyMemberDetails == 0 {
+            switchFamily.isOn = false
+            ShareFamilyMemberDetails = 0
+        }else {
+            switchFamily.isOn = true
+            ShareFamilyMemberDetails = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.doNotDisturb == 0 {
+            DNDSwitch.isOn = false
+            DoNotDisturb = 0
+        }else {
+            DNDSwitch.isOn = true
+            DoNotDisturb = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.domesticNotifyOnEntry == 0 {
+            switchDailyNoticeEntry.isOn = false
+            DomesticNotifyOnEntry = 0
+        }else {
+            switchDailyNoticeEntry.isOn = true
+            DomesticNotifyOnEntry = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.domesticNotifyOnExit == 0 {
+            switchDailyNoticeExit.isOn = false
+            DomesticNotifyOnExit = 0
+        }else {
+            switchDailyNoticeExit.isOn = true
+            DomesticNotifyOnExit = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.visitorNotifyOnEntry == 0 {
+            switchVisitorOnEntry.isOn = false
+            VisitorNotifyOnEntry = 0
+        }else {
+            switchVisitorOnEntry.isOn = true
+            VisitorNotifyOnEntry = 1
+        }
+        
+        
+        if UsermeResponse?.data?.settings?.visitorNotifyOnExit == 0 {
+            switchVisitorOnExit.isOn = false
+            VisitorNotifyOnExit = 0
+        }else {
+            switchVisitorOnExit.isOn = true
+            VisitorNotifyOnExit = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.othersNotifyOnEntry == 0 {
+            switchOtherEntry.isOn = false
+            OthersNotifyOnEntry = 0
+        }else {
+            switchOtherEntry.isOn = true
+            OthersNotifyOnEntry = 1
+        }
+        
+        if UsermeResponse?.data?.settings?.othersNotifyOnExit == 0 {
+            switchOtherExit.isOn = false
+            OthersNotifyOnExit = 0
+        }else {
+            switchOtherExit.isOn = true
+            OthersNotifyOnExit = 1
+        }
         
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
                                                                 verticalAlignment: .center)
@@ -433,7 +520,6 @@ class UserSettingsVC: BaseVC {
     }
     
     
-    
     @IBAction func actionNotification(_ sender: Any) {
           let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
            vc.isfrom = 0
@@ -448,66 +534,108 @@ class UserSettingsVC: BaseVC {
         
         if switchContactDetails.isOn == true
         {
-            strContactDetailShow = "1"
+            ShareContactDetails = 1
         }else{
-            strContactDetailShow = "2"
+            ShareContactDetails = 0
         }
         
         apicallAddSettings()
         
-    }
-    
-    @IBAction func actiuonNotice(_ sender: UISwitch!) {
-        if switchNotice.isOn == true
-        {
-            strNoticeShow = "1"
-        }else{
-            strNoticeShow = "2"
-        }
-        
-        apicallAddSettings()
-        
-        print("strNoticeShow Notice :- ",strNoticeShow)
-        
-    }
-    
-    
-    @IBAction func actionEvent(_ sender: UISwitch!) {
-        
-        if switchEvent.isOn == true
-            //isOn == true
-        {
-            strEventShow = "1"
-        }else{
-            strEventShow = "2"
-        }
-        
-        apicallAddSettings()
-    }
-    
-    @IBAction func actioncircular(_ sender: UISwitch!) {
-        
-        if switchcircular.isOn == true
-        {
-            strCircularShow = "1"
-        }else{
-            strCircularShow = "2"
-        }
-        
-        apicallAddSettings()
     }
     
     @IBAction func actionfamily(_ sender: UISwitch!) {
         
         if switchFamily.isOn == true
         {
-            strFamilyDetailShow = "1"
+            ShareFamilyMemberDetails = 1
         }else{
-            strFamilyDetailShow = "2"
+            ShareFamilyMemberDetails = 0
         }
         
         apicallAddSettings()
     }
+    
+    @IBAction func actionDNDSwitch(_ sender: UISwitch!) {
+        
+        if DNDSwitch.isOn == true{
+           // viewPopUp.isHidden = false
+            DoNotDisturb = 1 // Off
+        }else{
+           // viewPopUp.isHidden = true
+            DoNotDisturb = 0 // ON
+           // apicallAddSettings()
+        }
+        apicallAddSettings()
+
+    }
+    
+    @IBAction func actionNoticeDailyEntry(_ sender: UISwitch!) {
+        if switchDailyNoticeEntry.isOn == true
+        {
+            DomesticNotifyOnEntry = 1
+        }else{
+            DomesticNotifyOnEntry = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
+    @IBAction func actionNoticeDailyExit(_ sender: UISwitch!) {
+        if switchDailyNoticeExit.isOn == true
+        {
+            DomesticNotifyOnExit = 1
+        }else{
+            DomesticNotifyOnExit = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
+    @IBAction func actionVisitorEntry(_ sender: UISwitch!) {
+        if switchVisitorOnEntry.isOn == true
+        {
+            VisitorNotifyOnEntry = 1
+        }else{
+            VisitorNotifyOnEntry = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
+    @IBAction func actionVisitorExit(_ sender: UISwitch!) {
+        if switchVisitorOnExit.isOn == true
+        {
+            VisitorNotifyOnExit = 1
+        }else{
+            VisitorNotifyOnExit = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
+    @IBAction func actionOtherEntry(_ sender: UISwitch!) {
+        if switchOtherEntry.isOn == true
+        {
+            OthersNotifyOnEntry = 1
+        }else{
+            OthersNotifyOnEntry = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
+    
+    @IBAction func actionOtherExit(_ sender: UISwitch!) {
+        if switchOtherExit.isOn == true
+        {
+            OthersNotifyOnExit = 1
+        }else{
+            OthersNotifyOnExit = 0
+        }
+        
+        apicallAddSettings()
+    }
+    
     
     // 25/8/20.
     
@@ -524,30 +652,17 @@ class UserSettingsVC: BaseVC {
            
            
        }
+    
        @IBAction func actionClosePopUp(_ sender: Any) {
            
            if !textViewReasion.hasText{
                DNDSwitch.isOn = false
-
            }
            
            viewPopUp.isHidden = true
        }
        
-       @IBAction func actionDNDSwitch(_ sender: UISwitch!) {
-           
-           if DNDSwitch.isOn == true{
-               viewPopUp.isHidden = false
-               strDNDStatus = "2" // Off
-           }else{
-               viewPopUp.isHidden = true
-               strDNDStatus = "1" // ON
-               apicallAddSettings()
-           }
-           
-       }
-    
-
+      
     @IBAction func btnDeactivateMyFlat(_ sender: UIButton!) {
         let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
         avc?.titleStr = "Delete My Account"
@@ -566,7 +681,60 @@ class UserSettingsVC: BaseVC {
 
 
     }
+    
+    // MARK: - User me Setting Switch
 
+    func apicallUserMe()
+    {
+        if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            webservices().StartSpinner()
+
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+        
+                Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+                
+                let statusCode = JSON.response?.statusCode
+                
+                switch JSON.result{
+                case .success(let resp):
+                   webservices().StopSpinner()
+                    
+                    if statusCode == 200{
+                        
+                        UsermeResponse = resp
+                        
+                        print(resp)
+                    }
+                    
+                case .failure(let err):
+                    webservices().StopSpinner()
+                    if statusCode == 401{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                            // if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                          //  }
+                       // })
+                        
+                        return
+                    }
+                    
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    
+                }
+            }
+        
+    }
     
     //  /////////////  //
     
@@ -575,11 +743,14 @@ class UserSettingsVC: BaseVC {
     func apicallAddSettings()
     {
           if !NetworkState().isInternetAvailable {
-                         ShowNoInternetAlert()
-                         return
-                     }
+                ShowNoInternetAlert()
+                return
+          }
         
-               if !textViewReasion.hasText {
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+         
+             /*  if !textViewReasion.hasText {
                    textViewReasion.text = ""
                }
             
@@ -602,11 +773,24 @@ class UserSettingsVC: BaseVC {
                 "family_details" : strFamilyDetailShow,
                 "mute_notification_status":strDNDStatus,
                 "reason_to_mute_notification":textViewReasion.text!
-
-            ]
+                
+            ] */
+        
+        let param : Parameters = [
+            "ShareContactDetails" : ShareContactDetails!,
+            "ShareFamilyMemberDetails" : ShareFamilyMemberDetails!,
+            "DoNotDisturb" : DoNotDisturb!,
+            "DomesticNotifyOnEntry" : DomesticNotifyOnEntry!,
+            "DomesticNotifyOnExit" : DomesticNotifyOnExit!,
+            "VisitorNotifyOnEntry" : VisitorNotifyOnEntry!,
+            "VisitorNotifyOnExit": VisitorNotifyOnExit!,
+            "OthersNotifyOnEntry": OthersNotifyOnEntry!,
+            "OthersNotifyOnExit": OthersNotifyOnExit!
+        ]
+           
+        print("param setting : ",param)
             
-            
-            Apicallhandler.sharedInstance.ApiCallAddSettings(token: token as! String, param: param) { JSON in
+        Apicallhandler.sharedInstance.ApiCallAddSettings(token: token as! String, param: param) { [self] JSON in
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -616,13 +800,17 @@ class UserSettingsVC: BaseVC {
                     
                     print("--------->add settings \(resp)")
                     
-                    if statusCode == 200{
-                        UserDefaults.standard.set(resp.data.contactDetails, forKey: USER_SETTING_CONTACT_SHOW)
+                    if statusCode == 200 {
+                        
+                        self.apicallUserMe()
+                        
+                        
+                      /*  UserDefaults.standard.set(resp.data.contactDetails, forKey: USER_SETTING_CONTACT_SHOW)
                         UserDefaults.standard.set(resp.data.familyDetails, forKey: USER_SETTING_FAMILY_SHOW)
                         UserDefaults.standard.set(resp.data.circular, forKey: USER_SETTING_CIRCULAR_SHOW)
                         UserDefaults.standard.set(resp.data.notice, forKey: USER_SETTING_NOTICE_SHOW)
                         UserDefaults.standard.set(resp.data.event, forKey: USER_SETTING_EVENT_SHOW)
-                        UserDefaults.standard.synchronize()
+                        UserDefaults.standard.synchronize() */
                         
                         // 2/9/20.
                         
@@ -651,13 +839,13 @@ class UserSettingsVC: BaseVC {
                     
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError as Any)
+                    print(err.asAFError!)
                     
                 }
             }
             
        
-        
+         
     }
     
     
@@ -670,6 +858,9 @@ class UserSettingsVC: BaseVC {
             return
         }
         
+        /*
+         
+         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         //            1 = show detal
         //            0 = hide detail
@@ -779,12 +970,12 @@ class UserSettingsVC: BaseVC {
                 
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError as Any)
+                print(err.asAFError!)
                 
             }
         }
         
-        
+        */
         
     }
     
@@ -796,6 +987,9 @@ class UserSettingsVC: BaseVC {
                          return
                      }
             
+        /*
+         
+        
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             webservices().StartSpinner()
@@ -849,14 +1043,14 @@ class UserSettingsVC: BaseVC {
                     }
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }
                 
             }
             
-      
+      */
         
     }
     
@@ -864,17 +1058,16 @@ class UserSettingsVC: BaseVC {
    // @objc func getIndexSelectedCell(sender:Checkbox) {
         
     @objc func getIndexSelectedCell(sender:UIButton) {
-
         
-        if arrMemberID.contains(arrMemberSelected[sender.tag].guid){
+        if arrMemberID.contains(arrMemberSelected[sender.tag].guid!){
                    //arrDummy.add("1")
-                    arrMemberID.remove(arrMemberSelected[sender.tag].guid)
+                    arrMemberID.remove(arrMemberSelected[sender.tag].guid!)
 
                }else{
                     //arrDummy.add("0")
             
             if arrMemberID.count < 4{
-                 arrMemberID.add(arrMemberSelected[sender.tag].guid)
+                 arrMemberID.add(arrMemberSelected[sender.tag].guid!)
             }else{
                 let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"You can select maximum 4 person as notification receiver")
                 self.present(alert, animated: true, completion: nil)
@@ -936,7 +1129,7 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
       //  checkbox(cb: cell.cb)
         
         //New
-        if arrMemberID.contains(arrMemberSelected[indexPath.row].guid){
+        if arrMemberID.contains(arrMemberSelected[indexPath.row].guid!){
             // cell.cb.isChecked = true
             cell.btncheckself.setImage(UIImage(named: "ic_radiobuttonselect"), for: UIControlState.normal)
 
@@ -979,17 +1172,17 @@ extension UserSettingsVC: UICollectionViewDelegate , UICollectionViewDataSource 
       //  if arrMemberID.contains((arrMemberSelected[indexPath.row].guid as NSNumber).stringValue){
                           //arrDummy.add("1")
                           // arrMemberID.remove((arrMemberSelected[indexPath.row].guid! as NSNumber).stringValue)
-            if arrMemberID.contains(arrMemberSelected[indexPath.row].guid)
+            if arrMemberID.contains(arrMemberSelected[indexPath.row].guid!)
             {
 
-            arrMemberID.remove(arrMemberSelected[indexPath.row].guid)
+            arrMemberID.remove(arrMemberSelected[indexPath.row].guid!)
 
 
                       }else{
                            //arrDummy.add("0")
                    
                    if arrMemberID.count < 4{
-                        arrMemberID.add(arrMemberSelected[indexPath.row].guid)
+                        arrMemberID.add(arrMemberSelected[indexPath.row].guid!)
                    }else{
                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"You can select maximum 4 person as notification receiver")
                        self.present(alert, animated: true, completion: nil)

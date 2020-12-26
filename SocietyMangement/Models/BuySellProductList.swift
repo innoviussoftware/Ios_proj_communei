@@ -8,6 +8,68 @@
 
 import Foundation
 
+
+// MARK: - BuySellProductList
+struct BuySellProductList: Codable {
+    let data: [BuySellProductListData]?
+    let status: Int?
+    let message: String?
+}
+
+// MARK: - Datum
+struct BuySellProductListData: Codable {
+    let productID, userID, propertyID, societyID: Int?
+    let productCategoryID: Int?
+    let title, datumDescription: String?
+    let amount: Int?
+    let qualityStatus: String?
+    let saleStatus: Int?
+    let creationDate, visibleTill: String?
+    let disabledDate: String?
+    let productCategoryName: String?
+    let productsimages: [Productsimage]?  // ProductAttachment
+    let userName, phone: String?
+    let profilePhotoPath: String?
+    let propertyFullName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case productID = "ProductID"
+        case userID = "UserID"
+        case propertyID = "PropertyID"
+        case societyID = "SocietyID"
+        case productCategoryID = "ProductCategoryID"
+        case title = "Title"
+        case datumDescription = "Description"
+        case amount = "Amount"
+        case qualityStatus = "QualityStatus"
+        case saleStatus = "SaleStatus"
+        case creationDate = "CreationDate"
+        case visibleTill = "VisibleTill"
+        case disabledDate = "DisabledDate"
+        case productCategoryName = "ProductCategoryName"
+        case productsimages = "ProductAttachment"
+        case userName = "UserName"
+        case phone
+        case profilePhotoPath = "profile_photo_path"
+        case propertyFullName = "PropertyFullName"
+    }
+}
+
+// MARK: - ProductAttachment
+struct Productsimage: Codable {
+    let productAttachmentID: String?
+    let attachment: String?
+
+    enum CodingKeys: String, CodingKey {
+        case productAttachmentID = "ProductAttachmentID"
+        case attachment = "Attachment"
+    }
+}
+
+
+/*
+ 
+
 // MARK: - BuySellProductList
 struct BuySellProductList: Codable {
     let data: [BuySellProductListData]?
@@ -47,3 +109,6 @@ struct Productsimage: Codable {
         case updatedAt = "updated_at"
     }
 }
+
+
+*/

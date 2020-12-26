@@ -193,6 +193,11 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     }
     
     @IBAction func btnDaily_HelperPressed(_ sender: UIButton) {
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
+        vc.isfrom = 1
+        self.navigationController?.pushViewController(vc, animated: true)
+        
         print("btnDaily_HelperPressed click")
     }
     
@@ -327,16 +332,16 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
             case .failure(let err):
                 webservices().StopSpinner()
                 if statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() //(onCompletion: { int in
+                      //  if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                   //     }
+                   // })
                     
                     return
                 }
@@ -508,10 +513,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                 print("Cab")
                 
             }
-            
-                  // temp comment live app 26/11/20.
-
-            /*else if indexPath.item == 3 { // "Domestic Helper"
+            else if indexPath.item == 3 { // "Domestic Helper"
                
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
                 vc.isfrom = 1
@@ -519,7 +521,8 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                 
                 print("Domestic Helper")
                 
-            }else if indexPath.item == 4 { // "Help Desk"
+            }
+            else if indexPath.item == 4 { // "Help Desk"
                 
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "HelpDeskVC") as! HelpDeskVC
                 vc.isfrom = 1
@@ -527,7 +530,7 @@ extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICol
                 
                 print("Help Desk")
                 
-            } */
+            }
             
 
     }

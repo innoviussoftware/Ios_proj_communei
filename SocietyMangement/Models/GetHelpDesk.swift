@@ -9,6 +9,34 @@
 import Foundation
 
 
+
+// MARK: - GetHelpDeskResponse
+struct GetHelpDeskResponse: Codable {
+    let data: [GetHelpDeskData]?
+    let status: Int?
+    let message: String?
+}
+
+// MARK: - Datum
+struct GetHelpDeskData: Codable {
+    let emergencyNumberID, societyID: Int?
+    let type, name, number: String?
+    let icon: String?
+    let isActive: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case emergencyNumberID = "EmergencyNumberID"
+        case societyID = "SocietyID"
+        case type = "Type"
+        case name = "Name"
+        case number = "Number"
+        case icon = "Icon"
+        case isActive = "IsActive"
+    }
+}
+
+/*
+
 // MARK: - GetHelpDeskResponse
 struct GetHelpDeskResponse: Codable {
     let data: [GetHelpDeskData]
@@ -31,3 +59,5 @@ struct GetHelpDeskData: Codable {
         case updatedAt = "updated_at"
     }
 }
+
+ */

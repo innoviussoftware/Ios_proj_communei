@@ -16,7 +16,8 @@ protocol DeliveryCompanyListProtocol {
     
     func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
 
-    
+    func deliveryList1(name1:String,VendorID1:Int,IsPublic1:Int, selectNumber1:Int)
+
   //  func deliveryList(name:[String])
     
    // func deliveryList(ary:NSMutableArray,name:[String])
@@ -63,6 +64,8 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     @IBOutlet weak var lblTitleName: UILabel!
 
     var strTitleName = String()
+    
+    var isfrom = ""
 
     //["Cab","Delivery","Visitor","Service provider"]
     
@@ -177,24 +180,23 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                     }
                     else
                     {
-
+                        self.collectionFrequent_Deliveries.isHidden = false
                         self.collectionFrequent_Deliveries.delegate = self
                         self.collectionFrequent_Deliveries.dataSource = self
                         self.collectionFrequent_Deliveries.reloadData()
-                        self.collectionFrequent_Deliveries.isHidden = false
                         
                     }
                 }else if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    APPDELEGATE.ApiLogout1() //(onCompletion: { int in
+                       // if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                     //   }
+                 //   })
                     
                     return
                 }
@@ -326,10 +328,13 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                   cell.imgview.sd_setImage(with: URL(string: entryary[indexPath.item].companyLogoURL!), placeholderImage: UIImage(named: ""))
             }
             
-            cell.lblname.text = entryary[indexPath.row].companyName!
-                        
-            if(selectedindex == indexPath.row) &&  (cell.lblname.text!.contains(strlbl)) {
-                
+            var str = entryary[indexPath.row].companyName!
+            str.capitalizeFirstLetter()
+        
+            cell.lblname.text = str
+        
+        if(isfrom == "Single") {
+            if(selectedindex == indexPath.row) {
                 cell.imgview.layer.borderColor = AppColor.orangeColor.cgColor
                 //UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
                 cell.imgview.layer.masksToBounds = true
@@ -341,6 +346,47 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                 cell.imgview.contentMode = .scaleToFill
                 cell.imgview.layer.borderWidth = 0.0
             }
+        }else if(isfrom == "Multiple") {
+            if(selectedindex1 == indexPath.row) {
+                cell.imgview.layer.borderColor = AppColor.orangeColor.cgColor
+                //UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 1.0
+            }else {
+                cell.imgview.layer.borderColor = UIColor.clear.cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 0.0
+            }
+        }else{
+            if(selectedindex == indexPath.row) {
+                cell.imgview.layer.borderColor = AppColor.orangeColor.cgColor
+                //UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 1.0
+            }else {
+                cell.imgview.layer.borderColor = UIColor.clear.cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 0.0
+            }
+        }
+
+           /* if(selectedindex == indexPath.row) &&  (cell.lblname.text!.contains(strlbl)) {
+                
+                cell.imgview.layer.borderColor = AppColor.orangeColor.cgColor
+                //UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 1.0
+            }else {
+                cell.imgview.layer.borderColor = UIColor.clear.cgColor
+                cell.imgview.layer.masksToBounds = true
+                cell.imgview.contentMode = .scaleToFill
+                cell.imgview.layer.borderWidth = 0.0
+            } */
             
         
              return cell
@@ -387,7 +433,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
 
            let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
 
-           return CGSize(width: size, height: size)
+           return CGSize(width: size, height: size + 12)
           
         /*  if(collectionView == collectionFrequent_Deliveries){
               return CGSize(width: 84, height: 92)
@@ -410,9 +456,11 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
 
         if(collectionView == collectionFrequent_Deliveries){
             
-           // delegate?.deliveryList(name: entryary[indexPath.row].companyName!, selectNumber: selectedindex!)
-            
-            delegate?.deliveryList(name: entryary[indexPath.row].companyName!, VendorID: entryary[indexPath.row].vendorID!, IsPublic: entryary[indexPath.row].isPublic!, selectNumber: selectedindex!)
+            if isfrom == "Single" {
+                delegate?.deliveryList(name: entryary[indexPath.row].companyName!, VendorID: entryary[indexPath.row].vendorID!, IsPublic: entryary[indexPath.row].isPublic!, selectNumber: selectedindex!)
+            }else if isfrom == "Multiple"{
+                delegate?.deliveryList1(name1: entryary[indexPath.row].companyName!, VendorID1: entryary[indexPath.row].vendorID!, IsPublic1: entryary[indexPath.row].isPublic!, selectNumber1: selectedindex!)
+            }
             
             strlbl = entryary[indexPath.row].companyName!
             print("strlbl : ",strlbl)
@@ -428,4 +476,14 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
 
     }
 
+}
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
 }
