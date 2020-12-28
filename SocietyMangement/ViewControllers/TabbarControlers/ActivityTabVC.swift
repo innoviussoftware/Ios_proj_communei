@@ -704,7 +704,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         let expectedLabelSize = contentNSString!.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
         
         print("\(expectedLabelSize)")
-        return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12) //31
+        return CGSize(width:expectedLabelSize.size.width + 45, height: expectedLabelSize.size.height + 12) //31
         
     }
     
@@ -1064,7 +1064,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
         popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
 
-        popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
+        
+        if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
+            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
+        }else{
+            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.complaintType!)!
+        }
         
         popOverConfirmVC.strtxtview = (arrGuestList[sender.tag].activity?.message!)!
 
@@ -1414,7 +1419,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
             
-            cell.view2.isHidden = true
+           // cell.view2.isHidden = true
             
            // cell.imgview2.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_time"))
             
@@ -1432,10 +1437,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lbladdedby.text = "denied by " + (arrGuestList[indexPath.row].activity?.addedBy)!
                 
-                cell.viewHight1.constant = 28.5
+              /*  cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 cell.imgview4.isHidden = true
                 
@@ -1457,10 +1462,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblapprovedby.isHidden = false
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 28.5
+                cell.viewHight4.constant = 28.5 */
 
                 
                 cell.imgview4.isHidden = false
@@ -1491,10 +1496,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
                 
                 cell.lblapprovedby.isHidden = true
                 
@@ -1522,10 +1527,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblapprovedby.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 cell.imgview4.isHidden = true
 
@@ -1548,12 +1553,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = false
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 cell.imgview4.isHidden = true
+                cell.imgview2.isHidden = true
+                
+                cell.imgviewHight2.constant = 0
 
                 cell.lblapprovedby.isHidden = true
 
@@ -1579,10 +1587,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 
                 cell.lblapprovedby.isHidden = true
@@ -1639,7 +1647,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
             
-            cell.view2.isHidden = true
+           // cell.view2.isHidden = true
             
             cell.lblLeaveatGate.isHidden = true
             
@@ -1659,11 +1667,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lbladdedby.text = "denied by " + (arrGuestList[indexPath.row].activity?.addedBy)!
 
-                cell.viewHight1.constant = 28.5
+                /*cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
 
                 cell.imgview5.isHidden = true
 
@@ -1689,11 +1697,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblapprovedby.isHidden = false
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 28.5
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
 
                 cell.imgview5.isHidden = true
                 
@@ -1724,17 +1732,22 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
+                /*
                 cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
 
                 cell.imgview5.isHidden = true
 
                 cell.lblapprovedby.isHidden = true
                 
                 cell.imgview4.isHidden = true
+                
+                cell.imgviewHight2.constant = 0
+                
+                cell.imgview2.isHidden = true
                 
                 cell.btnRenew.isHidden = false
 
@@ -1758,11 +1771,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblapprovedby.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
+                
+                cell.imgview2.isHidden = true
+                
+                cell.imgviewHight2.constant = 0
 
                 cell.imgview5.isHidden = true
 
@@ -1787,15 +1804,18 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = false
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
 
                 cell.imgview5.isHidden = true
 
+                cell.imgview2.isHidden = true
                 cell.imgview4.isHidden = true
+                
+                cell.imgviewHight2.constant = 0
 
                 cell.lblapprovedby.isHidden = true
 
@@ -1821,11 +1841,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+                /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
                 cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0
+                cell.viewHight5.constant = 0 */
 
                 cell.imgview5.isHidden = true
 
@@ -1916,19 +1936,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
              
              cell.lbladdedby.text = "denied by " + (arrGuestList[indexPath.row].activity?.addedBy)!
 
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 0
+             cell.viewHight4.constant = 0  */
              
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+               //  cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+               //  cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
              
              cell.imgview4.isHidden = true
@@ -1954,19 +1976,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
           //   cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
              
              
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 28.5
+             cell.viewHight4.constant = 28.5 */
              
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+                // cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+                // cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
 
              cell.imgview4.isHidden = false
@@ -1995,19 +2019,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
          
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 28.5
+             cell.viewHight4.constant = 28.5 */
              
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+                // cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+                // cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
 
              cell.imgview4.isHidden = false
@@ -2035,19 +2061,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
           //  cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
 
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 0
+             cell.viewHight4.constant = 0 */
              
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+                // cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+                // cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
 
              cell.imgview4.isHidden = false
@@ -2078,19 +2106,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
              cell.lblHightStacklblMiddle.isHidden = false
              
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 0
+             cell.viewHight4.constant = 0 */
 
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+                // cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+                // cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
 
              cell.imgview4.isHidden = true
@@ -2120,19 +2150,22 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
              cell.lblHightStacklblMiddle.isHidden = true
              
-             cell.viewHight1.constant = 28.5
+            /* cell.viewHight1.constant = 28.5
              cell.viewHight2.constant = 0
              cell.viewHight3.constant = 28.5
-             cell.viewHight4.constant = 0
+             cell.viewHight4.constant = 0 */
 
              if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                  cell.lblLeaveatGate.text = "Leave at Gate"
-                 cell.viewHight5.constant = 28.5
+                // cell.viewHight5.constant = 28.5
                  cell.imgview5.isHidden = false
+                cell.lblLeaveatGate.isHidden = false
+
              }else{
                  cell.lblLeaveatGate.text = ""
-                 cell.viewHight5.constant = 0
+                // cell.viewHight5.constant = 0
                  cell.imgview5.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
              }
 
              cell.lblapprovedby.isHidden = true
@@ -2190,19 +2223,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lbladdedby.text = "denied by " + (arrGuestList[indexPath.row].activity?.addedBy)!
 
-                cell.viewHight1.constant = 28.5
+               /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
                 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                   // cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
                 
                 cell.imgview4.isHidden = true
@@ -2228,19 +2263,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
              //   cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
                 
                 
-                cell.viewHight1.constant = 28.5
+              /*  cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 28.5
+                cell.viewHight4.constant = 28.5 */
                 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                   // cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
 
                 cell.imgview4.isHidden = false
@@ -2269,19 +2306,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
             
-                cell.viewHight1.constant = 28.5
+               /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 28.5
+                cell.viewHight4.constant = 28.5 */
                 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                   // cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
 
                 cell.imgview4.isHidden = false
@@ -2309,26 +2348,28 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
              //  cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
 
-                cell.viewHight1.constant = 28.5
+              /*  cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0  */
                 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                  //  cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
 
                 cell.imgview4.isHidden = false
                 
-                cell.constraintHightStackBtn.constant = 0
+                cell.constraintHightStackBtn.constant = 50
 
-                cell.constraintHightStacklbl.constant = 0
+                cell.constraintHightStacklbl.constant = 0.5
 
                 cell.lblHightStacklblMiddle.isHidden = true
 
@@ -2352,19 +2393,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = false
                 
-                cell.viewHight1.constant = 28.5
+               /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                   // cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
 
                 cell.imgview4.isHidden = true
@@ -2394,19 +2437,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                cell.viewHight1.constant = 28.5
+               /* cell.viewHight1.constant = 28.5
                 cell.viewHight2.constant = 0
                 cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
+                cell.viewHight4.constant = 0 */
 
                 if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
                     cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.viewHight5.constant = 28.5
+                   // cell.viewHight5.constant = 28.5
                     cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
                 }else{
                     cell.lblLeaveatGate.text = ""
-                    cell.viewHight5.constant = 0
+                   // cell.viewHight5.constant = 0
                     cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
                 }
 
                 cell.lblapprovedby.isHidden = true
@@ -2461,7 +2506,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblouttime.text =  strTime + " - " + strTime1
 
-                cell.viewHight2.constant = 28.5
+               // cell.viewHight2.constant = 28.5
                 
                 cell.lblouttime.isHidden = false
 
@@ -2469,25 +2514,140 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
         }
          else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Emergency Alert "{
+            
             cell.lblname.text = "Emergency"
           
-          if arrGuestList[indexPath.row].activity?.profilePic != nil {
-              cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "Group 16679"))
-          }
+            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "Group 16679"))
+            
+            cell.imgviewCompanyLogo.isHidden = true
 
             cell.lblguest.text = "Alert"
             
-            cell.lblintime.text = arrGuestList[indexPath.row].inTime!
+            cell.lblLeaveatGate.isHidden = true
+            
+           // cell.lblintime.text = arrGuestList[indexPath.row].inTime!
+            
+            let lblDate = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[0]
+            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+            
+            let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
+            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+            cell.lblintime.text =  strTime + " , " + strDate
+            cell.lblintime.isHidden = false
 
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
+            
+           // cell.imgviewStackTop1.constant = 27
+            
+            cell.imgviewStackTop3.constant = 10
+            
+          //  cell.imgviewStackTop4.constant = 0
+            
+          //  cell.imgviewStackTop5.constant = 0
+
+            cell.imgviewHight1.constant = 12
+
+            cell.imgviewHight2.constant = 0
+            cell.imgviewHight4.constant = 0
+            cell.imgviewHight5.constant = 0
+
+            cell.imgviewHight3.constant = 12
+
+            cell.imgviewTop3_1.constant = 5
 
             cell.lblouttime.isHidden = true
             
+            cell.imgview2.isHidden = true
+            cell.imgview4.isHidden = true
+            cell.imgview5.isHidden = true
+
+            cell.lblHightStacklblMiddle.isHidden = true
+            
+            cell.constraintHightStackBtn.constant = 50
+
             cell.lbladdedby.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
             
              if cell.lblStatus.text == "RESOLVED" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
              }else if cell.lblStatus.text == "SENT" {
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+             }else{
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+             }
+            
+            cell.btnCancel.isHidden = true
+            cell.btnEdit.isHidden = true
+            
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnRenew.isHidden = true
+            cell.btnClose.isHidden = true
+            cell.btnWrong_Entry.isHidden = true
+            cell.btnNote_Guard.isHidden = true
+            cell.btnOut.isHidden = true
+            cell.btnDeliveryInfo.isHidden = true
+            cell.btnAlertInfo.isHidden = false
+
+        } else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Complaint to Guard"{
+            
+            cell.lblname.text = "Complaint"
+          
+            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "Group 16679"))
+
+            cell.lblguest.text = "Alert"
+            
+            cell.imgviewCompanyLogo.isHidden = true
+            
+            cell.lblLeaveatGate.isHidden = true
+
+           // cell.lblintime.text = arrGuestList[indexPath.row].inTime!
+            
+            let lblDate = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[0]
+            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+            
+            let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
+            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+            cell.lblintime.text =  strTime + " , " + strDate
+            cell.lblintime.isHidden = false
+
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
+            
+           // cell.imgviewStackTop1.constant = 27
+            
+            cell.imgviewStackTop3.constant = 10
+            
+          //  cell.imgviewStackTop4.constant = 0
+            
+          //  cell.imgviewStackTop5.constant = 0
+
+            cell.imgviewHight1.constant = 12
+
+            cell.imgviewHight2.constant = 0
+            cell.imgviewHight4.constant = 0
+            cell.imgviewHight5.constant = 0
+
+            cell.imgviewHight3.constant = 12
+
+            cell.imgviewTop3_1.constant = 5
+
+            cell.lblouttime.isHidden = true
+            
+            cell.imgview2.isHidden = true
+            cell.imgview4.isHidden = true
+            cell.imgview5.isHidden = true
+
+            cell.lblHightStacklblMiddle.isHidden = true
+            
+            cell.constraintHightStackBtn.constant = 50
+
+            cell.lbladdedby.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
+            
+             if cell.lblStatus.text == "RESOLVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+             }else if cell.lblStatus.text == "SENT" {
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+             }else{
                 cell.lblStatus.backgroundColor = UIColor.systemRed
              }
             
@@ -2504,6 +2664,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnAlertInfo.isHidden = false
 
         }
+         
          /* else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Entry"{
             cell.lblname.text = "Cab"
             

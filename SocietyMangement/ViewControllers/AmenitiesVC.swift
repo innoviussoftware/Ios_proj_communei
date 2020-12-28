@@ -127,9 +127,13 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         
         if changedIndex == 0{//facilities
+           txtSearchbar.text = ""
           apicallGetAmenities()
+          view.endEditing(true)
         }else{
+            txtSearchbar.text = ""
             apicallGetBookings()
+            view.endEditing(true)
         }
         
     }
@@ -145,8 +149,8 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
         
         let strToken = UserDefaults.standard.value(forKey: USER_TOKEN)! as! String
 
-        
             webservices().StartSpinner()
+        
         Apicallhandler().GetBookingsList(URL: webservices().baseurl + API_GET_BOOKINGS_LIST, token:strToken) { [self] JSON in
                 switch JSON.result{
                 case .success(let resp):

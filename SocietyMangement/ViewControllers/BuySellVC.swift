@@ -28,6 +28,11 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     
     @IBOutlet weak var lblNoDataFound: UILabel!
     
+    @IBOutlet weak var lblNoDataFound1: UILabel!
+    
+    @IBOutlet weak var vwBuy1: UIView!
+    
+    @IBOutlet weak var vwSell2: UIView!
    
     @IBOutlet weak var collectionBuyCategory: UICollectionView!
     
@@ -315,7 +320,11 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                            //   collectionBuyRecommendation
                             self.tblBuyRecommendation.isHidden = false
                             self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = true
                             
+                            self.vwBuy1.isHidden = true
+                            self.vwSell2.isHidden = true
+
                             self.tblBuyRecommendation.delegate = self
                             self.tblBuyRecommendation.dataSource = self
                             self.tblBuyRecommendation.reloadData()
@@ -323,6 +332,10 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                         }else{
                             self.tblBuyRecommendation.isHidden = true
                             self.lblNoDataFound.isHidden = false
+                            self.lblNoDataFound1.isHidden = true
+                            
+                            self.vwBuy1.isHidden = false
+                            self.vwSell2.isHidden = true
                             
                         }
                         
@@ -407,14 +420,22 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                            //   collectionBuyRecommendation
                             self.tblMyListing.isHidden = false
                             self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = true
                             
+                            self.vwBuy1.isHidden = true
+                            self.vwSell2.isHidden = true
+
                             self.tblMyListing.delegate = self
                             self.tblMyListing.dataSource = self
                             self.tblMyListing.reloadData()
                             
                         }else{
                             self.tblMyListing.isHidden = true
-                            self.lblNoDataFound.isHidden = false
+                            self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = false
+                            
+                            self.vwBuy1.isHidden = true
+                            self.vwSell2.isHidden = false
                             
                         }
                         

@@ -164,6 +164,18 @@ class BuySellProductDetailsVC: BaseVC {
     
     //Mark:- action method
     
+    func shareImage() {
+        
+       // let messageStr = "Product Detail:\nName:\(arrProductDetails.categoryname!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)\nContact No:\(lblMobileNo.text!)"
+        
+        let messageStr = "Product Detail:\nName:\(arrProductDetails.productCategoryName!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)"//"\nContact No:\(lblMobileNo.text!)"
+
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems:  [imgSeller.image!, messageStr], applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivityType.print, UIActivityType.postToWeibo, UIActivityType.copyToPasteboard, UIActivityType.addToReadingList, UIActivityType.postToVimeo]
+        self.present(activityViewController, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func actionShare(_ sender: Any) {
         shareImage()
     }
@@ -275,19 +287,6 @@ class BuySellProductDetailsVC: BaseVC {
            
            
        }
-    
-    
-    func shareImage() {
-       // let messageStr = "Product Detail:\nName:\(arrProductDetails.categoryname!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)\nContact No:\(lblMobileNo.text!)"
-        
-        let messageStr = "Product Detail:\nName:\(arrProductDetails.productCategoryName!)\n\(lblPrice.text!)\n\nSeller Details:\nName:\(lblSellerName.text!)\nFlat No:\(lblFlatNo.text!)"//"\nContact No:\(lblMobileNo.text!)"
-
-        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems:  [imgSeller.image!, messageStr], applicationActivities: nil)
-        activityViewController.excludedActivityTypes = [UIActivityType.print, UIActivityType.postToWeibo, UIActivityType.copyToPasteboard, UIActivityType.addToReadingList, UIActivityType.postToVimeo]
-        self.present(activityViewController, animated: true, completion: nil)
-        
-        
-    }
     
     
     func apiProductDelete(id:String)
@@ -619,7 +618,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                         vc.ProductID = (arrRelatedProduct[indexPath.row].productID!)
 
                                  // vc.ProductID = (!(arrRelatedProduct[indexPath.row].productID != nil) as NSNumber).stringValue
-                        vc.strCategoryName = arrRelatedProduct[indexPath.row].productCategoryName!
+                        vc.strCategoryName = arrRelatedProduct[indexPath.row].title! // productCategoryName!
                         self.navigationController?.pushViewController(vc, animated: true)
                         
                     } else {

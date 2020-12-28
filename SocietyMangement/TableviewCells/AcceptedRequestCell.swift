@@ -43,19 +43,35 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgview9: UIImageView!
     @IBOutlet weak var imgview10: UIImageView!
     
-    @IBOutlet weak var viewHight1: NSLayoutConstraint!
-    @IBOutlet weak var viewHight2: NSLayoutConstraint!
-    @IBOutlet weak var viewHight3: NSLayoutConstraint!
-    @IBOutlet weak var viewHight4: NSLayoutConstraint!
-    @IBOutlet weak var viewHight5: NSLayoutConstraint!
+    
+    @IBOutlet weak var imgviewTop1: NSLayoutConstraint!
+    @IBOutlet weak var imgviewTop2: NSLayoutConstraint!
+    @IBOutlet weak var imgviewTop3_1: NSLayoutConstraint!
+    @IBOutlet weak var imgviewTop4: NSLayoutConstraint!
+    @IBOutlet weak var imgviewTop5: NSLayoutConstraint!
+    
+    
+    @IBOutlet weak var imgviewStackTop1: NSLayoutConstraint!
+    @IBOutlet weak var imgviewStackTop2: NSLayoutConstraint!
+    @IBOutlet weak var imgviewStackTop3: NSLayoutConstraint!
+    @IBOutlet weak var imgviewStackTop4: NSLayoutConstraint!
+    @IBOutlet weak var imgviewStackTop5: NSLayoutConstraint!
+     
+    
+    @IBOutlet weak var imgviewHight1: NSLayoutConstraint!
+    @IBOutlet weak var imgviewHight2: NSLayoutConstraint!
+    @IBOutlet weak var imgviewHight3: NSLayoutConstraint!
+    @IBOutlet weak var imgviewHight4: NSLayoutConstraint!
+    @IBOutlet weak var imgviewHight5: NSLayoutConstraint!
 
+    /*
     @IBOutlet weak var view1: UIView!
     @IBOutlet weak var view2: UIView!
     @IBOutlet weak var view3: UIView!
     @IBOutlet weak var view4: UIView!
     @IBOutlet weak var view5: UIView!
+     */
 
-    
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var btnRenew: UIButton!

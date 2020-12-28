@@ -15,15 +15,16 @@ class DomesticHelpCell: UITableViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var imgUser: UIImageView!
     @IBOutlet weak var bgView: UIView!
+    
     override func awakeFromNib() {
+        
         super.awakeFromNib()
+        
         bgView.layer.cornerRadius = 8
         bgView.clipsToBounds = true
         
-        
-        imgUser.layer.cornerRadius = imgUser.frame.size.height/2
-        imgUser.clipsToBounds  = true
-        
+//        imgUser.layer.cornerRadius = imgUser.frame.size.height/2
+//        imgUser.clipsToBounds  = true
         
     }
 

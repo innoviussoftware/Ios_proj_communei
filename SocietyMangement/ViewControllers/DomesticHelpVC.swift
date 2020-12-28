@@ -105,7 +105,8 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         tblView.separatorStyle = .none
         tblView.frame = CGRect(x: 0, y: 86, width: view.frame.size.width, height: tblView.frame.size.height)
         
-        tblView_OnDemand.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellR euseIdentifier: "DomesticHelpCell")
+        
+        tblView_OnDemand.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellReuseIdentifier: "DomesticHelpCell")
         tblView_OnDemand.separatorStyle = .none
         tblView_OnDemand.frame = CGRect(x: view.frame.size.width, y: 86, width: view.frame.size.width, height: tblView_OnDemand.frame.size.height)
 
