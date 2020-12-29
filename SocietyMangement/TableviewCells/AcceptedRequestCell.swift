@@ -29,6 +29,9 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var lblStatus: UILabel!
     
     @IBOutlet weak var lblLeaveatGate: UILabel!
+    
+    @IBOutlet weak var lblWrongEntry: UILabel!
+
 
     @IBOutlet weak var btnapproved: RSButtonCustomisation!
     
@@ -38,6 +41,7 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgview4: UIImageView!
     @IBOutlet weak var imgview5: UIImageView!
     @IBOutlet weak var imgview6: UIImageView!
+    
     @IBOutlet weak var imgview7: UIImageView!
     @IBOutlet weak var imgview8: UIImageView!
     @IBOutlet weak var imgview9: UIImageView!
@@ -49,20 +53,23 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgviewTop3_1: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop4: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop5: NSLayoutConstraint!
-    
+    @IBOutlet weak var imgviewTop6_3: NSLayoutConstraint!
+
     
     @IBOutlet weak var imgviewStackTop1: NSLayoutConstraint!
     @IBOutlet weak var imgviewStackTop2: NSLayoutConstraint!
     @IBOutlet weak var imgviewStackTop3: NSLayoutConstraint!
     @IBOutlet weak var imgviewStackTop4: NSLayoutConstraint!
     @IBOutlet weak var imgviewStackTop5: NSLayoutConstraint!
-     
+    @IBOutlet weak var imgviewStackTop6: NSLayoutConstraint!
+
     
     @IBOutlet weak var imgviewHight1: NSLayoutConstraint!
     @IBOutlet weak var imgviewHight2: NSLayoutConstraint!
     @IBOutlet weak var imgviewHight3: NSLayoutConstraint!
     @IBOutlet weak var imgviewHight4: NSLayoutConstraint!
     @IBOutlet weak var imgviewHight5: NSLayoutConstraint!
+    @IBOutlet weak var imgviewHight6: NSLayoutConstraint!
 
     /*
     @IBOutlet weak var view1: UIView!
@@ -76,7 +83,10 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnEdit: UIButton!
     @IBOutlet weak var btnRenew: UIButton!
     @IBOutlet weak var btnClose: UIButton!
+    
     @IBOutlet weak var btnWrong_Entry: UIButton!
+    @IBOutlet weak var btnWrong_Entry_Red: UIButton!
+
     @IBOutlet weak var btnNote_Guard: UIButton!
     @IBOutlet weak var btnOut: UIButton!
 

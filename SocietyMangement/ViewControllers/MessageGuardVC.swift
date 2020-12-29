@@ -147,7 +147,7 @@ class MessageGuardVC: UIViewController, UICollectionViewDelegate , UICollectionV
                                                     }
 
                 
-        }, to:  webservices().baseurl + "user/send/message-to-guard" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+        }, to:  webservices().baseurl + API_MESSAGE_GUARD ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
             //Current upload progress of file
             
             print("Upload Progress message guard : \(progress.fractionCompleted)")

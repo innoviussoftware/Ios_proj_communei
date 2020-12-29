@@ -296,16 +296,17 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
                 case .failure(let err):
                     webservices().StopSpinner()
                     if JSON.response?.statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
-                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                          //  if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                         //   }
+                       // })
                         
                         return
                     }
@@ -423,10 +424,12 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
+        /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
         vc.HelperId = arrHelper[indexPath.row].dailyHelperID
         
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true) */
+        
+        print("MaidProfileDetailsVC")
     }
     
     

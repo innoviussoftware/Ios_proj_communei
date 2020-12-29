@@ -16,7 +16,7 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
     
     @IBOutlet weak var btncreatenew: UIButton!
     
-    @IBAction func BAckaction(_ sender: Any) {
+    @IBAction func BAckaction(_ sender: UIButton) {
         if isfrom == 0 {
             self.navigationController?.popViewController(animated:true)
         }else{
@@ -32,7 +32,7 @@ class MobileNumberVC: BaseVC  , UITextFieldDelegate{
     
     @IBOutlet weak var btnnext: UIButton!
     
-    @IBAction func nextaction(_ sender: Any) {
+    @IBAction func nextaction(_ sender: UIButton) {
         
         //20/8/20.
         

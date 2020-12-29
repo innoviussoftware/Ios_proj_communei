@@ -336,6 +336,9 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
                       //  if int == 1{
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                    
+                    aVC.isfrom = 1
+
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController

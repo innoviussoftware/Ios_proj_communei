@@ -21,6 +21,7 @@ struct UserActivityAll: Codable {
     let userActivityID, userActivityTypeID: Int?
     let guardActivityID: Int?
     let societyID: Int?
+    let isWrongEntry : Int?
     let visitorEntryID, visitingFlatID, visitorEntryTypeID: Int?
     let propertyID: Int?
     let dateLastUpadted: String?
@@ -35,6 +36,7 @@ struct UserActivityAll: Codable {
         case userActivityTypeID = "UserActivityTypeID"
         case guardActivityID = "GuardActivityID"
         case societyID = "SocietyID"
+        case isWrongEntry = "IsWrongEntry"
         case visitorEntryID = "VisitorEntryID"
         case visitingFlatID = "VisitingFlatID"
         case visitorEntryTypeID = "VisitorEntryTypeID"
@@ -62,7 +64,7 @@ struct ActivityAll: Codable {
     let vehicleTypeID: String?
     let creationDate: String?
     let numberOfPeopleAccompanying: String?
-    let status, messageStatus, messageBy, emergencyAlertType, message, complaintType: String?
+    let status, messageStatus, messageBy, emergencyAlertType, message, complaintType, wrongEntryBy: String?
     let messageAttachment : String?
     let activityIn: String?
     let addedBy, cancelledBy: String?
@@ -93,6 +95,7 @@ struct ActivityAll: Codable {
         case messageStatus = "MessageStatus"
         case messageBy = "MessageBy"
         case message = "Message"
+        case wrongEntryBy = "WrongEntryBy"
         case emergencyAlertType = "EmergencyAlertType"
         case complaintType = "ComplaintType"
         case messageAttachment = "MessageAttachment"

@@ -882,6 +882,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
+                
                 popOverConfirmVC.delegate = self
                 
                 popOverConfirmVC.isfrom = 1
@@ -1062,13 +1063,24 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
          
         popOverConfirmVC.strName = (arrGuestList[sender.tag].activity?.messageBy!)!
         popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
-        popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
-
         
+       // popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
+        
+        let lblDate = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[0]
+        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+        
+        let lblTime = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[1]
+        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+        popOverConfirmVC.strTime =  strTime + " , " + strDate
+
+
         if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
             popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
-        }else{
+        }else if arrGuestList[sender.tag].activity?.activityType  == "Complaint to Guard" {
             popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.complaintType!)!
+        }else{
+            popOverConfirmVC.strMessage = "Message"
         }
         
         popOverConfirmVC.strtxtview = (arrGuestList[sender.tag].activity?.message!)!
@@ -1403,9 +1415,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btncall.isHidden = true
         }
         
+        cell.btnWrong_Entry_Red.isHidden = true
+        
         cell.btncall.tag = indexPath.item
         
-         if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry" {
+       /*  if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Visitor Entry" {
             
             if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
@@ -2195,7 +2209,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
              cell.lblintime.isHidden = false
 
         }
-         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Pre-Approval"{
+         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Pre-Approval" {
             cell.lblname.text = "Delivery"
             
             cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_delivery_tab"))
@@ -2507,13 +2521,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.lblouttime.text =  strTime + " - " + strTime1
 
                // cell.viewHight2.constant = 28.5
-                
+              ................
                 cell.lblouttime.isHidden = false
 
             }
             
-        }
-         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Emergency Alert "{
+        }  // 29/12/20. Tue temp comment
+         else */ if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Emergency Alert "{
             
             cell.lblname.text = "Emergency"
           
@@ -2522,8 +2536,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.imgviewCompanyLogo.isHidden = true
 
             cell.lblguest.text = "Alert"
-            
-            cell.lblLeaveatGate.isHidden = true
             
            // cell.lblintime.text = arrGuestList[indexPath.row].inTime!
             
@@ -2538,6 +2550,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
             
+            cell.lblouttime.isHidden = true
+            cell.lblapprovedby.isHidden = true
+            cell.lblLeaveatGate.isHidden = true
+            cell.lblWrongEntry.isHidden = true
+
            // cell.imgviewStackTop1.constant = 27
             
             cell.imgviewStackTop3.constant = 10
@@ -2551,6 +2568,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.imgviewHight2.constant = 0
             cell.imgviewHight4.constant = 0
             cell.imgviewHight5.constant = 0
+            cell.imgviewHight6.constant = 0
 
             cell.imgviewHight3.constant = 12
 
@@ -2561,10 +2579,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.imgview2.isHidden = true
             cell.imgview4.isHidden = true
             cell.imgview5.isHidden = true
+            cell.imgview6.isHidden = true
 
             cell.lblHightStacklblMiddle.isHidden = true
             
             cell.constraintHightStackBtn.constant = 50
+            
+            cell.constraintHightStacklbl.constant = 0.5
 
             cell.lbladdedby.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
             
@@ -2592,7 +2613,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lblname.text = "Complaint"
           
-            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "Group 16679"))
+            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_complaint"))
 
             cell.lblguest.text = "Alert"
             
@@ -2612,6 +2633,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblintime.isHidden = false
 
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
+            
+            cell.lblouttime.isHidden = true
+            cell.lblapprovedby.isHidden = true
+            cell.lblLeaveatGate.isHidden = true
             
            // cell.imgviewStackTop1.constant = 27
             
@@ -2636,17 +2661,22 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.imgview2.isHidden = true
             cell.imgview4.isHidden = true
             cell.imgview5.isHidden = true
+            cell.imgview6.isHidden = true
+
+            cell.lblWrongEntry.isHidden = true
 
             cell.lblHightStacklblMiddle.isHidden = true
             
             cell.constraintHightStackBtn.constant = 50
+            
+            cell.constraintHightStacklbl.constant = 0.5
 
             cell.lbladdedby.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
             
              if cell.lblStatus.text == "RESOLVED" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
              }else if cell.lblStatus.text == "SENT" {
-                cell.lblStatus.backgroundColor = UIColor.systemRed
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
              }else{
                 cell.lblStatus.backgroundColor = UIColor.systemRed
              }
@@ -2662,6 +2692,142 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut.isHidden = true
             cell.btnDeliveryInfo.isHidden = true
             cell.btnAlertInfo.isHidden = false
+
+        }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Message to Guard"{
+            
+            cell.lblname.text = "Message to Guard"
+          
+            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_message"))
+
+            cell.lblguest.text = "Alert"
+            
+            cell.imgviewCompanyLogo.isHidden = true
+            
+            cell.lblLeaveatGate.isHidden = true
+
+           // cell.lblintime.text = arrGuestList[indexPath.row].inTime!
+            
+            let lblDate = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[0]
+            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+            
+            let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
+            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+            cell.lblintime.text =  strTime + " , " + strDate
+            cell.lblintime.isHidden = false
+
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
+            
+            cell.lblHightStacklblMiddle.isHidden = false
+
+            cell.constraintHightStackBtn.constant = 50
+            
+            cell.constraintHightStacklbl.constant = 0.5
+
+            cell.lbladdedby.text =  "Alert from " + (arrGuestList[indexPath.row].activity?.messageBy)!
+            
+             if cell.lblStatus.text == "RESOLVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+             }else if cell.lblStatus.text == "SENT" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+             }else{
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+             }
+            
+            if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                
+                cell.lblouttime.isHidden = true
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                
+                cell.lblWrongEntry.isHidden = true
+                
+                cell.imgviewStackTop3.constant = 10
+
+                cell.imgviewHight1.constant = 12
+
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgviewHight3.constant = 12
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.lblouttime.isHidden = true
+                
+                cell.imgview2.isHidden = true
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                
+                cell.btnWrong_Entry.isHidden = false
+                cell.btnWrong_Entry_Red.isHidden = true
+
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = false
+                
+            }else{
+                
+                cell.lblouttime.isHidden = true
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                
+                cell.lblWrongEntry.isHidden = false
+                
+                cell.imgviewStackTop3.constant = 27
+                
+                cell.imgviewTop3_1.constant = 5
+                
+                cell.imgviewTop6_3.constant = 5
+
+                cell.imgviewStackTop6.constant = 10
+
+                cell.imgviewHight1.constant = 12
+
+                cell.imgviewHight3.constant = 12
+
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                
+                cell.imgviewHight6.constant = 12
+
+                cell.lblouttime.isHidden = true
+                
+                cell.imgview2.isHidden = true
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                
+                cell.imgview6.isHidden = false
+                cell.imgview1.isHidden = false
+                cell.imgview3.isHidden = false
+
+                
+                cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                
+                cell.btnWrong_Entry.isHidden = true
+                
+                cell.btnWrong_Entry_Red.isHidden = false
+                
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = false
+            }
 
         }
          

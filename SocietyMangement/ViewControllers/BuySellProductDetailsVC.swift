@@ -148,9 +148,11 @@ class BuySellProductDetailsVC: BaseVC {
         lblFlatNo.text = arrProductDetails.propertyFullName
        // lblMobileNo.text = arrProductDetails.phone
         
-        if(arrProductDetails.productsimages != nil)
+        if(arrProductDetails.profilePhotoPath != nil)
         {
-           // imgSeller.sd_setImage(with: URL(string: arrProductDetails.productsimages!), placeholderImage: UIImage(named: "profile_magic"))
+            imgSeller.sd_setImage(with: URL(string: arrProductDetails.profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+        }else{
+            imgSeller.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor profile"))
         }
         apiProductList(productID: ProductID!, categoryId: CategoryId!)
 

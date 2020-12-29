@@ -255,3 +255,7 @@ let API_GET_BOOKINGS_LIST = "user/amenity/bookings"
 let API_DELETE_BOOKING_ENTRY = "user/amenity/bookings/delete"
 
 let API_ADD_BOOKINGS_NOW = "user/amenity/bookings/add"
+
+let API_COMPLAINT_GUARD = "user/send/complaint-to-guard"
+
+let API_MESSAGE_GUARD = "user/send/message-to-guard"

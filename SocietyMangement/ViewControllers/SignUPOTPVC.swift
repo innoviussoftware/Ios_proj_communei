@@ -22,14 +22,14 @@ class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
     
     @IBAction func CreateNewAccountAction(_ sender: Any) {
         
-        let nextVC = self.pushViewController(withName:MobileNumberVC.id(), fromStoryboard:"Main")
+        _ = self.pushViewController(withName:MobileNumberVC.id(), fromStoryboard:"Main")
 
     }
     @IBOutlet weak var txtmobile: RSTextFieldCustomisation!
     
     @IBOutlet weak var btnnext: UIButton!
     
-    @IBAction func nextaction(_ sender: Any) {
+    @IBAction func nextaction(_ sender: UIButton) {
                 
         if(txtmobile.text == "")
         {
