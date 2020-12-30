@@ -45,7 +45,7 @@ class MaidProfileDetailsVC: UIViewController {
     @IBOutlet weak var imgStar4: UIImageView!
     @IBOutlet weak var imgStar5: UIImageView!
     
-    var arrRating = [Reveiw]()
+    var arrRating = [Comment]()
     
     @IBOutlet weak var btnAddRatings: UIButton!
     
@@ -123,10 +123,10 @@ class MaidProfileDetailsVC: UIViewController {
                 avc?.isfrom = 3
 
                                //    avc?.subtitleStr = "Are you sure you want to call?"
-                    avc?.subtitleStr = "Want to contact: \(dictHelperData.mobile!)"
+        avc?.subtitleStr = "Want to contact: \(dictHelperData.phoneNumber)"
         
                                    avc?.yesAct = {
-                                    self.dialNumber(number: self.dictHelperData.mobile!)
+                                    self.dialNumber(number: self.dictHelperData.phoneNumber)
                                             }
         
                                    avc?.noAct = {
@@ -141,11 +141,11 @@ class MaidProfileDetailsVC: UIViewController {
     
     @IBAction func actionViewAllWorkingWith(_ sender: Any) {
         
-        print("\(dictHelperData.workWithData)")
+        print("\(dictHelperData.props!)")
         
-        if dictHelperData.workWithData != nil{
+        if dictHelperData.props != nil{
              let popup = self.storyboard?.instantiateViewController(withIdentifier: "WorkingWithPopUpVC") as! WorkingWithPopUpVC
-            popup.arrWorkingWith = dictHelperData.workWithData!
+            popup.arrWorkingWith = dictHelperData.props!
              let navigationController = UINavigationController(rootViewController: popup)
              navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
              self.present(navigationController, animated: true)
@@ -194,13 +194,14 @@ class MaidProfileDetailsVC: UIViewController {
                             return
                         }
              
-            let userid = UserDefaults.standard.value(forKey: USER_ID) as! Int
             
-            let strId = "\(userid)"
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
                 
             webservices().StartSpinner()
         
-            Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",userId:strId) { JSON in
+            Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",token:token  as! String) { JSON in
                    switch JSON.result{
                    case .success(let resp):
                        webservices().StopSpinner()
@@ -210,16 +211,16 @@ class MaidProfileDetailsVC: UIViewController {
                         
                         self.dictHelperData = resp.data
                         
-                        if self.dictHelperData.photos != nil
+                        if self.dictHelperData.profilePicture != nil
                                {
                                 self.imgUser.layer.cornerRadius =  self.imgUser.frame.size.height/2
                                 self.imgUser.clipsToBounds = true
-                                self.imgUser.sd_setImage(with: URL(string: self.dictHelperData.photos!), placeholderImage: UIImage(named: "vendor-1"))
+                            self.imgUser.sd_setImage(with: URL(string: self.dictHelperData.profilePicture), placeholderImage: UIImage(named: "vendor-1"))
                                }
                         self.lblName.text = self.dictHelperData.name
-                        self.lblProfession.text = self.dictHelperData.typename
+                        self.lblProfession.text = self.dictHelperData.vendorServiceType
                         
-                        if self.dictHelperData.ratings != nil{
+                       /* if self.dictHelperData.ratings != nil{
                             self.ratingView.rating = Double(self.dictHelperData.ratings!)
                                                    self.ratingTopView.rating = Double(self.dictHelperData.ratings!)
                                                    self.lblTotalRating.text =  "\(Double(self.dictHelperData.ratings!))"
@@ -238,7 +239,7 @@ class MaidProfileDetailsVC: UIViewController {
                         }
                     
                         
-                        self.btnWorkingSince.setTitle(self.dictHelperData.joinDate, for: .normal)
+                        self.btnWorkingSince.setTitle(self.dictHelperData.joinDate, for: .normal)  */
 
                         if self.arrRating.count > 2{
                             self.btnViewAllRatings.isHidden = false
@@ -271,22 +272,22 @@ class MaidProfileDetailsVC: UIViewController {
                    case .failure(let err):
                        webservices().StopSpinner()
                        if JSON.response?.statusCode == 401{
-                           APPDELEGATE.ApiLogout(onCompletion: { int in
-                               if int == 1{
+                           APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                             // if int == 1{
                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                               let navController = UINavigationController(rootViewController: aVC)
                                                                               navController.isNavigationBarHidden = true
                                                                  self.appDelegate.window!.rootViewController  = navController
                                                                  
-                               }
-                           })
+                             //  }
+                         //  })
                            
                            return
                        }
                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        self.present(alert, animated: true, completion: nil)
-                       print(err.asAFError)
+                       print(err.asAFError!)
                        
                    }
                }
@@ -369,7 +370,7 @@ class MaidProfileDetailsVC: UIViewController {
                               }
                               let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                               self.present(alert, animated: true, completion: nil)
-                              print(err.asAFError)
+                              print(err.asAFError!)
                               
                           }
                       }

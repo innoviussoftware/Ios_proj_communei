@@ -9,7 +9,6 @@
 import Foundation
 
 
-/*
 // MARK: - HelperDetailsResponse
 struct HelperDetailsResponse: Codable {
     let data: HelperDetailsData
@@ -19,36 +18,84 @@ struct HelperDetailsResponse: Codable {
 
 // MARK: - DataClass
 struct HelperDetailsData: Codable {
-    let id, societyID: Int?
-    let name, pin, mobile, document: String?
-    let photos, gender, typename, joinDate: String?
-    let ratings: Double?
-    let workWithData : [WorkWithDatum]
-    let reveiws : [Reveiw]
+    let name, phoneNumber: String
+    let profilePicture: String
+    let comments: [Comment]
+    let societyWorkingSince: String
+    let visitorEntryTypeID: Int
+    let rating, punctual, regular, clean: String
+    let attitude, skilled, vendorServiceType: String
+    let vendorServiceTypeID: Int
+    let dailyHelpPropertyID: String
+    let dailyHelperID: Int
+    let props: [Prop]?
+    let workingWithMe: Int
 
     enum CodingKeys: String, CodingKey {
-        case id
-        case societyID = "society_id"
-        case name, pin, mobile, document, photos, gender, typename
-        case joinDate = "join_date"
-        case ratings
-        case workWithData = "work_with_data"
-        case reveiws
+        case name = "Name"
+        case phoneNumber = "PhoneNumber"
+        case profilePicture = "ProfilePicture"
+        case comments = "Comments"
+        case societyWorkingSince = "SocietyWorkingSince"
+        case visitorEntryTypeID = "VisitorEntryTypeID"
+        case rating = "Rating"
+        case punctual = "Punctual"
+        case regular = "Regular"
+        case clean = "Clean"
+        case attitude = "Attitude"
+        case skilled = "Skilled"
+        case vendorServiceType = "VendorServiceType"
+        case vendorServiceTypeID = "VendorServiceTypeID"
+        case dailyHelpPropertyID = "DailyHelpPropertyID"
+        case dailyHelperID = "DailyHelperID"
+        case props = "Props"
+        case workingWithMe = "WorkingWithMe"
     }
 }
 
-// MARK: - Reveiw
-struct Reveiw: Codable {
-    let ratings: Double?
-    let comment, username: String?
+// MARK: - Comment
+struct Comment: Codable {
+    let vendorServiceTypeID, vendorServiceType, propertyID, commentedByID: String
+    let commentedBy, comment, commentID, canEdit: String
+    let rating, dailyHelpPropertyID, propertyFullName: String
+    let addedByMe: Int
+
+    enum CodingKeys: String, CodingKey {
+        case vendorServiceTypeID = "VendorServiceTypeID"
+        case vendorServiceType = "VendorServiceType"
+        case propertyID = "PropertyID"
+        case commentedByID = "CommentedByID"
+        case commentedBy = "CommentedBy"
+        case comment = "Comment"
+        case commentID = "CommentID"
+        case canEdit = "CanEdit"
+        case rating = "Rating"
+        case dailyHelpPropertyID = "DailyHelpPropertyID"
+        case propertyFullName = "PropertyFullName"
+        case addedByMe = "AddedByMe"
+    }
 }
 
-// MARK: - WorkWithDatum
-struct WorkWithDatum: Codable {
-    let name, buildingname, flatname: String?
-}*/
+// MARK: - Prop
+struct Prop: Codable {
+    let vendorServiceTypeID, vendorServiceType, propertyID, addedBy: String
+    let numberOfTimesRecruited, propertyWorkingSince, propertyFullName: String
+
+    enum CodingKeys: String, CodingKey {
+        case vendorServiceTypeID = "VendorServiceTypeID"
+        case vendorServiceType = "VendorServiceType"
+        case propertyID = "PropertyID"
+        case addedBy = "AddedBy"
+        case numberOfTimesRecruited = "NumberOfTimesRecruited"
+        case propertyWorkingSince = "PropertyWorkingSince"
+        case propertyFullName = "PropertyFullName"
+    }
+}
 
 
+
+/*
+ 
 
 // MARK: - AddRatingReviewResponse
 struct HelperDetailsResponse: Codable {
@@ -95,3 +142,6 @@ struct Reveiw: Codable {
 struct WorkWithDatum: Codable {
     let name, buildingname, flatname: String?
 }
+
+ 
+ */

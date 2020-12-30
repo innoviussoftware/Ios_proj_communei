@@ -185,7 +185,9 @@ let API_DELETE_FREQUENTGUEST_ENTRY = "user/deletefrequent"
 
 let API_HELPER_LIST = "user/daily-helper/list/4" // "helperslist"
 
-let API_HELPER_DETAIL = "helpersdetails"
+let API_HELPER_ONDEMANDLIST = "user/daily-helper/list/6" // "helperslist"
+
+let API_HELPER_DETAIL = "user/helper/get-review" // "helpersdetails"
 
 let API_ADD_RATINGS_REVIEW = "user/addreview"
 

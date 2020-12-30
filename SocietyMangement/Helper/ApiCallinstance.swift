@@ -524,10 +524,12 @@ struct Apicallhandler {
     
     
     //Mark : Api call Get Helper
-    func GetHelperDetail(URL: String, helperID:String,userId:String, onCompletion: @escaping ((_ response: DataResponse<HelperDetailsResponse>) -> Void)) {
-        let parameter:Parameters = ["id" : helperID ,"user_id":userId]
+    
+    func GetHelperDetail(URL: String, helperID:String,token:String, onCompletion: @escaping ((_ response: DataResponse<HelperDetailsResponse>) -> Void)) {
         
-        AF.request(URL, method: .post, parameters:parameter).responseDecodable { (response:DataResponse<HelperDetailsResponse>) in
+        let parameter:Parameters = ["DailyHelperID" : helperID]
+        
+        AF.request(URL, method: .post, parameters:parameter , encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<HelperDetailsResponse>) in
             
             onCompletion(response)
             

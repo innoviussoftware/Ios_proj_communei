@@ -20,11 +20,14 @@ import ScrollPager
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
+class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegate {
         
     @IBOutlet weak var btnNotification: UIButton!
     
     @IBOutlet weak var lblNoDataFound: UILabel!
+    
+    @IBOutlet weak var lblNoDataFound1: UILabel!
+
     @IBOutlet weak var tblView: UITableView!
     
     @IBOutlet weak var tblView_OnDemand: UITableView!
@@ -45,6 +48,9 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
 
     var arrHelper = [HelperListData]()
     var arrFinal = [HelperListData]()
+    
+    var arrOnDemandHelper = [HelperListData]()
+    var arrOnDemandFinal = [HelperListData]()
     
     var isfrom = 1
 
@@ -70,6 +76,11 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         txtSearchbar1.layer.borderColor = UIColor.clear.cgColor
         
         txtSearchbar1.borderStyle = .none
+        
+        txtSearchbar.delegate = self
+        
+        txtSearchbar1.delegate = self
+
               
        // pager.frame = view.frame
        
@@ -101,6 +112,8 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         }
         
         lblNoDataFound.isHidden = true
+        lblNoDataFound1.isHidden = true
+        
         tblView.register(UINib(nibName: "DomesticHelpCell", bundle: nil), forCellReuseIdentifier: "DomesticHelpCell")
         tblView.separatorStyle = .none
         tblView.frame = CGRect(x: 0, y: 86, width: view.frame.size.width, height: tblView.frame.size.height)
@@ -115,8 +128,6 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         ViewOnDemand.frame = CGRect(x: view.frame.size.width, y: 0, width: view.frame.size.width, height: ViewOnDemand.frame.size.height)
         
         
-        apicallGetDomestichelperList()
-        
         /*
          if(revealViewController() != nil)
         {
@@ -128,7 +139,17 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
         } */
         
     }
+    
     override func viewWillAppear(_ animated: Bool) {
+        
+        apicallGetDailyhelperList()
+
+        apicallGetOnDemandhelperList()
+        
+        txtSearchbar.addTarget(self, action: #selector(searchRecordsAsPerText(_ :)), for: .editingChanged)
+
+        txtSearchbar1.addTarget(self, action: #selector(searchRecordsAsPerTextOnDemand(_ :)), for: .editingChanged)
+
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
 
     }
@@ -138,19 +159,86 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
            
        }
     
+    //MARK:- textfield delegate
+    
+    @objc func searchRecordsAsPerText(_ textfield:UITextField) {
+        arrHelper.removeAll()
+        
+        if textfield.text?.count != 0 {
+           // searchActive = true
+
+            for strCountry in arrFinal {
+                let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
+                
+                if range != nil {
+                    arrHelper.append(strCountry)
+                }
+            }
+        }else if textfield.text?.count == 0 {
+           // searchActive = false
+            
+        }
+        /*else if (arrSearchFinal.count == 0){
+            // searchActive = false
+            
+            lblnoproperty.isHidden = false
+            
+            lblnoproperty.text  = "Member List Not Found"
+         
+         tblFacilities.isHidden = true
+
+        }*/
+        else {
+            arrHelper = arrFinal
+        }
+        
+        tblView.reloadData()
+    }
+    
+    @objc func searchRecordsAsPerTextOnDemand(_ textfield:UITextField) {
+        arrOnDemandHelper.removeAll()
+        
+        if textfield.text?.count != 0 {
+           // searchActive = true
+
+            for strCountry in arrOnDemandFinal {
+                let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
+                
+                if range != nil {
+                    arrOnDemandHelper.append(strCountry)
+                }
+            }
+        }else if textfield.text?.count == 0 {
+           // searchActive = false
+            
+        }
+        /*else if (arrSearchFinal.count == 0){
+            // searchActive = false
+            
+            lblnoproperty.isHidden = false
+            
+            lblnoproperty.text  = "Member List Not Found"
+         
+         tblFacilities.isHidden = true
+
+        }*/
+        else {
+            arrOnDemandHelper = arrOnDemandFinal
+        }
+        
+        tblView_OnDemand.reloadData()
+    }
+    
+    
     
     //MARK:- ScrollPager delegate
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         
         if changedIndex == 0{//Daily
-            
-            self.tblView.reloadData()
-
+            apicallGetDailyhelperList()
         }else{
-            self.tblView_OnDemand.reloadData()
-            
+            apicallGetOnDemandhelperList()
         }
-        
         
         
     }
@@ -246,16 +334,16 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
                  
       }
     
-    // MARK: - get Maid List
+    // MARK: - get Daily helper List
     
-    func apicallGetDomestichelperList()
+    func apicallGetDailyhelperList()
     {
           if !NetworkState().isInternetAvailable {
-                         ShowNoInternetAlert()
-                         return
-                     }
+                ShowNoInternetAlert()
+                return
+            }
             
-        let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+           let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
 
             webservices().StartSpinner()
         
@@ -270,20 +358,16 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
                         
                         if self.arrHelper.count > 0{
                             self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = true
                             self.tblView.delegate = self
                             self.tblView.dataSource = self
                             self.tblView.reloadData()
-                            
-                            self.tblView_OnDemand.delegate = self
-                            self.tblView_OnDemand.dataSource = self
-                            self.tblView_OnDemand.reloadData()
                         }else{
                             self.tblView.isHidden = true
                             
-                            self.tblView_OnDemand.isHidden = true
-                            
                             self.lblNoDataFound.isHidden = false
-                            
+                            self.lblNoDataFound1.isHidden = true
+
                         }
                     }
                     else
@@ -319,6 +403,80 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
       
         
     }
+    
+    
+    // MARK: - get On Demand List
+    
+    func apicallGetOnDemandhelperList()
+    {
+          if !NetworkState().isInternetAvailable {
+                ShowNoInternetAlert()
+                return
+            }
+            
+           let token = UserDefaults.standard.value(forKey:USER_TOKEN) as! String
+
+            webservices().StartSpinner()
+        
+            Apicallhandler().GetHelperList(URL: webservices().baseurl + API_HELPER_ONDEMANDLIST, token:token) { JSON in
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        self.arrOnDemandHelper = resp.data!
+                        self.arrOnDemandFinal = resp.data!
+                        
+                        if self.arrOnDemandHelper.count > 0{
+                            self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = true
+
+                            self.tblView_OnDemand.delegate = self
+                            self.tblView_OnDemand.dataSource = self
+                            self.tblView_OnDemand.reloadData()
+                        }else{
+                            
+                            self.tblView_OnDemand.isHidden = true
+                            
+                            self.lblNoDataFound.isHidden = true
+                            self.lblNoDataFound1.isHidden = false
+
+                        }
+                    }
+                    else
+                    {
+                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    
+                    print(resp)
+                case .failure(let err):
+                    webservices().StopSpinner()
+                    if JSON.response?.statusCode == 401{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                          //  if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                         //   }
+                       // })
+                        
+                        return
+                    }
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    
+                }
+            }
+      
+        
+    }
+    
     
     /*
      
@@ -388,12 +546,16 @@ class DomesticHelpVC: UIViewController, ScrollPagerDelegate {
       */
     
     
-    
 }
+
 @available(iOS 13.0, *)
 extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrHelper.count
+        if tableView == tblView {
+            return arrHelper.count
+        }else{
+            return arrOnDemandHelper.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -404,31 +566,61 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
 //
 //        }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DomesticHelpCell") as! DomesticHelpCell
-        
-        cell.selectionStyle = .none
-        if arrHelper[indexPath.row].profilePicture != nil
-        {
-            cell.imgUser.sd_setImage(with: URL(string: arrHelper[indexPath.row].profilePicture!), placeholderImage: UIImage(named: "vendor-1"))
+        if tableView == tblView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DomesticHelpCell") as! DomesticHelpCell
+            
+            cell.selectionStyle = .none
+            if arrHelper[indexPath.row].profilePicture != nil
+            {
+                cell.imgUser.sd_setImage(with: URL(string: arrHelper[indexPath.row].profilePicture!), placeholderImage: UIImage(named: "vendor-1"))
+            }
+            
+            cell.lblName.text = arrHelper[indexPath.row].name
+            cell.lblProfession.text = arrHelper[indexPath.row].vendorServiceType
+            if arrHelper[indexPath.row].rating != nil {
+                
+                cell.lblRatingNumber.text = (arrHelper[indexPath.row].rating![0..<3])
+                //String(format: "%.1f", arrHelper[indexPath.row].rating!)
+            }
+            
+            return cell
+            
+        }else{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DomesticHelpCell") as! DomesticHelpCell
+            
+            cell.selectionStyle = .none
+            if arrOnDemandHelper[indexPath.row].profilePicture != nil
+            {
+                cell.imgUser.sd_setImage(with: URL(string: arrOnDemandHelper[indexPath.row].profilePicture!), placeholderImage: UIImage(named: "vendor-1"))
+            }
+            
+            cell.lblName.text = arrOnDemandHelper[indexPath.row].name
+            cell.lblProfession.text = arrOnDemandHelper[indexPath.row].vendorServiceType
+            
+            if arrOnDemandHelper[indexPath.row].rating != nil {
+                cell.lblRatingNumber.text = (arrOnDemandHelper[indexPath.row].rating![0..<3])
+                //String(format: "%.1f", arrOnDemandHelper[indexPath.row].rating!)
+            }
+            
+            
+            return cell
+            
         }
-        
-        cell.lblName.text = arrHelper[indexPath.row].name
-        cell.lblProfession.text = arrHelper[indexPath.row].vendorServiceType
-        cell.lblRatingNumber.text = String(format: "%.1f", arrHelper[indexPath.row].rating!)
-        
-        
-        
-        
-        return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /* let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
-        vc.HelperId = arrHelper[indexPath.row].dailyHelperID
         
-        self.navigationController?.pushViewController(vc, animated: true) */
-        
+        if tableView == tblView {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
+            vc.HelperId = arrHelper[indexPath.row].dailyHelperID
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else{
+            
+        }
+                
         print("MaidProfileDetailsVC")
     }
     
