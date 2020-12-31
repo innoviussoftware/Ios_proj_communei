@@ -115,13 +115,9 @@ class MaidProfileDetailsVC: UIViewController {
         
       //  dialNumber(number: dictHelperData.mobile!)
         
-        
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                    avc?.titleStr = "Call Helper"
-            //GeneralConstants.kAppName // "Society Buddy"
                 avc?.isfrom = 3
-
                                //    avc?.subtitleStr = "Are you sure you want to call?"
         avc?.subtitleStr = "Want to contact: \(dictHelperData.phoneNumber)"
         
@@ -137,11 +133,10 @@ class MaidProfileDetailsVC: UIViewController {
     }
     
     @IBAction func actionWorkingSince(_ sender: Any) {
+        
     }
     
     @IBAction func actionViewAllWorkingWith(_ sender: Any) {
-        
-        print("\(dictHelperData.props!)")
         
         if dictHelperData.props != nil{
              let popup = self.storyboard?.instantiateViewController(withIdentifier: "WorkingWithPopUpVC") as! WorkingWithPopUpVC
@@ -156,8 +151,8 @@ class MaidProfileDetailsVC: UIViewController {
     
     @IBAction func actionViewAllRatingReview(_ sender: Any) {
             let popup = self.storyboard?.instantiateViewController(withIdentifier: "RatingReviewListVC") as! RatingReviewListVC
-            popup.arrRatingReview = dictHelperData.reveiws!
-        popup.avgRating = dictHelperData.ratings
+          //  popup.arrRatingReview = dictHelperData.reveiws!
+       // popup.avgRating = dictHelperData.ratings
             self.navigationController?.pushViewController(popup, animated: true)
     }
     
@@ -185,6 +180,17 @@ class MaidProfileDetailsVC: UIViewController {
     }
     
     
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd MMMM yyyy"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
+    
     // MARK: - get Maid List
        
        func apicallHelperDetails()
@@ -194,14 +200,13 @@ class MaidProfileDetailsVC: UIViewController {
                             return
                         }
              
-            
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
                 
             webservices().StartSpinner()
         
-            Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",token:token  as! String) { JSON in
+        Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",token:token  as! String) { [self] JSON in
                    switch JSON.result{
                    case .success(let resp):
                        webservices().StopSpinner()
@@ -211,35 +216,43 @@ class MaidProfileDetailsVC: UIViewController {
                         
                         self.dictHelperData = resp.data
                         
-                        if self.dictHelperData.profilePicture != nil
+                        if self.dictHelperData.profilePicture == ""
                                {
-                                self.imgUser.layer.cornerRadius =  self.imgUser.frame.size.height/2
-                                self.imgUser.clipsToBounds = true
+                        }else{
+                              //  self.imgUser.layer.cornerRadius =  self.imgUser.frame.size.height/2
+                            
+                             //   self.imgUser.clipsToBounds = true
                             self.imgUser.sd_setImage(with: URL(string: self.dictHelperData.profilePicture), placeholderImage: UIImage(named: "vendor-1"))
                                }
                         self.lblName.text = self.dictHelperData.name
                         self.lblProfession.text = self.dictHelperData.vendorServiceType
                         
-                       /* if self.dictHelperData.ratings != nil{
-                            self.ratingView.rating = Double(self.dictHelperData.ratings!)
-                                                   self.ratingTopView.rating = Double(self.dictHelperData.ratings!)
-                                                   self.lblTotalRating.text =  "\(Double(self.dictHelperData.ratings!))"
-                                                   self.lblTotalRatingReview.text =  "\(Double(self.dictHelperData.ratings!))"
+                        if self.dictHelperData.comments.count > 0 {
+                            
+                            let rating = Double(self.dictHelperData.rating)
+                         
+                            self.ratingView.rating = rating! // Double(self.dictHelperData.ratings!)
+                                    self.ratingTopView.rating = rating! // Double(self.dictHelperData.ratings!)
+                                                   self.lblTotalRating.text =  (self.dictHelperData.rating) // "\(Double(self.dictHelperData.ratings!))"
+                                                   self.lblTotalRatingReview.text =  (self.dictHelperData.rating) // "\(Double(self.dictHelperData.ratings!))"
                         }
                         
-                        if self.dictHelperData.reveiws != nil {
-                           self.arrRating = self.dictHelperData.reveiws!
+                        if self.dictHelperData.comments.count > 0 {
+                            self.arrRating = self.dictHelperData.comments
                         }
                          self.lblRatingReviewStatic.isHidden = true
-                        if self.dictHelperData.workWithLoggedInUser == "true"{
+                        if self.dictHelperData.workingWithMe == 0 {
                             self.btnAddRatings.isHidden = false
                             self.lblRatingReviewStatic.isHidden = false
                         }else{
                             self.btnAddRatings.isHidden = true
                         }
-                    
                         
-                        self.btnWorkingSince.setTitle(self.dictHelperData.joinDate, for: .normal)  */
+                        let lblin = self.dictHelperData.societyWorkingSince.components(separatedBy: " ")[0]
+                       
+                        let strIn = self.strChangeDateFormate(strDateeee: lblin)
+                        
+                        self.btnWorkingSince.setTitle(strIn, for: .normal)
 
                         if self.arrRating.count > 2{
                             self.btnViewAllRatings.isHidden = false
@@ -298,13 +311,13 @@ class MaidProfileDetailsVC: UIViewController {
      @objc func deleteRating(sender:UIButton) {
         
         
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+      //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                    avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                    avc?.subtitleStr = "Are you sure you want to delete this review?"
                    avc?.yesAct = {
                          
-                            let str = "\(self.arrRating[sender.tag].id!)"
+                    let str = "\(self.arrRating[sender.tag].commentID)"
                                            self.apicallDeleteRatings(strId: str)
                        }
                    avc?.noAct = {
@@ -401,19 +414,20 @@ extension MaidProfileDetailsVC : UITableViewDataSource , UITableViewDelegate {
         cell.selectionStyle = .none
         cell.btnDelete.tag = indexPath.row
            
-        cell.lblName.text = self.arrRating[indexPath.row].username
+        cell.lblName.text = self.arrRating[indexPath.row].commentedBy
         cell.lblDiscription.text = self.arrRating[indexPath.row].comment
            
         
-        let str = self.arrRating[indexPath.row].username!
+        let str = self.arrRating[indexPath.row].commentedBy
         let firstChar = Array(str)[0]
         cell.lblFirstLetter.text = "\(firstChar)"
         cell.lblFirstLetter.textColor = UIColor.white
-        cell.ratingViews.rating = self.arrRating[indexPath.row].ratings!
-        
-        let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
-        
-        if self.arrRating[indexPath.row].userID == userId{
+
+        let rating = Double(self.arrRating[indexPath.row].rating)
+     
+        cell.ratingViews.rating = rating!
+            
+        if self.arrRating[indexPath.row].addedByMe == 1{
             cell.btnDelete.isHidden = false
         }else{
              cell.btnDelete.isHidden = true

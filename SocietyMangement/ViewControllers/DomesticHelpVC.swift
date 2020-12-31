@@ -304,7 +304,7 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
     
     
    
-    @IBAction func actionMenu(_ sender: Any) {
+    @IBAction func actionMenu(_ sender: UIButton) { // back
         if isfrom == 1{
             self.navigationController?.popViewController(animated: true)
         }else{
@@ -394,9 +394,9 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
                         
                         return
                     }
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
+                  //  print(err.asAFError!)
                     
                 }
             }
@@ -467,9 +467,9 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
                         
                         return
                     }
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
+                   // print(err.asAFError!)
                     
                 }
             }
@@ -581,6 +581,8 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
                 
                 cell.lblRatingNumber.text = (arrHelper[indexPath.row].rating![0..<3])
                 //String(format: "%.1f", arrHelper[indexPath.row].rating!)
+            }else{
+                cell.lblRatingNumber.text = "0.0"
             }
             
             return cell
@@ -601,6 +603,8 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
             if arrOnDemandHelper[indexPath.row].rating != nil {
                 cell.lblRatingNumber.text = (arrOnDemandHelper[indexPath.row].rating![0..<3])
                 //String(format: "%.1f", arrOnDemandHelper[indexPath.row].rating!)
+            }else{
+                cell.lblRatingNumber.text = "0.0"
             }
             
             

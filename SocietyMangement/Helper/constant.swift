@@ -193,7 +193,7 @@ let API_ADD_RATINGS_REVIEW = "user/addreview"
 
 let API_GET_REVIEWS = "user/review"
 
-let API_DELETE_REVIEWS = "user/delreview"
+let API_DELETE_REVIEWS = "user/daily-helper/remove-comment" // "user/delreview"
 
 let API_DELETE_GUEST = "deleteguest"
 
@@ -205,7 +205,7 @@ let API_UPDATE_NOTIFY_COUNT = "user/updatenotify"
 let API_GET_HELP_DESK = "society/emergency-numbers" // "gethelpdesk"
 
 
-let API_MY_HELPER_LIST = "user/myhelperslist"
+let API_MY_HELPER_LIST = "user/daily-helper/my-list" // "user/myhelperslist"
 
 
 let API_NOTIFICATION_LIST = "user/notificationlist"

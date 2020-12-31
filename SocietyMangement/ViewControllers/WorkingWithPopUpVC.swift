@@ -14,7 +14,7 @@ class WorkingWithPopUpVC: UIViewController {
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var tblView: UITableView!
     
-    var arrWorkingWith = [WorkWithDatum]()
+    var arrWorkingWith = [Prop]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,6 @@ class WorkingWithPopUpVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
-        
         self.navigationController?.navigationBar.isHidden = true
         
         bgView.layer.cornerRadius = 8
@@ -31,7 +30,7 @@ class WorkingWithPopUpVC: UIViewController {
     }
     
 
-    @IBAction func actionClose(_ sender: Any) {
+    @IBAction func actionClose(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -50,10 +49,12 @@ extension WorkingWithPopUpVC : UITableViewDataSource , UITableViewDelegate {
         cell.lblFirstLetter.clipsToBounds = true
            
         
-               cell.lblName.text = self.arrWorkingWith[indexPath.row].name
-               cell.lblFlat.text = "\(self.arrWorkingWith[indexPath.row].buildingname!)-\(self.arrWorkingWith[indexPath.row].flatname!)"
-               let str = self.arrWorkingWith[indexPath.row].name
-               let firstChar = Array(str!)[0]
+               cell.lblName.text = self.arrWorkingWith[indexPath.row].addedBy
+              // cell.lblFlat.text = "\(self.arrWorkingWith[indexPath.row].buildingname!)-\(self.arrWorkingWith[indexPath.row].flatname!)"
+        cell.lblFlat.text = self.arrWorkingWith[indexPath.row].propertyFullName
+
+               let str = self.arrWorkingWith[indexPath.row].addedBy
+               let firstChar = Array(str)[0]
                //str.substring(fromIndex: 0)
                cell.lblFirstLetter.text = "\(firstChar)"
                cell.lblFirstLetter.textColor = UIColor.white

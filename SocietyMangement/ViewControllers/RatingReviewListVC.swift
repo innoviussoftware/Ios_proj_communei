@@ -22,7 +22,7 @@ class RatingReviewListVC: UIViewController {
     
     @IBOutlet weak var lblavgRating: UILabel!
     @IBOutlet weak var tblView: UITableView!
-    var arrRatingReview = [Reveiw]()
+    var arrRatingReview = [Comment]()
     var avgRating : Double!
     var selectedIndex : Int!
     
@@ -38,8 +38,8 @@ class RatingReviewListVC: UIViewController {
         
         ratingView.isUserInteractionEnabled = false
         ratingView.type = .halfRatings
-        ratingView.rating = avgRating
-        lblavgRating.text =  String(format: "%.1f", avgRating)
+      //  ratingView.rating = avgRating
+      //  lblavgRating.text =  String(format: "%.1f", avgRating)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -128,13 +128,13 @@ class RatingReviewListVC: UIViewController {
         
         selectedIndex = sender.tag
         
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+       // let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                        avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                        avc?.subtitleStr = "Are you sure you want to delete this review?"
                        avc?.yesAct = {
-                              let str = "\(self.arrRatingReview[sender.tag].id!)"
-                                       self.apicallDeleteRatings(strId: str)
+                                let str = "\(self.arrRatingReview[sender.tag].commentID)"
+                                self.apicallDeleteRatings(strId: str)
                            }
                        avc?.noAct = {
                          
@@ -160,8 +160,11 @@ class RatingReviewListVC: UIViewController {
                                 ShowNoInternetAlert()
                                 return
                             }
+        
                    let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
                    webservices().StartSpinner()
+        
                 Apicallhandler().DeleteReview(URL: webservices().baseurl + API_DELETE_REVIEWS, id:strId, token: token as! String) { JSON in
                        switch JSON.result{
                        case .success(let resp):
@@ -225,11 +228,11 @@ extension RatingReviewListVC : UITableViewDelegate , UITableViewDataSource{
         cell.btnDelete.tag = indexPath.row
         cell.selectionStyle = .none
         
-        cell.lblName.text = self.arrRatingReview[indexPath.row].username
+        cell.lblName.text = self.arrRatingReview[indexPath.row].propertyFullName
         cell.lblDiscription.text = self.arrRatingReview[indexPath.row].comment
-        cell.ratingViews.rating = self.arrRatingReview[indexPath.row].ratings!
+      /*  cell.ratingViews.rating = self.arrRatingReview[indexPath.row].rating
         
-        let str = self.arrRatingReview[indexPath.row].username!
+        let str = self.arrRatingReview[indexPath.row].propertyFullName!
         let firstChar = Array(str)[0]
         cell.lblFirstLetter.text = "\(firstChar)"
         cell.lblFirstLetter.textColor = UIColor.white
@@ -240,7 +243,7 @@ extension RatingReviewListVC : UITableViewDelegate , UITableViewDataSource{
                    cell.btnDelete.isHidden = false
                }else{
                     cell.btnDelete.isHidden = true
-               }
+               } */
                
         cell.btnDelete.addTarget(self, action: #selector(deleteRating(sender:)), for: .touchUpInside)
         

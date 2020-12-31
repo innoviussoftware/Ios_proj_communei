@@ -121,7 +121,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         // 7/11/20. temp comment 2 lines
 
          //  apicallGetFrequentGuestList()
-         //  apicallGetMyHelperList()
+        
+        apicallGetMyHelperList()
            
            // Mark :Check label no data found is hidden or not
 
@@ -595,7 +596,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                           webservices().StopSpinner()
                           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                           self.present(alert, animated: true, completion: nil)
-                          print(err.asAFError)
+                          print(err.asAFError!)
                           
                           
                       }
@@ -766,17 +767,22 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"HelperDeskCell", for: indexPath) as! HelperDeskCell
                 
              
-                if arrHelperList[indexPath.row].photos != nil{
-                    cell.imgMaid.sd_setImage(with: URL(string: arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
+                if arrHelperList[indexPath.row].dailyHelperCard?.profilePic != nil{
+                    cell.imgMaid.sd_setImage(with: URL(string: (arrHelperList[indexPath.row].dailyHelperCard?.profilePic)!), placeholderImage: UIImage(named: "vendor profile"))
                  }
                 
                 cell.btnCall.tag = indexPath.row
                 cell.btnCalenderAttend.tag = indexPath.row
+                
+                cell.btndelete.tag = indexPath.row
 
                 
-                cell.ratingView.rating = arrHelperList[indexPath.row].averageRating!
-                cell.lblName.text = arrHelperList[indexPath.row].name
-                cell.lblMaidType.text = arrHelperList[indexPath.row].typename
+                let rating = Double((self.arrHelperList[indexPath.row].dailyHelperCard?.averageRating)!)
+
+                cell.ratingView.rating = rating!
+                
+                cell.lblName.text = arrHelperList[indexPath.row].dailyHelperCard?.name
+                cell.lblMaidType.text = arrHelperList[indexPath.row].dailyHelperCard?.vendorServiceTypeName
                 
                 // 25/9/20.
                 
@@ -789,11 +795,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
          //   let tap = UITapGestureRecognizer()
           //      tap.addTarget(self, action:#selector(tapmaid))
           //      cell.imgMaid.addGestureRecognizer(tap)
+                
                 cell.imgMaid.tag = indexPath.row
                 
                 cell.btnCall.addTarget(self, action:#selector(callMaid(sender:)), for: .touchUpInside)
                 
                 cell.btnCalenderAttend.addTarget(self, action:#selector(calenderAttendanceMaid(sender:)), for: .touchUpInside)
+                
+                cell.btndelete.addTarget(self, action:#selector(calenderAttendanceMaid(sender:)), for: .touchUpInside)
+
 
                 
                 return cell
@@ -984,7 +994,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  
                  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
-                 nextViewController.HelperId = arrHelperList[indexPath.row].id
+                 nextViewController.HelperId = arrHelperList[indexPath.row].dailyHelperID
                                                                self.navigationController?.pushViewController(nextViewController, animated: true)
                  
                  
@@ -1408,11 +1418,75 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         
     }
     
+    
+    func apicallDeleteMyDailyHelper(DailyHelpPropertyID:String,VendorServiceTypeID:String) {
+               if !NetworkState().isInternetAvailable {
+                               ShowNoInternetAlert()
+                               return
+                           }
+                let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+               let param : Parameters = [
+                   "DailyHelpPropertyID" : DailyHelpPropertyID,
+                "VendorServiceTypeID" : VendorServiceTypeID
+                ]
+               
+               webservices().StartSpinner()
+               Apicallhandler.sharedInstance.ApiCallDeleteFamilyMember(token: token as! String, param: param) { JSON in
+                      
+                      let statusCode = JSON.response?.statusCode
+                      
+                      switch JSON.result{
+                      case .success(let resp):
+                          //webservices().StopSpinner()
+                          self.refreshControl.endRefreshing()
+                          if statusCode == 200{
+                            self.apicallGetFamilyMembers(id: "")
+                            
+                          }
+                      case .failure(let err):
+                          
+                          webservices().StopSpinner()
+                          let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                          self.present(alert, animated: true, completion: nil)
+                          print(err.asAFError)
+                          
+                          
+                      }
+                  }
+                  
+          
+              
+    }
+    
+    
+    @objc func deleteMyDailyHelper(sender:UIButton)
+    {
+            let id =  familymeberary[sender.tag].guid
+        
+        print("guid :- ",id!)
+        //let strId = "\(id)"
+            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+            avc?.titleStr = "Communei"
+            avc?.subtitleStr = "Are you sure you want to unassign this helper?"
+                // "Are you sure you want to delete this family member?"
+            avc?.yesAct = {
+                    
+                self.apicallDeleteMyDailyHelper(DailyHelpPropertyID: id! , VendorServiceTypeID: id!)
+                
+            }
+            avc?.noAct = {
+                      
+            }
+            present(avc!, animated: true)
+                    
+            
+    }
+    
     @objc func calenderAttendanceMaid(sender:UIButton)
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DomesticHelperAttendanceVC") as! DomesticHelperAttendanceVC
-        nextViewController.strlbl = arrHelperList[sender.tag].name!
+        nextViewController.strlbl = (arrHelperList[sender.tag].dailyHelperCard?.name)!
        // nextViewController.isfrom = 0
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
@@ -1424,11 +1498,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     avc?.titleStr = "Call" // GeneralConstants.kAppName // "Society Buddy"
                     avc?.isfrom = 3
 
-                                    avc?.subtitleStr = "Are you sure you want to call: \(arrHelperList[sender.tag].mobile!)"
+        avc?.subtitleStr = "Are you sure you want to call: \(arrHelperList[sender.tag].dailyHelperCard?.phone ?? "")"
         
                                     avc?.yesAct = {
                                         
-                                        self.dialNumber(number:self.arrHelperList[sender.tag].mobile!)
+                                        self.dialNumber(number:(self.arrHelperList[sender.tag].dailyHelperCard?.phone!)!)
 
                                             }
         

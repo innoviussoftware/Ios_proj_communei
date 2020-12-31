@@ -796,7 +796,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
              let cell = collectionView.dequeueReusableCell(withReuseIdentifier:"HelperDeskCell", for: indexPath) as! HelperDeskCell
             
          
-            if arrHelperList[indexPath.row].photos != nil{
+          /*  if arrHelperList[indexPath.row].photos != nil{
                 cell.imgMaid.sd_setImage(with: URL(string: arrHelperList[indexPath.row].photos!), placeholderImage: UIImage(named: "vendor profile"))
              }
             
@@ -805,7 +805,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             cell.ratingView.rating = arrHelperList[indexPath.row].averageRating!
             cell.lblName.text = arrHelperList[indexPath.row].name
             cell.lblMaidType.text = arrHelperList[indexPath.row].typename
-            cell.lblCode.text = arrHelperList[indexPath.row].pin
+            cell.lblCode.text = arrHelperList[indexPath.row].pin */
             cell.imgMaid.isUserInteractionEnabled = true
             
         let tap = UITapGestureRecognizer()
@@ -946,7 +946,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
             
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                                           let nextViewController = storyBoard.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
-            nextViewController.HelperId = arrHelperList[indexPath.row].id
+          //  nextViewController.HelperId = arrHelperList[indexPath.row].id
                                                           self.navigationController?.pushViewController(nextViewController, animated: true)
             
             
@@ -979,7 +979,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     {
         
         let otpVC = self.storyboard?.instantiateViewController(withIdentifier: "ImagePopUP") as! ImagePopUP
-        otpVC.imgurl =  arrHelperList[sender.view!.tag].photos!
+       // otpVC.imgurl =  arrHelperList[sender.view!.tag].photos!
            self.addChildViewController(otpVC)
                   self.view.addSubview(otpVC.view)
                   let height = self.view.bounds.height
@@ -2410,7 +2410,7 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
     
     @objc func callMaid(sender:UIButton)
        {
-           dialNumber(number:arrHelperList[sender.tag].mobile!)
+          // dialNumber(number:arrHelperList[sender.tag].mobile!)
        }
     
     @objc func deleteFamilyMember(sender:UIButton)

@@ -199,7 +199,7 @@ struct Apicallhandler {
     
     func ApiCallMyHelperList(token: String, onCompletion: @escaping ((_ response: DataResponse<MyHelperListResp>) -> Void)) {
         
-        AF.request(webservices().baseurl + API_MY_HELPER_LIST, method: .post,parameters:[:], encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MyHelperListResp>) in
+        AF.request(webservices().baseurl + API_MY_HELPER_LIST, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<MyHelperListResp>) in
             
             onCompletion(response)
         }
@@ -539,9 +539,9 @@ struct Apicallhandler {
     
     //Mark : Api call get Buildings
        func DeleteReview(URL: String, id:String,token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
-           let parameter:Parameters = ["id":id]
+           let parameter:Parameters = ["CommentID":id]
            
-           AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+           AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
                
                onCompletion(response)
            }
