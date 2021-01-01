@@ -67,6 +67,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     var arrHelperList = [MyHelperListData]()
 
+    var dailyHelpPropertyID : Int?
+    
+    var vendorServiceTypeID : Int?
 
 
     override func viewDidLoad() {
@@ -317,8 +320,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         return
                     }
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     
                 }
@@ -424,7 +427,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     
                    // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                    // self.present(alert, animated: true, completion: nil)
-                  //  print(err.asAFError)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }
@@ -594,8 +597,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                       case .failure(let err):
                           
                           webservices().StopSpinner()
-                          let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                          self.present(alert, animated: true, completion: nil)
+                       //   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       //   self.present(alert, animated: true, completion: nil)
                           print(err.asAFError!)
                           
                           
@@ -802,7 +805,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 
                 cell.btnCalenderAttend.addTarget(self, action:#selector(calenderAttendanceMaid(sender:)), for: .touchUpInside)
                 
-                cell.btndelete.addTarget(self, action:#selector(calenderAttendanceMaid(sender:)), for: .touchUpInside)
+                cell.btndelete.addTarget(self, action:#selector(deleteMyDailyHelper(sender:)), for: .touchUpInside)
 
 
                 
@@ -1092,7 +1095,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         @objc func DeleteFrequentEntry(sender:UIButton) {
             let strGuestId = arrFrequentGuestData[sender.tag].activity?.activityID
 
-               let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+             //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                avc?.titleStr = "Delete Contact"
                avc?.subtitleStr = "Are you sure you want to delete this contact?"
@@ -1419,19 +1422,20 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     }
     
     
-    func apicallDeleteMyDailyHelper(DailyHelpPropertyID:String,VendorServiceTypeID:String) {
+    func apicallDeleteMyDailyHelper(DailyHelpPropertyID:Int,VendorServiceTypeID:Int) {
                if !NetworkState().isInternetAvailable {
-                               ShowNoInternetAlert()
-                               return
-                           }
+                    ShowNoInternetAlert()
+                    return
+                }
+        
                 let token = UserDefaults.standard.value(forKey: USER_TOKEN)
                let param : Parameters = [
                    "DailyHelpPropertyID" : DailyHelpPropertyID,
-                "VendorServiceTypeID" : VendorServiceTypeID
+                    "VendorServiceTypeID" : VendorServiceTypeID
                 ]
                
                webservices().StartSpinner()
-               Apicallhandler.sharedInstance.ApiCallDeleteFamilyMember(token: token as! String, param: param) { JSON in
+               Apicallhandler.sharedInstance.ApiCallDeleteHelperList(token: token as! String, param: param) { JSON in
                       
                       let statusCode = JSON.response?.statusCode
                       
@@ -1440,15 +1444,14 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                           //webservices().StopSpinner()
                           self.refreshControl.endRefreshing()
                           if statusCode == 200{
-                            self.apicallGetFamilyMembers(id: "")
-                            
+                            self.apicallGetMyHelperList()
                           }
                       case .failure(let err):
                           
                           webservices().StopSpinner()
                           let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                           self.present(alert, animated: true, completion: nil)
-                          print(err.asAFError)
+                          print(err.asAFError!)
                           
                           
                       }
@@ -1461,17 +1464,19 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     @objc func deleteMyDailyHelper(sender:UIButton)
     {
-            let id =  familymeberary[sender.tag].guid
         
-        print("guid :- ",id!)
-        //let strId = "\(id)"
+         dailyHelpPropertyID = arrHelperList[sender.tag].dailyHelpPropertyID!
+        
+         vendorServiceTypeID = arrHelperList[sender.tag].vendorServiceTypeID!
+
             let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
             avc?.titleStr = "Communei"
             avc?.subtitleStr = "Are you sure you want to unassign this helper?"
                 // "Are you sure you want to delete this family member?"
+        
             avc?.yesAct = {
-                    
-                self.apicallDeleteMyDailyHelper(DailyHelpPropertyID: id! , VendorServiceTypeID: id!)
+                
+                self.apicallDeleteMyDailyHelper(DailyHelpPropertyID: self.dailyHelpPropertyID! , VendorServiceTypeID: self.vendorServiceTypeID!)
                 
             }
             avc?.noAct = {
@@ -1512,12 +1517,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                                     present(avc!, animated: true)
                     
         
-                
             }
         
         
-    
-    
-    
     
 }

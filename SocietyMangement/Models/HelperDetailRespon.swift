@@ -9,6 +9,8 @@
 import Foundation
 
 
+/*
+ 
 // MARK: - HelperDetailsResponse
 struct HelperDetailsResponse: Codable {
     let data: HelperDetailsData
@@ -17,6 +19,78 @@ struct HelperDetailsResponse: Codable {
 }
 
 // MARK: - DataClass
+struct HelperDetailsData: Codable {
+    let userActivityID, userActivityTypeID: Int
+    let guardActivityID: Int?
+    let societyID: Int
+    let visitorEntryID, visitingFlatID: Int?
+    let propertyID: Int
+    let dateLastUpadted, inTime: String?
+    let isIn, isParent, userID: Int
+    let parentActivityID: Int?
+    let isGuardActivity: Int
+    let estimatedTime, messageID: String?
+    let isWrongEntry, visitorEntryTypeID: Int
+    let activity: Activity
+
+    enum CodingKeys: String, CodingKey {
+        case userActivityID = "UserActivityID"
+        case userActivityTypeID = "UserActivityTypeID"
+        case guardActivityID = "GuardActivityID"
+        case societyID = "SocietyID"
+        case visitorEntryID = "VisitorEntryID"
+        case visitingFlatID = "VisitingFlatID"
+        case propertyID = "PropertyID"
+        case dateLastUpadted = "DateLastUpadted"
+        case inTime = "InTime"
+        case isIn = "IsIn"
+        case isParent = "IsParent"
+        case userID = "UserID"
+        case parentActivityID = "ParentActivityID"
+        case isGuardActivity = "IsGuardActivity"
+        case estimatedTime = "EstimatedTime"
+        case messageID = "MessageID"
+        case isWrongEntry = "IsWrongEntry"
+        case visitorEntryTypeID = "VisitorEntryTypeID"
+        case activity = "Activity"
+    }
+}
+
+// MARK: - Activity
+struct Activity: Codable {
+    let activityType, name, phone: String
+    let profilePic: String
+    let status, dailyHelperID, averageRating: String
+    let vendorServiceTypeID: Int
+    let vendorServiceTypeName, addedOn, addedBy: String
+
+    enum CodingKeys: String, CodingKey {
+        case activityType = "ActivityType"
+        case name = "Name"
+        case phone = "Phone"
+        case profilePic = "ProfilePic"
+        case status = "Status"
+        case dailyHelperID = "DailyHelperID"
+        case averageRating = "AverageRating"
+        case vendorServiceTypeID = "VendorServiceTypeID"
+        case vendorServiceTypeName = "VendorServiceTypeName"
+        case addedOn = "AddedOn"
+        case addedBy = "AddedBy"
+    }
+}
+
+*/
+
+
+
+// MARK: - HelperDetailsResponse
+struct HelperDetailsResponse: Codable {
+    let data: HelperDetailsData
+    let status: Int
+    let message: String
+}
+
+// MARK: - HelperDetailsData
 struct HelperDetailsData: Codable {
     let name, phoneNumber: String
     let profilePicture: String

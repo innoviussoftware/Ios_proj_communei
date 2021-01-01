@@ -48,7 +48,7 @@ struct DailyHelperCard: Codable {
     let status, dailyHelperID: String?
     let dailyHelpPropertyID: Int?
     let vendorServiceTypeName, averageRating: String?
-    let shouldNotifyOnEntry, holdService: Int?
+    let shouldNotifyOnEntry, holdService: String? // Int?
     let isServing, addedOn, addedBy: String?
 
     enum CodingKeys: String, CodingKey {

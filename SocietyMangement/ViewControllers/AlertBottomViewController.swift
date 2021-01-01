@@ -39,23 +39,21 @@ class AlertBottomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if isfrom == 1{
-        }else if isfrom == 0
-        {
+         if isfrom == 0{
             stckVw.isHidden = true
             lblline1.isHidden = true
             lblline2.isHidden = true
             btnOk.isHidden = false
-        }else if isfrom == 2 {
+        }else if isfrom == 1{
+            
+        }
+         else if isfrom == 2 {
             btnCancel.setTitle("Cancel", for: UIControl.State.normal)
           //  btnYes.setTitle("Call", for: UIControl.State.normal)
-
         }else if isfrom == 3 {
             btnCancel.setTitle("Cancel", for: UIControl.State.normal)
             btnYes.setTitle("Call", for: UIControl.State.normal)
-
-        }else if isfrom == 4
-        {
+        }else if isfrom == 4 {
             lblTitle.setTitleColor(UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1.0), for: UIControl.State.normal)
             stckVw.isHidden = true
             lblline1.isHidden = true

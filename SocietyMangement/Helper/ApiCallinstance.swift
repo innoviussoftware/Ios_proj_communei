@@ -206,6 +206,15 @@ struct Apicallhandler {
         
     }
     
+    func ApiCallDeleteHelperList(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_DAILY_HELPER_DELETE, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     
     func ApiCallDeleteFamilyMember(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
         
@@ -515,8 +524,10 @@ struct Apicallhandler {
     
     
     //Mark : Api call Get Helper
-    func APIAddReview(URL: String, token:String ,params:Parameters, onCompletion: @escaping ((_ response: DataResponse<AddRatingReviewResponse>) -> Void)) {
-        AF.request(URL, method: .post, parameters:params , encoding: JSONEncoding.default, headers:["Accept": "application/json","Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AddRatingReviewResponse>) in
+    
+    func APIAddReview(URL: String, token:String ,params:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+     
+        AF.request(URL, method: .post, parameters:params , encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
             onCompletion(response)
             
         }
@@ -530,6 +541,20 @@ struct Apicallhandler {
         let parameter:Parameters = ["DailyHelperID" : helperID]
         
         AF.request(URL, method: .post, parameters:parameter , encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<HelperDetailsResponse>) in
+            
+            onCompletion(response)
+            
+        }
+    }
+    
+    func GetHelperAssignDetail(URL: String, dailyHelperID:Int, vendorServiceTypeID:Int, token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        let parameter:Parameters = ["DailyHelperID" : dailyHelperID , "VendorServiceTypeID" : vendorServiceTypeID]
+        
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+
+        
+      //  AF.request(URL, method: .post, parameters:parameter , encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<Any>) in
             
             onCompletion(response)
             

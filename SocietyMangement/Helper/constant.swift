@@ -189,7 +189,9 @@ let API_HELPER_ONDEMANDLIST = "user/daily-helper/list/6" // "helperslist"
 
 let API_HELPER_DETAIL = "user/helper/get-review" // "helpersdetails"
 
-let API_ADD_RATINGS_REVIEW = "user/addreview"
+let API_DAILYHELPER_ASSIGN = "user/daily-helper/assign"
+
+let API_ADD_RATINGS_REVIEW = "user/helper/submit-review" // "user/addreview"
 
 let API_GET_REVIEWS = "user/review"
 
@@ -206,6 +208,8 @@ let API_GET_HELP_DESK = "society/emergency-numbers" // "gethelpdesk"
 
 
 let API_MY_HELPER_LIST = "user/daily-helper/my-list" // "user/myhelperslist"
+
+let API_DAILY_HELPER_DELETE = "user/daily-helper/unassign"
 
 
 let API_NOTIFICATION_LIST = "user/notificationlist"

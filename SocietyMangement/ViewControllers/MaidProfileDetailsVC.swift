@@ -39,6 +39,11 @@ class MaidProfileDetailsVC: UIViewController {
     
     @IBOutlet weak var btnViewAllRatings: UIButton!
     
+    @IBOutlet weak var btnAddHelper: UIButton!
+
+    @IBOutlet weak var tableHeightConstraint: NSLayoutConstraint!
+
+    
     @IBOutlet weak var img1: UIImageView!
     @IBOutlet weak var imgStar2: UIImageView!
     @IBOutlet weak var imgStar3: UIImageView!
@@ -71,6 +76,19 @@ class MaidProfileDetailsVC: UIViewController {
         
     }
     
+    
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        tblView.layer.removeAllAnimations()
+        print("tblView contentSize height :- ",tblView.contentSize.height + 5)
+        tableHeightConstraint.constant = tblView.contentSize.height + 5
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+            self.view.layoutIfNeeded()
+        }
+
+    }
+    
     func setUpView() {
         btnWorkingSince.layer.cornerRadius = 8
         btnWorkingSince.clipsToBounds = true
@@ -90,11 +108,106 @@ class MaidProfileDetailsVC: UIViewController {
         
     }
     
+    
+    // MARK: - get Assign List
+       
+    func apicallUserDailyHelper_Assign_Details(dailyHelperID : Int,vendorServiceTypeID : Int)
+       {
+         if !NetworkState().isInternetAvailable {
+                            ShowNoInternetAlert()
+                            return
+                        }
+             
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+                
+            webservices().StartSpinner()
+        
+        Apicallhandler().GetHelperAssignDetail(URL: webservices().baseurl + API_DAILYHELPER_ASSIGN, dailyHelperID:dailyHelperID, vendorServiceTypeID: vendorServiceTypeID,token:token  as! String) { [self] JSON in
+                   switch JSON.result{
+                   case .success(let resp):
+                       webservices().StopSpinner()
+                       if(JSON.response?.statusCode == 200)
+                       {
+                        
+                        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                        avc?.titleStr = "Communei"
+                        avc?.isfrom = 0 // 4
+                                    //    avc?.subtitleStr = "Are you sure you want to call?"
+                        avc?.subtitleStr = "Helper added successfully"
+
+                                        avc?.yesAct = {
+                                            
+                                            self.apicallHelperDetails()
+                                            
+                                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+                                            
+                                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                        }
+
+                                        avc?.noAct = {
+                                          
+                                        }
+                                        present(avc!, animated: true)
+
+                       
+                       }
+                       else
+                       {
+                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(resp as AnyObject).message!)
+                           self.present(alert, animated: true, completion: nil)
+                       }
+                       
+                       print(resp)
+                   case .failure(let err):
+                       webservices().StopSpinner()
+                       if JSON.response?.statusCode == 401{
+                           APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                             // if int == 1{
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                              let navController = UINavigationController(rootViewController: aVC)
+                                                                              navController.isNavigationBarHidden = true
+                                                                 self.appDelegate.window!.rootViewController  = navController
+                                                                 
+                             //  }
+                         //  })
+                           
+                           return
+                       }
+                      // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                     //  self.present(alert, animated: true, completion: nil)
+                       print(err.asAFError!)
+                       
+                   }
+               }
+          
+       }
+    
     @IBAction func btnAddHelperPressed(_ sender: Any) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr = "Communei"
+       // avc?.isfrom = 3
+                    //    avc?.subtitleStr = "Are you sure you want to call?"
+        avc?.subtitleStr = "Are you sure you want to add this helper?"
+
+                        avc?.yesAct = {
+                            self.apicallUserDailyHelper_Assign_Details(dailyHelperID: self.dictHelperData.dailyHelperID, vendorServiceTypeID: self.dictHelperData.vendorServiceTypeID)
+                        }
+
+                        avc?.noAct = {
+                          
+                        }
+                        present(avc!, animated: true)
+
+        
+       /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
         nextViewController.isfrom_entry = 1
-        self.navigationController?.pushViewController(nextViewController, animated: true)
+        self.navigationController?.pushViewController(nextViewController, animated: true) */
     
     }
     
@@ -152,13 +265,19 @@ class MaidProfileDetailsVC: UIViewController {
     @IBAction func actionViewAllRatingReview(_ sender: Any) {
             let popup = self.storyboard?.instantiateViewController(withIdentifier: "RatingReviewListVC") as! RatingReviewListVC
           //  popup.arrRatingReview = dictHelperData.reveiws!
-       // popup.avgRating = dictHelperData.ratings
+           // popup.avgRating = dictHelperData.ratings
             self.navigationController?.pushViewController(popup, animated: true)
     }
     
-    @IBAction func actionAddRatings(_ sender: Any) {
+    @IBAction func actionAddRatings(_ sender: UIButton) {
         let popup = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
-                   popup.helperId = HelperId
+        
+        popup.dailyHelperID = self.dictHelperData.dailyHelperID
+
+        popup.VendorServiceTypeID = self.arrRating[sender.tag].vendorServiceTypeID
+        
+        popup.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID
+        
                    let navigationController = UINavigationController(rootViewController: popup)
                    navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
                    self.present(navigationController, animated: true)
@@ -228,24 +347,30 @@ class MaidProfileDetailsVC: UIViewController {
                         self.lblProfession.text = self.dictHelperData.vendorServiceType
                         
                         if self.dictHelperData.comments.count > 0 {
-                            
+                            print("0")
+                        }
                             let rating = Double(self.dictHelperData.rating)
                          
                             self.ratingView.rating = rating! // Double(self.dictHelperData.ratings!)
                                     self.ratingTopView.rating = rating! // Double(self.dictHelperData.ratings!)
                                                    self.lblTotalRating.text =  (self.dictHelperData.rating) // "\(Double(self.dictHelperData.ratings!))"
                                                    self.lblTotalRatingReview.text =  (self.dictHelperData.rating) // "\(Double(self.dictHelperData.ratings!))"
-                        }
+                     //   }
                         
                         if self.dictHelperData.comments.count > 0 {
                             self.arrRating = self.dictHelperData.comments
                         }
                          self.lblRatingReviewStatic.isHidden = true
                         if self.dictHelperData.workingWithMe == 0 {
-                            self.btnAddRatings.isHidden = false
+                            self.btnAddRatings.isHidden = true
+                            self.btnAddHelper.isHidden = false
+
                             self.lblRatingReviewStatic.isHidden = false
                         }else{
-                            self.btnAddRatings.isHidden = true
+                            self.btnAddRatings.isHidden = false
+                            self.btnAddHelper.isHidden = true
+                            self.lblRatingReviewStatic.isHidden = false
+
                         }
                         
                         let lblin = self.dictHelperData.societyWorkingSince.components(separatedBy: " ")[0]
