@@ -68,11 +68,12 @@ class MaidProfileDetailsVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
+        self.tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
         
         tblView.register(UINib(nibName: "RatingReviewCell", bundle: nil), forCellReuseIdentifier: "RatingReviewCell")
+        
         setUpView()
         apicallHelperDetails()
-        
         
     }
     
@@ -322,10 +323,9 @@ class MaidProfileDetailsVC: UIViewController {
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
-                
             webservices().StartSpinner()
         
-        Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",token:token  as! String) { [self] JSON in
+            Apicallhandler().GetHelperDetail(URL: webservices().baseurl + API_HELPER_DETAIL, helperID:"\(HelperId!)",token:token  as! String) { [self] JSON in
                    switch JSON.result{
                    case .success(let resp):
                        webservices().StopSpinner()
@@ -572,7 +572,9 @@ extension MaidProfileDetailsVC : UITableViewDataSource , UITableViewDelegate {
            return UITableViewAutomaticDimension
        }
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
     
     
 }

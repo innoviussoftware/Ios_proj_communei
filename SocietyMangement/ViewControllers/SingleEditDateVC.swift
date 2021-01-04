@@ -103,14 +103,14 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         let formatter1 = DateFormatter()
         formatter1.dateFormat = "h:mm a"
                 
-        var Msg_Date = StrTime
+        let Msg_Date = StrTime
 
            let dateFormatterGet = DateFormatter()
            dateFormatterGet.dateFormat = "HH:mm:ss"
            let dateFormatterPrint = DateFormatter()
            dateFormatterPrint.dateFormat = "h:mm a"
-           let datee = dateFormatterGet.date(from: Msg_Date)
-           Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
+         //  let datee = dateFormatterGet.date(from: Msg_Date)
+          // Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
         
         txttime.text = Msg_Date
         
@@ -362,13 +362,20 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 
             let myInt = Int(txtvaildtill.text!)!
             
-            let dateFormatter = DateFormatter()
-            
             let isoDate = txttime.text!
 
-            dateFormatter.dateFormat = "hh:mm a" // "yyyy-MM-dd"  //h:mm"
+            let formatter1 = DateFormatter()
+            formatter1.dateFormat = "h:mm a"
+                    
+          //  let Msg_Date = isoDate
 
-            let date = dateFormatter.date(from:isoDate)!
+               let dateFormatterGet = DateFormatter()
+               dateFormatterGet.dateFormat = "HH:mm:ss"
+               let dateFormatterPrint = DateFormatter()
+               dateFormatterPrint.dateFormat = "h:mm a"
+             
+            
+            let date = dateFormatterPrint.date(from:isoDate)!
                         
           //  let isoDate = "\(myInt):00" //validtill // valid  //"2016-04-14T10:44:00+0000"
 
@@ -377,7 +384,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
           //  let date = dateFormatter.date(from:isoDate)!
                             
             let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
-            after_add_time = dateFormatter.string(from: addminutes)
+            after_add_time = dateFormatterPrint.string(from: addminutes)
             
             print("after add time 3 --> ",after_add_time)
         }

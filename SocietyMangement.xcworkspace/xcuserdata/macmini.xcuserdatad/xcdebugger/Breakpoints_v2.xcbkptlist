@@ -66,6 +66,69 @@
             endingLineNumber = "109"
             landmarkName = "apicallHelperDetails()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B69088F0-8131-408A-B97C-630AC7240B72 - 94e75506e3f18b6b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.AddRatingReviewPopUpVC.apicallHelperDetails() -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/AddRatingReviewPopUpVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "588">
+               </Location>
+               <Location
+                  uuid = "B69088F0-8131-408A-B97C-630AC7240B72 - 94e75506e3f18b6b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Communei.AddRatingReviewPopUpVC.apicallHelperDetails() -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/AddRatingReviewPopUpVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "1451">
+               </Location>
+               <Location
+                  uuid = "B69088F0-8131-408A-B97C-630AC7240B72 - bcb109bf0d1a84a8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Communei.HelperDetailsResponse&gt;) -&gt; () in Communei.AddRatingReviewPopUpVC.apicallHelperDetails() -&gt; ()"
+                  moduleName = "Communei"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/AddRatingReviewPopUpVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "202">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2D89D913-D8EA-466A-9416-EF74210F38BC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3234"
+            endingLineNumber = "3234"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
