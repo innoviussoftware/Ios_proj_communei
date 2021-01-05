@@ -619,10 +619,13 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
         if tableView == tblView {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
             vc.HelperId = arrHelper[indexPath.row].dailyHelperID
-            
+            vc.isfrom = 1
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
-            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
+            vc.HelperId = arrOnDemandHelper[indexPath.row].dailyHelperID
+            vc.isfrom = 2
+            self.navigationController?.pushViewController(vc, animated: true)
         }
                 
         print("MaidProfileDetailsVC")

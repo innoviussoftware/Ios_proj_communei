@@ -50,12 +50,13 @@ class MaidProfileDetailsVC: UIViewController {
     @IBOutlet weak var imgStar4: UIImageView!
     @IBOutlet weak var imgStar5: UIImageView!
     
+    var isfrom = 1
+    
     var arrRating = [Comment]()
     
     @IBOutlet weak var btnAddRatings: UIButton!
     
     var dictHelperData : HelperDetailsData!
-    
     
     var HelperId : Int!
     var helperRating : Double!
@@ -68,10 +69,18 @@ class MaidProfileDetailsVC: UIViewController {
           overrideUserInterfaceStyle = .light
         }
         
-        self.tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+        if isfrom == 1 {
+            btnAddHelper.setTitle("Add Helper", for: .normal)
+        }else{
+            btnAddHelper.setTitle("Request Service", for: .normal)
+        }
         
+        tableHeightConstraint.constant = 0
+
         tblView.register(UINib(nibName: "RatingReviewCell", bundle: nil), forCellReuseIdentifier: "RatingReviewCell")
         
+        tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+
         setUpView()
         apicallHelperDetails()
         
@@ -156,8 +165,8 @@ class MaidProfileDetailsVC: UIViewController {
                        }
                        else
                        {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(resp as AnyObject).message!)
-                           self.present(alert, animated: true, completion: nil)
+                            // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(resp as AnyObject).message!)
+                            //  self.present(alert, animated: true, completion: nil)
                        }
                        
                        print(resp)
@@ -188,22 +197,29 @@ class MaidProfileDetailsVC: UIViewController {
     
     @IBAction func btnAddHelperPressed(_ sender: Any) {
         
-        
-        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-        avc?.titleStr = "Communei"
-       // avc?.isfrom = 3
-                    //    avc?.subtitleStr = "Are you sure you want to call?"
-        avc?.subtitleStr = "Are you sure you want to add this helper?"
+        if isfrom == 1 {
+            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+            avc?.titleStr = "Communei"
+           // avc?.isfrom = 3
+                        //    avc?.subtitleStr = "Are you sure you want to call?"
+            avc?.subtitleStr = "Are you sure you want to add this helper?"
 
-                        avc?.yesAct = {
-                            self.apicallUserDailyHelper_Assign_Details(dailyHelperID: self.dictHelperData.dailyHelperID, vendorServiceTypeID: self.dictHelperData.vendorServiceTypeID)
-                        }
+                            avc?.yesAct = {
+                                self.apicallUserDailyHelper_Assign_Details(dailyHelperID: self.dictHelperData.dailyHelperID, vendorServiceTypeID: self.dictHelperData.vendorServiceTypeID)
+                            }
 
-                        avc?.noAct = {
-                          
-                        }
-                        present(avc!, animated: true)
+                            avc?.noAct = {
+                              
+                            }
+                            present(avc!, animated: true)
 
+        }else{
+            
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
+            // nextViewController.isfrom_entry = 1
+             self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
         
        /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
@@ -225,6 +241,7 @@ class MaidProfileDetailsVC: UIViewController {
     @IBAction func actionBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
     @IBAction func actionCall(_ sender: Any) {
         
       //  dialNumber(number: dictHelperData.mobile!)
@@ -246,13 +263,14 @@ class MaidProfileDetailsVC: UIViewController {
         
     }
     
-    @IBAction func actionWorkingSince(_ sender: Any) {
+    @IBAction func actionWorkingSince(_ sender: UIButton) {
         
     }
     
     @IBAction func actionViewAllWorkingWith(_ sender: Any) {
         
-        if dictHelperData.props != nil{
+       // if dictHelperData.props != nil{
+        if dictHelperData.props!.count > 0{
              let popup = self.storyboard?.instantiateViewController(withIdentifier: "WorkingWithPopUpVC") as! WorkingWithPopUpVC
             popup.arrWorkingWith = dictHelperData.props!
              let navigationController = UINavigationController(rootViewController: popup)
@@ -263,11 +281,13 @@ class MaidProfileDetailsVC: UIViewController {
         
     }
     
-    @IBAction func actionViewAllRatingReview(_ sender: Any) {
+    @IBAction func actionViewAllRatingReview(_ sender: UIButton) {
+        if dictHelperData.comments.count > 0{
             let popup = self.storyboard?.instantiateViewController(withIdentifier: "RatingReviewListVC") as! RatingReviewListVC
-          //  popup.arrRatingReview = dictHelperData.reveiws!
-           // popup.avgRating = dictHelperData.ratings
+            popup.arrRatingReview = dictHelperData.comments
+            popup.avgRating = dictHelperData.rating
             self.navigationController?.pushViewController(popup, animated: true)
+        }
     }
     
     @IBAction func actionAddRatings(_ sender: UIButton) {
@@ -279,9 +299,9 @@ class MaidProfileDetailsVC: UIViewController {
         
         popup.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID
         
-                   let navigationController = UINavigationController(rootViewController: popup)
-                   navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-                   self.present(navigationController, animated: true)
+        let navigationController = UINavigationController(rootViewController: popup)
+        navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(navigationController, animated: true)
         
     }
     
@@ -347,10 +367,14 @@ class MaidProfileDetailsVC: UIViewController {
                         self.lblProfession.text = self.dictHelperData.vendorServiceType
                         
                         if self.dictHelperData.comments.count > 0 {
-                            print("0")
+                            print("comments")
+                        }else{
+                            print("comments 0")
                         }
+                        
                             let rating = Double(self.dictHelperData.rating)
                          
+                        
                             self.ratingView.rating = rating! // Double(self.dictHelperData.ratings!)
                                     self.ratingTopView.rating = rating! // Double(self.dictHelperData.ratings!)
                                                    self.lblTotalRating.text =  (self.dictHelperData.rating) // "\(Double(self.dictHelperData.ratings!))"
@@ -402,8 +426,8 @@ class MaidProfileDetailsVC: UIViewController {
                        }
                        else
                        {
-                           let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
-                           self.present(alert, animated: true, completion: nil)
+                         //  let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+                         //  self.present(alert, animated: true, completion: nil)
                        }
                        
                        print(resp)
@@ -569,12 +593,12 @@ extension MaidProfileDetailsVC : UITableViewDataSource , UITableViewDelegate {
        }
        
        func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-           return UITableViewAutomaticDimension
+           return 120 // UITableViewAutomaticDimension
        }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return  UITableViewAutomaticDimension
+        }
     
     
 }

@@ -23,7 +23,7 @@ class RatingReviewListVC: UIViewController {
     @IBOutlet weak var lblavgRating: UILabel!
     @IBOutlet weak var tblView: UITableView!
     var arrRatingReview = [Comment]()
-    var avgRating : Double!
+    var avgRating = "" // : Double!
     var selectedIndex : Int!
     
     override func viewDidLoad() {
@@ -38,8 +38,11 @@ class RatingReviewListVC: UIViewController {
         
         ratingView.isUserInteractionEnabled = false
         ratingView.type = .halfRatings
-      //  ratingView.rating = avgRating
-      //  lblavgRating.text =  String(format: "%.1f", avgRating)
+        
+        let rating = Double(self.avgRating)
+        ratingView.rating = rating!
+       // ratingView.rating = avgRating
+        lblavgRating.text =  String(format: "%.1f", rating!)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -228,25 +231,25 @@ extension RatingReviewListVC : UITableViewDelegate , UITableViewDataSource{
         cell.btnDelete.tag = indexPath.row
         cell.selectionStyle = .none
         
-        cell.lblName.text = self.arrRatingReview[indexPath.row].propertyFullName
+        cell.lblName.text = self.arrRatingReview[indexPath.row].commentedBy
         cell.lblDiscription.text = self.arrRatingReview[indexPath.row].comment
-      /*  cell.ratingViews.rating = self.arrRatingReview[indexPath.row].rating
         
-        let str = self.arrRatingReview[indexPath.row].propertyFullName!
+        let rating = Double(self.arrRatingReview[indexPath.row].rating)
+     
+        cell.ratingViews.rating = rating!
+      
+        let str = self.arrRatingReview[indexPath.row].commentedBy
         let firstChar = Array(str)[0]
         cell.lblFirstLetter.text = "\(firstChar)"
         cell.lblFirstLetter.textColor = UIColor.white
         
+        if self.arrRatingReview[indexPath.row].addedByMe == 1{
+            cell.btnDelete.isHidden = false
+        }else{
+             cell.btnDelete.isHidden = true
+        }
         
-        let userId = UserDefaults.standard.value(forKey: USER_ID) as! Int
-               if self.arrRatingReview[indexPath.row].userID == userId{
-                   cell.btnDelete.isHidden = false
-               }else{
-                    cell.btnDelete.isHidden = true
-               } */
-               
         cell.btnDelete.addTarget(self, action: #selector(deleteRating(sender:)), for: .touchUpInside)
-        
         
         return cell
     }

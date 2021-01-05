@@ -186,11 +186,7 @@ struct Apicallhandler {
     
     func ApiCallUserActivityListcancel(URL: String,token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
         
-       // webservices().baseurl + API_ACTIVITY_CANCEL
-        
         AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
-
-      //  AF.request(webservices().baseurl + API_ACTIVITY_CANCEL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<Any>) in
             
             onCompletion(response)
         }

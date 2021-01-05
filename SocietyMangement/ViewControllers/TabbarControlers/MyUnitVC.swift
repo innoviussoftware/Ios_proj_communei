@@ -778,14 +778,27 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 cell.btnCalenderAttend.tag = indexPath.row
                 
                 cell.btndelete.tag = indexPath.row
-
                 
                 let rating = Double((self.arrHelperList[indexPath.row].dailyHelperCard?.averageRating)!)
 
                 cell.ratingView.rating = rating!
                 
                 cell.lblName.text = arrHelperList[indexPath.row].dailyHelperCard?.name
+                
                 cell.lblMaidType.text = arrHelperList[indexPath.row].dailyHelperCard?.vendorServiceTypeName
+                
+                if ((arrHelperList[indexPath.row].dailyHelperCard?.shouldNotifyOnEntry) == "0") {
+                    cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
+                }else{
+                    cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal)
+                }
+                
+                
+                if ((arrHelperList[indexPath.row].dailyHelperCard?.holdService) == "0") {
+                        cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
+                }else{
+                    cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
+                }
                 
                 // 25/9/20.
                 

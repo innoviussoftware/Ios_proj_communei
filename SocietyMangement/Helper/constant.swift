@@ -92,6 +92,8 @@ let API_ACCEPT_DECLINE = "user/acceptreject"
 
 let API_ACTIVITY_CANCEL = "user/pre-approved/cancel"
 
+let API_ACTIVITY_CLOSE = "user/pre-approved/close"
+
 let API_ACTIVITY_EXIT_OUT = "user/pre-approved/exit"
 
 let API_ACTIVITY_WRONG_ENTRY  = "user/pre-approved/wrong-entry"

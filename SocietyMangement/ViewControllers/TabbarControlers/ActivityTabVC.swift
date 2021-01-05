@@ -876,9 +876,76 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         apicallGuestList()
     }
     
+    // MARK: - Api Close
+    
+    func ApiCallCloseList(UserActivityID:Int ,VisitFlatPreApprovalID : Int)
+    {
+                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+            "VisitFlatPreApprovalID" : VisitFlatPreApprovalID
+        ]
+        
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_CLOSE ,token: token as! String, param: param) { JSON in
+                    
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                if JSON.response?.statusCode == 401{
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                        }
+                    })
+                    
+                    return
+                }
+                
+                
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                webservices().StopSpinner()
+                
+            }
+            
+        }
+        
+    }
+    
     @objc func ApiCallClose(sender:UIButton)
     {
-        
+        self.ApiCallCloseList(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, VisitFlatPreApprovalID: (self.arrGuestList[sender.tag].activity?.visitorPreApprovalID!)!)
     }
         
     @objc func ApiCallEdit(sender:UIButton)
@@ -1462,7 +1529,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btncall.isHidden = true
         }
         
-        cell.btnWrong_Entry_Red.isHidden = true
         
         cell.btncall.tag = indexPath.item
         
@@ -1482,7 +1548,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lbladdedby.isHidden = false
                         
-            cell.lblLeaveatGate.isHidden = true
+           // cell.lblLeaveatGate.isHidden = true
+            
+            cell.btnDeliveryInfo.isHidden = true
             
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
             
@@ -1582,6 +1650,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewTop3_1.constant = 5
                     
                     cell.imgviewStackTop3.constant = 27
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
 
                 }else{
                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
@@ -1592,6 +1663,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewTop3_1.constant = 5
 
                     cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = false
                     
                 }
                                 
@@ -1613,14 +1687,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview4.isHidden = false
                 cell.imgview5.isHidden = true
                                 
-                cell.constraintHightStackBtn.constant = 0
-                cell.constraintHightStacklbl.constant = 0
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = true
                 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
-                cell.btnWrong_Entry.isHidden = true
-                cell.btnWrong_Entry_Red.isHidden = true
+                
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -1672,64 +1745,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
-            }
-            else if cell.lblStatus.text == "VISITED" {
-                cell.lblStatus.backgroundColor = AppColor.cancelColor
-                
-                cell.constraintHightStackBtn.constant = 50
-
-                cell.constraintHightStacklbl.constant = 0.5
-
-                cell.lblHightStacklblMiddle.isHidden = true
-                
-                cell.lblapprovedby.isHidden = true
-                
-                if arrGuestList[indexPath.row].isWrongEntry == 0 {
-                    cell.lblWrongEntry.isHidden = true
-                    cell.imgviewHight6.constant = 0
-                    cell.imgview6.isHidden = true
-                    
-                    cell.imgviewTop3_1.constant = 5
-                    
-                    cell.imgviewStackTop3.constant = 27
-                    
-                    cell.btnWrong_Entry.isHidden = false
-                    cell.btnWrong_Entry_Red.isHidden = true
-
-
-                }else{
-                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
-                    cell.lblWrongEntry.isHidden = false
-                    cell.imgviewHight6.constant = 12
-                    cell.imgview6.isHidden = false
-                    
-                    cell.imgviewTop3_1.constant = 5
-
-                    cell.imgviewStackTop6.constant = 10
-                    
-                    cell.btnWrong_Entry_Red.isHidden = false
-                    cell.btnWrong_Entry.isHidden = true
-
-                }
-               
-                cell.imgview2.isHidden = true
-                
-                cell.imgviewHight2.constant = 0
-
-                cell.imgview5.isHidden = true
-
-                cell.imgview4.isHidden = true
-
-                cell.btnCancel.isHidden = true
-                cell.btnEdit.isHidden = true
-                cell.btnRenew.isHidden = true
-                cell.btnClose.isHidden = true
-                cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true
-                cell.btnAlertInfo.isHidden = true
-
-            }
-            else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
+            }else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
                 cell.constraintHightStackBtn.constant = 50
@@ -1773,8 +1789,161 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
-            }else if cell.lblStatus.text == "DELIVERED" {
+            }
+            else if cell.lblStatus.text == "APPROVED" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.imgviewStackTop3.constant = 10
+
+                cell.btnClose.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "DELIVERED" {
+                
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
                 
                 cell.constraintHightStackBtn.constant = 0
                 
@@ -1785,11 +1954,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
-
+                
                 cell.lblapprovedby.isHidden = true
 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -1817,6 +1987,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -1957,13 +2128,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.btnOut.isHidden = false
                 
-                
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
@@ -1971,18 +2140,34 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             else{
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                     cell.lblWrongEntry.isHidden = true
+                     cell.imgviewHight6.constant = 0
+                     cell.imgview6.isHidden = true
+                     
+                     cell.imgviewTop3_1.constant = 5
+                     
+                     cell.imgviewStackTop3.constant = 27
+                 
+                    
+                 }else{
+                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                     cell.lblWrongEntry.isHidden = false
+                     cell.imgviewHight6.constant = 12
+                     cell.imgview6.isHidden = false
+                     
+                     cell.imgviewTop3_1.constant = 5
+
+                     cell.imgviewStackTop6.constant = 10
+                     
+                 }
+                
                 cell.constraintHightStackBtn.constant = 0
                 
                 cell.constraintHightStacklbl.constant = 0
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                /* cell.viewHight1.constant = 28.5
-                cell.viewHight2.constant = 0
-                cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0 */
-
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
@@ -1992,6 +2177,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -2232,36 +2418,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
             }
-            else if cell.lblStatus.text == "VISITED" {
-                cell.lblStatus.backgroundColor = AppColor.cancelColor
-                
-                cell.constraintHightStackBtn.constant = 50
-
-                cell.constraintHightStacklbl.constant = 0.5
-
-                cell.lblHightStacklblMiddle.isHidden = true
-                
-                cell.lblapprovedby.isHidden = true
-                
-               
-                cell.imgview2.isHidden = true
-                
-                cell.imgviewHight2.constant = 0
-
-                cell.imgview5.isHidden = true
-
-                cell.imgview4.isHidden = true
-
-                cell.btnWrong_Entry.isHidden = false
-                cell.btnCancel.isHidden = true
-                cell.btnEdit.isHidden = true
-                cell.btnRenew.isHidden = true
-                cell.btnClose.isHidden = true
-                cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true
-                cell.btnAlertInfo.isHidden = true
-
-            }
             else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -2308,14 +2464,130 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            else if cell.lblStatus.text == "ADDED" {
-                                
+            else if cell.lblStatus.text == "APPROVED" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblWrongEntry.isHidden = true
 
-              //  cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.imgviewStackTop3.constant = 10
+
+                cell.btnClose.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
                 
                 cell.lblapprovedby.isHidden = true
                 
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "ADDED" {
+                
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+
+               // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+                
+                cell.lblapprovedby.isHidden = true
+
                 if arrGuestList[indexPath.row].isWrongEntry == 0 {
                     cell.lblWrongEntry.isHidden = true
                     cell.imgviewHight6.constant = 0
@@ -2327,7 +2599,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     
                     cell.btnWrong_Entry.isHidden = false
                     cell.btnWrong_Entry_Red.isHidden = true
-                    
+
 
                 }else{
                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
@@ -2339,10 +2611,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                     cell.imgviewStackTop6.constant = 10
                     
-                    cell.btnWrong_Entry.isHidden = true
-                    
                     cell.btnWrong_Entry_Red.isHidden = false
-                    
+                    cell.btnWrong_Entry.isHidden = true
+
                 }
                                 
                 cell.lblintime.isHidden = false
@@ -2367,6 +2638,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = false
                 
+                
                 cell.btnOut.isHidden = false
                 
                 cell.btnCancel.isHidden = true
@@ -2379,8 +2651,44 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            else if cell.lblStatus.text == "DELIVERED" {  // right
+            else if cell.lblStatus.text == "DELIVERED" {
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
                 
                 cell.constraintHightStackBtn.constant = 0
                 
@@ -2391,11 +2699,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
-
+                
                 cell.lblapprovedby.isHidden = true
 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -2423,6 +2732,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -2499,7 +2809,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
@@ -2513,12 +2822,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                /* cell.viewHight1.constant = 28.5
-                cell.viewHight2.constant = 0
-                cell.viewHight3.constant = 28.5
-                cell.viewHight4.constant = 0
-                cell.viewHight5.constant = 0 */
-
+               
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
@@ -2528,6 +2832,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -2843,48 +3148,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    cell.btnDeliveryInfo.isHidden = true
                    cell.btnAlertInfo.isHidden = true
                }
-               else if cell.lblStatus.text == "VISITED" {
-                   cell.lblStatus.backgroundColor = AppColor.cancelColor
-                   
-                   cell.constraintHightStackBtn.constant = 50
-
-                   cell.constraintHightStacklbl.constant = 0.5
-
-                   cell.lblHightStacklblMiddle.isHidden = true
-                   
-                   cell.lblapprovedby.isHidden = true
-                   
-                   cell.imgview2.isHidden = true
-                   
-                   cell.imgviewHight2.constant = 0
-
-                   cell.imgview5.isHidden = true
-
-                   cell.imgview4.isHidden = true
-                   
-                   if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
-                       cell.lblLeaveatGate.text = "Leave at Gate"
-                       cell.imgview5.isHidden = false
-                       cell.lblLeaveatGate.isHidden = false
-                       cell.imgviewHight5.constant = 12
-                       
-                       cell.imgviewStackTop3.constant = 27
-                   }else{
-                       cell.imgview5.isHidden = true
-                       cell.lblLeaveatGate.isHidden = true
-                       cell.imgviewHight5.constant = 0
-                   }
-
-                   cell.btnWrong_Entry.isHidden = false
-                   cell.btnCancel.isHidden = true
-                   cell.btnEdit.isHidden = true
-                   cell.btnRenew.isHidden = true
-                   cell.btnClose.isHidden = true
-                   cell.btnNote_Guard.isHidden = true
-                   cell.btnOut.isHidden = true
-                   cell.btnAlertInfo.isHidden = true
-
-               }
                else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                    
@@ -2945,103 +3208,256 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    cell.btnAlertInfo.isHidden = true
 
                }
-               else if cell.lblStatus.text == "ADDED" {
-                                   
+               else if cell.lblStatus.text == "APPROVED" {
                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
-
-                 // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
-                
-                cell.lblapprovedby.isHidden = true
                    
-                   if arrGuestList[indexPath.row].isWrongEntry == 0 {
-                       cell.lblWrongEntry.isHidden = true
-                       cell.imgviewHight6.constant = 0
-                       cell.imgview6.isHidden = true
-                       
-                       cell.imgviewTop3_1.constant = 5
-                       
-                       cell.imgviewStackTop3.constant = 27
-
-                        cell.btnWrong_Entry.isHidden = false
-                
-                        cell.btnWrong_Entry_Red.isHidden = true
-                    
-                   }else{
-                       cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
-                       cell.lblWrongEntry.isHidden = false
-                       cell.imgviewHight6.constant = 12
-                       cell.imgview6.isHidden = false
-                       
-                       cell.imgviewTop3_1.constant = 5
-
-                       cell.imgviewStackTop6.constant = 10
- 
-                        cell.btnWrong_Entry.isHidden = true
-                    
-                        cell.btnWrong_Entry_Red.isHidden = false
-                                           
-                   }
-                                   
-                   cell.lblintime.isHidden = false
-                   cell.lblouttime.isHidden = true
-                   cell.lbladdedby.isHidden = false
-                   cell.lblapprovedby.isHidden = false
-                   cell.lblLeaveatGate.isHidden = true
-
-                   cell.imgviewHight1.constant = 12
-                   cell.imgviewHight2.constant = 0
-                   cell.imgviewHight3.constant = 12
-                   cell.imgviewHight4.constant = 12
-                   cell.imgviewHight5.constant = 0
-                   
-                   cell.imgview1.isHidden = false
-                   cell.imgview2.isHidden = true
-                   cell.imgview3.isHidden = false
-                   cell.imgview4.isHidden = false
-                   cell.imgview5.isHidden = true
-                                   
                    cell.constraintHightStackBtn.constant = 50
                    cell.constraintHightStacklbl.constant = 0.5
                    cell.lblHightStacklblMiddle.isHidden = false
                    
-                   cell.btnOut.isHidden = false
-                  
-                   cell.btnCancel.isHidden = true
-                   cell.btnEdit.isHidden = true
-                   cell.btnRenew.isHidden = true
-                   cell.btnClose.isHidden = true
-                   cell.btnNote_Guard.isHidden = true
-                   cell.btnOut.isHidden = false
-                   cell.btnDeliveryInfo.isHidden = true
-                   cell.btnAlertInfo.isHidden = true
-
-               }
-               else if cell.lblStatus.text == "DELIVERED" {  // right
-                   cell.lblStatus.backgroundColor = AppColor.pollborderSelect
-                   
-                   cell.constraintHightStackBtn.constant = 0
-                   
-                   cell.constraintHightStacklbl.constant = 0
-
-                   cell.lblHightStacklblMiddle.isHidden = true
-
-                   cell.imgview5.isHidden = true
-
-                   cell.imgview4.isHidden = true
-
+                   cell.lblintime.isHidden = false
+                   cell.lblouttime.isHidden = true
+                   cell.lbladdedby.isHidden = false
                    cell.lblapprovedby.isHidden = true
+                   cell.lblLeaveatGate.isHidden = true
+                   cell.lblWrongEntry.isHidden = true
 
+                   cell.imgviewHight1.constant = 12
+                   cell.imgviewHight2.constant = 0
+                   cell.imgviewHight3.constant = 12
+                   cell.imgviewHight4.constant = 0
+                   cell.imgviewHight5.constant = 0
+                   cell.imgviewHight6.constant = 0
+
+                   cell.imgview1.isHidden = false
+                   cell.imgview2.isHidden = true
+                   cell.imgview3.isHidden = false
+                   cell.imgview4.isHidden = true
+                   cell.imgview5.isHidden = true
+                   cell.imgview6.isHidden = true
+
+                   cell.imgviewTop3_1.constant = 5
+
+                   cell.imgviewStackTop3.constant = 10
+
+                   cell.btnClose.isHidden = false
+                   
                    cell.btnCancel.isHidden = true
                    cell.btnEdit.isHidden = true
                    cell.btnWrong_Entry.isHidden = true
+                   cell.btnWrong_Entry_Red.isHidden = true
                    cell.btnRenew.isHidden = true
-                   cell.btnClose.isHidden = true
                    cell.btnNote_Guard.isHidden = true
                    cell.btnOut.isHidden = true
                    cell.btnDeliveryInfo.isHidden = true
                    cell.btnAlertInfo.isHidden = true
 
                }
+               else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+               else if cell.lblStatus.text == "ADDED" {
+                
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+
+               // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+                
+                cell.lblapprovedby.isHidden = true
+
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+
+                }
+                                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = false
+                cell.lblLeaveatGate.isHidden = true
+
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 12
+                cell.imgviewHight5.constant = 0
+                
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = false
+                cell.imgview5.isHidden = true
+                                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                
+                cell.btnOut.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = false
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+               else if cell.lblStatus.text == "DELIVERED" {
+                
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
+                
+                cell.constraintHightStackBtn.constant = 0
+                
+                cell.constraintHightStacklbl.constant = 0
+
+                cell.lblHightStacklblMiddle.isHidden = true
+
+                cell.imgview5.isHidden = true
+
+                cell.imgview4.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
                else if cell.lblStatus.text == "LEFT" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -3060,6 +3476,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -3136,7 +3553,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    cell.btnRenew.isHidden = true
                    cell.btnClose.isHidden = true
                    cell.btnNote_Guard.isHidden = true
-                   cell.btnOut.isHidden = false
                    cell.btnDeliveryInfo.isHidden = true
                    cell.btnAlertInfo.isHidden = true
 
@@ -3174,6 +3590,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    cell.btnCancel.isHidden = true
                    cell.btnEdit.isHidden = true
                    cell.btnWrong_Entry.isHidden = true
+                   cell.btnWrong_Entry_Red.isHidden = true
                    cell.btnRenew.isHidden = true
                    cell.btnClose.isHidden = true
                    cell.btnNote_Guard.isHidden = true
@@ -3516,57 +3933,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
             }
-            else if cell.lblStatus.text == "VISITED" {
-                cell.lblStatus.backgroundColor = AppColor.cancelColor
-                
-                cell.constraintHightStackBtn.constant = 50
-
-                cell.constraintHightStacklbl.constant = 0.5
-
-                cell.lblHightStacklblMiddle.isHidden = true
-                
-                cell.lblapprovedby.isHidden = true
-                
-               
-                cell.imgview2.isHidden = true
-                
-                cell.imgviewHight2.constant = 0
-
-                cell.imgview5.isHidden = true
-
-                cell.imgview4.isHidden = true
-                
-                
-                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-                }else{
-                    cell.lblouttime.isHidden = false
-                    cell.imgviewHight2.constant = 12
-                    cell.imgviewTop3_1.constant = 22
-                }
-                
-                if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
-                    cell.lblLeaveatGate.text = "Leave at Gate"
-                    cell.imgview5.isHidden = false
-                    cell.lblLeaveatGate.isHidden = false
-                    cell.imgviewHight5.constant = 12
-                    
-                    cell.imgviewStackTop3.constant = 27
-                }else{
-                    cell.imgview5.isHidden = true
-                    cell.lblLeaveatGate.isHidden = true
-                    cell.imgviewHight5.constant = 0
-                }
-
-                cell.btnWrong_Entry.isHidden = false
-                cell.btnCancel.isHidden = true
-                cell.btnEdit.isHidden = true
-                cell.btnRenew.isHidden = true
-                cell.btnClose.isHidden = true
-                cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true
-                cell.btnAlertInfo.isHidden = true
-
-            }
             else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -3634,11 +4000,175 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
+            else if cell.lblStatus.text == "APPROVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.imgviewStackTop3.constant = 10
+                
+                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                }else{
+                    cell.lblouttime.isHidden = false
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewTop3_1.constant = 22
+                }
+                
+                if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
+                    cell.lblLeaveatGate.text = "Leave at Gate"
+                    cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
+                    cell.imgviewHight5.constant = 12
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                }else{
+                    cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.imgviewHight5.constant = 0
+                }
+                
+
+                cell.btnClose.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                
+                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                }else{
+                    cell.lblouttime.isHidden = false
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewTop3_1.constant = 22
+                }
+                
+                if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
+                    cell.lblLeaveatGate.text = "Leave at Gate"
+                    cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
+                    cell.imgviewHight5.constant = 12
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 1 {
+                        cell.imgviewStackTop6.constant = 10
+                    }
+
+                }else{
+                    cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.imgviewHight5.constant = 0
+                }
+                
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
             else if cell.lblStatus.text == "ADDED" {
-                                
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
-              //  cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+               // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
                 
                 cell.lblapprovedby.isHidden = true
 
@@ -3652,8 +4182,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewStackTop3.constant = 27
                     
                     cell.btnWrong_Entry.isHidden = false
-              
                     cell.btnWrong_Entry_Red.isHidden = true
+
 
                 }else{
                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
@@ -3665,10 +4195,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                     cell.imgviewStackTop6.constant = 10
                     
-                    cell.btnWrong_Entry.isHidden = true
-              
                     cell.btnWrong_Entry_Red.isHidden = false
-                    
+                    cell.btnWrong_Entry.isHidden = true
+
                 }
                                 
                 cell.lblintime.isHidden = false
@@ -3688,13 +4217,40 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview3.isHidden = false
                 cell.imgview4.isHidden = false
                 cell.imgview5.isHidden = true
+                
+                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                }else{
+                    cell.lblouttime.isHidden = false
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewTop3_1.constant = 22
+                }
+                
+                if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
+                    cell.lblLeaveatGate.text = "Leave at Gate"
+                    cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
+                    cell.imgviewHight5.constant = 12
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 1 {
+                        cell.imgviewStackTop6.constant = 10
+                    }
+
+                }else{
+                    cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.imgviewHight5.constant = 0
+                }
+                
                                 
                 cell.constraintHightStackBtn.constant = 50
                 cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = false
                 
+                
                 cell.btnOut.isHidden = false
-               
+                
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnRenew.isHidden = true
@@ -3705,8 +4261,44 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            else if cell.lblStatus.text == "DELIVERED" {  // right
+            else if cell.lblStatus.text == "DELIVERED" {
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
                 
                 cell.constraintHightStackBtn.constant = 0
                 
@@ -3717,11 +4309,38 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
-
+                
                 cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                }else{
+                    cell.lblouttime.isHidden = false
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewTop3_1.constant = 22
+                }
+                
+                if arrGuestList[indexPath.row].activity?.leaveAtGate == "1" {
+                    cell.lblLeaveatGate.text = "Leave at Gate"
+                    cell.imgview5.isHidden = false
+                    cell.lblLeaveatGate.isHidden = false
+                    cell.imgviewHight5.constant = 12
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 1 {
+                        cell.imgviewStackTop6.constant = 10
+                    }
+
+                }else{
+                    cell.imgview5.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.imgviewHight5.constant = 0
+                }
+                
 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -3749,6 +4368,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -3825,7 +4445,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
@@ -3870,6 +4489,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -4003,9 +4623,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnEdit.isHidden = true
             
             cell.btnWrong_Entry.isHidden = true
+            cell.btnWrong_Entry_Red.isHidden = true
             cell.btnRenew.isHidden = true
             cell.btnClose.isHidden = true
-            cell.btnWrong_Entry.isHidden = true
             cell.btnNote_Guard.isHidden = true
             cell.btnOut.isHidden = true
             cell.btnDeliveryInfo.isHidden = true
@@ -4087,9 +4707,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnEdit.isHidden = true
             
             cell.btnWrong_Entry.isHidden = true
+            cell.btnWrong_Entry_Red.isHidden = true
             cell.btnRenew.isHidden = true
             cell.btnClose.isHidden = true
-            cell.btnWrong_Entry.isHidden = true
             cell.btnNote_Guard.isHidden = true
             cell.btnOut.isHidden = true
             cell.btnDeliveryInfo.isHidden = true
@@ -4443,36 +5063,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
             }
-            else if cell.lblStatus.text == "VISITED" {
-                cell.lblStatus.backgroundColor = AppColor.cancelColor
-                
-                cell.constraintHightStackBtn.constant = 50
-
-                cell.constraintHightStacklbl.constant = 0.5
-
-                cell.lblHightStacklblMiddle.isHidden = true
-                
-                cell.lblapprovedby.isHidden = true
-                
-               
-                cell.imgview2.isHidden = true
-                
-                cell.imgviewHight2.constant = 0
-
-                cell.imgview5.isHidden = true
-
-                cell.imgview4.isHidden = true
-
-                cell.btnWrong_Entry.isHidden = false
-                cell.btnCancel.isHidden = true
-                cell.btnEdit.isHidden = true
-                cell.btnRenew.isHidden = true
-                cell.btnClose.isHidden = true
-                cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true
-                cell.btnAlertInfo.isHidden = true
-
-            }
             else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -4519,11 +5109,127 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
+            else if cell.lblStatus.text == "APPROVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.imgviewStackTop3.constant = 10
+
+                cell.btnClose.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
             else if cell.lblStatus.text == "ADDED" {
-                                
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
-              //  cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+               // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
                 
                 cell.lblapprovedby.isHidden = true
 
@@ -4537,8 +5243,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewStackTop3.constant = 27
                     
                     cell.btnWrong_Entry.isHidden = false
-              
                     cell.btnWrong_Entry_Red.isHidden = true
+
 
                 }else{
                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
@@ -4550,10 +5256,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                     cell.imgviewStackTop6.constant = 10
                     
-                    cell.btnWrong_Entry.isHidden = true
-              
                     cell.btnWrong_Entry_Red.isHidden = false
-                    
+                    cell.btnWrong_Entry.isHidden = true
+
                 }
                                 
                 cell.lblintime.isHidden = false
@@ -4578,6 +5283,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = false
                 
+                
                 cell.btnOut.isHidden = false
                 
                 cell.btnCancel.isHidden = true
@@ -4590,8 +5296,44 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            else if cell.lblStatus.text == "DELIVERED" {  // right
+            else if cell.lblStatus.text == "DELIVERED" {
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
                 
                 cell.constraintHightStackBtn.constant = 0
                 
@@ -4602,11 +5344,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
-
+                
                 cell.lblapprovedby.isHidden = true
 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -4634,6 +5377,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -4709,7 +5453,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
@@ -4738,6 +5481,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -4974,36 +5718,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
             }
-            else if cell.lblStatus.text == "VISITED" {
-                cell.lblStatus.backgroundColor = AppColor.cancelColor
-                
-                cell.constraintHightStackBtn.constant = 50
-
-                cell.constraintHightStacklbl.constant = 0.5
-
-                cell.lblHightStacklblMiddle.isHidden = true
-                
-                cell.lblapprovedby.isHidden = true
-                
-               
-                cell.imgview2.isHidden = true
-                
-                cell.imgviewHight2.constant = 0
-
-                cell.imgview5.isHidden = true
-
-                cell.imgview4.isHidden = true
-
-                cell.btnWrong_Entry.isHidden = false
-                cell.btnCancel.isHidden = true
-                cell.btnEdit.isHidden = true
-                cell.btnRenew.isHidden = true
-                cell.btnClose.isHidden = true
-                cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = true
-                cell.btnAlertInfo.isHidden = true
-
-            }
             else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                 
@@ -5050,9 +5764,162 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            
+            else if cell.lblStatus.text == "APPROVED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
+                cell.lblHightStacklblMiddle.isHidden = false
+                
+                cell.lblintime.isHidden = false
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblapprovedby.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+                cell.imgviewHight6.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+
+                cell.imgviewTop3_1.constant = 5
+
+                cell.imgviewStackTop3.constant = 10
+
+                cell.btnClose.isHidden = false
+                
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+            else if cell.lblStatus.text == "VISITED" {
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                
+                cell.constraintHightStackBtn.constant = 50
+
+                cell.constraintHightStacklbl.constant = 0.5
+
+                cell.lblHightStacklblMiddle.isHidden = true
+                
+                cell.lblapprovedby.isHidden = true
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                   // cell.imgviewTop6_3.constant = 0
+
+                    cell.imgviewStackTop3.constant = 10
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+                    
+                    cell.imgviewStackTop3.constant = 27
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                }
+                
+               /* if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    cell.lblWrongEntry.isHidden = true
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.imgviewHight6.constant = 0
+                    cell.imgview6.isHidden = true
+
+                }else{
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    cell.lblWrongEntry.isHidden = false
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+
+                    cell.imgviewStackTop6.constant = 10
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.imgviewHight6.constant = 12
+                    cell.imgview6.isHidden = false
+
+                } */
+                
+                cell.imgviewHight1.constant = 12
+                cell.imgviewHight2.constant = 0
+                cell.imgviewHight3.constant = 12
+                cell.imgviewHight4.constant = 0
+                cell.imgviewHight5.constant = 0
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = false
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+
             else if cell.lblStatus.text == "ADDED" {
-                                
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
                // cell.lblapprovedby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
@@ -5070,6 +5937,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     
                     cell.btnWrong_Entry.isHidden = false
                     cell.btnWrong_Entry_Red.isHidden = true
+
 
                 }else{
                     cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
@@ -5108,6 +5976,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = false
                 
+                
                 cell.btnOut.isHidden = false
                 
                 cell.btnCancel.isHidden = true
@@ -5120,8 +5989,44 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnAlertInfo.isHidden = true
 
             }
-            else if cell.lblStatus.text == "DELIVERED" {  // right
+            else if cell.lblStatus.text == "DELIVERED" {
+                
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop3.constant = 27
+                        
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                      
+                    }
+                   
+                    cell.imgview2.isHidden = true
+                    
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgview5.isHidden = true
+
+                    cell.imgview4.isHidden = true
+
                 
                 cell.constraintHightStackBtn.constant = 0
                 
@@ -5132,11 +6037,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.imgview5.isHidden = true
 
                 cell.imgview4.isHidden = true
-
+                
                 cell.lblapprovedby.isHidden = true
 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
@@ -5164,6 +6070,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -5239,7 +6146,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
 
@@ -5268,6 +6174,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true
                 cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnRenew.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
@@ -5368,9 +6275,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
         }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Add Daily Helper" {
             
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+
+            
             print("Add : Daily : Helper ")
            
         }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "OnDemand Helper" {
+
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
 
             print("OnDemand : Helper ")
 
@@ -5378,6 +6290,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
         } else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "OnDemand Entry" {
             
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+
             print("OnDemand : Entry ")
             
         }
@@ -5605,36 +6519,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.btnDeliveryInfo.isHidden = true
                     cell.btnAlertInfo.isHidden = true
                 }
-                else if cell.lblStatus.text == "VISITED" {
-                    cell.lblStatus.backgroundColor = AppColor.cancelColor
-                    
-                    cell.constraintHightStackBtn.constant = 50
-
-                    cell.constraintHightStacklbl.constant = 0.5
-
-                    cell.lblHightStacklblMiddle.isHidden = true
-                    
-                    cell.lblapprovedby.isHidden = true
-                    
-                   
-                    cell.imgview2.isHidden = true
-                    
-                    cell.imgviewHight2.constant = 0
-
-                    cell.imgview5.isHidden = true
-
-                    cell.imgview4.isHidden = true
-
-                    cell.btnWrong_Entry.isHidden = false
-                    cell.btnCancel.isHidden = true
-                    cell.btnEdit.isHidden = true
-                    cell.btnRenew.isHidden = true
-                    cell.btnClose.isHidden = true
-                    cell.btnNote_Guard.isHidden = true
-                    cell.btnOut.isHidden = true
-                    cell.btnAlertInfo.isHidden = true
-
-                }
                 else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                     cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                     
@@ -5680,7 +6564,124 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.btnDeliveryInfo.isHidden = true
                     cell.btnAlertInfo.isHidden = true
 
-                }else{
+                }
+                else if cell.lblStatus.text == "APPROVED" {
+                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    cell.constraintHightStackBtn.constant = 50
+                    cell.constraintHightStacklbl.constant = 0.5
+                    cell.lblHightStacklblMiddle.isHidden = false
+                    
+                    cell.lblintime.isHidden = false
+                    cell.lblouttime.isHidden = true
+                    cell.lbladdedby.isHidden = false
+                    cell.lblapprovedby.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.lblWrongEntry.isHidden = true
+
+                    cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0
+
+                    cell.imgview1.isHidden = false
+                    cell.imgview2.isHidden = true
+                    cell.imgview3.isHidden = false
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+
+                    cell.imgviewTop3_1.constant = 5
+
+                    cell.imgviewStackTop3.constant = 10
+
+                    cell.btnClose.isHidden = false
+                    
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "VISITED" {
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                    
+                    cell.constraintHightStackBtn.constant = 50
+
+                    cell.constraintHightStacklbl.constant = 0.5
+
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                    cell.lblapprovedby.isHidden = true
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                       // cell.imgviewTop6_3.constant = 0
+
+                        cell.imgviewStackTop3.constant = 10
+                        
+                        cell.btnWrong_Entry.isHidden = false
+                        cell.btnWrong_Entry_Red.isHidden = true
+
+                        cell.imgviewHight6.constant = 0
+                        cell.imgview6.isHidden = true
+
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+                        
+                        cell.imgviewTop3_1.constant = 5
+                        
+                        cell.imgviewTop6_3.constant = 5
+                        
+                        cell.imgviewStackTop3.constant = 27
+
+                        cell.imgviewStackTop6.constant = 10
+                        
+                        cell.btnWrong_Entry_Red.isHidden = false
+                        cell.btnWrong_Entry.isHidden = true
+                        
+                        cell.imgviewHight6.constant = 12
+                        cell.imgview6.isHidden = false
+
+                    }
+                    
+                    cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+
+                    cell.imgview1.isHidden = false
+                    cell.imgview2.isHidden = true
+                    cell.imgview3.isHidden = false
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else{
                     cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                     
                     cell.constraintHightStackBtn.constant = 0
@@ -5704,6 +6705,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.btnCancel.isHidden = true
                     cell.btnEdit.isHidden = true
                     cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
                     cell.btnRenew.isHidden = true
                     cell.btnClose.isHidden = true
                     cell.btnNote_Guard.isHidden = true
@@ -5758,6 +6760,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
         }else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Vehicle Added"{
             
+            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+
             if arrGuestList[indexPath.row].activity?.vehicleTypeID != nil {
                 cell.lblname.text = arrGuestList[indexPath.row].activity?.vehicleTypeID
             }else{
@@ -5831,9 +6835,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btnClose.addTarget(self, action:#selector(ApiCallClose), for: .touchUpInside)
         
         /*
-        cell.btnClose.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-        cell.btnNote_Guard.addTarget(self, action:#selector(callmember), for: .touchUpInside)
-        cell.btnOut.addTarget(self, action:#selector(ApiCallOut), for: .touchUpInside) */
+         cell.btnNote_Guard.addTarget(self, action:#selector(callmember), for: .touchUpInside)
+         */
 
         
         
