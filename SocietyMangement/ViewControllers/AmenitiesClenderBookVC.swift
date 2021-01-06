@@ -65,6 +65,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
     var activeTexfield :UITextField! = nil
 
     var selecteddates = [String]()
+    
        fileprivate let gregorian: Calendar = Calendar(identifier: .gregorian)
        fileprivate lazy var dateFormatter1: DateFormatter = {
            let formatter = DateFormatter()
@@ -97,6 +98,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
    // calenderView.appearance.todayColor = UIColor.clear
     //    calenderView.appearance.todaySelectionColor = UIColor.clear
       //  calenderView.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesSingleUpperCase]
+        
   let date = NSDate()
   let calendar = Calendar.current
  
@@ -136,7 +138,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
             btnDone.setTitle("Update", for: .normal)
         }
         
-        viewFinalAmenties.isHidden = true
+          viewFinalAmenties.isHidden = true
         
          calenderView.dataSource = self
          calenderView.delegate = self

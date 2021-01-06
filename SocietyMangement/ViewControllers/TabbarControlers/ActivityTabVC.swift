@@ -1092,6 +1092,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryMultiEditDateVC") as! DeliveryMultiEditDateVC
                 popOverConfirmVC.delegate = self
                 
+                popOverConfirmVC.isfrom = 2
+
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
@@ -1155,6 +1157,176 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 self.view.addSubview(popOverConfirmVC.view)
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
+        }else if self.arrGuestList[sender.tag].activity?.activityType! == "Cab Entry" {
+            
+            let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
+            popOverConfirmVC.delegate = self
+            
+            popOverConfirmVC.isfrom = 3
+            
+           if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+            
+                popOverConfirmVC.strStartDate = activityIn!
+            }
+            
+            if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                 let activityInTime = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[1]
+
+                 popOverConfirmVC.StrTime = activityInTime!
+             }
+             
+            popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
+            popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
+            popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+            popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
+
+            self.addChildViewController(popOverConfirmVC)
+            popOverConfirmVC.view.frame = self.view.frame
+            self.view.center = popOverConfirmVC.view.center
+            self.view.addSubview(popOverConfirmVC.view)
+            popOverConfirmVC.didMove(toParentViewController: self)
+            
+        }else if self.arrGuestList[sender.tag].activity?.activityType! == "Cab Pre-Approval" {
+            if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
+                
+                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
+                popOverConfirmVC.delegate = self
+                
+                popOverConfirmVC.isfrom = 3
+                
+               if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                    let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+                
+                    popOverConfirmVC.strStartDate = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                     let activityInTime = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[1]
+
+                     popOverConfirmVC.StrTime = activityInTime!
+                 }
+                 
+                popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
+                popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
+                popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+                popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
+
+                self.addChildViewController(popOverConfirmVC)
+                popOverConfirmVC.view.frame = self.view.frame
+                self.view.center = popOverConfirmVC.view.center
+                self.view.addSubview(popOverConfirmVC.view)
+                popOverConfirmVC.didMove(toParentViewController: self)
+                
+            }else if arrGuestList[sender.tag].activity?.isMulti == "1" { // Multi
+                          
+                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryMultiEditDateVC") as! DeliveryMultiEditDateVC
+                popOverConfirmVC.delegate = self
+                
+                popOverConfirmVC.isfrom = 3
+                
+                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                  let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+                    popOverConfirmVC.strStartDate = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.out) != nil {
+                  let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
+                    popOverConfirmVC.StrEndDate = out!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
+                  let activityIn = arrGuestList[sender.tag].activity?.allowedInTime!
+                    popOverConfirmVC.strStartTime = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.allowedOutTime) != nil {
+                  let out = arrGuestList[sender.tag].activity?.allowedOutTime!
+                    popOverConfirmVC.strEndTime = out!
+                }
+               
+                popOverConfirmVC.multiDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
+                popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
+                popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+                popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID!
+                
+                self.addChildViewController(popOverConfirmVC)
+                popOverConfirmVC.view.frame = self.view.frame
+                self.view.center = popOverConfirmVC.view.center
+                self.view.addSubview(popOverConfirmVC.view)
+                popOverConfirmVC.didMove(toParentViewController: self)
+
+            }
+        }else if self.arrGuestList[sender.tag].activity?.activityType! == "Service Provider Pre-Approval" {
+            if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
+                
+                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
+                popOverConfirmVC.delegate = self
+                
+                popOverConfirmVC.isfrom = 3
+                
+               if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                    let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+                
+                    popOverConfirmVC.strStartDate = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                     let activityInTime = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[1]
+
+                     popOverConfirmVC.StrTime = activityInTime!
+                 }
+                 
+                popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
+                popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
+                popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+                popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
+
+                self.addChildViewController(popOverConfirmVC)
+                popOverConfirmVC.view.frame = self.view.frame
+                self.view.center = popOverConfirmVC.view.center
+                self.view.addSubview(popOverConfirmVC.view)
+                popOverConfirmVC.didMove(toParentViewController: self)
+                
+            }else if arrGuestList[sender.tag].activity?.isMulti == "1" { // Multi
+                          
+                let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryMultiEditDateVC") as! DeliveryMultiEditDateVC
+                popOverConfirmVC.delegate = self
+                
+                popOverConfirmVC.isfrom = 3
+                
+                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+                  let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+                    popOverConfirmVC.strStartDate = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.out) != nil {
+                  let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
+                    popOverConfirmVC.StrEndDate = out!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
+                  let activityIn = arrGuestList[sender.tag].activity?.allowedInTime!
+                    popOverConfirmVC.strStartTime = activityIn!
+                }
+                
+                if (arrGuestList[sender.tag].activity?.allowedOutTime) != nil {
+                  let out = arrGuestList[sender.tag].activity?.allowedOutTime!
+                    popOverConfirmVC.strEndTime = out!
+                }
+               
+                popOverConfirmVC.multiDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
+                popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
+                popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+                popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID!
+                
+                self.addChildViewController(popOverConfirmVC)
+                popOverConfirmVC.view.frame = self.view.frame
+                self.view.center = popOverConfirmVC.view.center
+                self.view.addSubview(popOverConfirmVC.view)
+                popOverConfirmVC.didMove(toParentViewController: self)
+
+            }
         }
         
     }

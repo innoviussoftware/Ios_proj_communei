@@ -270,7 +270,7 @@ class MaidProfileDetailsVC: UIViewController {
     @IBAction func actionViewAllWorkingWith(_ sender: Any) {
         
        // if dictHelperData.props != nil{
-        if dictHelperData.props!.count > 0{
+        if dictHelperData != nil {
              let popup = self.storyboard?.instantiateViewController(withIdentifier: "WorkingWithPopUpVC") as! WorkingWithPopUpVC
             popup.arrWorkingWith = dictHelperData.props!
              let navigationController = UINavigationController(rootViewController: popup)
@@ -282,7 +282,7 @@ class MaidProfileDetailsVC: UIViewController {
     }
     
     @IBAction func actionViewAllRatingReview(_ sender: UIButton) {
-        if dictHelperData.comments.count > 0{
+        if dictHelperData != nil{
             let popup = self.storyboard?.instantiateViewController(withIdentifier: "RatingReviewListVC") as! RatingReviewListVC
             popup.arrRatingReview = dictHelperData.comments
             popup.avgRating = dictHelperData.rating
@@ -291,17 +291,20 @@ class MaidProfileDetailsVC: UIViewController {
     }
     
     @IBAction func actionAddRatings(_ sender: UIButton) {
-        let popup = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
         
-        popup.dailyHelperID = self.dictHelperData.dailyHelperID
+        if self.arrRating.count > 0  {
+            let popup = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
+            
+            popup.dailyHelperID = self.dictHelperData.dailyHelperID
 
-        popup.VendorServiceTypeID = self.arrRating[sender.tag].vendorServiceTypeID
-        
-        popup.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID
-        
-        let navigationController = UINavigationController(rootViewController: popup)
-        navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        self.present(navigationController, animated: true)
+            popup.VendorServiceTypeID = self.arrRating[sender.tag].vendorServiceTypeID
+            
+            popup.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID
+            
+            let navigationController = UINavigationController(rootViewController: popup)
+            navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            self.present(navigationController, animated: true)
+        }
         
     }
     
@@ -447,8 +450,8 @@ class MaidProfileDetailsVC: UIViewController {
                            
                            return
                        }
-                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                       self.present(alert, animated: true, completion: nil)
+                     // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      // self.present(alert, animated: true, completion: nil)
                        print(err.asAFError!)
                        
                    }

@@ -137,6 +137,11 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                 btncheckMark.isSelected = true
 
             }
+        }else if isfrom == 3 {
+            viewinnerHeightCons.constant = 255
+            btncheckMark.isHidden = true
+            lblDeliveryName.isHidden = true
+            btnUpdateTopCons.constant = 20
         }
         
         // Do any additional setup after loading the view.
@@ -410,8 +415,16 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                "VisitorEntryTypeID": VisitorEntryTypeID!,
                 "IsLeaveAtGate": singleDeliveryCheckGate
            ]
+        }else if isfrom == 3 {
+            param  = [
+               "VisitStartDate": txtdate.text!,
+               "FromTime": txttime.text!,
+               "ToTime": after_add_time,
+               "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
+               "UserActivityID": UserActivityID!,
+               "VisitorEntryTypeID": VisitorEntryTypeID!
+           ]
         }
-        
             
         
         print("param Single add date : ",param)

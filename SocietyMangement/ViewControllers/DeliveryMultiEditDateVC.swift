@@ -37,6 +37,11 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
     @IBOutlet weak var collectionDays: UICollectionView!
     
     @IBOutlet weak var viewbottom1: UIView!
+    
+    @IBOutlet weak var viewinnerHeightCons: NSLayoutConstraint!
+    
+    @IBOutlet weak var btnUpdateTopCons: NSLayoutConstraint!
+
 
     var datePicker = UIDatePicker()
     var timePicker = UIDatePicker()
@@ -58,6 +63,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
     
     var strStartTime = ""
     var strEndTime = ""
+    
+    var isfrom = 1
     
     var arrDays = [GetDays]()
     
@@ -119,18 +126,34 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         let datees = dateFormatterGet.date(from: Msg_Date1)
         Msg_Date1 =  dateFormatterPrint.string(from: datees ?? Date())
      
-     txtEndTime.text = Msg_Date1
-        
+        txtEndTime.text = Msg_Date1
         
         showDatePicker()
+        
         showTimepPicker_Multiple()
         
-        if multiDeliveryCheckGate == "0" {
-            btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
-            btncheckMark.isSelected = false
-        }else if multiDeliveryCheckGate == "1" {
-            btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
-            btncheckMark.isSelected = true
+        if isfrom == 2 {
+            
+            viewinnerHeightCons.constant = 390
+            btnUpdateTopCons.constant = 60
+            
+            btncheckMark.isHidden = false
+            lblDeliveryName.isHidden = false
+            
+            if multiDeliveryCheckGate == "0" {
+                btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
+                btncheckMark.isSelected = false
+            }else if multiDeliveryCheckGate == "1" {
+                btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
+                btncheckMark.isSelected = true
+            }
+        }else if isfrom == 3 {
+            
+            viewinnerHeightCons.constant = 350
+            btnUpdateTopCons.constant = 20
+            btncheckMark.isHidden = false
+            lblDeliveryName.isHidden = false
+            
         }
         
         self.apiCallGetDays()
@@ -349,7 +372,10 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
-            let param : Parameters = [
+        var param = Parameters()
+
+        if isfrom == 2 {
+             param  = [
                 "VisitStartDate": txtstartdate.text!,
                 "VisitEndDate": txtenddate.text!,
                 "FromTime": txtStartTime.text!,
@@ -360,6 +386,18 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 "IsLeaveAtGate": multiDeliveryCheckGate,
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
+        }else if isfrom == 3 {
+            param  = [
+                "VisitStartDate": txtstartdate.text!,
+                "VisitEndDate": txtenddate.text!,
+                "FromTime": txtStartTime.text!,
+                "ToTime": txtEndTime.text!,
+                "VisitFlatPreApprovalID": VisitFlatPreApprovalID!,
+                "UserActivityID": UserActivityID!,
+                "VisitorEntryTypeID": VisitorEntryTypeID!,
+                "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
+            ]
+        }
         
         print("param Multi Delivery add date : ",param)
         

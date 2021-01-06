@@ -70,6 +70,13 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     var dailyHelpPropertyID : Int?
     
     var vendorServiceTypeID : Int?
+    
+    var indexNotifyOnEntry : Int?
+    var indexService : Int?
+
+    var isFromService = "false"
+    
+    var isFromNotice = "false"
 
 
     override func viewDidLoad() {
@@ -779,6 +786,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 
                 cell.btndelete.tag = indexPath.row
                 
+                cell.btnNotification.tag = indexPath.row
+                
+                cell.btnService.tag = indexPath.row
+
+                
                 let rating = Double((self.arrHelperList[indexPath.row].dailyHelperCard?.averageRating)!)
 
                 cell.ratingView.rating = rating!
@@ -787,17 +799,43 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 
                 cell.lblMaidType.text = arrHelperList[indexPath.row].dailyHelperCard?.vendorServiceTypeName
                 
-                if ((arrHelperList[indexPath.row].dailyHelperCard?.shouldNotifyOnEntry) == "0") {
-                    cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
+                if isFromNotice == "false" {
+                    if ((arrHelperList[indexPath.row].shouldNotifyOnEntry) == 0) {
+                         indexNotifyOnEntry = 0
+                         cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
+                    }else{
+                        indexNotifyOnEntry = 1
+                        cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal) // start
+                    }
                 }else{
-                    cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal)
+                    if (indexNotifyOnEntry == 0) {
+                        indexNotifyOnEntry = 1
+                        cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal) // start
+                    }else{
+                        indexNotifyOnEntry = 0
+                        cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
+                    }
                 }
                 
+               
                 
-                if ((arrHelperList[indexPath.row].dailyHelperCard?.holdService) == "0") {
-                        cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
+                if isFromService == "false" {
+
+                    if ((arrHelperList[indexPath.row].holdService) == 0) {
+                            indexService = 0
+                            cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
+                    }else{
+                        indexService = 1
+                        cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
+                    }
                 }else{
-                    cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
+                    if (indexService == 0) {
+                        indexService = 1
+                        cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
+                    }else{
+                        indexService = 0
+                        cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
+                    }
                 }
                 
                 // 25/9/20.
@@ -812,7 +850,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
           //      tap.addTarget(self, action:#selector(tapmaid))
           //      cell.imgMaid.addGestureRecognizer(tap)
                 
+
+                
                 cell.imgMaid.tag = indexPath.row
+                
+                cell.btnNotification.addTarget(self, action:#selector(notifyToggleMyDailyHelper(sender:)), for: .touchUpInside)
+
+                
+                cell.btnService.addTarget(self, action:#selector(servicesToggleMyDailyHelper(sender:)), for: .touchUpInside)
+
                 
                 cell.btnCall.addTarget(self, action:#selector(callMaid(sender:)), for: .touchUpInside)
                 
@@ -1497,14 +1543,140 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
             }
             present(avc!, animated: true)
                     
-            
+    }
+    
+    @objc func notifyToggleMyDailyHelper(sender:UIButton)
+    {
+        dailyHelpPropertyID = arrHelperList[sender.tag].dailyHelpPropertyID!
+
+        isFromNotice = "true"
+
+        isFromService = "true"
+        
+        if ((arrHelperList[sender.tag].shouldNotifyOnEntry) == 0) {
+            if indexNotifyOnEntry == 1 {
+                indexNotifyOnEntry = 1
+            }else{
+                indexNotifyOnEntry = 0
+            }
+        }
+        self.apicallnotifyToggleMyDailyHelper(DailyHelpPropertyID: self.dailyHelpPropertyID! , ShouldNotifyOnEntry: self.indexNotifyOnEntry!)
+    }
+    
+    
+    @objc func servicesToggleMyDailyHelper(sender:UIButton)
+    {
+        dailyHelpPropertyID = arrHelperList[sender.tag].dailyHelpPropertyID!
+
+        isFromService = "true"
+        
+        isFromNotice = "true"
+
+        if ((arrHelperList[sender.tag].holdService) == 0) {
+            if indexService == 1 {
+                indexService = 1
+            }else{
+                indexService = 0
+            }
+            //collectionHelper.reloadData()
+        }
+        self.apicallServicesToggleMyDailyHelper(DailyHelpPropertyID: self.dailyHelpPropertyID! , HoldService: self.indexService!)
+    }
+    
+    func apicallServicesToggleMyDailyHelper(DailyHelpPropertyID:Int,HoldService:Int) {
+        if !NetworkState().isInternetAvailable {
+             ShowNoInternetAlert()
+             return
+         }
+ 
+         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        let param : Parameters = [
+            "DailyHelpPropertyID" : DailyHelpPropertyID,
+            "HoldService" : indexService!
+         ]
+        
+        print("Service Toggle param", param)
+
+        webservices().StartSpinner()
+        Apicallhandler.sharedInstance.ApiCallServiceToggleHelperList(token: token as! String, param: param) { JSON in
+               
+               let statusCode = JSON.response?.statusCode
+               
+               switch JSON.result{
+               case .success(let resp):
+                   //webservices().StopSpinner()
+                   self.refreshControl.endRefreshing()
+                   if statusCode == 200{
+                     self.apicallGetMyHelperList()
+                   }
+               case .failure(let err):
+                   
+                   webservices().StopSpinner()
+                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   self.present(alert, animated: true, completion: nil)
+                   print(err.asAFError!)
+                   
+                   
+               }
+           }
+           
+   
+       
+    }
+    
+    
+    func apicallnotifyToggleMyDailyHelper(DailyHelpPropertyID:Int,ShouldNotifyOnEntry:Int) {
+        if !NetworkState().isInternetAvailable {
+             ShowNoInternetAlert()
+             return
+         }
+ 
+         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        let param : Parameters = [
+            "DailyHelpPropertyID" : DailyHelpPropertyID,
+            "ShouldNotifyOnEntry" : indexNotifyOnEntry!
+         ]
+        
+        print("Notify Toggle param", param)
+        
+        webservices().StartSpinner()
+        Apicallhandler.sharedInstance.ApiCallNotifyToggleHelperList(token: token as! String, param: param) { JSON in
+               
+               let statusCode = JSON.response?.statusCode
+               
+               switch JSON.result{
+               case .success(let resp):
+                   //webservices().StopSpinner()
+                   self.refreshControl.endRefreshing()
+                   if statusCode == 200{
+                     self.apicallGetMyHelperList()
+                   }
+               case .failure(let err):
+                   
+                   webservices().StopSpinner()
+                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   self.present(alert, animated: true, completion: nil)
+                   print(err.asAFError!)
+                   
+                   
+               }
+           }
+           
+   
+       
     }
     
     @objc func calenderAttendanceMaid(sender:UIButton)
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DomesticHelperAttendanceVC") as! DomesticHelperAttendanceVC
+        
+        let dailyHelperID = (arrHelperList[sender.tag].dailyHelperCard?.dailyHelperID)!
+        nextViewController.dailyHelperID = (dailyHelperID as NSString).integerValue
         nextViewController.strlbl = (arrHelperList[sender.tag].dailyHelperCard?.name)!
+        nextViewController.strAddedCalendarDate = (arrHelperList[sender.tag].dailyHelperCard?.addedOn?.components(separatedBy: " ")[0])!
+
        // nextViewController.isfrom = 0
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }

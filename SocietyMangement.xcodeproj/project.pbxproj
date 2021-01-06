@@ -94,6 +94,7 @@
 		68144136D7CA7E14A753744E /* Pods_SocietyMangementUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 802B8D9C963E81C8D66E59A9 /* Pods_SocietyMangementUITests.framework */; };
 		93352BB8A50E98815C178C17 /* Pods_SocietyMangementTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F939B012E3B49191163246 /* Pods_SocietyMangementTests.framework */; };
 		9A00D7DE23335D8700E43EA4 /* RoleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00D7DD23335D8700E43EA4 /* RoleResponse.swift */; };
+		9A072A6225A5D58100804C56 /* AttendanceHelperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A072A6125A5D58100804C56 /* AttendanceHelperResponse.swift */; };
 		9A07B6C2230EAADD00ED5C6C /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07B6C1230EAADD00ED5C6C /* LoginResponse.swift */; };
 		9A07B6C6230EB75F00ED5C6C /* NoticeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07B6C5230EB75F00ED5C6C /* NoticeResponse.swift */; };
 		9A07B6C8230EBBF200ED5C6C /* EventResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A07B6C7230EBBF200ED5C6C /* EventResponse.swift */; };
@@ -394,6 +395,7 @@
 		802B8D9C963E81C8D66E59A9 /* Pods_SocietyMangementUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocietyMangementUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90F939B012E3B49191163246 /* Pods_SocietyMangementTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocietyMangementTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A00D7DD23335D8700E43EA4 /* RoleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleResponse.swift; sourceTree = "<group>"; };
+		9A072A6125A5D58100804C56 /* AttendanceHelperResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceHelperResponse.swift; sourceTree = "<group>"; };
 		9A07B6B9230E9EDE00ED5C6C /* SocietyMangement.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SocietyMangement.entitlements; sourceTree = "<group>"; };
 		9A07B6C1230EAADD00ED5C6C /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		9A07B6C5230EB75F00ED5C6C /* NoticeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeResponse.swift; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 				9A07B6C7230EBBF200ED5C6C /* EventResponse.swift */,
 				9A17A5A0258CC666004DCB07 /* ServiceTypeResponse.swift */,
 				9AA06067255574DE009F48D7 /* SocietyEventResponse.swift */,
+				9A072A6125A5D58100804C56 /* AttendanceHelperResponse.swift */,
 				9ABCFA34256FC2DB00DE476E /* UserActivityTypeResponse.swift */,
 				9A9FF808257E331C007409AE /* DeliveryCompanySelectResponse.swift */,
 				9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */,
@@ -1340,6 +1343,7 @@
 				D2B9DA6624F5287500FF9BF0 /* BuySellCategotylist.swift in Sources */,
 				9A17C5F42361A7DD00158271 /* AddRatingReviewPopUpVC.swift in Sources */,
 				9AA81661233489DE007E3CE9 /* GuestPopVC.swift in Sources */,
+				9A072A6225A5D58100804C56 /* AttendanceHelperResponse.swift in Sources */,
 				D2DDD58924FE0F060008BE6A /* PollDetailCell.swift in Sources */,
 				9A532585230BCB13003E5F29 /* ApiCallinstance.swift in Sources */,
 				4E9C3E59237A875000817B2F /* ViewPastActivityVC.swift in Sources */,

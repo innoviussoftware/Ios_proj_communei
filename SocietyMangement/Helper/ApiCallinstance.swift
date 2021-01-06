@@ -211,6 +211,24 @@ struct Apicallhandler {
         
     }
     
+    func ApiCallNotifyToggleHelperList(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_DAILY_HELPER_NOTIFY_TOGGLE, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
+    func ApiCallServiceToggleHelperList(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_DAILY_HELPER_NOTIFY_SERVICE, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     
     func ApiCallDeleteFamilyMember(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
         
@@ -501,6 +519,14 @@ struct Apicallhandler {
     func APIReferFriend(URL: String, param:Parameters,token: String , onCompletion: @escaping ((_ response: DataResponse<ReferFriendModel>) -> Void)) {
         
         AF.request(URL, method: .post, parameters:param,  encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<ReferFriendModel>) in
+            onCompletion(response)
+            
+        }
+    }
+    
+    func APIAttenceHelperList(URL: String, param:Parameters,token: String , onCompletion: @escaping ((_ response: DataResponse<AttendanceHelperResponse>) -> Void)) {
+        
+        AF.request(URL, method: .post, parameters:param,  encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<AttendanceHelperResponse>) in
             onCompletion(response)
             
         }
