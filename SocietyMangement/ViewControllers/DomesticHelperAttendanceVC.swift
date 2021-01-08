@@ -19,10 +19,19 @@ class DomesticHelperAttendanceVC: UIViewController {
     
     @IBOutlet weak var calenderView: FSCalendar!
     
-    @IBOutlet weak var lbldatePresent: UILabel!
+    @IBOutlet weak var lbldatePresentTotal: UILabel!
 
+    @IBOutlet weak var lblPresent: UILabel!
+    @IBOutlet weak var lblAbsent: UILabel!
+    @IBOutlet weak var lbldateSelectPresent: UILabel!
+    @IBOutlet weak var lbldateSelectAbsent: UILabel!
+
+    @IBOutlet weak var btnPresent: UIButton!
+    @IBOutlet weak var btnAbsent: UIButton!
     
     var arrAttendance : AttendanceSheet?
+    
+    var arrAttendanceData = [AttendanceDatum]()
 
     var year : Int?
     var month : Int?
@@ -62,9 +71,9 @@ class DomesticHelperAttendanceVC: UIViewController {
         calenderView.swipeToChooseGesture.isEnabled = true
         calenderView.backgroundColor = UIColor.white
         
-        calenderView.appearance.todayColor = UIColor.orange
+       // calenderView.appearance.todayColor = UIColor.orange
 
-        calenderView.appearance.todaySelectionColor = UIColor.orange
+       // calenderView.appearance.todaySelectionColor = UIColor.orange
         
         let date = NSDate()
         let calendar = Calendar.current
@@ -74,6 +83,23 @@ class DomesticHelperAttendanceVC: UIViewController {
          day = calendar.component(.day, from: date as Date)
               
         print("year:month:day : ",year!,month!,day!)
+        
+        lblPresent.isHidden = true
+        lblAbsent.isHidden = true
+        lbldateSelectPresent.isHidden = true
+        lbldateSelectAbsent.isHidden = true
+
+        btnPresent.isHidden = true
+        btnAbsent.isHidden = true
+        
+        
+       /* let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date111 = dateFormatter.date(from: strAddedCalendarDate)
+        
+        print("date111",date111!)
+        
+       // showRange(between: date111!, and: date as Date) */
         
         apicallCalendarAttendance()
         
@@ -109,20 +135,36 @@ class DomesticHelperAttendanceVC: UIViewController {
                 {
                     self.arrAttendance = resp.data!
                     
-                    let presentDays = self.arrAttendance?.presentDays
-                    let totalDays = self.arrAttendance?.totalDays
                     
-                    self.lbldatePresent.text = "total: \(presentDays!/totalDays!)"
+                    let presentDays = (self.arrAttendance?.presentDays)!
+                    let totalDays = (self.arrAttendance?.totalDays)!
+                    //let str = "/"
                     
+                    self.lbldatePresentTotal.text = "total: \(presentDays)/\(totalDays)"
                     
-                    if (self.arrAttendance?.attendanceData!.count)! > 0 {
-                        
-                        
-                        
+                    if (self.arrAttendance?.attendanceData?.count)! > 0 {
+                                            
+                        print("self.arrAttendance?.attendanceData : ",self.arrAttendance?.attendanceData! ?? "")
                     }else{
                         
                     }
                    
+                }
+                
+                else if(JSON.response?.statusCode == 401)
+                {
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                       let navController = UINavigationController(rootViewController: aVC)
+                                                                       navController.isNavigationBarHidden = true
+                                                          self.appDelegate.window!.rootViewController  = navController
+                                                          
+                        }
+                    })
+                    
+                    
                 }
                 else
                 {
@@ -156,12 +198,20 @@ class DomesticHelperAttendanceVC: UIViewController {
         }
     }
     
-    
 
     @IBAction func actionMenu(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @IBAction func btnAbsentPressed(_ sender: UIButton) {
+        // "user/daily-helper/attendance/absent"
+    }
 
+    @IBAction func btnPresentPressed(_ sender: UIButton) {
+       // "user/daily-helper/attendance/present"
+    }
+    
+    
 }
 
 
@@ -198,6 +248,7 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
             }else{
                 print("date is selectable")
             }
+        
                return true
     }
  
@@ -209,6 +260,26 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
         return Date()
     }
     
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let date = formatter.date(from: strAddedCalendarDate)
+        
+        return date!
+    }
+    
+  /* func maximumDate(for calendar: FSCalendar) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let date = formatter.date(from: strAddedCalendarDate)
+
+        let myString = formatter.string(from: date!) // Date())
+        let yourDate = formatter.date(from: myString)
+        formatter.dateFormat = "yyyy-MM-dd"
+        let strCurrentDate = formatter.string(from: yourDate!)
+        return self.dateFormatter2.date(from: strCurrentDate)!
+    }
+    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         
         let dateFormatter = DateFormatter()
@@ -216,6 +287,6 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
         let date = dateFormatter.date(from: strAddedCalendarDate)
         
         print("changed added date : ",date!)
-    }
+    } */
     
 }

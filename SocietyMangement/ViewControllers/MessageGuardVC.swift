@@ -174,7 +174,22 @@ class MessageGuardVC: UIViewController, UICollectionViewDelegate , UICollectionV
                         self.textViewReasion.text = ""
                        // self.imgview.setBackgroundImage(nil, for: .normal)
                         
-                    }else{
+                    }
+                    
+                    else if(statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     
                     break

@@ -118,10 +118,24 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                                    
                                     self.btnAddSuccessfully()
                                 
+                                    self.txtOtherName.text! = ""
                                  }
                                 
-                                self.txtOtherName.text! = ""
-                                 
+                                 else if(JSON.response?.statusCode == 401)
+                                 {
+                                     APPDELEGATE.ApiLogout(onCompletion: { int in
+                                         if int == 1{
+                                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                        let navController = UINavigationController(rootViewController: aVC)
+                                                                                        navController.isNavigationBarHidden = true
+                                                                           self.appDelegate.window!.rootViewController  = navController
+                                                                           
+                                         }
+                                     })
+                                     
+                                     
+                                 }
                              case .failure(let err):
                                  webservices().StopSpinner()
                                  if statusCode == 401{
@@ -342,9 +356,9 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                 cell.imgview.layer.borderWidth = 1.0
             }else {
                 cell.imgview.layer.borderColor = UIColor.clear.cgColor
-                cell.imgview.layer.masksToBounds = true
+                /*cell.imgview.layer.masksToBounds = true
                 cell.imgview.contentMode = .scaleToFill
-                cell.imgview.layer.borderWidth = 0.0
+                cell.imgview.layer.borderWidth = 0.0 */
             }
         }else if(isfrom == "Multiple") {
             if(selectedindex1 == indexPath.row) {
@@ -354,10 +368,10 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                 cell.imgview.contentMode = .scaleToFill
                 cell.imgview.layer.borderWidth = 1.0
             }else {
-                cell.imgview.layer.borderColor = UIColor.clear.cgColor
-                cell.imgview.layer.masksToBounds = true
+                 cell.imgview.layer.borderColor = UIColor.clear.cgColor
+                /* cell.imgview.layer.masksToBounds = true
                 cell.imgview.contentMode = .scaleToFill
-                cell.imgview.layer.borderWidth = 0.0
+                cell.imgview.layer.borderWidth = 0.0 */
             }
         }else{
             if(selectedindex == indexPath.row) {
@@ -368,9 +382,9 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                 cell.imgview.layer.borderWidth = 1.0
             }else {
                 cell.imgview.layer.borderColor = UIColor.clear.cgColor
-                cell.imgview.layer.masksToBounds = true
+                /*cell.imgview.layer.masksToBounds = true
                 cell.imgview.contentMode = .scaleToFill
-                cell.imgview.layer.borderWidth = 0.0
+                cell.imgview.layer.borderWidth = 0.0 */
             }
         }
 
@@ -388,6 +402,8 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
                 cell.imgview.layer.borderWidth = 0.0
             } */
             
+                cell.layer.borderColor = UIColor.clear.cgColor
+
         
              return cell
              

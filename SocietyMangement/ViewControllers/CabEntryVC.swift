@@ -778,6 +778,22 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                         self.navigationController?.pushViewController(initialViewController, animated: true) */
                      
                     }
+                    
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
                     else
                     {
                         
@@ -905,6 +921,22 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                                                 
                         self.navigationController?.pushViewController(initialViewController, animated: true) */
                 
+                    }
+                    
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     else
                     {

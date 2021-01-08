@@ -765,6 +765,21 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                            self.pickerview3.reloadAllComponents()
                            
                        }
+                       else if(JSON.response?.statusCode == 401)
+                       {
+                           APPDELEGATE.ApiLogout(onCompletion: { int in
+                               if int == 1{
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                              let navController = UINavigationController(rootViewController: aVC)
+                                                                              navController.isNavigationBarHidden = true
+                                                                 self.appDelegate.window!.rootViewController  = navController
+                                                                 
+                               }
+                           })
+                           
+                           
+                       }
                        else
                        {
                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:resp.message)
@@ -1257,7 +1272,23 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                         print(resp)
                         self.apicallUserMe()
                         
-                    }else{
+                    }
+                    else if(statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
+                    else{
                         let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
                         self.present(alert, animated: true, completion: nil)
                     }
@@ -1459,6 +1490,21 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
                         
                         self.professionary = resp.data
                         self.pickerview1.reloadAllComponents()
+                        
+                    }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
                         
                     }
                     else

@@ -331,7 +331,7 @@ extension CategoryDetailsVC : UICollectionViewDataSource,UICollectionViewDelegat
                    }
   
                
-        cell.lblPrice.text =  String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].amount!)
+        cell.lblPrice.text =  "\u{20B9}"+"\(arrCategoryDetails[indexPath.row].amount!)"// //String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].amount!)
         cell.lblDiscription.text = arrCategoryDetails[indexPath.row].title
         
 
@@ -408,7 +408,7 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
                              }
             
                          
-                  cell.lblPrice.text =  "\(arrCategoryDetails[indexPath.row].amount!)"
+                  cell.lblPrice.text =  "\u{20B9}"+"\(arrCategoryDetails[indexPath.row].amount!)"// "\(arrCategoryDetails[indexPath.row].amount!)"
                   cell.lblName.text = arrCategoryDetails[indexPath.row].title
                   cell.lblQuality.text = arrCategoryDetails[indexPath.row].qualityStatus
 

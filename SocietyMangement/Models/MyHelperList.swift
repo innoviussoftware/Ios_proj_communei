@@ -48,9 +48,9 @@ struct DailyHelperCard: Codable {
     let status, dailyHelperID: String?
     let dailyHelpPropertyID: Int?
     let vendorServiceTypeName, averageRating: String?
-   // let shouldNotifyOnEntry : String?
-  //  let holdService: String? // Int?
-   // let isServing : String?
+    let shouldNotifyOnEntry : Int? // String?
+    let holdService: Int? // String? //
+    let isServing : String?
     let  addedOn, addedBy: String?
 
     enum CodingKeys: String, CodingKey {
@@ -62,9 +62,9 @@ struct DailyHelperCard: Codable {
         case dailyHelpPropertyID = "DailyHelpPropertyID"
         case vendorServiceTypeName = "VendorServiceTypeName"
         case averageRating = "AverageRating"
-      //  case shouldNotifyOnEntry = "ShouldNotifyOnEntry"
-      //  case holdService = "HoldService"
-      //  case isServing = "IsServing"
+        case shouldNotifyOnEntry = "ShouldNotifyOnEntry"
+        case holdService = "HoldService"
+        case isServing = "IsServing"
         case addedOn = "AddedOn"
         case addedBy = "AddedBy"
     }

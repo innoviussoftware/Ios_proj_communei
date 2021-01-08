@@ -445,8 +445,8 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
                     }
                     else
                     {
-                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
-                        self.present(alert, animated: true, completion: nil)
+                      //  let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
+                      //  self.present(alert, animated: true, completion: nil)
                     }
                     
                     print(resp)

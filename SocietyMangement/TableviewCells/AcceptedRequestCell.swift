@@ -54,6 +54,9 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgviewTop4: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop5: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop6_3: NSLayoutConstraint!
+    @IBOutlet weak var imgviewTop6_1: NSLayoutConstraint!
+
+    @IBOutlet weak var imgviewBottom6: NSLayoutConstraint!
 
     
     @IBOutlet weak var imgviewStackTop1: NSLayoutConstraint!
@@ -88,7 +91,11 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnWrong_Entry_Red: UIButton!
 
     @IBOutlet weak var btnNote_Guard: UIButton!
+    
     @IBOutlet weak var btnOut: UIButton!
+    
+    @IBOutlet weak var btnIn: UIButton!
+
 
     @IBOutlet weak var btnDeliveryInfo: UIButton!
 

@@ -13,6 +13,15 @@ protocol addedVehicle {
     func addedNewVehicle()
 }
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class EntryVehicleDetailPopUpVC: BaseVC {
     var delegate : addedVehicle?
     @IBOutlet weak var containerView: UIView!
@@ -54,6 +63,21 @@ class EntryVehicleDetailPopUpVC: BaseVC {
                         }else{
                            
                         }
+                        
+                    }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
                         
                     }
                     else
@@ -237,6 +261,22 @@ class EntryVehicleDetailPopUpVC: BaseVC {
                                 self.txtVehicleNumber.text = ""
                                 self.dismiss(animated: true, completion: nil)
                             }
+                            
+                            else if(JSON.response?.statusCode == 401)
+                            {
+                                APPDELEGATE.ApiLogout(onCompletion: { int in
+                                    if int == 1{
+                                         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                      let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                   let navController = UINavigationController(rootViewController: aVC)
+                                                                                   navController.isNavigationBarHidden = true
+                                                                      self.appDelegate.window!.rootViewController  = navController
+                                                                      
+                                    }
+                                })
+                                
+                                
+                            }
                             else
                             {
                                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid vehicle number")
@@ -261,6 +301,7 @@ class EntryVehicleDetailPopUpVC: BaseVC {
 }
 
 
+@available(iOS 13.0, *)
 extension EntryVehicleDetailPopUpVC : UIPickerViewDelegate , UIPickerViewDataSource{
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -282,6 +323,7 @@ extension EntryVehicleDetailPopUpVC : UIPickerViewDelegate , UIPickerViewDataSou
 }
 
 
+@available(iOS 13.0, *)
 extension EntryVehicleDetailPopUpVC : UITextFieldDelegate{
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

@@ -72,6 +72,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     var vendorServiceTypeID : Int?
     
     var indexNotifyOnEntry : Int?
+    
     var indexService : Int?
 
     var isFromService = "false"
@@ -310,6 +311,22 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         print(resp)
                     }
                     
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
+                    
                 case .failure(let err):
                     webservices().StopSpinner()
                     if statusCode == 401{
@@ -396,7 +413,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                             
                         }
                     }
+                     
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
                         
+                        
+                    }
+                    
                     else
                     {
                         if(resp.data!.count == 0)
@@ -418,6 +451,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         }
                         
                     }
+                    
+
                     
                 case .failure(let err):
                     
@@ -492,11 +527,12 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     
                 case .success(let resp):
                     
+                    print(resp)
                     if(JSON.response?.statusCode == 200)
                     {
                         
                         self.arrVehicleList = resp.data!
-                        
+                                                
                         if self.arrVehicleList.count > 0{
                             self.collectionVehicle.isHidden = false
                             self.viewStaticAddVhicle.isHidden = true
@@ -511,12 +547,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         }
                         
                     }
-                    else
+
+                    else if(JSON.response?.statusCode == 401)
                     {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
                         
                     }
                     
-                    print(resp)
                 case .failure(let err):
                     self.viewStaticAddVhicle.isHidden = false
                     self.lblStaticAddVhicleDetail.isHidden = false
@@ -580,6 +627,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                            
                             self.arrHelperList = resp.data!
                             
+                            print("self.arrHelperList : ", self.arrHelperList)
                             
                             if self.arrHelperList.count > 0{
                                 self.collectionHelper.dataSource = self
@@ -600,6 +648,22 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                             }
                             
                             
+                          }
+                        
+                          else if(JSON.response?.statusCode == 401)
+                          {
+                              APPDELEGATE.ApiLogout(onCompletion: { int in
+                                  if int == 1{
+                                       let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                    let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                 let navController = UINavigationController(rootViewController: aVC)
+                                                                                 navController.isNavigationBarHidden = true
+                                                                    self.appDelegate.window!.rootViewController  = navController
+                                                                    
+                                  }
+                              })
+                              
+                              
                           }
                       case .failure(let err):
                           
@@ -688,6 +752,47 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
 
         
      //MARK:- collection view delegate
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+      /*  if(collectionView == collectionmenu)
+        {
+            let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
+            
+            if(str.contains("Secretory") || str.contains("Chairman"))
+            {
+                return menuary.count
+                
+            }else{
+                return arrData.count
+            }
+            
+        }
+        
+        else if collectionView == collectionVehicle{
+            return arrVehicleList.count
+        }else if collectionView == collectionFrequentGuest{
+            return arrFrequentGuestData.count
+        }else if collectionView == collectionHelper{
+            return arrHelperList.count
+        }else{
+            return familymeberary.count
+        } */
+       
+       
+       if collectionView == collectionFrequentGuest{
+           return arrFrequentGuestData.count
+       }else if collectionView == collectionVehicle{
+           return arrVehicleList.count
+       }else if collectionView == collectionHelper{
+           return arrHelperList.count
+       }else{
+           return familymeberary.count
+       }
+
+    }
+    
+    
          func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
              /* if(collectionView == collectionVehicle)
@@ -800,41 +905,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 cell.lblMaidType.text = arrHelperList[indexPath.row].dailyHelperCard?.vendorServiceTypeName
                 
                 if isFromNotice == "false" {
-                    if ((arrHelperList[indexPath.row].shouldNotifyOnEntry) == 0) {
-                         indexNotifyOnEntry = 0
+                    if ((arrHelperList[indexPath.row].dailyHelperCard?.shouldNotifyOnEntry) == 0) {
+                         indexNotifyOnEntry = 1
                          cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
                     }else{
-                        indexNotifyOnEntry = 1
-                        cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal) // start
-                    }
-                }else{
-                    if (indexNotifyOnEntry == 0) {
-                        indexNotifyOnEntry = 1
-                        cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal) // start
-                    }else{
                         indexNotifyOnEntry = 0
-                        cell.btnNotification.setImage(UIImage(named: "ic_notify_no"), for: .normal)  // stop
+                        cell.btnNotification.setImage(UIImage(named: "ic_notify_yes"), for: .normal) // start
                     }
                 }
                 
-               
                 
                 if isFromService == "false" {
 
-                    if ((arrHelperList[indexPath.row].holdService) == 0) {
-                            indexService = 0
+                    if ((arrHelperList[indexPath.row].dailyHelperCard?.holdService) == 0) {
+                            indexService = 1
                             cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
                     }else{
-                        indexService = 1
-                        cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
-                    }
-                }else{
-                    if (indexService == 0) {
-                        indexService = 1
-                        cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
-                    }else{
                         indexService = 0
-                        cell.btnService.setImage(UIImage(named: "ic_hold"), for: .normal)
+                        cell.btnService.setImage(UIImage(named: "ic_Continue"), for: .normal)
                     }
                 }
                 
@@ -1008,46 +1096,6 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
          }
          
          
-         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-             
-           /*  if(collectionView == collectionmenu)
-             {
-                 let str = UserDefaults.standard.value(forKey:USER_ROLE) as! String
-                 
-                 if(str.contains("Secretory") || str.contains("Chairman"))
-                 {
-                     return menuary.count
-                     
-                 }else{
-                     return arrData.count
-                 }
-                 
-             }
-             
-             else if collectionView == collectionVehicle{
-                 return arrVehicleList.count
-             }else if collectionView == collectionFrequentGuest{
-                 return arrFrequentGuestData.count
-             }else if collectionView == collectionHelper{
-                 return arrHelperList.count
-             }else{
-                 return familymeberary.count
-             } */
-            
-            
-            if collectionView == collectionFrequentGuest{
-                return arrFrequentGuestData.count
-            }else if collectionView == collectionVehicle{
-                return arrVehicleList.count
-            }else if collectionView == collectionHelper{
-                return arrHelperList.count
-            }else{
-                return familymeberary.count
-            }
-
-         }
-         
-         
          func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
              
              
@@ -1136,6 +1184,21 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                              
                          }
                          
+                         else if(JSON.response?.statusCode == 401)
+                         {
+                             APPDELEGATE.ApiLogout(onCompletion: { int in
+                                 if int == 1{
+                                      let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                   let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                let navController = UINavigationController(rootViewController: aVC)
+                                                                                navController.isNavigationBarHidden = true
+                                                                   self.appDelegate.window!.rootViewController  = navController
+                                                                   
+                                 }
+                             })
+                             
+                             
+                         }
                          
                      case .failure(let err):
                          
@@ -1201,6 +1264,21 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     if(JSON.response?.statusCode == 200)
                     {
                         self.apicallGetFrequentGuestList()
+                    }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     else
                     {
@@ -1365,6 +1443,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                             self.apicallGetFamilyMembers(id: "")
                             
                           }
+                        
+                        
                       case .failure(let err):
                           
                           webservices().StopSpinner()
@@ -1548,12 +1628,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     @objc func notifyToggleMyDailyHelper(sender:UIButton)
     {
         dailyHelpPropertyID = arrHelperList[sender.tag].dailyHelpPropertyID!
-
-        isFromNotice = "true"
-
-        isFromService = "true"
         
-        if ((arrHelperList[sender.tag].shouldNotifyOnEntry) == 0) {
+        if ((arrHelperList[sender.tag].dailyHelperCard?.shouldNotifyOnEntry) == 0) {
             if indexNotifyOnEntry == 1 {
                 indexNotifyOnEntry = 1
             }else{
@@ -1568,17 +1644,12 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     {
         dailyHelpPropertyID = arrHelperList[sender.tag].dailyHelpPropertyID!
 
-        isFromService = "true"
-        
-        isFromNotice = "true"
-
-        if ((arrHelperList[sender.tag].holdService) == 0) {
+        if ((arrHelperList[sender.tag].dailyHelperCard?.holdService) == 0) {
             if indexService == 1 {
                 indexService = 1
             }else{
                 indexService = 0
             }
-            //collectionHelper.reloadData()
         }
         self.apicallServicesToggleMyDailyHelper(DailyHelpPropertyID: self.dailyHelpPropertyID! , HoldService: self.indexService!)
     }
@@ -1605,6 +1676,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                
                switch JSON.result{
                case .success(let resp):
+                
+                print("resp Services ",resp)
                    //webservices().StopSpinner()
                    self.refreshControl.endRefreshing()
                    if statusCode == 200{
@@ -1647,6 +1720,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                
                switch JSON.result{
                case .success(let resp):
+                
+                print("resp Notify ",resp)
+
                    //webservices().StopSpinner()
                    self.refreshControl.endRefreshing()
                    if statusCode == 200{
@@ -1676,6 +1752,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         nextViewController.dailyHelperID = (dailyHelperID as NSString).integerValue
         nextViewController.strlbl = (arrHelperList[sender.tag].dailyHelperCard?.name)!
         nextViewController.strAddedCalendarDate = (arrHelperList[sender.tag].dailyHelperCard?.addedOn?.components(separatedBy: " ")[0])!
+        
+        print("nextViewController.strAddedCalendarDate : ",nextViewController.strAddedCalendarDate)
 
        // nextViewController.isfrom = 0
         self.navigationController?.pushViewController(nextViewController, animated: true)

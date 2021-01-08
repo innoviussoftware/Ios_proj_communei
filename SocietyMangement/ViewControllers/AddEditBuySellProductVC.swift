@@ -11,6 +11,13 @@ import IQKeyboardManagerSwift
 import SkyFloatingLabelTextField
 import Alamofire
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate , UINavigationControllerDelegate,UITextViewDelegate{
     @IBOutlet weak var btnUpdate: UIButton!
     
@@ -59,7 +66,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
 //        txtDescription.text = "Type here"
 //        txtDescription.textColor = UIColor.lightGray
         
-        txtperice.placeholder = "Price(\u{20B9})"
+        txtperice.placeholder = "\u{20B9}" 
         txtItemCondition.text = "Brand New"
                 
         arrItemCondition = ["Brand New","Like New","Very Good","Good"]
@@ -87,7 +94,8 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                 btnUpdate.setTitle("UPDATE", for: .normal)
                 lblTitel.text = "Update Details" // "Update Item Details"
                    txttitel.text = arrRecommendData.title
-                txtperice.text = "\(arrRecommendData.amount!)"
+                txtperice.text = "\u{20B9}"+"\(arrRecommendData.amount!)"
+ 
                 txtItemCondition.text = arrRecommendData.qualityStatus
                    txtDescription.text = arrRecommendData.datumDescription
                 
@@ -427,12 +435,23 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                                               // show the alert
                     self.present(alert, animated: true, completion: nil)
                     
-                    
-                    
-                    
-              
+                   }
+                   else if(statusCode == 401)
+                   {
+                       APPDELEGATE.ApiLogout(onCompletion: { int in
+                           if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                          let navController = UINavigationController(rootViewController: aVC)
+                                                                          navController.isNavigationBarHidden = true
+                                                             self.appDelegate.window!.rootViewController  = navController
+                                                             
+                           }
+                       })
                        
-                   }else{
+                       
+                   }
+                   else{
                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
                        self.present(alert, animated: true, completion: nil)
                    }
@@ -540,7 +559,23 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                        
                        
                           
-                      }else{
+                      }
+                      else if(statusCode == 401)
+                      {
+                          APPDELEGATE.ApiLogout(onCompletion: { int in
+                              if int == 1{
+                                   let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                             let navController = UINavigationController(rootViewController: aVC)
+                                                                             navController.isNavigationBarHidden = true
+                                                                self.appDelegate.window!.rootViewController  = navController
+                                                                
+                              }
+                          })
+                          
+                          
+                      }
+                      else{
                           let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:(response.result.value as! NSDictionary).value(forKey:"message") as! String)
                           self.present(alert, animated: true, completion: nil)
                       }
@@ -562,6 +597,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
 }
 
 
+@available(iOS 13.0, *)
 extension AddEditBuySellProductVC : UIPickerViewDelegate,UIPickerViewDataSource{
     
     // MARK: - pickerview delegate and data source methods
@@ -594,6 +630,7 @@ extension AddEditBuySellProductVC : UIPickerViewDelegate,UIPickerViewDataSource{
 }
 
 
+@available(iOS 13.0, *)
 extension AddEditBuySellProductVC : UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

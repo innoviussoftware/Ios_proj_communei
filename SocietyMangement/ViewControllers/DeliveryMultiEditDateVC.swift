@@ -417,6 +417,21 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                                 self.removeAnimate()
                                 self.dismiss(animated: true, completion: nil)
                             }
+                            else if(JSON.response?.statusCode == 401)
+                            {
+                                APPDELEGATE.ApiLogout(onCompletion: { int in
+                                    if int == 1{
+                                         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                      let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                   let navController = UINavigationController(rootViewController: aVC)
+                                                                                   navController.isNavigationBarHidden = true
+                                                                      self.appDelegate.window!.rootViewController  = navController
+                                                                      
+                                    }
+                                })
+                                
+                                
+                            }
                             else
                             {
                                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid data")

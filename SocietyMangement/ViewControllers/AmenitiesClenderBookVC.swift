@@ -10,6 +10,13 @@ import UIKit
 import FSCalendar
 import Alamofire
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
     //,FSCalendarDelegate,FSCalendarDataSource {
     
@@ -361,7 +368,23 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
                         
                         print("2 : ")
                     }
-                }else{
+                }
+                else if(JSON.response?.statusCode == 401)
+                {
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                       let navController = UINavigationController(rootViewController: aVC)
+                                                                       navController.isNavigationBarHidden = true
+                                                          self.appDelegate.window!.rootViewController  = navController
+                                                          
+                        }
+                    })
+                    
+                    
+                }
+                else{
                     
                     print("1 & 2 : ")
 
@@ -433,6 +456,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
 }
 
 
+@available(iOS 13.0, *)
 extension  AmenitiesClenderBookVC:FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance
 {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {

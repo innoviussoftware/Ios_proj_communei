@@ -529,7 +529,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func ApiLogout1()//(onCompletion: @escaping ((_ response: Int) -> Void))
+    func ApiLogout1()
     {
         
         if(webservices().isConnectedToNetwork())

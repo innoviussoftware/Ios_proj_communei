@@ -509,6 +509,21 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                         }
                         
                     }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
                     else
                     {
                         
@@ -788,7 +803,22 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                         self.navigationController?.popViewController(animated: true)
 
                         
-                    }else{
+                    }
+                    
+                    else if(statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     
                     break
@@ -908,7 +938,22 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                       //  self.navigationController?.popViewController(animated: true)
 
                         
-                    }else{
+                    }
+                    
+                    else if(statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     
                     break

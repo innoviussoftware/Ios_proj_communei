@@ -139,7 +139,7 @@ class BuySellProductDetailsVC: BaseVC {
         
       // lblPrice.text = String(format: "Price: \u{20B9} %@", arrProductDetails.amount!)
         
-        lblPrice.text = "\(arrProductDetails.amount!)"
+        lblPrice.text = "\u{20B9}"+"\(arrProductDetails.amount!)" //"\(arrProductDetails.amount!)"
 
         
        // lblBloodGroup.text =  arrProductDetails.bloodgroup!
@@ -257,6 +257,21 @@ class BuySellProductDetailsVC: BaseVC {
                            }
                        
                    }
+                   else if(JSON.response?.statusCode == 401)
+                   {
+                       APPDELEGATE.ApiLogout(onCompletion: { int in
+                           if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                          let navController = UINavigationController(rootViewController: aVC)
+                                                                          navController.isNavigationBarHidden = true
+                                                             self.appDelegate.window!.rootViewController  = navController
+                                                             
+                           }
+                       })
+                       
+                       
+                   }
                    else
                    {
                    // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
@@ -319,6 +334,21 @@ class BuySellProductDetailsVC: BaseVC {
                         
                         self.apiProductList(productID: self.ProductID!, categoryId: self.CategoryId!)
 
+                      }
+                      else if(JSON.response?.statusCode == 401)
+                      {
+                          APPDELEGATE.ApiLogout(onCompletion: { int in
+                              if int == 1{
+                                   let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                             let navController = UINavigationController(rootViewController: aVC)
+                                                                             navController.isNavigationBarHidden = true
+                                                                self.appDelegate.window!.rootViewController  = navController
+                                                                
+                              }
+                          })
+                          
+                          
                       }
                       else
                       {
@@ -556,7 +586,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                   }
                   
                   //            let rupee = "\u{20B9}"
-        cell.lblPrice.text = "\(arrRelatedProduct[indexPath.row].amount!)"
+        cell.lblPrice.text = "\u{20B9}"+"\(arrRelatedProduct[indexPath.row].amount!)"//"\(arrRelatedProduct[indexPath.row].amount!)"
             //String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
         cell.lblName.text = arrRelatedProduct[indexPath.row].title
                   
@@ -595,7 +625,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                     
               
                     
-                    cell.lblPrice.text = "\(arrRelatedProduct[indexPath.row].amount!)"
+                    cell.lblPrice.text = "\u{20B9}"+"\(arrRelatedProduct[indexPath.row].amount!)" // "\(arrRelatedProduct[indexPath.row].amount!)"
             // String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
                     cell.lblName.text = arrRelatedProduct[indexPath.row].title
                     

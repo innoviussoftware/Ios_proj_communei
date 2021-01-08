@@ -578,7 +578,6 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
              
          Apicallhandler.sharedInstance.apiCallNoticeRead(URL: webservices().baseurl + noticeRead, token: token as! String) { JSON in
         
-         
                 let statusCode = JSON.response?.statusCode
                 
                 switch JSON.result{
@@ -586,6 +585,22 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
                     webservices().StopSpinner()
                     if statusCode == 200{
                       print("read")
+                    }
+                    
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     
                 case .failure(let err):
@@ -680,6 +695,23 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
                         }
                         
                     }
+                    
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
+                    
                     else
                     {
                         if(resp.data!.count == 0)
@@ -753,6 +785,21 @@ class CircularVC: BaseVC ,UITableViewDelegate , UITableViewDataSource , URLSessi
                     if(JSON.response?.statusCode == 200)
                     {
                         self.apicallGetCirculars()
+                    }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     else
                     {

@@ -11,6 +11,15 @@ import ScrollPager
 import SWRevealViewController
 import Alamofire
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
     
     @IBOutlet weak var tblBookingHistory: UITableView!
@@ -174,6 +183,21 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                         }
 
                     }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
+                    }
                     else
                     {
                         self.lblbooking.isHidden = false
@@ -300,6 +324,21 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                     if(JSON.response?.statusCode == 200)
                     {
                         self.apicallGetBookings()
+                    }
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     else
                     {

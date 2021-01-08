@@ -23,6 +23,26 @@ class ServiceTypecell:UITableViewCell
 
 }
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
 class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSource {
    
     @IBOutlet weak var tblServiceType: UITableView!
@@ -67,6 +87,21 @@ class ServiceTypeVC: UIViewController , UITableViewDelegate, UITableViewDataSour
                        {
                            self.tblServiceType.isHidden = false
                        }
+                       
+                   }
+                   else if(JSON.response?.statusCode == 401)
+                   {
+                       APPDELEGATE.ApiLogout(onCompletion: { int in
+                           if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                          let navController = UINavigationController(rootViewController: aVC)
+                                                                          navController.isNavigationBarHidden = true
+                                                             self.appDelegate.window!.rootViewController  = navController
+                                                             
+                           }
+                       })
+                       
                        
                    }
                    else

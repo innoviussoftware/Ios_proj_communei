@@ -9,6 +9,8 @@
 import UIKit
 import SkyFloatingLabelTextField
 
+import Alamofire
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -24,7 +26,6 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
 
     @IBOutlet weak var lblTitleName: UILabel!
 
-
     @IBOutlet weak var collectionHours: UICollectionView!
 
     @IBOutlet weak var viewbottom: UIView!
@@ -35,11 +36,8 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
     
     @IBOutlet weak var txtvaildtill: UITextField!
     
-    @IBOutlet weak var txtDeliveryCompanyName: UITextField!
-
-    @IBOutlet weak var btncheckMark: UIButton!
-
-    @IBOutlet weak var txtNumberBoxs: SkyFloatingLabelTextField!
+    var dailyHelperID:Int?
+    var vendorServiceTypeID:Int?
 
 
     var textfield = UITextField()
@@ -54,31 +52,23 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         super.viewDidLoad()
         
         viewbottom.isHidden = true
-        
-        btncheckMark.isSelected = false
-
-        btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
-        
+       
         setborders(textfield: txtdate)
         setborders(textfield: txttime)
         setborders(textfield: txtvaildtill)
-        setborders(textfield: txtDeliveryCompanyName)
         
         txtdate.delegate = self
         txttime.delegate = self
         txtvaildtill.delegate = self
-        txtDeliveryCompanyName.delegate = self
 
         webservices.sharedInstance.PaddingTextfiled(textfield: txtdate)
         webservices.sharedInstance.PaddingTextfiled(textfield: txttime)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtvaildtill)
-        webservices.sharedInstance.PaddingTextfiled(textfield: txtDeliveryCompanyName)
         
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
                
         collectionHours.collectionViewLayout = alignedFlowLayout
             
-        
         
         let datee = Date()
         let formatter = DateFormatter()
@@ -90,6 +80,8 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         formatt.dateFormat = "hh:mm a"
         txttime.text = formatt.string(from: datee)
         time =  txttime.text!
+        
+        txtvaildtill.text = hourary[0]
 
         // Do any additional setup after loading the view.
     }
@@ -182,22 +174,189 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func btnCheckaction(_ sender: Any) {
-         if btncheckMark.isSelected == false {
-             btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
-             btncheckMark.isSelected = true
-         }else{
-             btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
-             btncheckMark.isSelected = false
-         }
-         
-         self.view.endEditing(true)
-     }
     
-    @IBAction func btnAddPickUpaction(_ sender: Any) {
+    
+    @IBAction func btnAddPickUpaction(_ sender: UIButton) {
+        
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr = "Communei"
+       // avc?.isfrom = 3
+        avc?.subtitleStr = "Are you sure you want to add on - demand helper?"
+
+                        avc?.yesAct = {
+                            self.apicallHelperEntryAdd()
+                        }
+
+                        avc?.noAct = {
+                          
+                        }
+                        present(avc!, animated: true)
+
         print("btnAddPickUpaction")
 
     }
+    
+    func strChangeDateFormate(strDateeee:String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        let strDate = formatter.date(from: strDateeee)
+        var str = ""
+        if strDate != nil{
+            formatter.dateFormat = "yyyy-MM-dd"
+            str = formatter.string(from: strDate!)
+        }else{
+            str = strDateeee
+        }
+        
+        return str
+    }
+    
+    func messageClicked() {
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+        avc?.titleStr =  "Successfully Added"
+        avc?.subtitleStr = "Your daily helper will be allowed"
+        avc?.isfrom = 4
+
+        avc?.yesAct = {
+           
+            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                         
+        }
+        avc?.noAct = {
+            
+        }
+        
+        present(avc!, animated: true)
+    }
+    
+    // MARK: - get Helper Entry Add
+    
+    func apicallHelperEntryAdd()
+    {
+         if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+            var strDateee = ""
+           
+           date = txtdate.text!
+        
+        strDateee = strChangeDateFormate(strDateeee: date)
+        
+        var after_add_time = ""
+        
+        var preApprovedInTime = ""
+        
+        preApprovedInTime = "\(txtdate.text!) \(txttime.text!)"
+        
+        print("preApprovedInTime --> ",preApprovedInTime)
+
+        var preApprovedOutTime = ""
+        
+        if txtvaildtill.text == "Day End" {
+            validtill = time
+            
+            let dateFormatter = DateFormatter()
+            
+            let isoDate = txttime.text!
+            dateFormatter.dateFormat = "h:mm a"
+
+            let date = dateFormatter.date(from:isoDate)!
+            print("date :- ",date)
+     
+            after_add_time = "11:59 PM" //"23:59:00"
+            
+            preApprovedOutTime = "\(txtdate.text!) \(after_add_time)"
+
+            print("preApprovedOutTime --> ",preApprovedOutTime)
+             
+        }else{
+            
+            txtvaildtill.text?.removeLast(3)
+
+            let myInt = Int(txtvaildtill.text!)!
+            
+            let dateFormatter = DateFormatter()
+                        
+            let isoDate = txttime.text!
+
+            dateFormatter.dateFormat = "h:mm a"
+
+            let date = dateFormatter.date(from:isoDate)!
+            
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatter.string(from: addminutes)
+            
+            print("after add time 3 --> ",after_add_time)
+            
+            preApprovedOutTime = "\(txtdate.text!) \(after_add_time)"
+            print("preApprovedOutTime --> ",preApprovedOutTime)
+
+        }
+        
+       
+        var param = Parameters()
+        
+            param  = [
+                "DailyHelperID":dailyHelperID!,
+                "VendorServiceTypeID": vendorServiceTypeID!,
+                "PreApprovedInTime": preApprovedInTime,
+              //  "FromTime": txttime.text!,
+                "PreApprovedOutTime": preApprovedOutTime
+            ]
+        
+        print("param Helper Entry Add : ",param)
+        
+     
+            webservices().StartSpinner()
+        
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_HELPER_ENTRY, param: param, token: token as! String) { JSON in
+                
+                print(JSON)
+                switch JSON.result{
+                case .success(let resp):
+                    webservices().StopSpinner()
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        
+                        self.messageClicked()
+
+                    }
+                    else
+                    {
+                        
+                    }
+                case .failure(let err):
+                    if JSON.response?.statusCode == 401{
+                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
+                          //  if int == 1{
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                         //   }
+                       // })
+                        
+                        return
+                    }
+                    
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    webservices().StopSpinner()
+                    
+                }
+                
+            }
+            
+    }
+    
     
     @IBAction func btnClose_hour(_ sender: Any) {
              self.viewbottom.isHidden = true
@@ -229,34 +388,12 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
     
     // MARK: - deliveryList delegate methods
 
-       func deliveryList(name:String,VendorID:Int,IsPublic:Int, selectNumber:Int)
-       {
-            self.txtDeliveryCompanyName.text = name
-            index = selectNumber
-        }
+      
     
     // MARK: - textField delegate methods
 
       
       func textFieldDidBeginEditing(_ textField: UITextField) {
-              
-          if(textField == txtDeliveryCompanyName)
-              {
-                     txtDeliveryCompanyName.resignFirstResponder()
-                     let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
-                   //  popOverConfirmVC.delegate = self
-                  
-                      popOverConfirmVC.selectedindex = index
-
-                     if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
-                     {
-
-                        // popOverConfirmVC.selectedary = self.selectedary
-                         // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
-                     }
-                  self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
-
-          }
           
           if(textField == txtvaildtill)
           {

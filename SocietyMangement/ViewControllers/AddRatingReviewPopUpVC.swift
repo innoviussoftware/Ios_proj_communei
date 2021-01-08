@@ -117,6 +117,22 @@ class AddRatingReviewPopUpVC: UIViewController {
                            // self.dictHelperData = resp.data
                         
                        }
+                    
+                       else if(JSON.response?.statusCode == 401)
+                       {
+                           APPDELEGATE.ApiLogout(onCompletion: { int in
+                               if int == 1{
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                              let navController = UINavigationController(rootViewController: aVC)
+                                                                              navController.isNavigationBarHidden = true
+                                                                 self.appDelegate.window!.rootViewController  = navController
+                                                                 
+                               }
+                           })
+                           
+                           
+                       }
                         
                        print(resp)
                    case .failure(let err):
@@ -219,6 +235,22 @@ class AddRatingReviewPopUpVC: UIViewController {
                                                 }))
                                                 // show the alert
                                                 self.present(alert, animated: true, completion: nil)
+                    }
+                    
+                    else if(JSON.response?.statusCode == 401)
+                    {
+                        APPDELEGATE.ApiLogout(onCompletion: { int in
+                            if int == 1{
+                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                              let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                           let navController = UINavigationController(rootViewController: aVC)
+                                                                           navController.isNavigationBarHidden = true
+                                                              self.appDelegate.window!.rootViewController  = navController
+                                                              
+                            }
+                        })
+                        
+                        
                     }
                     else
                     {

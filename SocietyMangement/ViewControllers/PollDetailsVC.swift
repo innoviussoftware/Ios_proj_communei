@@ -19,6 +19,14 @@ class PollListDetailsCell: UITableViewCell {
 }
 
 
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+@available(iOS 13.0, *)
+
 class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var tblView: UITableView!
@@ -502,7 +510,6 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
     }
     
-    @available(iOS 13.0, *)
     @IBAction func btnSubmitPressed(_ sender: UIButton) {
         apicallPollSubmitVotes()
         
@@ -512,9 +519,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     // MARK: - get PollSubmitVotes
     
-    @available(iOS 13.0, *)
-    @available(iOS 13.0, *)
-    @available(iOS 13.0, *)
+   
     func apicallPollSubmitVotes()
     {
         if !NetworkState().isInternetAvailable {
@@ -564,6 +569,23 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                           }
 
                         }
+                        
+                        else if(JSON.response?.statusCode == 401)
+                        {
+                            APPDELEGATE.ApiLogout(onCompletion: { int in
+                                if int == 1{
+                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                  let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                               let navController = UINavigationController(rootViewController: aVC)
+                                                                               navController.isNavigationBarHidden = true
+                                                                  self.appDelegate.window!.rootViewController  = navController
+                                                                  
+                                }
+                            })
+                            
+                            
+                        }
+                        
                         else
                         {
 
@@ -629,6 +651,22 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                     self.lblAnsPer4.text = String(format: "%d %%",(resp.data?.percentage4)!)
                     
                 }
+                
+                else if(JSON.response?.statusCode == 401)
+                {
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                       let navController = UINavigationController(rootViewController: aVC)
+                                                                       navController.isNavigationBarHidden = true
+                                                          self.appDelegate.window!.rootViewController  = navController
+                                                          
+                        }
+                    })
+                    
+                    
+                }
                 else
                 {
                     
@@ -659,7 +697,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 
             }
         }
@@ -668,6 +706,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     
     
+    @available(iOS 13.0, *)
     func apicallPreviusPollDetails(strOption:String,strType:String)
     {
         if !NetworkState().isInternetAvailable {
@@ -696,6 +735,22 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                     self.lblAnsPer2.text = String(format: "%d %%",(resp.data?.percentage2)!)
                     self.lblAnsPer3.text = String(format: "%d %%",(resp.data?.percentage3)!)
                     self.lblAnsPer4.text = String(format: "%d %%",(resp.data?.percentage4)!)
+                    
+                }
+                
+                else if(JSON.response?.statusCode == 401)
+                {
+                    APPDELEGATE.ApiLogout(onCompletion: { int in
+                        if int == 1{
+                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                       let navController = UINavigationController(rootViewController: aVC)
+                                                                       navController.isNavigationBarHidden = true
+                                                          self.appDelegate.window!.rootViewController  = navController
+                                                          
+                        }
+                    })
+                    
                     
                 }
                 else

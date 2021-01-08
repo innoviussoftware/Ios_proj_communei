@@ -198,11 +198,13 @@ class MaidProfileDetailsVC: UIViewController {
     @IBAction func btnAddHelperPressed(_ sender: Any) {
         
         if isfrom == 1 {
-            let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-            avc?.titleStr = "Communei"
-           // avc?.isfrom = 3
-                        //    avc?.subtitleStr = "Are you sure you want to call?"
-            avc?.subtitleStr = "Are you sure you want to add this helper?"
+            if self.dictHelperData != nil {
+
+                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                avc?.titleStr = "Communei"
+               // avc?.isfrom = 3
+                            //    avc?.subtitleStr = "Are you sure you want to call?"
+                avc?.subtitleStr = "Are you sure you want to add this helper?"
 
                             avc?.yesAct = {
                                 self.apicallUserDailyHelper_Assign_Details(dailyHelperID: self.dictHelperData.dailyHelperID, vendorServiceTypeID: self.dictHelperData.vendorServiceTypeID)
@@ -212,13 +214,20 @@ class MaidProfileDetailsVC: UIViewController {
                               
                             }
                             present(avc!, animated: true)
+            }
 
         }else{
+            if self.dictHelperData != nil {
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
+                
+                nextViewController.dailyHelperID =  self.dictHelperData.dailyHelperID
+                nextViewController.vendorServiceTypeID = self.dictHelperData.vendorServiceTypeID
+                
+                // nextViewController.isfrom_entry = 1
+                 self.navigationController?.pushViewController(nextViewController, animated: true)
+            }
             
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "ParcelServiceEntryVC") as! ParcelServiceEntryVC
-            // nextViewController.isfrom_entry = 1
-             self.navigationController?.pushViewController(nextViewController, animated: true)
         }
         
        /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -246,11 +255,13 @@ class MaidProfileDetailsVC: UIViewController {
         
       //  dialNumber(number: dictHelperData.mobile!)
         
-                   let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
-                   avc?.titleStr = "Call Helper"
+        if dictHelperData != nil {
+
+                let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                avc?.titleStr = "Call Helper"
                 avc?.isfrom = 3
                                //    avc?.subtitleStr = "Are you sure you want to call?"
-        avc?.subtitleStr = "Want to contact: \(dictHelperData.phoneNumber)"
+                avc?.subtitleStr = "Want to contact: \(dictHelperData.phoneNumber)"
         
                                    avc?.yesAct = {
                                     self.dialNumber(number: self.dictHelperData.phoneNumber)
@@ -260,6 +271,7 @@ class MaidProfileDetailsVC: UIViewController {
                                      
                                    }
                                    present(avc!, animated: true)
+        }
         
     }
     
@@ -427,6 +439,22 @@ class MaidProfileDetailsVC: UIViewController {
 //                               lblNoDataFound.isHidden = false
                            }
                        }
+                       
+                       else if(JSON.response?.statusCode == 401)
+                       {
+                           APPDELEGATE.ApiLogout(onCompletion: { int in
+                               if int == 1{
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                              let navController = UINavigationController(rootViewController: aVC)
+                                                                              navController.isNavigationBarHidden = true
+                                                                 self.appDelegate.window!.rootViewController  = navController
+                                                                 
+                               }
+                           })
+                           
+                           
+                       }
                        else
                        {
                          //  let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
@@ -510,6 +538,7 @@ class MaidProfileDetailsVC: UIViewController {
                                print("-----Delete\(JSON)")
                                 self.apicallHelperDetails()
                               }
+                              
                               else
                               {
                                 let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:"")

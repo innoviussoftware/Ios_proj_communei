@@ -57,6 +57,7 @@ struct UserActivityAll: Codable {
 struct ActivityAll: Codable {
     let activityType: String?
     let name: String?
+    let vendorServiceTypeName: String?
     let phone: String?
     let vendor: String?
     let profilePic: String?
@@ -68,7 +69,7 @@ struct ActivityAll: Codable {
     let messageAttachment : String?
     let activityIn: String?
     let addedBy, cancelledBy: String?
-    let removedBy: String?
+    let removedBy,addedOn: String?
     let out, leaveAtGate, vendorID, companyName: String?
     let allowedInTime,allowedOutTime : String?
     let companyLogoURL: String?
@@ -84,6 +85,7 @@ struct ActivityAll: Codable {
     enum CodingKeys: String, CodingKey {
         case activityType = "ActivityType"
         case name = "Name"
+        case vendorServiceTypeName = "VendorServiceTypeName"
         case phone = "Phone"
         case vendor = "Vendor"
         case profilePic = "ProfilePic"
@@ -104,6 +106,7 @@ struct ActivityAll: Codable {
         case allowedOutTime = "AllowedOutTime"
         case addedBy = "AddedBy"
         case cancelledBy = "CancelledBy"
+        case addedOn = "AddedOn"
         case removedBy = "RemovedBy"
         case out = "Out"
         case leaveAtGate = "LeaveAtGate"

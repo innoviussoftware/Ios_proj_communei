@@ -14,6 +14,8 @@ struct AddNoticeResponse: Codable {
     let status: Int?
     let data: addNoticeData?
     let message: String?
+    let error: String?
+
 }
 
 // MARK: - DataClass
