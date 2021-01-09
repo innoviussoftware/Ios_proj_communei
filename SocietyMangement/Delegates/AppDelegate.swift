@@ -516,9 +516,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                     break
                 case .failure(let err):
-                    self.ApiLogout1()
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                        self.ApiLogout1()
+                        print(err.localizedDescription)
+                    }
+                }
+            }
+        }
+        else
+        {
+            webservices.sharedInstance.nointernetconnection()
+        }
+        
+    }
+    
+    func ApiLogoutString(onCompletion: @escaping ((_ response: String) -> Void))
+    {
+        
+        if(webservices().isConnectedToNetwork())
+        {
+            
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+            print("Bearer token : ",token as! String)
+            
+            Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_LOGOUT, token: token  as! String) { [self] response in
+                switch(response.result) {
+                case .success(let resp):
+                    if resp.status == 401{
+                        
+                    // onCompletion(1)
+                        
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+
+                    }else{
+                         print("\(resp.message)")
+                       // onCompletion(0)
+                    }
                     
-                    print(err.localizedDescription)
+                    break
+                case .failure(let err):
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                        self.ApiLogout1()
+                        print(err.localizedDescription)
+                    }
                 }
             }
         }
@@ -565,7 +618,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     
                     break
                 case .failure(let err):
-                    print(err.localizedDescription)
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                      print(err.localizedDescription)
+                    }
                 }
             }
         }

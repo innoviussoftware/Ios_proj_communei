@@ -305,6 +305,8 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                avc?.subtitleStr = "Are you sure you want to logout?"
                                avc?.yesAct = {
                                 
+                                
+                                
                                 APPDELEGATE.ApiLogout(onCompletion: { int in
                                                          //  if int == 1{
                                                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)

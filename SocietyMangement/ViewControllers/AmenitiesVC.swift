@@ -185,17 +185,23 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                     }
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
-                        
                         
                     }
                     else
@@ -252,6 +258,26 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 
                         }
 
+                    }else if JSON.response?.statusCode == 401{
+                        
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                    let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                    let navController = UINavigationController(rootViewController: aVC)
+                                    navController.isNavigationBarHidden = true
+                                    self.appDelegate.window!.rootViewController  = navController
+                                    
+                          
+                        return
                     }
                     else
                     {
@@ -264,9 +290,17 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 
                     webservices().StopSpinner()
                     if JSON.response?.statusCode == 401{
-                        if #available(iOS 13.0, *) {
-                            APPDELEGATE.ApiLogout1()//(onCompletion: { int in
-                               // if int == 1{
+                            
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                     let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                     let navController = UINavigationController(rootViewController: aVC)
@@ -275,10 +309,7 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                                     
                             //    }
                           //  })
-                        } else {
-                            // Fallback on earlier versions
-                        }
-
+                        
                         return
                     }
 
@@ -327,17 +358,24 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                     }
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
-                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
+                        
+                        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
-                        
                         
                     }
                     else

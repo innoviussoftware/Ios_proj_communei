@@ -42,6 +42,9 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
     var selectedindex:Int?
 
     var userActIndex:Int?
+    
+    var selectedColorNo:Int?
+
 
 
     var arrActivity = [UserActivityType]()
@@ -100,16 +103,23 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     }
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                            
                         
                     }
                     else
@@ -120,12 +130,15 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     print(resp)
                 case .failure(let err):
 
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
                      webservices().StopSpinner()
                 //    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                  //   self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                    
-                    
+                    }
                 }
                 
             }
@@ -151,10 +164,12 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
         tblview.addSubview(refreshControl)
-        
+                
         tblview.estimatedRowHeight = 150
         tblview.rowHeight = UITableViewAutomaticDimension
         
+        selectedColorNo = 0
+
         filtrview.isHidden = true
         
       //  setUpFilterActivityView()
@@ -261,6 +276,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
     
     @IBAction func btnApplyfilteraction(_ sender: UIButton) {
         
+        selectedColorNo = 0
+        
         if userActIndex != nil {
             let userAct = String(format: "%d", userActIndex!)
             apicallUseractivityFilter(userActInd: userAct)
@@ -271,6 +288,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
     
     @IBAction func btnResetaction(_ sender: UIButton) {
        // arrSelectionCheck.removeAllObjects()
+        
+        selectedColorNo = 1
         
         apicallGuestList()
 
@@ -319,35 +338,51 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                 }
                 else if(JSON.response?.statusCode == 401)
                 {
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                        let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                        let navController = UINavigationController(rootViewController: aVC)
                                                                        navController.isNavigationBarHidden = true
                                                           self.appDelegate.window!.rootViewController  = navController
                                                           
-                        }
-                    })
-                    
+                        
                     
                 }
                  case .failure(let err):
                     
+                    webservices().StopSpinner()
+                    
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout1()//(onCompletion: { int in
-                      //  if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                     //   }
-                   // })
-                    webservices().StopSpinner()
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                     
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     
                     
@@ -421,16 +456,23 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
             case .failure(let err):
                 
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
                     
                     return
                 }
@@ -590,39 +632,57 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                 
                 else if(JSON.response?.statusCode == 401)
                 {
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                        let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                        let navController = UINavigationController(rootViewController: aVC)
                                                                        navController.isNavigationBarHidden = true
                                                           self.appDelegate.window!.rootViewController  = navController
-                                                          
-                        }
-                    })
-                    
+                                                                              
                     
                 }
             case .failure(let err):
                 webservices().StopSpinner()
                 if statusCode == 401{
-                    APPDELEGATE.ApiLogout1() // (onCompletion: { int in
-                       // if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                     //   }
-                  //  })
-                    
+                   
                     return
                 }
+                if err.asAFError == nil {
+                    webservices().StopSpinner()
+                }else {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                }
                 
-                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
-                print(err.asAFError!)
+               
                 
             }
         }
@@ -713,7 +773,10 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
           //  if((arrActivity[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
        // if(arrSelectionCheck.contains(arrActivity[indexPath.row].activityName!))
         
-            if(selectedindex == indexPath.row){
+        if selectedColorNo == 1 {
+            cell.bgViw.backgroundColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+        }
+        else if(selectedindex == indexPath.row){
                 cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
 
                 userActIndex = arrActivity[indexPath.row].userActivityTypeID
@@ -764,6 +827,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 arrActivity.replaceObject(at: indexPath.row, with: dict)
                 
             } */
+        
+        selectedColorNo = 0
         
         selectedindex = indexPath.row
 
@@ -820,35 +885,53 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                     }
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                           
                     }
                     
                 case .failure(let err):
                     
                     if JSON.response?.statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        
+                        webservices().StopSpinner()
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                 let navController = UINavigationController(rootViewController: aVC)
                                 navController.isNavigationBarHidden = true
                                 self.appDelegate.window!.rootViewController  = navController
                                 
-                            }
-                        })
-                        webservices().StopSpinner()
-                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                        self.present(alert, animated: true, completion: nil)
-                        print(err.asAFError as Any)
+                            
+                           
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      //  self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
                         
                         
                     }
@@ -950,16 +1033,23 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             case .failure(let err):
                 
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
                     
                     return
                 }
@@ -1514,26 +1604,36 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 print(resp)
             case .failure(let err):
                 
+                webservices().StopSpinner()
+
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
-                            
-                        }
-                    })
-                    
+                                                
                     return
                 }
                 
-                
-               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-              //  self.present(alert, animated: true, completion: nil)
-                print(err.asAFError!)
-                webservices().StopSpinner()
+                if err.asAFError == nil {
+                    webservices().StopSpinner()
+                }else {
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                }
                 
             }
             
@@ -1608,17 +1708,28 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 print(resp)
             case .failure(let err):
                 
+                webservices().StopSpinner()
+
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
+                       
                     
                     return
                 }
@@ -1627,7 +1738,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
               //  self.present(alert, animated: true, completion: nil)
                 print(err.asAFError!)
-                webservices().StopSpinner()
                 
             }
             
@@ -1699,17 +1809,26 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 print(resp)
             case .failure(let err):
                 
+                webservices().StopSpinner()
+                
                 if JSON.response?.statusCode == 401{
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                        }
-                    })
                     
                     return
                 }
@@ -1718,7 +1837,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
               //  self.present(alert, animated: true, completion: nil)
                 print(err.asAFError!)
-                webservices().StopSpinner()
                 
             }
             
@@ -6191,7 +6309,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
          
         }
         
-         else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("Service Provider")) != nil)  {
+         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType! == "Service Provider Pre-Approval"  {
 
              cell.lblStatus.isHidden = false
 
@@ -6208,16 +6326,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
              if arrGuestList[indexPath.row].activity?.companyName != nil {
                  cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+             }else{
+                cell.lblguest.text = ""
+
              }
              
            //  cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
                 
-                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
-                
-                cell.lbladdedby.isHidden = false
-                            
+              
               //  cell.lblLeaveatGate.isHidden = true
-             
             
                  cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
                  
@@ -7042,7 +7159,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
         }
 
-        else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType?.contains("Daily Helper")) != nil) {
+        else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType == "Daily Helper" || arrGuestList[indexPath.row].activity?.activityType == "Daily Helper Entry" {
             
             cell.lblStatus.isHidden = false
             
@@ -7074,13 +7191,58 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 }
             }
             
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                cell.lblintime.text =  arrGuestList[indexPath.row].activity?.activityIn
-                cell.lblintime.isHidden = false
+             if cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "ADDED" || cell.lblStatus.text == "REQUESTED"{
+            
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                    
+                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-            }else{
-                cell.lblintime.isHidden = true
-            }
+                    cell.lblintime.text =  strTime + " , " + strDate
+                    
+                    cell.lblintime.isHidden = false
+
+                }else{
+                    cell.lblintime.isHidden = true
+                }
+                
+             }else if cell.lblStatus.text == "CHECKED OUT"  {
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                    
+                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                    cell.lblintime.text =  strTime + " , " + strDate
+                    
+                    cell.lblintime.isHidden = false
+
+                }else{
+                    cell.lblintime.isHidden = true
+                }
+                
+                if arrGuestList[indexPath.row].activity?.out != nil {
+                    
+                    let lblDate = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                    cell.lblouttime.text =  strTime + " , " + strDate
+                    
+                    cell.lblouttime.isHidden = false
+
+                }else{
+                    cell.lblouttime.isHidden = true
+                }
+
+             }
             
              cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
                         
@@ -7088,9 +7250,573 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.lblStatus.backgroundColor = AppColor.cancelColor
              }else if cell.lblStatus.text == "REMOVED" {
                 cell.lblStatus.backgroundColor = UIColor.systemRed
-             }
-             else if cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "REQUESTED" || cell.lblStatus.text == "ADDED"{
+             }else if cell.lblStatus.text == "SERVING" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+
+             }
+             else if cell.lblStatus.text == "DENIED" {
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+               
+                      if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                          
+                          cell.constraintHightStackBtn.constant = 50
+                          
+                          cell.constraintHightStacklbl.constant = 0.5
+
+                          cell.lblHightStacklblMiddle.isHidden = true
+                          
+                          cell.lblouttime.isHidden = true
+                          cell.lblapprovedby.isHidden = true
+                          cell.lblLeaveatGate.isHidden = true
+                          
+                          cell.lblWrongEntry.isHidden = false
+                       
+                          cell.lblWrongEntry.text = "Denied by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                          
+                       cell.imgviewStackTop3.constant = 27
+                       
+                      // cell.imgviewTop3_1.constant = 5
+                       
+                       cell.imgviewTop6_1.constant = 5
+
+                       cell.imgviewStackTop6.constant = 10
+
+                       cell.imgviewHight1.constant = 12
+                       cell.imgviewHight2.constant = 0
+
+                       cell.imgviewHight3.constant = 0
+
+                       cell.imgviewHight4.constant = 0
+                       cell.imgviewHight5.constant = 0
+                       
+                       cell.imgviewHight6.constant = 12
+
+                          cell.lblouttime.isHidden = true
+                       
+                       cell.imgview1.isHidden = false
+                       cell.imgview3.isHidden = false
+
+                          cell.imgview2.isHidden = true
+                          cell.imgview4.isHidden = true
+                          cell.imgview5.isHidden = true
+                          cell.imgview6.isHidden = true
+
+                          cell.btnCancel.isHidden = true
+                          cell.btnEdit.isHidden = true
+                          
+                          cell.btnWrong_Entry.isHidden = false
+                          cell.btnWrong_Entry_Red.isHidden = true
+
+                          cell.btnRenew.isHidden = true
+                          cell.btnClose.isHidden = true
+                          cell.btnNote_Guard.isHidden = true
+                          cell.btnOut.isHidden = true
+                          cell.btnDeliveryInfo.isHidden = true
+                          cell.btnAlertInfo.isHidden = true
+                          
+                      }else{
+                          
+                          cell.constraintHightStackBtn.constant = 50
+                          
+                          cell.constraintHightStacklbl.constant = 0.5
+
+                          cell.lblHightStacklblMiddle.isHidden = true
+                          
+                          cell.lblouttime.isHidden = true
+                          cell.lblapprovedby.isHidden = true
+                          cell.lblLeaveatGate.isHidden = true
+                          
+                          cell.lblWrongEntry.isHidden = false
+                          
+                          cell.imgviewStackTop3.constant = 27
+                          
+                         // cell.imgviewTop3_1.constant = 5
+                          
+                         // cell.imgviewTop6_3.constant = 5
+                       
+                            cell.imgviewTop6_1.constant = 5
+
+
+                          cell.imgviewStackTop6.constant = 10
+
+                          cell.imgviewHight1.constant = 12
+                          cell.imgviewHight2.constant = 0
+
+                          cell.imgviewHight3.constant = 0
+
+                          cell.imgviewHight4.constant = 0
+                          cell.imgviewHight5.constant = 0
+                          
+                          cell.imgviewHight6.constant = 12
+
+                          cell.lblouttime.isHidden = true
+                          
+                          cell.imgview2.isHidden = true
+                          cell.imgview4.isHidden = true
+                          cell.imgview5.isHidden = true
+                          
+                          cell.imgview6.isHidden = false
+                          cell.imgview1.isHidden = false
+                          cell.imgview3.isHidden = true
+                          
+                          cell.lblWrongEntry.text = "No Response" //"Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                          
+                          cell.btnCancel.isHidden = true
+                          cell.btnEdit.isHidden = true
+                          
+                          cell.btnWrong_Entry.isHidden = true
+                          
+                          cell.btnWrong_Entry_Red.isHidden = false
+                          
+                          cell.btnRenew.isHidden = true
+                          cell.btnClose.isHidden = true
+                          cell.btnNote_Guard.isHidden = true
+                          cell.btnOut.isHidden = true
+                          cell.btnDeliveryInfo.isHidden = true
+                          cell.btnAlertInfo.isHidden = true
+                          cell.btnIn.isHidden = true
+
+                      }
+                
+             }else if cell.lblStatus.text == "NOT RESPONDED"{
+                cell.lblStatus.backgroundColor = AppColor.cancelColor
+                 
+                   if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                       
+                       cell.constraintHightStackBtn.constant = 50
+                       
+                       cell.constraintHightStacklbl.constant = 0.5
+
+                       cell.lblHightStacklblMiddle.isHidden = true
+                       
+                       cell.lblouttime.isHidden = true
+                       cell.lblapprovedby.isHidden = true
+                       cell.lblLeaveatGate.isHidden = true
+                       
+                       cell.lblWrongEntry.isHidden = false
+                    
+                       cell.lblWrongEntry.text = "No Response" //"Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                       
+                    cell.imgviewStackTop3.constant = 27
+                    
+                   // cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_1.constant = 5
+
+                    cell.imgviewStackTop6.constant = 10
+
+                    cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgviewHight3.constant = 0
+
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    
+                    cell.imgviewHight6.constant = 12
+
+                       cell.lblouttime.isHidden = true
+                    
+                    cell.imgview1.isHidden = false
+                    cell.imgview3.isHidden = false
+
+                       cell.imgview2.isHidden = true
+                       cell.imgview4.isHidden = true
+                       cell.imgview5.isHidden = true
+                       cell.imgview6.isHidden = true
+
+                       cell.btnCancel.isHidden = true
+                       cell.btnEdit.isHidden = true
+                       
+                       cell.btnWrong_Entry.isHidden = false
+                       cell.btnWrong_Entry_Red.isHidden = true
+
+                       cell.btnRenew.isHidden = true
+                       cell.btnClose.isHidden = true
+                       cell.btnNote_Guard.isHidden = true
+                       cell.btnOut.isHidden = true
+                       cell.btnDeliveryInfo.isHidden = true
+                       cell.btnAlertInfo.isHidden = true
+                       
+                   }else{
+                       
+                       cell.constraintHightStackBtn.constant = 50
+                       
+                       cell.constraintHightStacklbl.constant = 0.5
+
+                       cell.lblHightStacklblMiddle.isHidden = true
+                       
+                       cell.lblouttime.isHidden = true
+                       cell.lblapprovedby.isHidden = true
+                       cell.lblLeaveatGate.isHidden = true
+                       
+                       cell.lblWrongEntry.isHidden = false
+                       
+                       cell.imgviewStackTop3.constant = 27
+                       
+                      // cell.imgviewTop3_1.constant = 5
+                       
+                      // cell.imgviewTop6_3.constant = 5
+                    
+                         cell.imgviewTop6_1.constant = 5
+
+                       cell.imgviewStackTop6.constant = 10
+
+                       cell.imgviewHight1.constant = 12
+                       cell.imgviewHight2.constant = 0
+
+                       cell.imgviewHight3.constant = 0
+
+                       cell.imgviewHight4.constant = 0
+                       cell.imgviewHight5.constant = 0
+                       
+                       cell.imgviewHight6.constant = 12
+
+                       cell.lblouttime.isHidden = true
+                       
+                       cell.imgview2.isHidden = true
+                       cell.imgview4.isHidden = true
+                       cell.imgview5.isHidden = true
+                       
+                       cell.imgview6.isHidden = false
+                       cell.imgview1.isHidden = false
+                       cell.imgview3.isHidden = true
+                       
+                       cell.lblWrongEntry.text = "No Response" //"Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                       
+                       cell.btnCancel.isHidden = true
+                       cell.btnEdit.isHidden = true
+                       
+                       cell.btnWrong_Entry.isHidden = true
+                       
+                       cell.btnWrong_Entry_Red.isHidden = false
+                       
+                       cell.btnRenew.isHidden = true
+                       cell.btnClose.isHidden = true
+                       cell.btnNote_Guard.isHidden = true
+                       cell.btnOut.isHidden = true
+                       cell.btnDeliveryInfo.isHidden = true
+                       cell.btnAlertInfo.isHidden = true
+                       cell.btnIn.isHidden = true
+
+                   }
+                
+             }
+             else if cell.lblStatus.text == "CHECKED OUT"{
+                cell.lblStatus.backgroundColor = UIColor.systemRed
+
+                      if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                          
+                          cell.lblouttime.isHidden = true
+                          cell.lblapprovedby.isHidden = true
+                          cell.lblLeaveatGate.isHidden = true
+                          
+                          cell.lblWrongEntry.isHidden = true
+                          
+                          cell.imgviewStackTop3.constant = 10
+
+                          cell.imgviewHight1.constant = 12
+
+                          cell.imgviewHight2.constant = 12
+                          cell.imgviewHight4.constant = 0
+                          cell.imgviewHight5.constant = 0
+                          cell.imgviewHight6.constant = 0
+
+                          cell.imgviewHight3.constant = 12
+
+                          cell.imgviewTop3_1.constant = 5
+
+                          cell.lblouttime.isHidden = false
+                          
+                          cell.imgview2.isHidden = false
+                          cell.imgview4.isHidden = true
+                          cell.imgview5.isHidden = true
+                          cell.imgview6.isHidden = true
+
+                          cell.btnCancel.isHidden = true
+                          cell.btnEdit.isHidden = true
+                          
+                          cell.btnWrong_Entry.isHidden = false
+                          cell.btnWrong_Entry_Red.isHidden = true
+
+                          cell.btnRenew.isHidden = true
+                          cell.btnClose.isHidden = true
+                          cell.btnNote_Guard.isHidden = false
+                          cell.btnOut.isHidden = false
+                          cell.btnDeliveryInfo.isHidden = true
+                          cell.btnAlertInfo.isHidden = true
+                          
+                      }else{
+                          
+                          cell.lblouttime.isHidden = true
+                          cell.lblapprovedby.isHidden = true
+                          cell.lblLeaveatGate.isHidden = true
+                          
+                          cell.lblWrongEntry.isHidden = false
+                          
+                          cell.imgviewStackTop3.constant = 27
+                          
+                          cell.imgviewTop3_1.constant = 5
+                          
+                          cell.imgviewTop6_3.constant = 5
+
+                          cell.imgviewStackTop6.constant = 10
+
+                          cell.imgviewHight1.constant = 12
+
+                          cell.imgviewHight3.constant = 12
+
+                          cell.imgviewHight2.constant = 12
+                          cell.imgviewHight4.constant = 0
+                          cell.imgviewHight5.constant = 0
+                          
+                          cell.imgviewHight6.constant = 0
+
+                          cell.lblouttime.isHidden = false
+                          
+                          cell.imgview2.isHidden = false
+                          cell.imgview4.isHidden = true
+                          cell.imgview5.isHidden = true
+                          
+                          cell.imgview6.isHidden = false
+                          cell.imgview1.isHidden = false
+                          cell.imgview3.isHidden = false
+
+                          
+                          cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                          
+                          cell.btnCancel.isHidden = true
+                          cell.btnEdit.isHidden = true
+                          
+                          cell.btnWrong_Entry.isHidden = true
+                          cell.btnWrong_Entry_Red.isHidden = false
+                          
+                          cell.btnRenew.isHidden = true
+                          cell.btnClose.isHidden = true
+                          cell.btnNote_Guard.isHidden = false
+                          cell.btnOut.isHidden = false
+                          cell.btnDeliveryInfo.isHidden = true
+                          cell.btnAlertInfo.isHidden = true
+                          cell.btnIn.isHidden = true
+
+                      }
+
+             }
+             else if cell.lblStatus.text == "CHECKED IN"{
+                
+                   cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                   
+                   if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                       
+                       cell.lblouttime.isHidden = true
+                       cell.lblapprovedby.isHidden = true
+                       cell.lblLeaveatGate.isHidden = true
+                       
+                       cell.lblWrongEntry.isHidden = true
+                       
+                       cell.imgviewStackTop3.constant = 10
+
+                       cell.imgviewHight1.constant = 12
+
+                       cell.imgviewHight2.constant = 0
+                       cell.imgviewHight4.constant = 0
+                       cell.imgviewHight5.constant = 0
+                       cell.imgviewHight6.constant = 0
+
+                       cell.imgviewHight3.constant = 12
+
+                       cell.imgviewTop3_1.constant = 5
+
+                       cell.lblouttime.isHidden = true
+                       
+                       cell.imgview2.isHidden = true
+                       cell.imgview4.isHidden = true
+                       cell.imgview5.isHidden = true
+                       cell.imgview6.isHidden = true
+
+                       cell.btnCancel.isHidden = true
+                       cell.btnEdit.isHidden = true
+                       
+                       cell.btnWrong_Entry.isHidden = false
+                       cell.btnWrong_Entry_Red.isHidden = true
+
+                       cell.btnRenew.isHidden = true
+                       cell.btnClose.isHidden = true
+                       cell.btnNote_Guard.isHidden = true
+                       cell.btnOut.isHidden = false
+                       cell.btnDeliveryInfo.isHidden = true
+                       cell.btnAlertInfo.isHidden = true
+                       
+                   }else{
+                       
+                       cell.lblouttime.isHidden = true
+                       cell.lblapprovedby.isHidden = true
+                       cell.lblLeaveatGate.isHidden = true
+                       
+                       cell.lblWrongEntry.isHidden = false
+                       
+                       cell.imgviewStackTop3.constant = 27
+                       
+                       cell.imgviewTop3_1.constant = 5
+                       
+                       cell.imgviewTop6_3.constant = 5
+
+                       cell.imgviewStackTop6.constant = 10
+
+                       cell.imgviewHight1.constant = 12
+
+                       cell.imgviewHight3.constant = 12
+
+                       cell.imgviewHight2.constant = 0
+                       cell.imgviewHight4.constant = 0
+                       cell.imgviewHight5.constant = 0
+                       
+                       cell.imgviewHight6.constant = 12
+
+                       cell.lblouttime.isHidden = true
+                       
+                       cell.imgview2.isHidden = true
+                       cell.imgview4.isHidden = true
+                       cell.imgview5.isHidden = true
+                       
+                       cell.imgview6.isHidden = false
+                       cell.imgview1.isHidden = false
+                       cell.imgview3.isHidden = false
+
+                       
+                       cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                       
+                       cell.btnCancel.isHidden = true
+                       cell.btnEdit.isHidden = true
+                       
+                       cell.btnWrong_Entry.isHidden = true
+                       cell.btnWrong_Entry_Red.isHidden = false
+                       
+                       cell.btnRenew.isHidden = true
+                       cell.btnClose.isHidden = true
+                       cell.btnNote_Guard.isHidden = true
+                       cell.btnOut.isHidden = false
+                       cell.btnDeliveryInfo.isHidden = true
+                       cell.btnAlertInfo.isHidden = true
+                       cell.btnIn.isHidden = true
+
+                   }
+
+             } else if cell.lblStatus.text == "REQUESTED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+
+             }
+             else if  cell.lblStatus.text == "ADDED"{
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                    
+                    cell.constraintHightStackBtn.constant = 50
+                    
+                    cell.constraintHightStacklbl.constant = 0.5
+
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                    cell.lblouttime.isHidden = true
+                    cell.lblapprovedby.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    
+                    cell.lblWrongEntry.isHidden = true
+                    
+                    cell.imgviewStackTop3.constant = 10
+
+                    cell.imgviewHight1.constant = 12
+
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0
+
+                    cell.imgviewHight3.constant = 12
+
+                    cell.imgviewTop3_1.constant = 5
+
+                    cell.lblouttime.isHidden = true
+                    
+                    cell.imgview2.isHidden = true
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                    
+                }else{
+                    
+                    cell.constraintHightStackBtn.constant = 50
+                    
+                    cell.constraintHightStacklbl.constant = 0.5
+
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                    cell.lblouttime.isHidden = true
+                    cell.lblapprovedby.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    
+                    cell.lblWrongEntry.isHidden = false
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+
+                    cell.imgviewStackTop6.constant = 10
+
+                    cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+
+                    cell.imgviewHight3.constant = 12
+
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    
+                    cell.imgviewHight6.constant = 12
+
+                    cell.lblouttime.isHidden = true
+                    
+                    cell.imgview2.isHidden = true
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    
+                    cell.imgview6.isHidden = false
+                    cell.imgview1.isHidden = false
+                    cell.imgview3.isHidden = false
+
+                    
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnWrong_Entry.isHidden = true
+                    
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                    cell.btnIn.isHidden = true
+
+                }
             }
             
             /* if arrGuestList[indexPath.row].activity?.addedBy != nil {
@@ -7189,8 +7915,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
         }  */
         
-        else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("OnDemand")) != nil) {
-             //  "Helper/Entry"
+        else if (arrGuestList[indexPath.row].activity?.activityType != nil)  && (arrGuestList[indexPath.row].activity?.activityType == "OnDemand Helper" || arrGuestList[indexPath.row].activity?.activityType == "OnDemand Entry") {
+             // "OnDemand" "Helper or Entry"
             
             cell.imgviewCompanyLogo.isHidden = true
             
@@ -7233,8 +7959,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnAlertInfo.isHidden = true
 
             print("OnDemand : Helper ")
-
-      //  }else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("Service Provider")) != nil)  {
+            
+        //  }else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("Service Provider")) != nil)  {
             
         }
         
@@ -7289,24 +8015,19 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     
                   //  cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
                        
-                       cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
-                       
-                       cell.lbladdedby.isHidden = false
-                                   
-                     //  cell.lblLeaveatGate.isHidden = true
-                    
-                   
                         cell.lblStatus.text = ""
                         
                         cell.btnAlertInfo.isHidden = true
+                
+                if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                    cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+                    cell.lbladdedby.isHidden = false
+                }else{
+                    cell.lbladdedby.isHidden = true
+                }
+                       
+                cell.lblLeaveatGate.isHidden = true
 
-                        cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
-                        
-                        cell.lbladdedby.isHidden = false
-                                    
-                        cell.lblLeaveatGate.isHidden = true
-                        
-                           
                             cell.constraintHightStackBtn.constant = 50
 
                             cell.constraintHightStacklbl.constant = 0.5
@@ -7367,18 +8088,22 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             cell.imgview5.isHidden = true
 
                         
-                            if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                                let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                                let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                                
-                                let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                                let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                // AddedOn
+                
+                if arrGuestList[indexPath.row].activity?.addedOn != nil {
+                    if arrGuestList[indexPath.row].activity?.addedOn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                                cell.lblintime.text =  strTime + " , " + strDate
-                                cell.lblintime.isHidden = false
-                            }else{
-                                cell.lblintime.isHidden = true
-                            }
+                        cell.lblintime.text =  strTime + " , " + strDate
+                        cell.lblintime.isHidden = false
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
+                }
                 
                 cell.btnCancel.isHidden = true
                 cell.btnEdit.isHidden = true

@@ -313,16 +313,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
+                            
                         
                         
                     }
@@ -330,23 +338,34 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 case .failure(let err):
                     webservices().StopSpinner()
                     if statusCode == 401{
-                        APPDELEGATE.ApiLogout1() // (onCompletion: { int in
-                            // if int == 1{
+                        
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                          //  }
-                       // })
-                        
+                       
                         return
                     }
                     
-                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                  //  self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      //  self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+                    }
                     
                 }
             }
@@ -416,17 +435,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                      
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
-                        
+                          
                         
                     }
                     
@@ -467,11 +492,14 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         self.viewfamilymembers.isHidden = true
                     }
                     
-                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                   // self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
-                    webservices().StopSpinner()
-                    
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       // self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+                        webservices().StopSpinner()
+                    }
                 }
                 
             }
@@ -550,16 +578,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
 
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
                         
                         
                     }
@@ -569,10 +604,15 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     self.lblStaticAddVhicleDetail.isHidden = false
                     self.collectionVehicle.isHidden = true
                     
-                   // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
-                  //  self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
-                    webservices().StopSpinner()
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
+                      //  self.present(alert, animated: true, completion: nil)
+                        
+                        print(err.asAFError!)
+                        webservices().StopSpinner()
+                    }
                     
                 }
                 
@@ -652,26 +692,36 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         
                           else if(JSON.response?.statusCode == 401)
                           {
-                              APPDELEGATE.ApiLogout(onCompletion: { int in
-                                  if int == 1{
+                              
+                            UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                            UserDefaults.standard.removeObject(forKey:USER_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                            UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                            UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                            UserDefaults.standard.removeObject(forKey:USER_NAME)
+                            UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                            UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                            
                                        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                     let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                  let navController = UINavigationController(rootViewController: aVC)
                                                                                  navController.isNavigationBarHidden = true
                                                                     self.appDelegate.window!.rootViewController  = navController
                                                                     
-                                  }
-                              })
-                              
+                                
                               
                           }
                       case .failure(let err):
                           
+                        if err.asAFError == nil {
+                            webservices().StopSpinner()
+                        }else {
                           webservices().StopSpinner()
                        //   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        //   self.present(alert, animated: true, completion: nil)
                           print(err.asAFError!)
-                          
+                        }
                           
                       }
                   }
@@ -1186,17 +1236,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                          
                          else if(JSON.response?.statusCode == 401)
                          {
-                             APPDELEGATE.ApiLogout(onCompletion: { int in
-                                 if int == 1{
+                            
+                            UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                            UserDefaults.standard.removeObject(forKey:USER_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                            UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                            UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                            UserDefaults.standard.removeObject(forKey:USER_NAME)
+                            UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                            UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                            
                                       let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                    let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                 let navController = UINavigationController(rootViewController: aVC)
                                                                                 navController.isNavigationBarHidden = true
                                                                    self.appDelegate.window!.rootViewController  = navController
                                                                    
-                                 }
-                             })
-                             
+                                
                              
                          }
                          
@@ -1267,17 +1324,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     }
                     else if(JSON.response?.statusCode == 401)
                     {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
-                        
+                          
                         
                     }
                     else
@@ -1290,17 +1354,24 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 case .failure(let err):
                     
                     if JSON.response?.statusCode == 401{
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
                                   let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                            let navController = UINavigationController(rootViewController: aVC)
                                                                            navController.isNavigationBarHidden = true
                                                               self.appDelegate.window!.rootViewController  = navController
                                                               
-                            }
-                        })
-                        
+                           
                         return
                     }
                     
@@ -1535,16 +1606,23 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                              case .failure(let err):
                                  webservices().StopSpinner()
                                  if statusCode == 401{
-                                     APPDELEGATE.ApiLogout(onCompletion: { int in
-                                         if int == 1{
+                                     
+                                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                                    
                                               let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                                         let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                         let navController = UINavigationController(rootViewController: aVC)
                                                                                         navController.isNavigationBarHidden = true
                                                                            self.appDelegate.window!.rootViewController  = navController
                                                                            
-                                         }
-                                     })
                                      
                                      return
                                  }
@@ -1683,6 +1761,29 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                    if statusCode == 200{
                      self.apicallGetMyHelperList()
                    }
+                   else if(statusCode == 401)
+                   {
+                      
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                          let navController = UINavigationController(rootViewController: aVC)
+                                                                          navController.isNavigationBarHidden = true
+                                                             self.appDelegate.window!.rootViewController  = navController
+                                                             
+                        
+                       
+                   }
+                
                case .failure(let err):
                    
                    webservices().StopSpinner()
@@ -1727,6 +1828,30 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                    self.refreshControl.endRefreshing()
                    if statusCode == 200{
                      self.apicallGetMyHelperList()
+                   }
+                
+                   else if(statusCode == 401)
+                   {
+                       
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                          let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                          let navController = UINavigationController(rootViewController: aVC)
+                                                                          navController.isNavigationBarHidden = true
+                                                             self.appDelegate.window!.rootViewController  = navController
+                                                             
+                        
+                       
+                       
                    }
                case .failure(let err):
                    

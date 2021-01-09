@@ -173,16 +173,25 @@ class MaidProfileDetailsVC: UIViewController {
                    case .failure(let err):
                        webservices().StopSpinner()
                        if JSON.response?.statusCode == 401{
-                           APPDELEGATE.ApiLogout1() // (onCompletion: { int in
-                             // if int == 1{
+                           
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
+                        
                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                               let navController = UINavigationController(rootViewController: aVC)
                                                                               navController.isNavigationBarHidden = true
                                                                  self.appDelegate.window!.rootViewController  = navController
                                                                  
-                             //  }
-                         //  })
+                            
                            
                            return
                        }
@@ -442,16 +451,23 @@ class MaidProfileDetailsVC: UIViewController {
                        
                        else if(JSON.response?.statusCode == 401)
                        {
-                           APPDELEGATE.ApiLogout(onCompletion: { int in
-                               if int == 1{
+                              
+                            UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                            UserDefaults.standard.removeObject(forKey:USER_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                            UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                            UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                            UserDefaults.standard.removeObject(forKey:USER_NAME)
+                            UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                            UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                            
                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                  let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                               let navController = UINavigationController(rootViewController: aVC)
                                                                               navController.isNavigationBarHidden = true
                                                                  self.appDelegate.window!.rootViewController  = navController
                                                                  
-                               }
-                           })
                            
                            
                        }
@@ -465,17 +481,25 @@ class MaidProfileDetailsVC: UIViewController {
                    case .failure(let err):
                        webservices().StopSpinner()
                        if JSON.response?.statusCode == 401{
-                           APPDELEGATE.ApiLogout1() // (onCompletion: { int in
-                             // if int == 1{
+                          
+                        UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                        UserDefaults.standard.removeObject(forKey:USER_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                        UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                        UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                        UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                        UserDefaults.standard.removeObject(forKey:USER_NAME)
+                        UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                        UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                        
+                        
                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                               let navController = UINavigationController(rootViewController: aVC)
                                                                               navController.isNavigationBarHidden = true
                                                                  self.appDelegate.window!.rootViewController  = navController
                                                                  
-                             //  }
-                         //  })
-                           
+                             
                            return
                        }
                      // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
@@ -549,16 +573,23 @@ class MaidProfileDetailsVC: UIViewController {
                           case .failure(let err):
                               webservices().StopSpinner()
                               if JSON.response?.statusCode == 401{
-                                  APPDELEGATE.ApiLogout(onCompletion: { int in
-                                      if int == 1{
+                                  
+                                UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                                UserDefaults.standard.removeObject(forKey:USER_ID)
+                                UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                                UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                                UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                                UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                                UserDefaults.standard.removeObject(forKey:USER_NAME)
+                                UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                                UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                                
                                         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                                      let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                      let navController = UINavigationController(rootViewController: aVC)
                                                                                      navController.isNavigationBarHidden = true
                                                                         self.appDelegate.window!.rootViewController  = navController
                                                                         
-                                      }
-                                  })
                                   
                                   return
                               }

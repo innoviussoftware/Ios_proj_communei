@@ -14,6 +14,7 @@ struct MyHelperListResp: Codable {
     let data: [MyHelperListData]?
     let status: Int?
     let message: String?
+    let error:String?
 }
 
 // MARK: - Datum

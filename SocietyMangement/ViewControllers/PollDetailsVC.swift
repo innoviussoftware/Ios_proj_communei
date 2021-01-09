@@ -572,17 +572,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                         
                         else if(JSON.response?.statusCode == 401)
                         {
-                            APPDELEGATE.ApiLogout(onCompletion: { int in
-                                if int == 1{
-                                     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            
+                            UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                            UserDefaults.standard.removeObject(forKey:USER_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                            UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                            UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                            UserDefaults.standard.removeObject(forKey:USER_NAME)
+                            UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                            UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                            
+                            
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                   let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                let navController = UINavigationController(rootViewController: aVC)
                                                                                navController.isNavigationBarHidden = true
                                                                   self.appDelegate.window!.rootViewController  = navController
                                                                   
-                                }
-                            })
-                            
                             
                         }
                         
@@ -596,16 +603,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
 
                         webservices().StopSpinner()
                         if JSON.response?.statusCode == 401{
-                            APPDELEGATE.ApiLogout1() // (onCompletion: { int in
-                               // if int == 1{
+                           
+                            UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                            UserDefaults.standard.removeObject(forKey:USER_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                            UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                            UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                            UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                            UserDefaults.standard.removeObject(forKey:USER_NAME)
+                            UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                            UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                            
+                            
                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                                                                let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                                let navController = UINavigationController(rootViewController: aVC)
                                                                                navController.isNavigationBarHidden = true
                                                                   self.appDelegate.window!.rootViewController  = navController
-                                                                  
-                            //    }
-                           // })
+                         
 
                             return
                         }
@@ -654,16 +669,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 
                 else if(JSON.response?.statusCode == 401)
                 {
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                        let navController = UINavigationController(rootViewController: aVC)
                                                                        navController.isNavigationBarHidden = true
                                                           self.appDelegate.window!.rootViewController  = navController
                                                           
-                        }
-                    })
+                     
                     
                     
                 }
@@ -677,20 +700,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 
                 //webservices().StopSpinner()
                 if JSON.response?.statusCode == 401{
-                    if #available(iOS 13.0, *) {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                 let navController = UINavigationController(rootViewController: aVC)
                                 navController.isNavigationBarHidden = true
                                 self.appDelegate.window!.rootViewController  = navController
                                 
-                            }
-                        })
-                    } else {
-                        // Fallback on earlier versions
-                    }
+                            
                     
                     return
                 }
@@ -740,17 +767,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 
                 else if(JSON.response?.statusCode == 401)
                 {
-                    APPDELEGATE.ApiLogout(onCompletion: { int in
-                        if int == 1{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                              let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                           let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                                                        let navController = UINavigationController(rootViewController: aVC)
                                                                        navController.isNavigationBarHidden = true
                                                           self.appDelegate.window!.rootViewController  = navController
                                                           
-                        }
-                    })
-                    
+                      
                     
                 }
                 else
@@ -763,21 +797,24 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
                 
                 webservices().StopSpinner()
                 if JSON.response?.statusCode == 401{
-                    if #available(iOS 13.0, *) {
-                        APPDELEGATE.ApiLogout(onCompletion: { int in
-                            if int == 1{
+                       
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
                                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                 let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                                 let navController = UINavigationController(rootViewController: aVC)
                                 navController.isNavigationBarHidden = true
                                 self.appDelegate.window!.rootViewController  = navController
                                 
-                            }
-                        })
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    
+                          
                     return
                 }
                 
