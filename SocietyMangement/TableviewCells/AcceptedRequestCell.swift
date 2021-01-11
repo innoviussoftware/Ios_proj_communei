@@ -94,7 +94,13 @@ class AcceptedRequestCell: UITableViewCell {
     
     @IBOutlet weak var btnOut: UIButton!
     
-    @IBOutlet weak var btnIn: UIButton!
+   // @IBOutlet weak var btnIn: UIButton!
+
+    @IBOutlet weak var btnIn_OnDemand: UIButton! // Entry
+
+    @IBOutlet weak var btnEdit_OnDemand: UIButton!
+    @IBOutlet weak var btnCancel_OnDemand: UIButton!
+    @IBOutlet weak var btnOut_OnDemand: UIButton!  // Exit
 
 
     @IBOutlet weak var btnDeliveryInfo: UIButton!

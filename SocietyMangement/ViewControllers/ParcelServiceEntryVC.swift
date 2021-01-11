@@ -241,7 +241,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
                      }
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
-            var strDateee = ""
+        var strDateee = ""
            
            date = txtdate.text!
         

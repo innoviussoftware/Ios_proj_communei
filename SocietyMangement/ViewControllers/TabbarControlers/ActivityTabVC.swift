@@ -933,7 +933,13 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                       //  self.present(alert, animated: true, completion: nil)
                         print(err.asAFError!)
                         
-                        
+                    }
+                    
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                        webservices().StopSpinner()
+                        print(err.asAFError!)
                     }
                 }
                 
@@ -1093,6 +1099,59 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
     }
     
+    // MARK: - Api AlertInfo
+
+    @objc func ApiCallAlertInfo(sender:UIButton) {
+        
+        let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AlertInfoVC") as! AlertInfoVC
+         
+        popOverConfirmVC.strName = (arrGuestList[sender.tag].activity?.messageBy!)!
+        
+        if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
+            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+
+        }else if arrGuestList[sender.tag].activity?.activityType  == "Complaint to Guard" {
+            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+        }else{ // Message to Guard
+            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+        }
+        
+       // popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+        
+       // popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
+        
+        let lblDate = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[0]
+        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+        
+        let lblTime = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[1]
+        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+        popOverConfirmVC.strTime =  strTime + " , " + strDate
+
+
+        if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
+            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
+        }else if arrGuestList[sender.tag].activity?.activityType  == "Complaint to Guard" {
+            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.complaintType!)!
+        }else{
+            popOverConfirmVC.strMessage = "Message"
+        }
+        
+        popOverConfirmVC.strtxtview = (arrGuestList[sender.tag].activity?.message!)!
+
+        if (arrGuestList[sender.tag].activity?.messageAttachment!) != nil {
+            let str = (arrGuestList[sender.tag].activity?.messageAttachment)!
+            let array = str.components(separatedBy: ",")
+            popOverConfirmVC.getImage = array[0]
+        }
+        
+        self.addChildViewController(popOverConfirmVC)
+        popOverConfirmVC.view.frame = self.view.frame
+        self.view.center = popOverConfirmVC.view.center
+        self.view.addSubview(popOverConfirmVC.view)
+        popOverConfirmVC.didMove(toParentViewController: self)
+        
+    }
         
     @objc func ApiCallEdit(sender:UIButton)
     {
@@ -1509,59 +1568,124 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
     }
     
-    // MARK: - Api AlertInfo
-
-    @objc func ApiCallAlertInfo(sender:UIButton) {
+    
+    @objc func ApiCallEdit_OnDemand(sender:UIButton)
+    {
+        let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
+        popOverConfirmVC.delegate = self
         
-        let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AlertInfoVC") as! AlertInfoVC
-         
-        popOverConfirmVC.strName = (arrGuestList[sender.tag].activity?.messageBy!)!
+        popOverConfirmVC.isfrom = 4
         
-        if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
-            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
-
-        }else if arrGuestList[sender.tag].activity?.activityType  == "Complaint to Guard" {
-            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
-        }else{ // Message to Guard
-            popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
+       if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+            let strDate = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
+        
+            popOverConfirmVC.strStartDate = strDate!
         }
         
-       // popOverConfirmVC.strTitle = (arrGuestList[sender.tag].activity?.propertyFullName!)!
-        
-       // popOverConfirmVC.strTime = (arrGuestList[sender.tag].inTime!)
-        
-        let lblDate = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[0]
-        let strDate = strChangeDateFormate(strDateeee: lblDate!)
-        
-        let lblTime = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[1]
-        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+        if (arrGuestList[sender.tag].activity?.activityIn) != nil {
+            
+            let lblTime = arrGuestList[sender.tag].activity?.activityIn?.components(separatedBy: " ")[1]
+            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-        popOverConfirmVC.strTime =  strTime + " , " + strDate
-
-
-        if arrGuestList[sender.tag].activity?.activityType  == "Emergency Alert " {
-            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.emergencyAlertType!)!
-        }else if arrGuestList[sender.tag].activity?.activityType  == "Complaint to Guard" {
-            popOverConfirmVC.strMessage = (arrGuestList[sender.tag].activity?.complaintType!)!
-        }else{
-            popOverConfirmVC.strMessage = "Message"
-        }
+             popOverConfirmVC.StrTime = strTime
+         }
         
-        popOverConfirmVC.strtxtview = (arrGuestList[sender.tag].activity?.message!)!
-
-        if (arrGuestList[sender.tag].activity?.messageAttachment!) != nil {
-            let str = (arrGuestList[sender.tag].activity?.messageAttachment)!
-            let array = str.components(separatedBy: ",")
-            popOverConfirmVC.getImage = array[0]
-        }
+        let dailyHelpPropertyID = (self.arrGuestList[sender.tag].activity?.dailyHelpPropertyID!)
         
+        let my_DailyHelpPropertyID = (dailyHelpPropertyID! as NSString).integerValue
+
+        popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
+        popOverConfirmVC.DailyHelpPropertyID = my_DailyHelpPropertyID
+
         self.addChildViewController(popOverConfirmVC)
         popOverConfirmVC.view.frame = self.view.frame
         self.view.center = popOverConfirmVC.view.center
         self.view.addSubview(popOverConfirmVC.view)
         popOverConfirmVC.didMove(toParentViewController: self)
+    
         
     }
+    
+    @objc func ApiCallIn_OnDemand(sender:UIButton)
+    {
+        
+        let dailyHelpPropertyID = (self.arrGuestList[sender.tag].activity?.dailyHelpPropertyID!)
+        
+        let my_DailyHelpPropertyID = (dailyHelpPropertyID! as NSString).integerValue
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : self.arrGuestList[sender.tag].userActivityID!,
+            "DailyHelpPropertyID" : my_DailyHelpPropertyID
+        ]
+
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+            
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                webservices().StopSpinner()
+
+                if JSON.response?.statusCode == 401{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                    
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                       
+                    
+                    return
+                }
+                
+                
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                
+            }
+            
+        }
+        
+    }
+    
+    
     
     // MARK: - Api Cancel
     
@@ -1665,6 +1789,108 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                                    present(avc!, animated: true)
     }
     
+    @objc func ApiCallCancel_OnDemand(sender:UIButton)
+    {
+        let dailyHelpPropertyID = (self.arrGuestList[sender.tag].activity?.dailyHelpPropertyID!)
+        
+        let my_DailyHelpPropertyID = (dailyHelpPropertyID! as NSString).integerValue
+
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Cancel"
+        avc?.subtitleStr = "Are you sure you want to cancel this visitor enry?"
+
+                                   avc?.yesAct = {
+                                    
+                                        self.ApiCallCancelList_OnDemand(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, DailyHelpPropertyID: my_DailyHelpPropertyID)
+                                    
+                                   // self.dialNumber(number: <#T##String#>)
+                                    
+                                   // self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
+
+                                        }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+        
+    }
+    
+    func ApiCallCancelList_OnDemand(UserActivityID:Int,DailyHelpPropertyID : Int)
+    {
+                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+            "DailyHelpPropertyID" : DailyHelpPropertyID,
+        ]
+        
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_CANCEL_ON_DEMAND ,token: token as! String, param: param) { JSON in
+                    
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                webservices().StopSpinner()
+
+                if JSON.response?.statusCode == 401{
+                   
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                                                
+                    return
+                }
+                
+                if err.asAFError == nil {
+                    webservices().StopSpinner()
+                }else {
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                }
+                
+            }
+            
+        }
+        
+    }
+    
     
     // MARK: - Api Out/exit
     
@@ -1755,6 +1981,111 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                                     
                                     if self.arrGuestList[sender.tag].visitingFlatID != nil {
                                         self.ApiCallOutList(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, VisitorEntryTypeID: 1, VisitingFlatID: (self.arrGuestList[sender.tag].visitingFlatID!), GuardActivityID: (self.arrGuestList[sender.tag].guardActivityID!))
+                                    }
+                                    
+                                   // self.dialNumber(number: <#T##String#>)
+                                    
+                                   // self.dialNumber(number:  (self.arrGuestList[sender.tag].activity?.phone)!)
+
+                                            }
+        
+                                   avc?.noAct = {
+                                     
+                                   }
+                                   present(avc!, animated: true)
+    }
+    
+    // MARK: - Api Out/exit
+    
+    func ApiCallOutList_onDemand(UserActivityID:Int,DailyHelpPropertyID : Int)
+    {
+                
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        webservices().StartSpinner()
+        
+        let param : Parameters = [
+            "UserActivityID" : UserActivityID,
+            "DailyHelpPropertyID" : DailyHelpPropertyID,
+        ]
+
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+            
+        let statusCode = JSON.response?.statusCode
+            
+            switch JSON.result{
+            case .success(let resp):
+                //webservices().StopSpinner()
+                self.refreshControl.endRefreshing()
+                if statusCode == 200
+                {
+                    self.apicallGuestList()
+                }
+                else
+                {
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:(resp as AnyObject).message ?? "")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                
+                print(resp)
+            case .failure(let err):
+                
+                webservices().StopSpinner()
+
+                if JSON.response?.statusCode == 401{
+                    
+                    UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                    UserDefaults.standard.removeObject(forKey:USER_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                    UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                    UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                    UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                    UserDefaults.standard.removeObject(forKey:USER_NAME)
+                    UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                    UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                    
+                    
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                            let navController = UINavigationController(rootViewController: aVC)
+                            navController.isNavigationBarHidden = true
+                            self.appDelegate.window!.rootViewController  = navController
+                            
+                       
+                    
+                    return
+                }
+                
+                
+               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
+                print(err.asAFError!)
+                
+            }
+            
+        }
+        
+    }
+    
+    @objc func ApiCallOut_Exit_OnDemand(sender:UIButton)
+    {
+        let dailyHelpPropertyID = (self.arrGuestList[sender.tag].activity?.dailyHelpPropertyID!)
+        
+        let my_DailyHelpPropertyID = (dailyHelpPropertyID! as NSString).integerValue
+        
+        let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
+                   avc?.titleStr = "Out"
+        avc?.subtitleStr = "Are you sure you want to out this visitor entry?"
+
+                                   avc?.yesAct = {
+                                    
+                                    if self.arrGuestList[sender.tag].visitingFlatID != nil {
+                                        self.ApiCallOutList_onDemand(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, DailyHelpPropertyID: my_DailyHelpPropertyID)
                                     }
                                     
                                    // self.dialNumber(number: <#T##String#>)
@@ -1907,7 +2238,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btncall.isHidden = true
         }
         
-         cell.btnIn.isHidden = true
         
          cell.btncall.tag = indexPath.item
         
@@ -2580,7 +2910,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             }else{
                 cell.lblintime.isHidden = true
             }
-                        
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
+
+            
          /*   cell.imgview1.isHidden = true   // time
            // cell.imgview2.isHidden = true   // intime
            // cell.imgview3.isHidden = true   // outtime
@@ -3251,6 +3587,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 }
                 
             }
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
                                     
         }
         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Cab Entry" {
@@ -3910,6 +4251,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.lblintime.isHidden = true
                 }
           
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
             
         }
         
@@ -4620,6 +4965,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
             }
 
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
             
         }
          else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Entry" {
@@ -5379,6 +5728,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.lblintime.text =  strTime + " , " + strDate
                 cell.lblintime.isHidden = false
 
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
             
         }
          else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Delivery Pre-Approval" {
@@ -6306,6 +6660,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
              cell.lblouttime.isHidden = false
 
          }
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
          
         }
         
@@ -6843,6 +7202,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                      }
                  }
                 
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
               
              print("Service : Provider : Pre-Approval")
 
@@ -6930,6 +7293,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut.isHidden = true
             cell.btnDeliveryInfo.isHidden = true
             cell.btnAlertInfo.isHidden = false
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
 
         } else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Complaint to Guard" {
             
@@ -7017,6 +7385,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut.isHidden = true
             cell.btnDeliveryInfo.isHidden = true
             cell.btnAlertInfo.isHidden = false
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
 
         }
         else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Message to Guard" {
@@ -7156,6 +7529,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = false
             }
+            
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
 
         }
 
@@ -7176,20 +7554,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblguest.text = arrGuestList[indexPath.row].activity?.vendorServiceTypeName // "Daily Helper"
             
             
-            if arrGuestList[indexPath.row].activity?.addedOn != nil {
-                if arrGuestList[indexPath.row].activity?.addedOn != nil {
-                    let lblDate = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[0]
-                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                    
-                    let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
-                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                    cell.lblintime.text =  strTime + " , " + strDate
-                    cell.lblintime.isHidden = false
-                }else{
-                    cell.lblintime.isHidden = true
-                }
-            }
             
              if cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "ADDED" || cell.lblStatus.text == "REQUESTED"{
             
@@ -7209,7 +7573,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.lblintime.isHidden = true
                 }
                 
-             }else if cell.lblStatus.text == "CHECKED OUT"  {
+             }
+             else if cell.lblStatus.text == "CHECKED OUT"  {
                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
                     
                     let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -7244,6 +7609,41 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
              }
             
+             else if cell.lblStatus.text == "SERVING" {
+                if arrGuestList[indexPath.row].activity?.actualIn != nil {
+                    
+                    let lblDate = arrGuestList[indexPath.row].activity?.actualIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.actualIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                    cell.lblintime.text =  strTime + " , " + strDate
+                    
+                    cell.lblintime.isHidden = false
+
+                }else{
+                    cell.lblintime.isHidden = true
+                }
+
+              }
+             else {
+                if arrGuestList[indexPath.row].activity?.addedOn != nil {
+                    if arrGuestList[indexPath.row].activity?.addedOn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lblintime.text =  strTime + " , " + strDate
+                        cell.lblintime.isHidden = false
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
+                }
+             }
+            
              cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
                         
              if cell.lblStatus.text == "VISITED" || cell.lblStatus.text == "EXPIRED" || cell.lblStatus.text == "ATTENDED"{
@@ -7253,6 +7653,101 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
              }else if cell.lblStatus.text == "SERVING" {
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
+                if arrGuestList[indexPath.row].isWrongEntry == 0 {
+
+                    cell.lblouttime.isHidden = true
+                    cell.lblapprovedby.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    
+                    cell.lblWrongEntry.isHidden = true
+                    
+                    cell.imgviewStackTop3.constant = 10
+
+                    cell.imgviewHight1.constant = 12
+
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0
+
+                    cell.imgviewHight3.constant = 12
+
+                    cell.imgviewTop3_1.constant = 5
+
+                    cell.lblouttime.isHidden = false
+                    
+                    cell.imgview2.isHidden = false
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = false
+                    cell.btnOut.isHidden = false
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                    
+                }
+             else{
+                    
+                    cell.lblouttime.isHidden = true
+                    cell.lblapprovedby.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    
+                    cell.lblWrongEntry.isHidden = false
+                    
+                    cell.imgviewStackTop3.constant = 27
+                    
+                    cell.imgviewTop3_1.constant = 5
+                    
+                    cell.imgviewTop6_3.constant = 5
+
+                    cell.imgviewStackTop6.constant = 10
+
+                    cell.imgviewHight1.constant = 12
+
+                    cell.imgviewHight3.constant = 12
+
+                    cell.imgviewHight2.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    
+                    cell.imgviewHight6.constant = 0
+
+                    cell.lblouttime.isHidden = false
+                    
+                    cell.imgview2.isHidden = false
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    
+                    cell.imgview6.isHidden = false
+                    cell.imgview1.isHidden = false
+                    cell.imgview3.isHidden = false
+
+                    
+                    cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                    
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = false
+                    
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = false
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
              }
              else if cell.lblStatus.text == "DENIED" {
                 cell.lblStatus.backgroundColor = UIColor.systemRed
@@ -7374,7 +7869,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                           cell.btnOut.isHidden = true
                           cell.btnDeliveryInfo.isHidden = true
                           cell.btnAlertInfo.isHidden = true
-                          cell.btnIn.isHidden = true
 
                       }
                 
@@ -7497,7 +7991,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                        cell.btnOut.isHidden = true
                        cell.btnDeliveryInfo.isHidden = true
                        cell.btnAlertInfo.isHidden = true
-                       cell.btnIn.isHidden = true
 
                    }
                 
@@ -7597,7 +8090,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                           cell.btnOut.isHidden = false
                           cell.btnDeliveryInfo.isHidden = true
                           cell.btnAlertInfo.isHidden = true
-                          cell.btnIn.isHidden = true
 
                       }
 
@@ -7698,7 +8190,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                        cell.btnOut.isHidden = false
                        cell.btnDeliveryInfo.isHidden = true
                        cell.btnAlertInfo.isHidden = true
-                       cell.btnIn.isHidden = true
 
                    }
 
@@ -7814,7 +8305,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.btnOut.isHidden = true
                     cell.btnDeliveryInfo.isHidden = true
                     cell.btnAlertInfo.isHidden = true
-                    cell.btnIn.isHidden = true
 
                 }
             }
@@ -7878,6 +8368,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
             }
             
+            cell.btnIn_OnDemand.isHidden = true
+            cell.btnCancel_OnDemand.isHidden = true
+            cell.btnOut_OnDemand.isHidden = true
+            cell.btnEdit_OnDemand.isHidden = true
+            
         }
         
        /* else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Daily Helper Entry"{
@@ -7937,9 +8432,123 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             }else if cell.lblStatus.text == "REMOVED" {
                cell.lblStatus.backgroundColor = UIColor.systemRed
             }
-            else if cell.lblStatus.text == "CHECKED IN" || cell.lblStatus.text == "REQUESTED" || cell.lblStatus.text == "ADDED"{
+            else if cell.lblStatus.text == "SERVING" {
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
-           }
+
+               if arrGuestList[indexPath.row].isWrongEntry == 0 {
+
+                   cell.lblouttime.isHidden = true
+                   cell.lblapprovedby.isHidden = true
+                   cell.lblLeaveatGate.isHidden = true
+                   
+                   cell.lblWrongEntry.isHidden = true
+                   
+                   cell.imgviewStackTop3.constant = 10
+
+                   cell.imgviewHight1.constant = 12
+
+                   cell.imgviewHight2.constant = 12
+                   cell.imgviewHight4.constant = 0
+                   cell.imgviewHight5.constant = 0
+                   cell.imgviewHight6.constant = 0
+
+                   cell.imgviewHight3.constant = 12
+
+                   cell.imgviewTop3_1.constant = 5
+
+                   cell.lblouttime.isHidden = false
+                   
+                   cell.imgview2.isHidden = false
+                   cell.imgview4.isHidden = true
+                   cell.imgview5.isHidden = true
+                   cell.imgview6.isHidden = true
+
+                   cell.btnCancel.isHidden = true
+                   cell.btnEdit.isHidden = true
+                   
+                   cell.btnWrong_Entry.isHidden = false
+                   cell.btnWrong_Entry_Red.isHidden = true
+
+                   cell.btnRenew.isHidden = true
+                   cell.btnClose.isHidden = true
+                   cell.btnNote_Guard.isHidden = false
+                   cell.btnOut.isHidden = false
+                   cell.btnDeliveryInfo.isHidden = true
+                   cell.btnAlertInfo.isHidden = true
+                   
+               }
+            else{
+                   
+                   cell.lblouttime.isHidden = true
+                   cell.lblapprovedby.isHidden = true
+                   cell.lblLeaveatGate.isHidden = true
+                   
+                   cell.lblWrongEntry.isHidden = false
+                   
+                   cell.imgviewStackTop3.constant = 27
+                   
+                   cell.imgviewTop3_1.constant = 5
+                   
+                   cell.imgviewTop6_3.constant = 5
+
+                   cell.imgviewStackTop6.constant = 10
+
+                   cell.imgviewHight1.constant = 12
+
+                   cell.imgviewHight3.constant = 12
+
+                   cell.imgviewHight2.constant = 12
+                   cell.imgviewHight4.constant = 0
+                   cell.imgviewHight5.constant = 0
+                   
+                   cell.imgviewHight6.constant = 0
+
+                   cell.lblouttime.isHidden = false
+                   
+                   cell.imgview2.isHidden = false
+                   cell.imgview4.isHidden = true
+                   cell.imgview5.isHidden = true
+                   
+                   cell.imgview6.isHidden = false
+                   cell.imgview1.isHidden = false
+                   cell.imgview3.isHidden = false
+
+                   
+                   cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                   
+                   cell.btnCancel.isHidden = true
+                   cell.btnEdit.isHidden = true
+                   
+                   cell.btnWrong_Entry.isHidden = true
+                   cell.btnWrong_Entry_Red.isHidden = false
+                   
+                   cell.btnRenew.isHidden = true
+                   cell.btnClose.isHidden = true
+                   cell.btnNote_Guard.isHidden = true
+                   cell.btnOut.isHidden = false
+                   cell.btnDeliveryInfo.isHidden = true
+                   cell.btnAlertInfo.isHidden = true
+
+               }
+            }
+            else if cell.lblStatus.text == "CHECKED IN" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+
+            }else if cell.lblStatus.text == "REQUESTED" {
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                cell.btnCancel_OnDemand.isHidden = false
+                cell.btnEdit_OnDemand.isHidden = false
+                cell.btnIn_OnDemand.isHidden = false
+                cell.btnOut_OnDemand.isHidden = true
+
+
+            }
+            else if cell.lblStatus.text == "ADDED"{
+               cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            }else{
+                
+            }
             
             cell.constraintHightStackBtn.constant = 0
             
@@ -7958,14 +8567,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnDeliveryInfo.isHidden = true
             cell.btnAlertInfo.isHidden = true
 
-            print("OnDemand : Helper ")
-            
-        //  }else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("Service Provider")) != nil)  {
+            print("OnDemand : Helper / Entry ")
             
         }
         
+        //  }else if arrGuestList[indexPath.row].activity?.activityType != nil  && ((arrGuestList[indexPath.row].activity?.activityType!.contains("Service Provider")) != nil)  {
+                    
        // else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Service Provider Pre-Approval" {
-            // }
+        // }
         /*else if arrGuestList[indexPath.row].activity?.activityType != nil  && arrGuestList[indexPath.row].activity?.activityType  == "Vehicle Added"{
             
             cell.lblStatus.isHidden = false
@@ -8112,6 +8721,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnNote_Guard.isHidden = true
                 cell.btnOut.isHidden = true
                 cell.btnAlertInfo.isHidden = true
+                
+                cell.btnIn_OnDemand.isHidden = true
+                cell.btnCancel_OnDemand.isHidden = true
+                cell.btnOut_OnDemand.isHidden = true
+                cell.btnEdit_OnDemand.isHidden = true
 
                        
                 print("Activity ActivityType :- ",(arrGuestList[indexPath.row].activity?.activityType)!)
@@ -8153,6 +8767,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
         cell.btnNote_Guard.tag = indexPath.item
         cell.btnOut.tag = indexPath.item
+        
+        cell.btnCancel_OnDemand.tag = indexPath.item
+        cell.btnEdit_OnDemand.tag = indexPath.item
+        cell.btnIn_OnDemand.tag = indexPath.item
+        cell.btnOut_OnDemand.tag = indexPath.item
+
 
         cell.btncall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
         
@@ -8169,6 +8789,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         cell.btnClose.addTarget(self, action:#selector(ApiCallClose), for: .touchUpInside)
         
          cell.btnNote_Guard.addTarget(self, action:#selector(ApiCallNote_to_Guard), for: .touchUpInside)
+        
+        /* */
+
+        cell.btnCancel_OnDemand.addTarget(self, action:#selector(ApiCallCancel_OnDemand), for: .touchUpInside)
+        cell.btnEdit_OnDemand.addTarget(self, action:#selector(ApiCallEdit_OnDemand), for: .touchUpInside) // renew
+        cell.btnIn_OnDemand.addTarget(self, action:#selector(ApiCallIn_OnDemand), for: .touchUpInside)
+        cell.btnOut_OnDemand.addTarget(self, action:#selector(ApiCallOut_Exit_OnDemand), for: .touchUpInside)
         
         /* */
 

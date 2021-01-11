@@ -69,6 +69,9 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     var UserActivityID:Int?
     var VisitorEntryTypeID:Int?
     
+    var DailyHelpPropertyID:Int?
+
+    
     var singleDeliveryCheckGate = ""
     
     var textfield = UITextField()
@@ -158,6 +161,11 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 
             }
         }else if isfrom == 3 {
+            viewinnerHeightCons.constant = 255
+            btncheckMark.isHidden = true
+            lblDeliveryName.isHidden = true
+            btnUpdateTopCons.constant = 20
+        }else if isfrom == 4 {
             viewinnerHeightCons.constant = 255
             btncheckMark.isHidden = true
             lblDeliveryName.isHidden = true
@@ -334,7 +342,12 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Select Start time")
             self.present(alert, animated: true, completion: nil)
         }else{
-            apicallAddSingleDate()
+            if isfrom == 4 {
+                apicallAddSingleDate_OnDemand()
+            }else{
+                apicallAddSingleDate()
+            }
+               
             removeAnimate()
         }
     }
@@ -506,6 +519,169 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             
        
     }
+    
+    func apicallAddSingleDate_OnDemand()
+    {
+          if !NetworkState().isInternetAvailable {
+                         ShowNoInternetAlert()
+                         return
+                     }
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+      //  var strDateee = ""
+           
+        //   date = txtdate.text!
+        
+      //  strDateee = strChangeDateFormate(strDateeee: date)
+        
+
+        var after_add_time = ""
+        
+        var preApprovedInTime = ""
+        
+        preApprovedInTime = "\(txtdate.text!) \(txttime.text!)"
+        
+        print("preApprovedInTime --> ",preApprovedInTime)
+
+        var preApprovedOutTime = ""
+
+        if txtvaildtill.text == "Day End" {
+            txtvaildtill.text = time
+            
+            
+            let dateFormatter = DateFormatter()
+            
+           // let isoDate = time
+            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd" // h:mm"
+
+          //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+          //  let date = dateFormatter.date(from:isoDate)!
+            
+//            let date2 = strDateee
+//            dateFormatter.dateFormat = "yyyy-MM-dd"
+//            var date = dateFormatter.date(from: date2)
+//
+//            date = dateFormatter.date(from:isoDate)!
+            
+         //   let addminutes = date.addingTimeInterval(TimeInterval(24*60*60))
+        //    after_add_time = dateFormatter.string(from: addminutes)
+         //       print("after add time --> ",after_add_time)
+            
+            after_add_time = "11:59 PM" //"23:59:00"
+            
+            print("after add time OnDemand --> ",after_add_time)
+            
+            preApprovedOutTime = "\(txtdate.text!) \(after_add_time)"
+
+            print("preApprovedOutTime OnDemand --> ",preApprovedOutTime)
+
+        }else{
+            txtvaildtill.text?.removeLast(3)
+
+            let myInt = Int(txtvaildtill.text!)!
+            
+            let isoDate = txttime.text!
+
+            let formatter1 = DateFormatter()
+            formatter1.dateFormat = "h:mm a"
+                    
+          //  let Msg_Date = isoDate
+
+               let dateFormatterGet = DateFormatter()
+               dateFormatterGet.dateFormat = "HH:mm:ss"
+               let dateFormatterPrint = DateFormatter()
+               dateFormatterPrint.dateFormat = "h:mm a"
+             
+            
+            let date = dateFormatterPrint.date(from:isoDate)!
+                        
+          //  let isoDate = "\(myInt):00" //validtill // valid  //"2016-04-14T10:44:00+0000"
+
+          //  dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd"  //h:mm"
+          
+          //  let date = dateFormatter.date(from:isoDate)!
+                            
+            let addminutes = date.addingTimeInterval(TimeInterval(myInt*60*60))
+            after_add_time = dateFormatterPrint.string(from: addminutes)
+            
+            print("after add time OnDemand 3 --> ",after_add_time)
+            
+            preApprovedOutTime = "\(txtdate.text!) \(after_add_time)"
+            print("preApprovedOutTime OnDemand --> ",preApprovedOutTime)
+
+        }
+            
+        var param = Parameters()
+
+        if isfrom == 4 {
+            param  = [
+               "PreApprovedInTime": preApprovedInTime,
+               "PreApprovedOutTime": preApprovedOutTime,
+               "DailyHelpPropertyID": DailyHelpPropertyID!,
+               "UserActivityID": UserActivityID!,
+            ]
+        }
+            
+        
+        print("param Single add date OnDemand : ",param)
+
+            webservices().StartSpinner()
+            
+            
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + "user/on-demand-helper/edit" ,token: token as! String, param: param) { JSON in
+
+                switch JSON.result{
+                case .success(let resp):
+                    
+                    webservices().StopSpinner()
+                    
+                    
+                            if(JSON.response?.statusCode == 200)
+                            {
+                                self.delegate?.addedSingleDate()
+                                self.removeAnimate()
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                            else if(JSON.response?.statusCode == 401)
+                            {
+                                UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                                UserDefaults.standard.removeObject(forKey:USER_ID)
+                                UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                                UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                                UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                                UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                                UserDefaults.standard.removeObject(forKey:USER_NAME)
+                                UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                                UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                                
+                                         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                      let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                                   let navController = UINavigationController(rootViewController: aVC)
+                                                                                   navController.isNavigationBarHidden = true
+                                                                      self.appDelegate.window!.rootViewController  = navController
+                                  
+                                
+                                
+                            }
+                            else
+                            {
+                                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid  data")
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        
+                    
+                    print(resp)
+                case .failure(let err):
+                    webservices().StopSpinner()
+                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                    
+                }
+            }
+            
+       
+    }
 
     func setborders(textfield:UITextField)
       {
@@ -598,4 +774,21 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         collectionHours.reloadData()
     }
    
+}
+
+
+extension Date {
+
+  func isEqualTo(_ date: Date) -> Bool {
+    return self == date
+  }
+  
+  func isGreaterThan(_ date: Date) -> Bool {
+     return self > date
+  }
+  
+  func isSmallerThan(_ date: Date) -> Bool {
+     return self < date
+  }
+    
 }

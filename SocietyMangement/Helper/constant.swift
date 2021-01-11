@@ -92,6 +92,8 @@ let API_ACCEPT_DECLINE = "user/acceptreject"
 
 let API_ACTIVITY_CANCEL = "user/pre-approved/cancel"
 
+let API_ACTIVITY_CANCEL_ON_DEMAND = "user/on-demand-helper/cancel"
+
 let API_ACTIVITY_CLOSE = "user/pre-approved/close"
 
 let API_ACTIVITY_EXIT_OUT = "user/pre-approved/exit"
@@ -195,6 +197,9 @@ let API_HELPER_DETAIL = "user/helper/get-review" // "helpersdetails"
 
 let API_HELPER_DETAIL_ATTENDANCE = "user/daily-helper/attendance"
 
+let API_HELPER_DETAIL_ATTENDANCE_PRESENT = "user/daily-helper/attendance/present"
+
+let API_HELPER_DETAIL_ATTENDANCE_ABSENT = "user/daily-helper/attendance/absent"
 
 let API_DAILYHELPER_ASSIGN = "user/daily-helper/assign"
 
