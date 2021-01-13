@@ -33,7 +33,7 @@ struct UserMe: Codable {
     let sinceDevice: String?
     let society: SocietyNew?
     let userTypeName: String?
-    let vehicles: [Vehicle?]
+    let vehicles: [Vehicle]?
     let email, guid, name, profilePhotoPath: String?
     let updatedAt: String?
 

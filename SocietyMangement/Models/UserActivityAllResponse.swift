@@ -55,7 +55,7 @@ struct UserActivityAll: Codable {
 
 // MARK: - Activity
 struct ActivityAll: Codable {
-    let activityType: String?
+    let ActivityType: String?
     let name: String?
     let vendorServiceTypeName: String?
     let phone: String?
@@ -85,7 +85,7 @@ struct ActivityAll: Codable {
     let vehicleNumber: String?
 
     enum CodingKeys: String, CodingKey {
-        case activityType = "ActivityType"
+        case ActivityType
         case name = "Name"
         case dailyHelpPropertyID = "DailyHelpPropertyID"
         case vendorServiceTypeName = "VendorServiceTypeName"

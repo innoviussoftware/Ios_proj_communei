@@ -10,20 +10,26 @@ import UIKit
 
 class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgview: UIImageView!
+    
+    
+    @IBOutlet weak var imgout: UIImageView!
+
+  //  @IBOutlet weak var btncall: RSImageViewCustomisation!
+    
+    @IBOutlet weak var btncall: UIButton!
+    
+    @IBOutlet weak var imgviewCompanyLogo: UIImageView!
+
     @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var lblguest: UILabel!
     @IBOutlet weak var lblintime: UILabel!
     @IBOutlet weak var lblouttime: UILabel!
-    @IBOutlet weak var imgout: UIImageView!
     @IBOutlet weak var lblapprovedby: UILabel!
-  //  @IBOutlet weak var btncall: RSImageViewCustomisation!
     
-    @IBOutlet weak var btncall: UIButton!
-    @IBOutlet weak var imgviewCompanyLogo: UIImageView!
-
     @IBOutlet weak var lbladdedby: UILabel!
     @IBOutlet weak var imgaprroved: UIImageView!
     @IBOutlet weak var hightlblout: NSLayoutConstraint!
+    
     @IBOutlet weak var lblreport: UILabel!
     
     @IBOutlet weak var lblStatus: UILabel!
@@ -31,7 +37,6 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var lblLeaveatGate: UILabel!
     
     @IBOutlet weak var lblWrongEntry: UILabel!
-
 
     @IBOutlet weak var btnapproved: RSButtonCustomisation!
     

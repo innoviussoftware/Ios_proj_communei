@@ -29,6 +29,7 @@ class DeliveryWaitingPopupVC: UIViewController {
     
     var isfromnotification = 0
 
+    @IBOutlet weak var viewinner: UIView!
 
     @IBOutlet weak var lblname: UILabel!
 
@@ -55,6 +56,9 @@ class DeliveryWaitingPopupVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        self.showAnimate()
         
         print("deliverydic :- ",deliverydic)
 
@@ -128,14 +132,49 @@ class DeliveryWaitingPopupVC: UIViewController {
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
      }
     
+    func showAnimate()
+    {
+        self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.view.alpha = 0.0;
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.alpha = 1.0
+            self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        });
+    }
+    
+    
+    func removeAnimate()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                self.view.removeFromSuperview()
+                
+            }
+        });
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if(touches.first?.view != viewinner){
+            removeAnimate()
+        }
+    }
+    
     @IBAction func btnClosePressed(_ sender: UIButton) {
         
-        UIView.animate(withDuration: 0.3, animations: {
+        removeAnimate()
+
+        
+       /* UIView.animate(withDuration: 0.3, animations: {
                            self.view.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.width, height: self.view.frame.height)
                        }) { (true) in
                            self.view.removeFromSuperview()
                            self.removeFromParentViewController()
-                       }
+                       } */
         
     }
     

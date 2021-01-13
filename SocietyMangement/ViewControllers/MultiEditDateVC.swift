@@ -214,10 +214,8 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        
-        
-      //  let startdate = formatter.date(from: strStartDate)
-      //  let enddate = formatter.date(from: strEndDate)
+       let startdate = formatter.date(from: strStartDate)
+       let enddate = formatter.date(from: strEndDate)
      
         print("startdate ",date1)
         print("enddate ",date2)
