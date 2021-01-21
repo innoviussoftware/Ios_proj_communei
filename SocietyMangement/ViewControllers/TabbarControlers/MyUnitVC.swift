@@ -544,10 +544,11 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     func apicallGetVehicleList()
     {
-        if !NetworkState().isInternetAvailable {
-                         ShowNoInternetAlert()
-                         return
-                     }
+            if !NetworkState().isInternetAvailable {
+                    ShowNoInternetAlert()
+                    return
+            }
+        
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             Apicallhandler().GetVehicleUserList(URL: webservices().baseurl + API_GET_VEHICLELIST, token:token as! String) { JSON in
@@ -1786,11 +1787,13 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                 
                case .failure(let err):
                    
-                   webservices().StopSpinner()
-                   let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                   self.present(alert, animated: true, completion: nil)
-                   print(err.asAFError!)
-                   
+                if err.asAFError == nil {
+                    webservices().StopSpinner()
+                }else {
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
+                }
                    
                }
            }

@@ -208,10 +208,13 @@ class CommunityVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSourc
                        
                    case .failure(let err):
                        
-                       webservices().StopSpinner()
-                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                       self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError!)
+                    if err.asAFError == nil {
+                        webservices().StopSpinner()
+                    }else {
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       // self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+                    }
                        
                        
                    }

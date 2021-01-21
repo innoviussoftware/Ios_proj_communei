@@ -69,6 +69,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
                
         collectionHours.collectionViewLayout = alignedFlowLayout
             
+        showDatePicker()
         
         let datee = Date()
         let formatter = DateFormatter()
@@ -305,7 +306,6 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
                 "DailyHelperID":dailyHelperID!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
                 "PreApprovedInTime": preApprovedInTime,
-              //  "FromTime": txttime.text!,
                 "PreApprovedOutTime": preApprovedOutTime
             ]
         
@@ -322,9 +322,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
                     webservices().StopSpinner()
                     if(JSON.response?.statusCode == 200)
                     {
-                        
                         self.messageClicked()
-
                     }
                     else
                     {

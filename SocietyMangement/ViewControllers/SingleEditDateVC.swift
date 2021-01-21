@@ -96,6 +96,9 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        self.showAnimate()
+        
         viewbottom.isHidden = true
 
         setborders(textfield: txtdate)
@@ -126,14 +129,17 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         let formatter1 = DateFormatter()
         formatter1.dateFormat = "h:mm a"
                 
-        let Msg_Date = StrTime
+        var Msg_Date = StrTime
 
            let dateFormatterGet = DateFormatter()
            dateFormatterGet.dateFormat = "HH:mm:ss"
            let dateFormatterPrint = DateFormatter()
            dateFormatterPrint.dateFormat = "h:mm a"
-         //  let datee = dateFormatterGet.date(from: Msg_Date)
-          // Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
+        
+        // // / / / / / ///// // / /
+        
+           let datee = dateFormatterGet.date(from: Msg_Date)
+           Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
         
         txttime.text = Msg_Date
         
@@ -151,14 +157,12 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             lblDeliveryName.isHidden = false
             viewinnerHeightCons.constant = 300
             btnUpdateTopCons.constant = 60
-
             if singleDeliveryCheckGate == "0" {
                 btncheckMark.setImage(UIImage(named: "ic_radiobutton"), for: .normal)
                 btncheckMark.isSelected = false
             }else if singleDeliveryCheckGate == "1" {
                 btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
                 btncheckMark.isSelected = true
-
             }
         }else if isfrom == 3 {
             viewinnerHeightCons.constant = 255

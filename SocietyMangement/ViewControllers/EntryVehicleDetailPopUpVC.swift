@@ -113,7 +113,6 @@ class EntryVehicleDetailPopUpVC: BaseVC {
           overrideUserInterfaceStyle = .light
         }
         
-        apicallGetVehicleListType()
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         self.showAnimate()
@@ -131,6 +130,10 @@ class EntryVehicleDetailPopUpVC: BaseVC {
         
         containerView.layer.cornerRadius = 12
         containerView.clipsToBounds = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        apicallGetVehicleListType()
     }
     
     //MARK:- action method
@@ -176,7 +179,6 @@ class EntryVehicleDetailPopUpVC: BaseVC {
         picker.delegate = self
         picker.dataSource = self
         
-        
         txtVehicleType.inputView = picker
         picker.backgroundColor = UIColor.white
         
@@ -186,7 +188,6 @@ class EntryVehicleDetailPopUpVC: BaseVC {
         let row = self.picker.selectedRow(inComponent: 0)
         txtVehicleType.text! = arrVehicleType[row].type
         selectedType = arrVehicleType[row].id
-        
         
     }
     
@@ -301,8 +302,8 @@ class EntryVehicleDetailPopUpVC: BaseVC {
                     print(resp)
                 case .failure(let err):
                     webservices().StopSpinner()
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     
                 }

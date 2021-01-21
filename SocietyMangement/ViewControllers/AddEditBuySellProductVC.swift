@@ -66,14 +66,16 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
 //        txtDescription.text = "Type here"
 //        txtDescription.textColor = UIColor.lightGray
         
-        txtperice.placeholder = "\u{20B9}" 
+        txtperice.placeholder = "Price"+"\u{20B9}"
         txtItemCondition.text = "Brand New"
                 
         arrItemCondition = ["Brand New","Like New","Very Good","Good"]
         
         txtItemCondition.addTarget(self, action: #selector(openPicker(txt:)), for: .editingDidBegin)
         txtItemCondition.addDoneOnKeyboardWithTarget(self, action: #selector(DoneItemSelection), shouldShowPlaceholder: true)
-        setrightviewnew(textfield:txtItemCondition, image: #imageLiteral(resourceName: "down-1"))
+       setrightviewnew(textfield:txtItemCondition, image: #imageLiteral(resourceName: "Dropdown"))
+        
+        //   setrightviewnew(textfield:txtItemCondition, image: #imageLiteral(resourceName: "down-1"))  //Dropdown
         
         collectionImg.register(UINib.init(nibName: "ProductAddImgCollectionCell", bundle: nil), forCellWithReuseIdentifier: "ProductAddImgCollectionCell")
         
@@ -88,29 +90,29 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
     self.collectionImg.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
 
                if isEditProdcut == false{
-                lblTitel.text = "Add Details" // "Include Some Details"
-                btnUpdate.setTitle("SELL NOW", for: .normal)
+                    lblTitel.text = "Add Details" // "Include Some Details"
+                    btnUpdate.setTitle("SELL NOW", for: .normal)
                }else{
-                btnUpdate.setTitle("UPDATE", for: .normal)
-                lblTitel.text = "Update Details" // "Update Item Details"
+                    btnUpdate.setTitle("UPDATE", for: .normal)
+                    lblTitel.text = "Update Details" // "Update Item Details"
                    txttitel.text = arrRecommendData.title
-                txtperice.text = "\u{20B9}"+"\(arrRecommendData.amount!)"
+                    txtperice.text = "\u{20B9}"+"\(arrRecommendData.amount!)"
  
-                txtItemCondition.text = arrRecommendData.qualityStatus
-                   txtDescription.text = arrRecommendData.datumDescription
+                    txtItemCondition.text = arrRecommendData.qualityStatus
+                    txtDescription.text = arrRecommendData.datumDescription
                 
-                for img in arrRecommendData.productsimages!{
-                    let str =  img.attachment!
-                    let img = UIImageView()
-                    img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor profile"))
-                    arrEditProductImg.add(img.image!)
-                }
-                
-                
-                
-                collectionImg.reloadData()
-                
-//
+                    
+              //  DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) { [self] in
+
+                    for img in arrRecommendData.productsimages!{
+                        let str =  img.attachment!
+                        let img = UIImageView()
+                        img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor profile"))
+                        arrEditProductImg.add(img.image!)
+                    }
+                    
+                        collectionImg.reloadData()
+               // }
 //
 //                   arrEditProductImg = arrRecommendData.productsimages!
                    

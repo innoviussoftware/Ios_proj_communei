@@ -151,8 +151,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
             
             viewinnerHeightCons.constant = 350
             btnUpdateTopCons.constant = 20
-            btncheckMark.isHidden = false
-            lblDeliveryName.isHidden = false
+            btncheckMark.isHidden = true
+            lblDeliveryName.isHidden = true
             
         }
         

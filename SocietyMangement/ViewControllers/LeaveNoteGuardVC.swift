@@ -99,6 +99,9 @@ class LeaveNoteGuardVC: UIViewController , UIImagePickerControllerDelegate , UIN
           print("btnSaveClicked")
       }
     
+    
+    // MARK: - Api Guard To Note
+
         func apiCallGuardToNote() {
             
             if !NetworkState().isInternetAvailable {
@@ -116,7 +119,7 @@ class LeaveNoteGuardVC: UIViewController , UIImagePickerControllerDelegate , UIN
                 "VisitingFlatsID":visitingFlatID!
             ]
         
-            print("param emergency : ",param)
+            print("param guard note : ",param)
             
             AF.upload(
                 multipartFormData: { [self] MultipartFormData in
@@ -138,7 +141,7 @@ class LeaveNoteGuardVC: UIViewController , UIImagePickerControllerDelegate , UIN
                                                              MultipartFormData.append(imgData, withName: "Attachments[]", fileName: "\(strFileName)", mimeType:"image/png/jpeg/application/pdf")
                                                            
                                                         }
-                }, to:  webservices().baseurl + "user/send/emergency-alert" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
+                }, to:  webservices().baseurl + "user/send/guard-note" ,headers:["Authorization": "Bearer "+strtoken]).uploadProgress(queue: .main, closure: { progress in
                     //Current upload progress of file
                     
                     print("Upload Progress note to guard : \(progress.fractionCompleted)")

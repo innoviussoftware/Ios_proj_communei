@@ -103,7 +103,6 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         
         datePicker1.minimumDate = Date()
 
-        
               // add toolbar to textField
               txtenddate.inputAccessoryView = toolbar
               // add datepicker to textField
