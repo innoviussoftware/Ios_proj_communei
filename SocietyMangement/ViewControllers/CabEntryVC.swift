@@ -930,11 +930,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
         
-           print("param Multiple Delivery Entry : ",param)
+           print("param Multiple Cab Entry : ",param)
         
            webservices().StartSpinner()
         
-        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_DELIVERYENTRY, param: param, token: token as! String) { JSON in
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_CABENTRY, param: param, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{

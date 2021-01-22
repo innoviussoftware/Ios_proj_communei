@@ -1031,8 +1031,8 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                        
                        cell.btndelete.tag = indexPath.row
                        cell.btndelete.addTarget(self, action: #selector(deletevehicle), for:.touchUpInside)
+                
                        return cell
-                       
                        
                        
                        
