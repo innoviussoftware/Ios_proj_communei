@@ -932,7 +932,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         
            webservices().StartSpinner()
         
-        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_DELIVERYENTRY, param: param, token: token as! String) { JSON in
+        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_SERVICE_PROVIDER, param: param, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{

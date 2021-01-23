@@ -4623,12 +4623,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                                 
             }
              
-               
-                cell.constraintHightStackBtn.constant = 0
-                cell.constraintHightStacklbl.constant = 0
+                cell.constraintHightStackBtn.constant = 50
+                cell.constraintHightStacklbl.constant = 0.5
                 cell.lblHightStacklblMiddle.isHidden = true
                 
-                 cell.btnWrong_Entry.isHidden = true
+                 cell.btnWrong_Entry.isHidden = false
                  cell.btnWrong_Entry_Red.isHidden = true
 
                 cell.btnCancel.isHidden = true
@@ -5326,7 +5325,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnWrong_Entry_Red.isHidden = true
                 cell.btnClose.isHidden = true
                 cell.btnNote_Guard.isHidden = true
-                cell.btnOut.isHidden = false
+                cell.btnOut.isHidden = true
                 cell.btnDeliveryInfo.isHidden = true
                 cell.btnAlertInfo.isHidden = true
                 
@@ -5395,6 +5394,1236 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut_OnDemand.isHidden = true
             cell.btnEdit_OnDemand.isHidden = true
             
+        }
+        
+        else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Pre-Approval" {
+
+            cell.lblname.text = "Service Provider"
+            
+            if arrGuestList[indexPath.row].activity?.companyName != nil {
+                cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+            }else{
+               cell.lblguest.text = ""
+            }
+            
+            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_service"))
+            
+           if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
+                 cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
+                 cell.imgviewCompanyLogo.isHidden = false
+             }else{
+                 cell.imgviewCompanyLogo.isHidden = true
+             }
+
+            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                    cell.lbldateintime.text =  strTime + " , " + strDate
+                    cell.lbldateintime.isHidden = false
+            }else{
+                cell.lbldateintime.isHidden = true
+            }
+
+             
+                cell.lblStatus.isHidden = false
+
+                cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+
+              //  cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+                
+            if cell.lblStatus.text == "NOT RESPONDED" {
+                cell.lblStatus.backgroundColor = AppColor.deniedColor
+             
+                     if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                             let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                             let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                             
+                             let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                             cell.lblintime.text =  strTime + " , " + strDate
+                             cell.lblintime.isHidden = false
+                     }else{
+                         cell.lblintime.isHidden = true
+                     }
+                          
+                    cell.lblWrongEntry.text = "No Response"
+
+                    // 13/1/20 temp comment
+                    
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                  cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0
+                  cell.imgviewHight7.constant = 0
+                  cell.imgviewHight8.constant = 0
+                  cell.imgviewHightExtra.constant = 0
+                     */
+                 
+                    cell.imgview1.isHidden = true
+                    cell.imgview2.isHidden = false
+                    cell.imgview3.isHidden = true
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                    cell.imgview7.isHidden = true
+                    cell.imgview8.isHidden = false
+                    cell.imgviewExtra.isHidden = true
+             
+                 cell.imgviewTop1.constant = -12
+                 cell.imgviewTop2.constant = 64.5
+                 cell.imgviewTop3.constant = -12
+                 cell.imgviewTop4.constant = -12
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = 81.5
+                 cell.imgviewTopExtra.constant = -12
+
+                 cell.stackviewStatus.constant = 103.5
+                 
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = true
+                 
+                 cell.lblWrongEntry.isHidden = false
+                 cell.lblintime.isHidden = false
+                 
+                 cell.lbldateintime.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+                 cell.lblouttime.isHidden = true
+                 cell.lbladdedby.isHidden = true
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+
+                 cell.btnWrong_Entry.isHidden = false
+                 cell.btnWrong_Entry_Red.isHidden = true
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+            }
+             else if cell.lblStatus.text == "DENIED" {
+                    cell.lblStatus.backgroundColor = AppColor.deniedColor
+                 
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                         
+                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                         cell.lblintime.text =  strTime + " , " + strDate
+                         cell.lblintime.isHidden = false
+                 }else{
+                     cell.lblintime.isHidden = true
+                 }
+                    if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                        cell.lblWrongEntry.text = "denied by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+                    }else {
+                        cell.lblWrongEntry.text = "denied by "
+                    }
+
+                        // 13/1/20 temp comment
+                        
+                      /*  cell.imgviewHight1.constant = 12
+                        cell.imgviewHight2.constant = 0
+                      cell.imgviewHight3.constant = 12
+                        cell.imgviewHight4.constant = 0
+                        cell.imgviewHight5.constant = 0
+                        cell.imgviewHight6.constant = 0
+                      cell.imgviewHight7.constant = 0
+                      cell.imgviewHight8.constant = 0
+                      cell.imgviewHightExtra.constant = 0
+                         */
+                     
+                        cell.imgview1.isHidden = true
+                        cell.imgview2.isHidden = false
+                        cell.imgview3.isHidden = true
+                        cell.imgview4.isHidden = true
+                        cell.imgview5.isHidden = true
+                        cell.imgview6.isHidden = true
+                        cell.imgview7.isHidden = true
+                        cell.imgview8.isHidden = false
+                        cell.imgviewExtra.isHidden = true
+
+                    cell.imgviewTop1.constant = -12
+                    cell.imgviewTop2.constant = 64.5
+                    cell.imgviewTop3.constant = -12
+                    cell.imgviewTop4.constant = -12
+                    cell.imgviewTop5.constant = -12
+                    cell.imgviewTop6.constant = -12
+                    cell.imgviewTop7.constant = -12
+                    cell.imgviewTop8.constant = 81.5
+                    cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 103.5
+
+                 
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = true
+                 
+                 cell.lblWrongEntry.isHidden = false
+                 cell.lblintime.isHidden = false
+                 
+                 cell.lbldateintime.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+                 cell.lblouttime.isHidden = true
+                 cell.lbladdedby.isHidden = true
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+
+                 cell.btnWrong_Entry.isHidden = false
+                 cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "CANCELLED" {
+                    
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                    
+                    cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+                cell.lblcancelby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
+
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 12
+                    cell.imgviewHight5.constant = 0 */
+                
+                if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                    cell.lbldateintime.isHidden = false
+
+                    cell.lblWrongEntry.isHidden = true
+                    cell.lblintime.isHidden = true
+                    
+                    cell.lbldateintimeMulti.isHidden = true // Extra
+                    cell.lblouttime.isHidden = true
+                    cell.lbladdedby.isHidden = false
+                    cell.lblparceltime.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.lblcancelby.isHidden = false
+                       
+                    cell.imgview1.isHidden = false
+                    cell.imgview2.isHidden = true
+                    cell.imgview3.isHidden = true
+                    cell.imgview4.isHidden = false
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                    cell.imgview7.isHidden = false
+                    cell.imgview8.isHidden = true
+                    cell.imgviewExtra.isHidden = true
+                     
+                   
+                    cell.imgviewTop1.constant = 64.5
+                    cell.imgviewTop2.constant = -12
+                    cell.imgviewTop3.constant = -12
+                    cell.imgviewTop4.constant = 81.5
+                    cell.imgviewTop5.constant = -12
+                    cell.imgviewTop6.constant = -12
+                    cell.imgviewTop7.constant = 98.5
+                    cell.imgviewTop8.constant = -12
+                    cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 120.5
+                                    
+                }else if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                    
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                            let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                        let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                            
+                        cell.lbldateintime.text =  strDate + " - " + strDate1
+
+                            let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                        
+                        let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                        let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
+
+                            cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
+                    }
+                    
+                    cell.lblWrongEntry.isHidden = true
+                    cell.lblintime.isHidden = true
+                    
+                    cell.lbldateintime.isHidden = false
+                    cell.lbldateintimeMulti.isHidden = false // Extra
+                    cell.lblouttime.isHidden = true
+                    cell.lbladdedby.isHidden = false
+                    cell.lblparceltime.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.lblcancelby.isHidden = false
+                       
+                    cell.imgview1.isHidden = false
+                    cell.imgview2.isHidden = true
+                    cell.imgview3.isHidden = true
+                    cell.imgview4.isHidden = true
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                    cell.imgview7.isHidden = false
+                    cell.imgview8.isHidden = true
+                    cell.imgviewExtra.isHidden = false
+                     
+                   
+                    cell.imgviewTop1.constant = 64.5
+                    cell.imgviewTop2.constant = -12
+                    cell.imgviewTop3.constant = -12
+                    cell.imgviewTop4.constant = 98.5
+                    cell.imgviewTop5.constant = -12
+                    cell.imgviewTop6.constant = -12
+                    cell.imgviewTop7.constant = 115.5
+                    cell.imgviewTop8.constant = -12
+                    cell.imgviewTopExtra.constant = 81.5
+
+                    cell.stackviewStatus.constant = 137.5
+
+                                    
+                }else {
+                    cell.lbldateintime.isHidden = false
+
+                    cell.lblWrongEntry.isHidden = true
+                    cell.lblintime.isHidden = true
+                    
+                    cell.lbldateintimeMulti.isHidden = true // Extra
+                    cell.lblouttime.isHidden = true
+                    cell.lbladdedby.isHidden = false
+                    cell.lblparceltime.isHidden = true
+                    cell.lblLeaveatGate.isHidden = true
+                    cell.lblcancelby.isHidden = false
+                       
+                    cell.imgview1.isHidden = false
+                    cell.imgview2.isHidden = true
+                    cell.imgview3.isHidden = true
+                    cell.imgview4.isHidden = false
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                    cell.imgview7.isHidden = false
+                    cell.imgview8.isHidden = true
+                    cell.imgviewExtra.isHidden = true
+                     
+                   
+                    cell.imgviewTop1.constant = 64.5
+                    cell.imgviewTop2.constant = -12
+                    cell.imgviewTop3.constant = -12
+                    cell.imgviewTop4.constant = 81.5
+                    cell.imgviewTop5.constant = -12
+                    cell.imgviewTop6.constant = -12
+                    cell.imgviewTop7.constant = 98.5
+                    cell.imgviewTop8.constant = -12
+                    cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 120.5
+                                    
+                }
+                 
+                   
+                    cell.constraintHightStackBtn.constant = 50
+                    cell.constraintHightStacklbl.constant = 0.5
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                     cell.btnWrong_Entry.isHidden = false
+                     cell.btnWrong_Entry_Red.isHidden = true
+
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                
+                else if cell.lblStatus.text == "EXPIRED" {
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                    
+                    cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+
+                    
+                    if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                        cell.lbldateintime.isHidden = false
+
+                        cell.lblWrongEntry.isHidden = true
+                        cell.lblintime.isHidden = true
+                        
+                        cell.lbldateintimeMulti.isHidden = true // Extra
+                        cell.lblouttime.isHidden = true
+                        cell.lbladdedby.isHidden = false
+                        cell.lblparceltime.isHidden = true
+                        cell.lblLeaveatGate.isHidden = true
+                        cell.lblcancelby.isHidden = false
+                           
+                        cell.imgview1.isHidden = false
+                        cell.imgview2.isHidden = true
+                        cell.imgview3.isHidden = true
+                        cell.imgview4.isHidden = false
+                        cell.imgview5.isHidden = true
+                        cell.imgview6.isHidden = true
+                        cell.imgview7.isHidden = true
+                        cell.imgview8.isHidden = true
+                        cell.imgviewExtra.isHidden = true
+                         
+                       
+                        cell.imgviewTop1.constant = 64.5
+                        cell.imgviewTop2.constant = -12
+                        cell.imgviewTop3.constant = -12
+                        cell.imgviewTop4.constant = 81.5
+                        cell.imgviewTop5.constant = -12
+                        cell.imgviewTop6.constant = -12
+                        cell.imgviewTop7.constant = -12
+                        cell.imgviewTop8.constant = -12
+                        cell.imgviewTopExtra.constant = -12
+
+                        cell.stackviewStatus.constant = 103.5
+                                        
+                    }else{
+                        
+                        if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                                let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                                let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                            
+                            let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                            let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                                
+                            cell.lbldateintime.text =  strDate + " - " + strDate1
+
+                                let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                                let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                            
+                            let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                            let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
+
+                                cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
+                        }
+                        
+                        cell.lblWrongEntry.isHidden = true
+                        cell.lblintime.isHidden = true
+                        
+                        cell.lbldateintime.isHidden = false
+                        cell.lbldateintimeMulti.isHidden = false // Extra
+                        cell.lblouttime.isHidden = true
+                        cell.lbladdedby.isHidden = false
+                        cell.lblparceltime.isHidden = true
+                        cell.lblLeaveatGate.isHidden = true
+                        cell.lblcancelby.isHidden = false
+                           
+                        cell.imgview1.isHidden = false
+                        cell.imgview2.isHidden = true
+                        cell.imgview3.isHidden = true
+                        cell.imgview4.isHidden = false
+                        cell.imgview5.isHidden = true
+                        cell.imgview6.isHidden = true
+                        cell.imgview7.isHidden = true
+                        cell.imgview8.isHidden = true
+                        cell.imgviewExtra.isHidden = false
+                         
+                       
+                        cell.imgviewTop1.constant = 64.5
+                        cell.imgviewTop2.constant = -12
+                        cell.imgviewTop3.constant = -12
+                        cell.imgviewTop4.constant = 98.5
+                        cell.imgviewTop5.constant = -12
+                        cell.imgviewTop6.constant = -12
+                        cell.imgviewTop7.constant = -12
+                        cell.imgviewTop8.constant = -12
+                        cell.imgviewTopExtra.constant = 81.5
+
+                        cell.stackviewStatus.constant = 120.5
+
+                                        
+                    }
+
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0 */
+                
+                 
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = true
+                 
+
+                    cell.btnRenew.isHidden = false
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                    
+                }
+                else if cell.lblStatus.text == "VISITED" {
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                 
+                 if arrGuestList[indexPath.row].activity?.out != nil {
+                     
+                     let lblDate = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                     
+                     let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                     cell.lblouttime.text =  strTime + " , " + strDate
+                     
+                     cell.lblouttime.isHidden = false
+
+                 }else{
+                     cell.lblouttime.isHidden = true
+                 }
+                    
+                    
+                    cell.constraintHightStackBtn.constant = 50
+
+                    cell.constraintHightStacklbl.constant = 0.5
+
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgview8.isHidden = true
+                        
+                        cell.btnWrong_Entry.isHidden = false
+                        cell.btnWrong_Entry_Red.isHidden = true
+                     
+                     cell.imgview1.isHidden = true
+                     cell.imgview2.isHidden = false
+                     cell.imgview3.isHidden = false
+                     cell.imgview4.isHidden = false
+                     cell.imgview5.isHidden = true
+                     cell.imgview6.isHidden = true
+                      cell.imgview7.isHidden = true
+                   //  cell.imgview8.isHidden = true
+                      cell.imgviewExtra.isHidden = true
+
+                     cell.imgviewTop1.constant = -12
+                     cell.imgviewTop2.constant = 64.5
+                     cell.imgviewTop3.constant = 81.5
+                     cell.imgviewTop4.constant = 98.5
+                     cell.imgviewTop5.constant = -12
+                     cell.imgviewTop6.constant = -12
+                     cell.imgviewTop7.constant = -12
+                     cell.imgviewTop8.constant = -12
+                     cell.imgviewTopExtra.constant = -12
+
+                     cell.stackviewStatus.constant = 120.5
+                          
+
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgview8.isHidden = false
+                        
+                        cell.btnWrong_Entry_Red.isHidden = false
+                        cell.btnWrong_Entry.isHidden = true
+                     
+                     cell.imgview1.isHidden = true
+                     cell.imgview2.isHidden = false
+                     cell.imgview3.isHidden = false
+                     cell.imgview4.isHidden = false
+                     cell.imgview5.isHidden = true
+                     cell.imgview6.isHidden = true
+                      cell.imgview7.isHidden = true
+                   //  cell.imgview8.isHidden = true
+                      cell.imgviewExtra.isHidden = true
+
+                     cell.imgviewTop1.constant = -12
+                     cell.imgviewTop2.constant = 64.5
+                     cell.imgviewTop3.constant = 81.5
+                     cell.imgviewTop4.constant = 98.5
+                     cell.imgviewTop5.constant = -12
+                     cell.imgviewTop6.constant = -12
+                     cell.imgviewTop7.constant = -12
+                     cell.imgviewTop8.constant = 115.5
+                     cell.imgviewTopExtra.constant = -12
+
+                     cell.stackviewStatus.constant = 137.5
+                                      
+
+                    }
+                    
+                    // 13/1/20 temp comment
+                    
+                   /* cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0 */
+
+                 cell.lbldateintime.isHidden = true
+                 cell.lblintime.isHidden = false
+                // cell.lblouttime.isHidden = false
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+               //  cell.lblWrongEntry.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+               
+                     cell.btnDeliveryInfo.isHidden = true
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "APPROVED" {
+                    
+                        cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                         if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                             cell.lbladdedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                         }else {
+                             cell.lbladdedby.text = "Approved by "
+                         }
+                            
+                        cell.lbldateintime.isHidden = true
+                        cell.lblintime.isHidden = false
+                        cell.lblouttime.isHidden = true
+                        cell.lbladdedby.isHidden = false
+                        cell.lblparceltime.isHidden = true
+                        cell.lblLeaveatGate.isHidden = true
+                        cell.lblcancelby.isHidden = true
+                        cell.lblWrongEntry.isHidden = true
+                        cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+                         // 13/1/20 temp comment
+
+                         /*  cell.imgviewHight1.constant = 12
+                           cell.imgviewHight2.constant = 0
+                           cell.imgviewHight3.constant = 12
+                           cell.imgviewHight4.constant = 0
+                           cell.imgviewHight5.constant = 0
+                           cell.imgviewHight6.constant = 0 */
+
+                           cell.imgview1.isHidden = true
+                           cell.imgview2.isHidden = false
+                           cell.imgview3.isHidden = true
+                           cell.imgview4.isHidden = false
+                           cell.imgview5.isHidden = true
+                           cell.imgview6.isHidden = true
+                           cell.imgview7.isHidden = true
+                           cell.imgview8.isHidden = true
+                           cell.imgviewExtra.isHidden = true
+
+                        cell.imgviewTop1.constant = -12
+                        cell.imgviewTop2.constant = 64.5
+                        cell.imgviewTop3.constant = -12
+                        cell.imgviewTop4.constant = 81.5
+                        cell.imgviewTop5.constant = -12
+                        cell.imgviewTop6.constant = -12
+                        cell.imgviewTop7.constant = -12
+                        cell.imgviewTop8.constant = -12
+                        cell.imgviewTopExtra.constant = -12
+
+                        cell.stackviewStatus.constant = 103.5
+                             
+                    
+                         cell.constraintHightStackBtn.constant = 50
+                         cell.constraintHightStacklbl.constant = 0.5
+                         cell.lblHightStacklblMiddle.isHidden = true
+                      
+                  
+                    cell.btnClose.isHidden = false
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
+                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                        cell.lbladdedby.text = "Pre Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                    }else {
+                        cell.lbladdedby.text = "Pre Approved by "
+                    }
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0 */
+                 
+                 cell.lbldateintime.isHidden = false
+                 cell.lblintime.isHidden = true
+                 cell.lblouttime.isHidden = true
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+                 cell.lblWrongEntry.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+                 cell.imgview1.isHidden = false
+                 cell.imgview2.isHidden = true
+                 cell.imgview3.isHidden = true
+                 cell.imgview4.isHidden = false
+                 cell.imgview5.isHidden = true
+                 cell.imgview6.isHidden = true
+                 cell.imgview7.isHidden = true
+                 cell.imgview8.isHidden = true
+                 cell.imgviewExtra.isHidden = true
+
+                 cell.imgviewTop1.constant = 64.5
+                 cell.imgviewTop2.constant = -12
+                 cell.imgviewTop3.constant = -12
+                 cell.imgviewTop4.constant = 81.5
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = -12
+                 cell.imgviewTopExtra.constant = -12
+
+                 cell.stackviewStatus.constant = 103.5
+                      
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = false
+                 
+
+                    cell.btnCancel.isHidden = false
+                    cell.btnEdit.isHidden = false
+                    
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "LEFT" {
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                 
+                 if arrGuestList[indexPath.row].activity?.out != nil {
+                     
+                     let lblDate = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                     
+                     let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                     cell.lblouttime.text =  strTime + " , " + strDate
+                     
+                     cell.lblouttime.isHidden = false
+
+                 }else{
+                     cell.lblouttime.isHidden = true
+                 }
+                    
+                    if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                        cell.lbladdedby.text = "Pre Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                    }else {
+                        cell.lbladdedby.text = "Pre Approved by "
+                    }
+                    
+                    cell.constraintHightStackBtn.constant = 0
+
+                    cell.constraintHightStacklbl.constant = 0
+
+                    cell.lblHightStacklblMiddle.isHidden = true
+                    
+                    if arrGuestList[indexPath.row].isWrongEntry == 0 {
+                        cell.lblWrongEntry.isHidden = true
+                        cell.imgview8.isHidden = true
+                        
+                        cell.btnWrong_Entry.isHidden = false
+                        cell.btnWrong_Entry_Red.isHidden = true
+                     
+                     cell.imgview1.isHidden = true
+                     cell.imgview2.isHidden = false
+                     cell.imgview3.isHidden = false
+                     cell.imgview4.isHidden = false
+                     cell.imgview5.isHidden = true
+                     cell.imgview6.isHidden = true
+                      cell.imgview7.isHidden = true
+                   //  cell.imgview8.isHidden = true
+                      cell.imgviewExtra.isHidden = true
+
+                     cell.imgviewTop1.constant = -12
+                     cell.imgviewTop2.constant = 64.5
+                     cell.imgviewTop3.constant = 81.5
+                     cell.imgviewTop4.constant = 98.5
+                     cell.imgviewTop5.constant = -12
+                     cell.imgviewTop6.constant = -12
+                     cell.imgviewTop7.constant = -12
+                     cell.imgviewTop8.constant = -12
+                     cell.imgviewTopExtra.constant = -12
+
+                     cell.stackviewStatus.constant = 120.5
+                          
+
+                    }else{
+                        cell.lblWrongEntry.text = "Wrong Entry Reported by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                        cell.lblWrongEntry.isHidden = false
+                        cell.imgview8.isHidden = false
+                        
+                        cell.btnWrong_Entry_Red.isHidden = false
+                        cell.btnWrong_Entry.isHidden = true
+                     
+                     cell.imgview1.isHidden = true
+                     cell.imgview2.isHidden = false
+                     cell.imgview3.isHidden = false
+                     cell.imgview4.isHidden = false
+                     cell.imgview5.isHidden = true
+                     cell.imgview6.isHidden = true
+                      cell.imgview7.isHidden = true
+                   //  cell.imgview8.isHidden = true
+                      cell.imgviewExtra.isHidden = true
+
+                     cell.imgviewTop1.constant = -12
+                     cell.imgviewTop2.constant = 64.5
+                     cell.imgviewTop3.constant = 81.5
+                     cell.imgviewTop4.constant = 98.5
+                     cell.imgviewTop5.constant = -12
+                     cell.imgviewTop6.constant = -12
+                     cell.imgviewTop7.constant = -12
+                     cell.imgviewTop8.constant = 115.5
+                     cell.imgviewTopExtra.constant = -12
+
+                     cell.stackviewStatus.constant = 137.5
+                                      
+
+                    }
+                    
+                    // 13/1/20 temp comment
+                    
+                   /* cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0 */
+
+                 cell.lbldateintime.isHidden = true
+                 cell.lblintime.isHidden = false
+                // cell.lblouttime.isHidden = false
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+               //  cell.lblWrongEntry.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+               
+                     cell.btnDeliveryInfo.isHidden = true
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnRenew.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else if cell.lblStatus.text == "CHECKED IN" {
+                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                            let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                            
+                            let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                            cell.lblintime.text =  strTime + " , " + strDate
+                            cell.lblintime.isHidden = false
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
+                    
+                    if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                        cell.lbladdedby.text = "Pre Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                    }else {
+                        cell.lbladdedby.text = "Pre Approved by "
+                    }
+                    
+                 cell.lbldateintime.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+                 cell.lblintime.isHidden = false
+                 cell.lblouttime.isHidden = true
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+                 cell.lblWrongEntry.isHidden = true
+
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0 */
+
+                    cell.imgview1.isHidden = true
+                    cell.imgview2.isHidden = false
+                    cell.imgview3.isHidden = true
+                    cell.imgview4.isHidden = false
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                     cell.imgview7.isHidden = true
+                     cell.imgview8.isHidden = true
+                     cell.imgviewExtra.isHidden = true
+                      
+                 cell.imgviewTop1.constant = 64.5
+                 cell.imgviewTop2.constant = -12
+                 cell.imgviewTop3.constant = -12
+                 cell.imgviewTop4.constant = 81.5
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = -12
+                 cell.imgviewTopExtra.constant = -12
+
+                 cell.stackviewStatus.constant = 103.5
+                 
+                 
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = true
+                 
+
+                    cell.btnRenew.isHidden = true
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = false
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                    
+                }
+                else if cell.lblStatus.text == "CHECKED OUT" {
+                    
+                    cell.lblStatus.backgroundColor = UIColor.systemRed
+
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lblintime.text =  strTime + " , " + strDate
+                        
+                        cell.lblintime.isHidden = false
+
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
+                    
+                    if arrGuestList[indexPath.row].activity?.out != nil {
+                        
+                        let lblDate = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lblouttime.text =  strTime + " , " + strDate
+                        
+                        cell.lblouttime.isHidden = false
+
+                    }else{
+                        cell.lblouttime.isHidden = true
+                    }
+                    
+                    if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                        cell.lbladdedby.text = "Pre Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                    }else {
+                        cell.lbladdedby.text = "Pre Approved by "
+                    }
+                    
+                 cell.lbldateintime.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+                 cell.lblintime.isHidden = false
+                 cell.lblouttime.isHidden = false
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+                 cell.lblWrongEntry.isHidden = true
+
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0 */
+
+                    cell.imgview1.isHidden = true
+                    cell.imgview2.isHidden = false
+                    cell.imgview3.isHidden = false
+                    cell.imgview4.isHidden = false
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                     cell.imgview7.isHidden = true
+                     cell.imgview8.isHidden = true
+                     cell.imgviewExtra.isHidden = true
+                      
+                 cell.imgviewTop1.constant = -12
+                 cell.imgviewTop2.constant = 64.5
+                 cell.imgviewTop3.constant = 81.5
+                 cell.imgviewTop4.constant = 98.5
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = -12
+                 cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 120.5
+                 
+                 
+                 cell.constraintHightStackBtn.constant = 50
+                 cell.constraintHightStacklbl.constant = 0.5
+                 cell.lblHightStacklblMiddle.isHidden = false
+                 
+
+                    cell.btnRenew.isHidden = true
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = false
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = false
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+                                 
+                }
+                else if cell.lblStatus.text == "DELIVERED" || cell.lblStatus.text == "ATTENDED" {
+                    
+                    cell.lblStatus.backgroundColor = AppColor.cancelColor
+                    
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lblintime.text =  strTime + " , " + strDate
+                        
+                        cell.lblintime.isHidden = false
+
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
+                    
+                    if arrGuestList[indexPath.row].activity?.out != nil {
+                        
+                        let lblDate = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lblouttime.text =  strTime + " , " + strDate
+                        
+                        cell.lblouttime.isHidden = false
+
+                    }else{
+                        cell.lblouttime.isHidden = true
+                    }
+                    
+                    if arrGuestList[indexPath.row].activity?.approvedBy != nil {
+                        cell.lbladdedby.text = "Pre Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
+                    }else {
+                        cell.lbladdedby.text = "Pre Approved by "
+                    }
+                    
+                 cell.lbldateintime.isHidden = true
+                 cell.lbldateintimeMulti.isHidden = true // Extra
+                 cell.lblintime.isHidden = false
+                 cell.lblouttime.isHidden = false
+                 cell.lbladdedby.isHidden = false
+                 cell.lblparceltime.isHidden = true
+                 cell.lblLeaveatGate.isHidden = true
+                 cell.lblcancelby.isHidden = true
+                 cell.lblWrongEntry.isHidden = true
+
+                    // 13/1/20 temp comment
+
+                  /*  cell.imgviewHight1.constant = 12
+                    cell.imgviewHight2.constant = 0
+                    cell.imgviewHight3.constant = 12
+                    cell.imgviewHight4.constant = 0
+                    cell.imgviewHight5.constant = 0
+                    cell.imgviewHight6.constant = 0 */
+
+                    cell.imgview1.isHidden = true
+                    cell.imgview2.isHidden = false
+                    cell.imgview3.isHidden = false
+                    cell.imgview4.isHidden = false
+                    cell.imgview5.isHidden = true
+                    cell.imgview6.isHidden = true
+                     cell.imgview7.isHidden = true
+                     cell.imgview8.isHidden = true
+                     cell.imgviewExtra.isHidden = true
+                      
+                 cell.imgviewTop1.constant = -12
+                 cell.imgviewTop2.constant = 64.5
+                 cell.imgviewTop3.constant = 81.5
+                 cell.imgviewTop4.constant = 98.5
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = -12
+                 cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 120.5
+                 
+                 
+                 cell.constraintHightStackBtn.constant = 0
+                 cell.constraintHightStacklbl.constant = 0
+                 cell.lblHightStacklblMiddle.isHidden = true
+                 
+
+                    cell.btnRenew.isHidden = true
+                    cell.btnCancel.isHidden = true
+                    cell.btnEdit.isHidden = true
+                    cell.btnWrong_Entry.isHidden = true
+                    cell.btnWrong_Entry_Red.isHidden = true
+                    cell.btnClose.isHidden = true
+                    cell.btnNote_Guard.isHidden = true
+                    cell.btnOut.isHidden = true
+                    cell.btnDeliveryInfo.isHidden = true
+                    cell.btnAlertInfo.isHidden = true
+
+                }
+                else{
+                    cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+                    
+                     
+                      cell.lbldateintime.isHidden = true
+                      cell.lblintime.isHidden = true
+                      cell.lblouttime.isHidden = true
+                      cell.lbladdedby.isHidden = true
+                      cell.lblparceltime.isHidden = true
+                      cell.lblLeaveatGate.isHidden = true
+                      cell.lblcancelby.isHidden = true
+                      cell.lblWrongEntry.isHidden = true
+                      cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+                      cell.imgview1.isHidden = true
+                      cell.imgview2.isHidden = true
+                      cell.imgview3.isHidden = true
+                      cell.imgview4.isHidden = true
+                      cell.imgview5.isHidden = true
+                      cell.imgview6.isHidden = true
+                      cell.imgview7.isHidden = true
+                      cell.imgview8.isHidden = true
+                      cell.imgviewExtra.isHidden = true
+
+                 cell.constraintHightStackBtn.constant = 0
+                 
+                 cell.constraintHightStacklbl.constant = 0
+
+                 cell.lblHightStacklblMiddle.isHidden = true
+              
+                 
+                 cell.imgviewTop1.constant = -12
+                 cell.imgviewTop2.constant = -12
+                 cell.imgviewTop3.constant = -12
+                 cell.imgviewTop4.constant = -12
+                 cell.imgviewTop5.constant = -12
+                 cell.imgviewTop6.constant = -12
+                 cell.imgviewTop7.constant = -12
+                 cell.imgviewTop8.constant = -12
+                 cell.imgviewTopExtra.constant = -12
+
+                    cell.stackviewStatus.constant = 80.5 // 69.5
+                   
+                 
+                     cell.btnCancel.isHidden = true
+                     cell.btnEdit.isHidden = true
+                     cell.btnWrong_Entry.isHidden = true
+                     cell.btnWrong_Entry_Red.isHidden = true
+                     cell.btnRenew.isHidden = true
+                     cell.btnClose.isHidden = true
+                     cell.btnNote_Guard.isHidden = true
+                     cell.btnOut.isHidden = true
+                     cell.btnDeliveryInfo.isHidden = true
+                     cell.btnAlertInfo.isHidden = true
+
+                }
+                
+              
+               cell.btnIn_OnDemand.isHidden = true
+               cell.btnCancel_OnDemand.isHidden = true
+               cell.btnOut_OnDemand.isHidden = true
+               cell.btnEdit_OnDemand.isHidden = true
+                 
+                print("Service : Provider : Pre-Approval")
+
         }
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Emergency Alert " {
         
@@ -5776,7 +7005,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnEdit_OnDemand.isHidden = true
 
         }
-        
+
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Vehicle Added"{
              
              cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "scooter"))
@@ -5876,11 +7105,225 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                  cell.btnEdit_OnDemand.isHidden = true
              
           }
-       /* else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Add Family Member"{
+        else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Add Family Member"{
+            
+            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+            }else{
+                cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
+            }
+
+                 cell.lblStatus.isHidden = true
+
+                 if arrGuestList[indexPath.row].activity?.name != nil {
+                     cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+                 }else{
+                     cell.lblname.text = ""
+                 }
+                
+                cell.imgviewCompanyLogo.isHidden = true
+
+            if arrGuestList[indexPath.row].activity?.relation != nil {
+                cell.lblguest.text = arrGuestList[indexPath.row].activity?.relation
+            }else{
+                cell.lblguest.text = "Family Member"
+            }
+
+                 if arrGuestList[indexPath.row].activity?.addedBy != nil {
+                     cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
+                 }else{
+                    cell.lbladdedby.text = "Added by "
+                 }
+             
+                     if arrGuestList[indexPath.row].activity?.addedOn != nil {
+                         
+                         let lblDate = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[0]
+                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                         
+                         let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
+                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                         cell.lbldateintime.text =  strTime + " , " + strDate
+                         
+                     }
+                     
+               // 13/1/20 temp comment
+
+                   /* cell.imgviewHight1.constant = 12
+                     cell.imgviewHight3.constant = 12
+                     cell.imgviewHight2.constant = 12
+                     cell.imgviewHight4.constant = 0
+                     cell.imgviewHight5.constant = 0
+                     cell.imgviewHight6.constant = 0 */
+                     
+                cell.lbldateintime.isHidden = false
+                cell.lblintime.isHidden = true
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = false
+                cell.lblparceltime.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblcancelby.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+                cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = true
+                cell.imgview4.isHidden = false
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+                cell.imgview7.isHidden = true
+                cell.imgview8.isHidden = true
+                cell.imgviewExtra.isHidden = true
+
+          
+                cell.imgviewTop1.constant = 64.5
+           cell.imgviewTop2.constant = -12
+           cell.imgviewTop3.constant = -12
+                cell.imgviewTop4.constant = 81.5
+           cell.imgviewTop5.constant = -12
+           cell.imgviewTop6.constant = -12
+           cell.imgviewTop7.constant = -12
+           cell.imgviewTop8.constant = -12
+           cell.imgviewTopExtra.constant = -12
+
+                cell.stackviewStatus.constant = 95 // 69.5
+             
+                         
+                     cell.constraintHightStackBtn.constant = 0
+                     
+                     cell.constraintHightStacklbl.constant = 0
+
+                     cell.lblHightStacklblMiddle.isHidden = true
+                     
+                     cell.btnCancel.isHidden = true
+                     cell.btnEdit.isHidden = true
+                     cell.btnWrong_Entry.isHidden = true
+                     cell.btnWrong_Entry_Red.isHidden = true
+                     cell.btnRenew.isHidden = true
+                     cell.btnClose.isHidden = true
+                     cell.btnNote_Guard.isHidden = true
+                     cell.btnOut.isHidden = true
+                     cell.btnDeliveryInfo.isHidden = true
+                     cell.btnAlertInfo.isHidden = true
+         
+                     cell.btnIn_OnDemand.isHidden = true
+                     cell.btnCancel_OnDemand.isHidden = true
+                     cell.btnOut_OnDemand.isHidden = true
+                     cell.btnEdit_OnDemand.isHidden = true
+                 
          }
          
          else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Remove Family Member"{
-         } */
+            
+            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+            }else{
+                cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
+            }
+
+                 cell.lblStatus.isHidden = true
+
+                 if arrGuestList[indexPath.row].activity?.name != nil {
+                     cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+                 }else{
+                     cell.lblname.text = ""
+                 }
+                
+                cell.imgviewCompanyLogo.isHidden = true
+
+            if arrGuestList[indexPath.row].activity?.relation != nil {
+                cell.lblguest.text = arrGuestList[indexPath.row].activity?.relation
+            }else{
+                cell.lblguest.text = "Family Member"
+            }
+
+                 if arrGuestList[indexPath.row].activity?.wrongEntryBy != nil {
+                     cell.lblWrongEntry.text = "Removed by " + (arrGuestList[indexPath.row].activity?.wrongEntryBy)!
+                 }else{
+                    cell.lblWrongEntry.text = "Removed by "
+                 }
+             
+                     if arrGuestList[indexPath.row].activity?.deletedOn != nil {
+                         
+                         let lblDate = arrGuestList[indexPath.row].activity?.deletedOn?.components(separatedBy: " ")[0]
+                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                         
+                         let lblTime = arrGuestList[indexPath.row].activity?.deletedOn?.components(separatedBy: " ")[1]
+                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                         cell.lbldateintime.text =  strTime + " , " + strDate
+                         
+                     }
+                     
+               // 13/1/20 temp comment
+
+                   /* cell.imgviewHight1.constant = 12
+                     cell.imgviewHight3.constant = 12
+                     cell.imgviewHight2.constant = 12
+                     cell.imgviewHight4.constant = 0
+                     cell.imgviewHight5.constant = 0
+                     cell.imgviewHight6.constant = 0 */
+                     
+                cell.lbldateintime.isHidden = false
+                cell.lblintime.isHidden = true
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = true
+                cell.lblparceltime.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblcancelby.isHidden = true
+                cell.lblWrongEntry.isHidden = false
+                cell.lbldateintimeMulti.isHidden = true // Extra
+
+
+                cell.imgview1.isHidden = false
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = true
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+                cell.imgview7.isHidden = true
+                cell.imgview8.isHidden = false
+                cell.imgviewExtra.isHidden = true
+
+          
+                cell.imgviewTop1.constant = 64.5
+           cell.imgviewTop2.constant = -12
+           cell.imgviewTop3.constant = -12
+                cell.imgviewTop4.constant = -12
+           cell.imgviewTop5.constant = -12
+           cell.imgviewTop6.constant = -12
+           cell.imgviewTop7.constant = -12
+           cell.imgviewTop8.constant = 81.5
+           cell.imgviewTopExtra.constant = -12
+
+                cell.stackviewStatus.constant = 95 // 69.5
+             
+                         
+                     cell.constraintHightStackBtn.constant = 0
+                     
+                     cell.constraintHightStacklbl.constant = 0
+
+                     cell.lblHightStacklblMiddle.isHidden = true
+                     
+                     cell.btnCancel.isHidden = true
+                     cell.btnEdit.isHidden = true
+                     cell.btnWrong_Entry.isHidden = true
+                     cell.btnWrong_Entry_Red.isHidden = true
+                     cell.btnRenew.isHidden = true
+                     cell.btnClose.isHidden = true
+                     cell.btnNote_Guard.isHidden = true
+                     cell.btnOut.isHidden = true
+                     cell.btnDeliveryInfo.isHidden = true
+                     cell.btnAlertInfo.isHidden = true
+         
+                     cell.btnIn_OnDemand.isHidden = true
+                     cell.btnCancel_OnDemand.isHidden = true
+                     cell.btnOut_OnDemand.isHidden = true
+                     cell.btnEdit_OnDemand.isHidden = true
+                 
+         }
         else{
             cell.lblname.text = ""
             cell.lblguest.text = ""

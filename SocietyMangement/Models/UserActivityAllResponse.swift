@@ -70,7 +70,7 @@ struct ActivityAll: Codable {
     let messageAttachment : String?
     let activityIn: String?
     let actualIn,actualOut: String?
-    let addedBy, cancelledBy: String?
+    let addedBy,relation, cancelledBy, deletedOn: String?
     let removedBy,addedOn: String?
     let out, leaveAtGate, vendorID, companyName: String?
     let allowedInTime,allowedOutTime : String?
@@ -110,7 +110,9 @@ struct ActivityAll: Codable {
         case allowedInTime = "AllowedInTime"
         case allowedOutTime = "AllowedOutTime"
         case addedBy = "AddedBy"
+        case relation = "Relation"
         case cancelledBy = "CancelledBy"
+        case deletedOn = "DeletedOn"
         case addedOn = "AddedOn"
         case removedBy = "RemovedBy"
         case out = "Out"
