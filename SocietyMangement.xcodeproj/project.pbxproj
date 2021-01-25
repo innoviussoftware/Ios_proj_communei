@@ -204,6 +204,7 @@
 		9AEE05F0230E5C140009E8A3 /* AddBuildingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE05EF230E5C140009E8A3 /* AddBuildingPopup.swift */; };
 		9AEE05F2230E5C350009E8A3 /* BuildingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE05F1230E5C350009E8A3 /* BuildingsVC.swift */; };
 		9AEE802E236C539000068075 /* UpdateNotifiCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE802D236C539000068075 /* UpdateNotifiCount.swift */; };
+		9AF3C2BA25BF0F64004AF90A /* UserNewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3C2B925BF0F64004AF90A /* UserNewResponse.swift */; };
 		9AF41C78257105C500E943F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AF41C77257105C400E943F2 /* GoogleService-Info.plist */; };
 		9AF770BA2339D2DC006220BA /* AddguestPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF770B92339D2DC006220BA /* AddguestPopup.swift */; };
 		9AF770BC2339F00C006220BA /* InviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF770BB2339F00C006220BA /* InviteVC.swift */; };
@@ -514,6 +515,7 @@
 		9AEE05EF230E5C140009E8A3 /* AddBuildingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBuildingPopup.swift; sourceTree = "<group>"; };
 		9AEE05F1230E5C350009E8A3 /* BuildingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingsVC.swift; sourceTree = "<group>"; };
 		9AEE802D236C539000068075 /* UpdateNotifiCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNotifiCount.swift; sourceTree = "<group>"; };
+		9AF3C2B925BF0F64004AF90A /* UserNewResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNewResponse.swift; sourceTree = "<group>"; };
 		9AF41C77257105C400E943F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9AF770B92339D2DC006220BA /* AddguestPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddguestPopup.swift; sourceTree = "<group>"; };
 		9AF770BB2339F00C006220BA /* InviteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteVC.swift; sourceTree = "<group>"; };
@@ -693,6 +695,7 @@
 				9A2AC645258394CB0075CA57 /* AddBookingNowResponse.swift */,
 				9A625FEF2578E50500F52C56 /* GetRecentContactResponse.swift */,
 				9ABCFA39256FE7E600DE476E /* UserActivityAllResponse.swift */,
+				9AF3C2B925BF0F64004AF90A /* UserNewResponse.swift */,
 				9A955AAA230FA24A004A4668 /* CircularResponse.swift */,
 				9A955AAC230FB1C6004A4668 /* BuildingResponse.swift */,
 				D25CDD372547E5EA0099B1C2 /* BuildingAddResponse.swift */,
@@ -1425,6 +1428,7 @@
 				D258E10425499ACA004405DE /* AddEventTypeResponse.swift in Sources */,
 				D241442E2531884D0018704F /* ServiceTypeVC.swift in Sources */,
 				4E668C0F233DE7790077DABB /* DaysCell.swift in Sources */,
+				9AF3C2BA25BF0F64004AF90A /* UserNewResponse.swift in Sources */,
 				9AEE05EC230E4DB70009E8A3 /* CircularVC.swift in Sources */,
 				9A5CD6B5237168240060ED73 /* GetHelpDesk.swift in Sources */,
 				05B1B1C124BC913D00AABF5E /* SignUPStep1VC.swift in Sources */,

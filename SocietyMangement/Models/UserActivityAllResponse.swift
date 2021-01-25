@@ -61,6 +61,7 @@ struct ActivityAll: Codable {
     let phone: String?
     let vendor: String?
     let profilePic: String?
+    let shareInviteUrl: String?
     let dailyHelpPropertyID: String?
     let vehicle: String?
     let vehicleTypeID: String?
@@ -92,6 +93,7 @@ struct ActivityAll: Codable {
         case phone = "Phone"
         case vendor = "Vendor"
         case profilePic = "ProfilePic"
+        case shareInviteUrl = "ShareInviteUrl"
         case vehicle = "Vehicle"
         case vehicleTypeID = "VehicleTypeID"
         case creationDate = "CreationDate"

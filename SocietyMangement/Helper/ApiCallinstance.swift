@@ -782,6 +782,19 @@ struct Apicallhandler {
         
     }
     
+    //Mark : Api call add Frequent Entry Response
+    
+    func APIAddFrequentEntryUserResponse(URL: String, param : Parameters , token:String, onCompletion: @escaping ((_ response: DataResponse<UserNewResponse>) -> Void)) {
+        
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserNewResponse>) in
+
+      //  AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<UserNewResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
     
     //Mark : Api call get Members
   //  func GetAllMembers(URL: String,building_id:Int,token:String, onCompletion: @escaping ((_ response: DataResponse<MembersResponse>) -> Void)) {

@@ -15,9 +15,23 @@ import SWRevealViewController
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 class InvitationPopUpVC: UIViewController {
+    
+    @IBOutlet weak var lblName: UILabel!
+
+    @IBOutlet weak var lblfullpath: UILabel!
+
+    @IBOutlet weak var lblCodeNumber: UILabel!
+    
+    @IBOutlet weak var imgViewCard: UIImageView!
+
+    var getImage = UIImage()
+
+    var strNamecard = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        imgViewCard.sd_setImage(with: URL(string: strNamecard), placeholderImage: UIImage(named: ""))
 
         // Do any additional setup after loading the view.
     }

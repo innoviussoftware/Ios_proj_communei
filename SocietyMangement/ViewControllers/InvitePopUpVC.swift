@@ -16,7 +16,10 @@ class InvitePopUpVC: UIViewController {
     @IBOutlet weak var btnInvitation: UIButton!
     
     @IBOutlet weak var lblInvitationaddres: UILabel!
+    
     @IBOutlet weak var btnOTP: UIButton!
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +29,9 @@ class InvitePopUpVC: UIViewController {
         }
         
       setUpView()
+        
       self.navigationController?.navigationBar.isHidden = true
+        
         
     }
     

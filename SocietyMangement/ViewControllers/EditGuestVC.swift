@@ -22,6 +22,11 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var lblTodayFrequentDataShow: UILabel!
     
+    var arrActivityyy = [ActivityyyDatum]()
+
+    var arrInvitationPop = NSMutableArray()
+
+    
     @IBAction func backaction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -95,7 +100,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         return cell
     }
     
-    @IBAction func actioInviteguest(_ sender: Any) {
+    @IBAction func actioInviteguest(_ sender: UIButton) {
         
         if arrInvitedmember.count == 0{
             let alert = webservices.sharedInstance.AlertBuilder(title:"Frequent entry", message:"Please select at least guest to invite")
@@ -309,7 +314,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
         }
             
             webservices().StartSpinner()
-        Apicallhandler().APIAddFrequentEntry(URL: webservices().baseurl + API_ADD_FREQUENTGUEST, param: param, token: token as! String) { JSON in
+        Apicallhandler().APIAddFrequentEntryUserResponse(URL: webservices().baseurl + API_ADD_FREQUENTGUEST, param: param, token: token as! String) { JSON in
                 
                 print(JSON)
                 switch JSON.result{
@@ -318,10 +323,23 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                     if(JSON.response?.statusCode == 200)
                     {
                         
+                        self.arrActivityyy = resp.data!
+
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
-                                                
+                        
+
+                        for dic in self.arrActivityyy {
+                           // initialViewController.strNamecard = dic.activity!.shareInviteURL
+                            let shareURL = dic.activity!.shareInviteURL
+                            self.arrInvitationPop.add(shareURL)
+                        }
+                        
+                        initialViewController.strNamecard = self.arrActivityyy[0].activity!.shareInviteURL
+                           
+                       // initialViewController.getImage = ""
+
                         self.navigationController?.pushViewController(initialViewController, animated: true)
 
                         

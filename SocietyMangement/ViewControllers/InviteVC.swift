@@ -423,6 +423,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "EditGuestVC") as! EditGuestVC
         vc.arrInvitedmember = arrContactName
+        
+        
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
