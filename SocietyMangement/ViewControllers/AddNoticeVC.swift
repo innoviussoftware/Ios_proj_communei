@@ -575,7 +575,7 @@ class AddNoticeVC: UIViewController , Buildings , UITextFieldDelegate{
                 case .failure(let err):
                     let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }

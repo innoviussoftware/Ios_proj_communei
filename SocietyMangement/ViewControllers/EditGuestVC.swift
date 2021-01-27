@@ -216,7 +216,6 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             }
         
      
-            
            /* let param : Parameters = [
                 "type":frequencyType,
                 "contact_array":string,
@@ -329,7 +328,8 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
 
                         let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                         
-
+                        initialViewController.isfrom = 1
+                        
                         for dic in self.arrActivityyy {
                            // initialViewController.strNamecard = dic.activity!.shareInviteURL
                             let shareURL = dic.activity!.shareInviteURL

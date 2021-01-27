@@ -10,6 +10,10 @@ import UIKit
 import FloatRatingView
 import Alamofire
 
+protocol  updateReviewView {
+    func getupReviewView()
+}
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -29,11 +33,16 @@ class AddRatingReviewPopUpVC: UIViewController {
     @IBOutlet weak var btnSubmit: UIButton!
     @IBOutlet weak var txtViewComment: UITextView!
     
+    @IBOutlet weak var viewinner: UIView!
+    
+    var delegate: updateReviewView?
+
+
     var dictData : AddRatingReviewData!
     
     var dailyHelperID : Int!
     
-    var VendorServiceTypeID = ""
+    var VendorServiceTypeID : Int! // = ""
     
     var dailyHelpPropertyID = ""
     
@@ -174,7 +183,7 @@ class AddRatingReviewPopUpVC: UIViewController {
           
        }
 
-    @IBAction func actionSubmit(_ sender: Any) {
+    @IBAction func actionSubmit(_ sender: UIButton) {
        /* if strRatings == ""{
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please give your rating")
             self.present(alert, animated: true, completion: nil)
@@ -187,8 +196,31 @@ class AddRatingReviewPopUpVC: UIViewController {
         }
     }
     
-    @IBAction func btnclosePressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if(touches.first?.view != bgView){
+            removeAnimate()
+        }
+    }
+    
+    func removeAnimate()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                self.view.removeFromSuperview()
+                
+            }
+        });
+    }
+    
+    @IBAction func btnclosePressed(_ sender: UIButton) {
+        removeAnimate()
+
+      //  self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - get Add Ratings
@@ -203,12 +235,13 @@ class AddRatingReviewPopUpVC: UIViewController {
             
           //  let strHelperId = "\(dailyHelperID!)"
         
-        let vendor = (VendorServiceTypeID as NSString).integerValue
+       // let vendor = (VendorServiceTypeID as NSString).integerValue
+        
         let dailyHelp = (dailyHelpPropertyID as NSString).integerValue
 
             let param : Parameters = [
                 "DailyHelperID" : dailyHelperID!,
-                "VendorServiceTypeID" : vendor,
+                "VendorServiceTypeID" : VendorServiceTypeID!,
                 "DailyHelpPropertyID" : dailyHelp,
                 "Punctual" : strRatingsPunctual!,
                 "Regular" : strRatingsRegular!,
@@ -245,7 +278,11 @@ class AddRatingReviewPopUpVC: UIViewController {
                                                     
                                                     self.apicallHelperDetails()
 
-                                                    self.dismiss(animated: true, completion: nil)
+                                                    self.delegate?.getupReviewView()
+                                                    
+                                                    self.removeAnimate()
+
+                                                   // self.dismiss(animated: true, completion: nil)
                                                 }))
                                                 // show the alert
                                                 self.present(alert, animated: true, completion: nil)

@@ -80,19 +80,19 @@ class UserSettingsVC: BaseVC {
     @IBOutlet weak var lblFlatType: UILabel!
     @IBOutlet weak var imgUser: UIImageView!
     
-    var ShareContactDetails:Int?
-    var ShareFamilyMemberDetails :Int?
+    var ShareContactDetails = Int()
+    var ShareFamilyMemberDetails = Int()
     
-    var DoNotDisturb :Int?
+    var DoNotDisturb = Int()
 
-    var DomesticNotifyOnEntry :Int?
-    var DomesticNotifyOnExit :Int?
+    var DomesticNotifyOnEntry = Int()
+    var DomesticNotifyOnExit = Int()
     
-    var VisitorNotifyOnEntry :Int?
-    var VisitorNotifyOnExit :Int?
+    var VisitorNotifyOnEntry = Int()
+    var VisitorNotifyOnExit = Int()
 
-    var OthersNotifyOnEntry :Int?
-    var OthersNotifyOnExit :Int?
+    var OthersNotifyOnEntry = Int()
+    var OthersNotifyOnExit = Int()
 
     var selectedCell = -1
     
@@ -287,8 +287,11 @@ class UserSettingsVC: BaseVC {
 
         
         apicallGetFamilyMembers(id: "")
-        //apicallGetSettings()
         
+       // apicallAddSettings()
+        
+       // apicallGetSettings()
+     
         if UsermeResponse?.data?.settings?.shareContactDetails == 0 {
             switchContactDetails.isOn = false
             ShareContactDetails = 0
@@ -362,12 +365,13 @@ class UserSettingsVC: BaseVC {
             OthersNotifyOnExit = 1
         }
         
-        let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
+        
+      /*  let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left,
                                                                 verticalAlignment: .center)
         
         collectionmember.collectionViewLayout = alignedFlowLayout
         
-        self.collectionmember.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+        self.collectionmember.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil) */
         
        // checkbox(cb: cbself)
         
@@ -428,6 +432,9 @@ class UserSettingsVC: BaseVC {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        apicallAddSettings()
+
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
 
     }
@@ -695,7 +702,7 @@ class UserSettingsVC: BaseVC {
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
         
-                Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+        Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { [self] JSON in
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -706,6 +713,80 @@ class UserSettingsVC: BaseVC {
                     if statusCode == 200{
                         
                         UsermeResponse = resp
+                        
+                        if UsermeResponse?.data?.settings?.shareContactDetails == 0 {
+                            switchContactDetails.isOn = false
+                            ShareContactDetails = 0
+                        }else {
+                            switchContactDetails.isOn = true
+                            ShareContactDetails = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.shareFamilyMemberDetails == 0 {
+                            switchFamily.isOn = false
+                            ShareFamilyMemberDetails = 0
+                        }else {
+                            switchFamily.isOn = true
+                            ShareFamilyMemberDetails = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.doNotDisturb == 0 {
+                            DNDSwitch.isOn = false
+                            DoNotDisturb = 0
+                        }else {
+                            DNDSwitch.isOn = true
+                            DoNotDisturb = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.domesticNotifyOnEntry == 0 {
+                            switchDailyNoticeEntry.isOn = false
+                            DomesticNotifyOnEntry = 0
+                        }else {
+                            switchDailyNoticeEntry.isOn = true
+                            DomesticNotifyOnEntry = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.domesticNotifyOnExit == 0 {
+                            switchDailyNoticeExit.isOn = false
+                            DomesticNotifyOnExit = 0
+                        }else {
+                            switchDailyNoticeExit.isOn = true
+                            DomesticNotifyOnExit = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.visitorNotifyOnEntry == 0 {
+                            switchVisitorOnEntry.isOn = false
+                            VisitorNotifyOnEntry = 0
+                        }else {
+                            switchVisitorOnEntry.isOn = true
+                            VisitorNotifyOnEntry = 1
+                        }
+                        
+                        
+                        if UsermeResponse?.data?.settings?.visitorNotifyOnExit == 0 {
+                            switchVisitorOnExit.isOn = false
+                            VisitorNotifyOnExit = 0
+                        }else {
+                            switchVisitorOnExit.isOn = true
+                            VisitorNotifyOnExit = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.othersNotifyOnEntry == 0 {
+                            switchOtherEntry.isOn = false
+                            OthersNotifyOnEntry = 0
+                        }else {
+                            switchOtherEntry.isOn = true
+                            OthersNotifyOnEntry = 1
+                        }
+                        
+                        if UsermeResponse?.data?.settings?.othersNotifyOnExit == 0 {
+                            switchOtherExit.isOn = false
+                            OthersNotifyOnExit = 0
+                        }else {
+                            switchOtherExit.isOn = true
+                            OthersNotifyOnExit = 1
+                        }
+                        
                         
                         print(resp)
                     }
@@ -809,19 +890,20 @@ class UserSettingsVC: BaseVC {
             ] */
         
         let param : Parameters = [
-            "ShareContactDetails" : ShareContactDetails!,
-            "ShareFamilyMemberDetails" : ShareFamilyMemberDetails!,
-            "DoNotDisturb" : DoNotDisturb!,
-            "DomesticNotifyOnEntry" : DomesticNotifyOnEntry!,
-            "DomesticNotifyOnExit" : DomesticNotifyOnExit!,
-            "VisitorNotifyOnEntry" : VisitorNotifyOnEntry!,
-            "VisitorNotifyOnExit": VisitorNotifyOnExit!,
-            "OthersNotifyOnEntry": OthersNotifyOnEntry!,
-            "OthersNotifyOnExit": OthersNotifyOnExit!
+            "ShareContactDetails" : ShareContactDetails,
+            "ShareFamilyMemberDetails" : ShareFamilyMemberDetails,
+            "DoNotDisturb" : DoNotDisturb,
+            "DomesticNotifyOnEntry" : DomesticNotifyOnEntry,
+            "DomesticNotifyOnExit" : DomesticNotifyOnExit,
+            "VisitorNotifyOnEntry" : VisitorNotifyOnEntry,
+            "VisitorNotifyOnExit": VisitorNotifyOnExit,
+            "OthersNotifyOnEntry": OthersNotifyOnEntry,
+            "OthersNotifyOnExit": OthersNotifyOnExit
         ]
            
         print("param setting : ",param)
-            
+        
+        
         Apicallhandler.sharedInstance.ApiCallAddSettings(token: token as! String, param: param) { [self] JSON in
                 
                 let statusCode = JSON.response?.statusCode

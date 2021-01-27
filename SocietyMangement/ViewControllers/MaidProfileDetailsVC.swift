@@ -15,7 +15,7 @@ import FloatRatingView
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class MaidProfileDetailsVC: UIViewController {
+class MaidProfileDetailsVC: UIViewController , updateReviewView {
 
     @IBOutlet weak var lblRatingReviewStatic: UILabel!
     @IBOutlet weak var ratingTopView: FloatRatingView!
@@ -82,11 +82,16 @@ class MaidProfileDetailsVC: UIViewController {
         tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
 
         setUpView()
-        apicallHelperDetails()
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        apicallHelperDetails()
+    }
     
+    func getupReviewView() {
+        apicallHelperDetails()
+    }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         tblView.layer.removeAllAnimations()
@@ -313,19 +318,30 @@ class MaidProfileDetailsVC: UIViewController {
     
     @IBAction func actionAddRatings(_ sender: UIButton) {
         
-        if self.arrRating.count > 0  {
-            let popup = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
+      //  if self.arrRating.count > 0  {
             
-            popup.dailyHelperID = self.dictHelperData.dailyHelperID
+            let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
+            
+            popOverConfirmVC.delegate = self
 
-            popup.VendorServiceTypeID = self.arrRating[sender.tag].vendorServiceTypeID
+            popOverConfirmVC.dailyHelperID = self.dictHelperData.dailyHelperID
+
+            popOverConfirmVC.VendorServiceTypeID =  self.dictHelperData.vendorServiceTypeID // self.arrRating[sender.tag].vendorServiceTypeID
             
-            popup.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID
+            popOverConfirmVC.dailyHelpPropertyID = self.dictHelperData.dailyHelpPropertyID // self.arrRating[sender.tag].dailyHelpPropertyID
             
-            let navigationController = UINavigationController(rootViewController: popup)
+            self.addChildViewController(popOverConfirmVC)
+            popOverConfirmVC.view.frame = self.view.frame
+            self.view.center = popOverConfirmVC.view.center
+            self.view.addSubview(popOverConfirmVC.view)
+            popOverConfirmVC.didMove(toParentViewController: self)
+        
+            
+          /*  let navigationController = UINavigationController(rootViewController: popOverConfirmVC)
             navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-            self.present(navigationController, animated: true)
-        }
+            self.present(navigationController, animated: true) */
+            
+     //   }
         
     }
     
@@ -408,17 +424,13 @@ class MaidProfileDetailsVC: UIViewController {
                         if self.dictHelperData.comments.count > 0 {
                             self.arrRating = self.dictHelperData.comments
                         }
-                         self.lblRatingReviewStatic.isHidden = true
+                         self.lblRatingReviewStatic.isHidden = false
+                        self.btnAddRatings.isHidden = false
+
                         if self.dictHelperData.workingWithMe == 0 {
-                            self.btnAddRatings.isHidden = true
-                            self.btnAddHelper.isHidden = false
-
-                            self.lblRatingReviewStatic.isHidden = false
-                        }else{
-                            self.btnAddRatings.isHidden = false
                             self.btnAddHelper.isHidden = true
-                            self.lblRatingReviewStatic.isHidden = false
-
+                        }else{
+                            self.btnAddHelper.isHidden = false
                         }
                         
                         let lblin = self.dictHelperData.societyWorkingSince.components(separatedBy: " ")[0]
@@ -515,14 +527,13 @@ class MaidProfileDetailsVC: UIViewController {
      @objc func deleteRating(sender:UIButton) {
         
         
-      //  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                    let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                    avc?.titleStr = GeneralConstants.kAppName // "Society Buddy"
                    avc?.subtitleStr = "Are you sure you want to delete this review?"
                    avc?.yesAct = {
                          
-                    let str = "\(self.arrRating[sender.tag].commentID)"
-                                           self.apicallDeleteRatings(strId: str)
+                            let str = "\(self.arrRating[sender.tag].commentID)"
+                                self.apicallDeleteRatings(strId: str)
                        }
                    avc?.noAct = {
                      

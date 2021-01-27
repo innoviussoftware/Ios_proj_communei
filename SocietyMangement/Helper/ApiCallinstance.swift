@@ -166,14 +166,23 @@ struct Apicallhandler {
     //Mark : Api call user Activity
 
     
-    func ApiCallUserActivityList(token: String, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
+    func ApiCallUserActivityList(token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
+        
+        AF.request(webservices().baseurl + API_USER_ACTIVITY_LIST, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserActivityAllResponse>) in
+            
+            onCompletion(response)
+        }
+        
+    }
+    
+   /* func ApiCallUserActivityList(token: String, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
         
         AF.request(webservices().baseurl + API_USER_ACTIVITY_LIST, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserActivityAllResponse>) in
             
             onCompletion(response)
         }
         
-    }
+    } */
     
     func ApiCallUserActivityListFilter(UserActivityTypeID:String,token: String, onCompletion: @escaping ((_ response: DataResponse<UserActivityAllResponse>) -> Void)) {
         

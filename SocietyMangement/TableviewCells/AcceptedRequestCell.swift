@@ -33,6 +33,8 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnInviteShare: UIButton!
     @IBOutlet weak var btncall: UIButton!
 
+    @IBOutlet weak var btnExtraShow: UIButton!
+
     
     @IBOutlet weak var imgview1: UIImageView!
     @IBOutlet weak var imgview2: UIImageView!

@@ -22,11 +22,15 @@ class InvitationPopUpVC: UIViewController {
 
     @IBOutlet weak var lblCodeNumber: UILabel!
     
+    @IBOutlet weak var viewinner: UIView!
+    
     @IBOutlet weak var imgViewCard: UIImageView!
 
     var getImage = UIImage()
 
     var strNamecard = ""
+    
+    var isfrom = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,19 +48,25 @@ class InvitationPopUpVC: UIViewController {
         self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
         
         self.navigationController?.pushViewController(nextViewController, animated: true) */
-
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                   
-        let navigationController:UINavigationController = storyBoard.instantiateInitialViewController() as! UINavigationController
-                                                      
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                                      
-        navigationController.pushViewController(nextViewController, animated: true)
-                                                      
-        self.appDelegate.window?.rootViewController = navigationController
         
-        self.appDelegate.window?.makeKeyAndVisible()
-                       
+        if isfrom == 1 {
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                       
+            let navigationController:UINavigationController = storyBoard.instantiateInitialViewController() as! UINavigationController
+                                                          
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                                          
+            navigationController.pushViewController(nextViewController, animated: true)
+                                                          
+            self.appDelegate.window?.rootViewController = navigationController
+            
+            self.appDelegate.window?.makeKeyAndVisible()
+                           
+        }else{
+            removeAnimate()
+        }
+
+        
        /* let storyboard = UIStoryboard(name: "Main", bundle: nil)
                                
         let navigationController:UINavigationController = storyboard.instantiateInitialViewController() as! UINavigationController
@@ -71,10 +81,36 @@ class InvitationPopUpVC: UIViewController {
                                
         self.appDelegate.window?.makeKeyAndVisible() */
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if(touches.first?.view != viewinner){
+            removeAnimate()
+        }
+    }
+    
+    func removeAnimate()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                self.view.removeFromSuperview()
+                
+            }
+        });
+    }
 
     //Mark:- action method
     
-    @IBAction func actionShare(_ sender: Any) {
+    @IBAction func actionShare(_ sender: UIButton) {
+
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [strNamecard], applicationActivities: nil)
+       // activityViewController.excludedActivityTypes = [UIActivityType.print, UIActivityType.postToWeibo, UIActivityType.copyToPasteboard, UIActivityType.addToReadingList, UIActivityType.postToVimeo]
+        self.present(activityViewController, animated: true, completion: nil)
+        
         print("actionShare")
 
     }
