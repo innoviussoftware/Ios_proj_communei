@@ -237,6 +237,9 @@ struct AppColor {
     static let pollborderSelect =  UIColor(red: 69.0/255.0, green: 191.0/255.0, blue: 85.0/255.0, alpha: 1)
 
     static let deniedColor =  UIColor(red: 246.0/255.0, green: 10.0/255.0, blue: 32.0/255.0, alpha: 1)
+    
+
+    static let LeaveatgateColor =  UIColor(red: 255.0/255.0, green: 176.0/255.0, blue: 58.0/255.0, alpha: 1)
 
 
     // 828EA5

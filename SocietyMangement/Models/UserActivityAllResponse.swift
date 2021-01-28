@@ -67,11 +67,12 @@ struct ActivityAll: Codable {
     let vehicleTypeID: String?
     let creationDate: String?
     let numberOfPeopleAccompanying: String?
-    let status, messageStatus, messageBy, emergencyAlertType, message, complaintType, wrongEntryBy: String?
+    let status, messageStatus, messageBy, emergencyAlertType, message, complaintType, wrongEntryBy , recivedBy: String?
     let messageAttachment : String?
     let activityIn: String?
     let actualIn,actualOut: String?
-    let addedBy,relation, cancelledBy, deletedOn: String?
+    let recivedAt: String?
+    let addedBy,relation, cancelledBy, deletedOn, deniedBy: String?
     let removedBy,addedOn: String?
     let out, leaveAtGate, vendorID, companyName: String?
     let allowedInTime,allowedOutTime : String?
@@ -99,6 +100,7 @@ struct ActivityAll: Codable {
         case creationDate = "CreationDate"
         case numberOfPeopleAccompanying = "NumberOfPeopleAccompanying"
         case status = "Status"
+        case recivedBy = "RecivedBy"
         case messageStatus = "MessageStatus"
         case messageBy = "MessageBy"
         case message = "Message"
@@ -107,6 +109,7 @@ struct ActivityAll: Codable {
         case complaintType = "ComplaintType"
         case messageAttachment = "MessageAttachment"
         case activityIn = "In"
+        case recivedAt = "RecivedAt"
         case actualIn = "ActualIn"
         case actualOut = "ActualOut"
         case allowedInTime = "AllowedInTime"
@@ -115,6 +118,7 @@ struct ActivityAll: Codable {
         case relation = "Relation"
         case cancelledBy = "CancelledBy"
         case deletedOn = "DeletedOn"
+        case deniedBy = "DeniedBy"
         case addedOn = "AddedOn"
         case removedBy = "RemovedBy"
         case out = "Out"
