@@ -289,7 +289,7 @@ class HelpDeskVC: UIViewController , UITableViewDelegate , UITableViewDataSource
         let cell = tableView.dequeueReusableCell(withIdentifier: "EmergencyNumberCell") as! EmergencyNumberCell
             
             if arrDictDataHelpDesk[indexPath.row].icon!.count > 0{
-                    cell.imgview.sd_setImage(with: URL(string: (arrDictDataHelpDesk[indexPath.row].icon)!), placeholderImage: UIImage(named: ""))
+                    cell.imgview.sd_setImage(with: URL(string: (arrDictDataHelpDesk[indexPath.row].icon)!), placeholderImage: UIImage(named: "ic_emergency_no"))
                 }
             
                     

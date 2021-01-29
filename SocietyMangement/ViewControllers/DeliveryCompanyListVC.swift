@@ -372,7 +372,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
              let cell:ShortCutCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! ShortCutCell
             
             if entryary[indexPath.row].companyLogoURL != nil{
-                  cell.imgview.sd_setImage(with: URL(string: entryary[indexPath.item].companyLogoURL!), placeholderImage: UIImage(named: ""))
+                  cell.imgview.sd_setImage(with: URL(string: entryary[indexPath.item].companyLogoURL!), placeholderImage: UIImage(named: "ic_delivery_tab"))
             }
             
             var str = entryary[indexPath.row].companyName!

@@ -1216,17 +1216,17 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                             self.arrFrequentGuestData = resp.data!
                              
                              if self.arrFrequentGuestData.count > 0{
-                                self.viewStaticAddFrequentGuestMain.isHidden = true  // 2 number view
+                              //  self.viewStaticAddFrequentGuestMain.isHidden = true  // 2 number view
 
-                                 self.viewStaticAddFrequentGuest.isHidden = false
+                               //  self.viewStaticAddFrequentGuest.isHidden = false
                                  self.lblAddFrequentguest.isHidden = false
                                  self.collectionFrequentGuest.dataSource = self
                                  self.collectionFrequentGuest.delegate = self
                                  self.collectionFrequentGuest.reloadData()
                              }else{
-                                self.viewStaticAddFrequentGuestMain.isHidden = false
+                               // self.viewStaticAddFrequentGuestMain.isHidden = false
 
-                                 self.viewStaticAddFrequentGuest.isHidden = true
+                              //   self.viewStaticAddFrequentGuest.isHidden = true
                                  self.lblAddFrequentguest.isHidden = true
                                  self.collectionFrequentGuest.isHidden = true
                              }

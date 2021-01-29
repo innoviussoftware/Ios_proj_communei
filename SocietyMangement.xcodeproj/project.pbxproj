@@ -139,6 +139,7 @@
 		9A5CD6B7237171F60060ED73 /* HelpDeskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CD6B6237171F60060ED73 /* HelpDeskVC.swift */; };
 		9A5CD6B9237194000060ED73 /* MyHelperList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5CD6B8237194000060ED73 /* MyHelperList.swift */; };
 		9A625FF02578E50500F52C56 /* GetRecentContactResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A625FEF2578E50500F52C56 /* GetRecentContactResponse.swift */; };
+		9A65709525C41B1A00EBFF47 /* DeliveryinfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A65709425C41B1A00EBFF47 /* DeliveryinfoVC.swift */; };
 		9A679CF7232A254C0077CDCB /* MobileNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A679CF6232A254C0077CDCB /* MobileNumberVC.swift */; };
 		9A679CF9232A2AB90077CDCB /* OTPVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A679CF8232A2AB90077CDCB /* OTPVC.swift */; };
 		9A783DA8230C1065006B8E4F /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A783DA7230C1065006B8E4F /* HomeVC.swift */; };
@@ -448,6 +449,7 @@
 		9A5CD6B6237171F60060ED73 /* HelpDeskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDeskVC.swift; sourceTree = "<group>"; };
 		9A5CD6B8237194000060ED73 /* MyHelperList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHelperList.swift; sourceTree = "<group>"; };
 		9A625FEF2578E50500F52C56 /* GetRecentContactResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRecentContactResponse.swift; sourceTree = "<group>"; };
+		9A65709425C41B1A00EBFF47 /* DeliveryinfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryinfoVC.swift; sourceTree = "<group>"; };
 		9A679CF6232A254C0077CDCB /* MobileNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileNumberVC.swift; sourceTree = "<group>"; };
 		9A679CF8232A2AB90077CDCB /* OTPVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPVC.swift; sourceTree = "<group>"; };
 		9A783DA7230C1065006B8E4F /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
@@ -879,6 +881,7 @@
 				9AEC3883230D58A300C713B4 /* MembersVC.swift */,
 				9AD31C012588CEAB00F91958 /* MultiEditDateVC.swift */,
 				9A17A57D258C7342004DCB07 /* AlertInfoVC.swift */,
+				9A65709425C41B1A00EBFF47 /* DeliveryinfoVC.swift */,
 				9AD31C062588E11D00F91958 /* SingleEditDateVC.swift */,
 				9ACB6EE1258B31710003719D /* DeliveryMultiEditDateVC.swift */,
 				D2567E10252B296700C93714 /* MembersDetailsVC.swift */,
@@ -1419,6 +1422,7 @@
 				D25CDD382547E5EA0099B1C2 /* BuildingAddResponse.swift in Sources */,
 				4EC1A23D235F22C20060A507 /* WorkingWithPopUpCell.swift in Sources */,
 				D2B9DA6724F5287500FF9BF0 /* BuySellProductList.swift in Sources */,
+				9A65709525C41B1A00EBFF47 /* DeliveryinfoVC.swift in Sources */,
 				D2A4593F252DDFE600FFD863 /* KhaSpinner.swift in Sources */,
 				9A929CD924DAC94300D53129 /* MyUnitVC.swift in Sources */,
 				9ACED2CE233094CD00933A8C /* SocietyResponse.swift in Sources */,
@@ -1703,7 +1707,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8;
+				CURRENT_PROJECT_VERSION = 1.9;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1730,7 +1734,7 @@
 				CODE_SIGN_ENTITLEMENTS = SocietyMangement/SocietyMangement.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.8;
+				CURRENT_PROJECT_VERSION = 1.9;
 				DEVELOPMENT_TEAM = 6RZKTFGH5S;
 				INFOPLIST_FILE = SocietyMangement/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

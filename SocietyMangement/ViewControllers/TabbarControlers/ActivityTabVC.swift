@@ -46,7 +46,6 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
     var selectedColorNo:Int?
 
 
-
     var arrActivity = [UserActivityType]()
     //NSMutableArray()
     
@@ -59,13 +58,13 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
     @IBOutlet weak var message: UILabel!
 
    // var message = UILabel()
+    
     var refreshControl = UIRefreshControl()
     
     // MARK: - get Activity Types
     
     func apicallGetActivitytypes()
     {
-        
         
          if !NetworkState().isInternetAvailable {
                          ShowNoInternetAlert()
@@ -171,7 +170,7 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControl.Event.valueChanged)
         tblview.addSubview(refreshControl)
                 
-        tblview.estimatedRowHeight = 110.0
+        tblview.estimatedRowHeight = 85.0
         tblview.rowHeight = UITableViewAutomaticDimension
         
         selectedColorNo = 1
@@ -202,9 +201,10 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         
         message.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         message.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        message.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true */
+        message.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        message.isHidden = false
+        message.isHidden = false */
+        
         // Do any additional setup after loading the view.
     }
     
@@ -349,13 +349,14 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                           
                           self.arrGuestList = resp.data!
                           if self.arrGuestList.count > 0{
+                              self.message.isHidden = true
+
                               self.tblview.isHidden = false
                               
                               self.tblview.dataSource = self
                               self.tblview.delegate = self
                               self.tblview.reloadData()
                               
-                              self.message.isHidden = true
                               
                           }else{
                               self.message.isHidden = false
@@ -440,9 +441,14 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         webservices().StartSpinner()
         
-        var param = Parameters()
+//        var param = Parameters()
+//
+//        param  = [
+//            "UserActivityID" :  userActIndex ?? "",
+//            "DateFilter" : ""
+//        ]
         
-        param  = [
+        let param : Parameters = [
             "UserActivityID" :  userActIndex ?? "",
             "DateFilter" : ""
         ]
@@ -461,14 +467,14 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     
                     self.arrGuestList = resp.data!
                     if self.arrGuestList.count > 0{
-                                                
+                        
+                        self.message.isHidden = true
+
                         self.tblview.isHidden = false
 
                         self.tblview.dataSource = self
                         self.tblview.delegate = self
                         self.tblview.reloadData()
-                        
-                        self.message.isHidden = true
                         
                     }else{
                         self.message.isHidden = false
@@ -477,6 +483,7 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     }
                     
                 }
+                
                 else if(JSON.response?.statusCode == 401)
                 {
                     
@@ -644,6 +651,7 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         }
         
         let societyID = UserDefaults.standard.value(forKey: USER_SOCIETY_ID)
+        
         let param : Parameters = [
             "type" : "2",
             "request_id" : strRequestId,
@@ -763,8 +771,10 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     UserDefaults.standard.set(resp.data!.role, forKey: USER_ROLE)
                    // UserDefaults.standard.set(resp.data!.buildingID, forKey: USER_BUILDING_ID)
                     UserDefaults.standard.synchronize()
+                    
                     UsermeResponse = resp
-                    self.lblname.text = "Welcome, \(resp.data!.name ?? "")"
+                    
+                   // self.lblname.text = "Welcome, \(resp.data!.name ?? "")"
                     
                   //  self.lblname.text = resp.data!.name
                     
@@ -778,8 +788,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                     {
                         
                     }
-                    //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                     
+                    //self.lblflatno.text = "Flat no: \(UsermeResponse!.data.flatNo!)"
                     
                 }
                 
@@ -840,7 +850,7 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
                
                 
             }
-        }
+        } 
         
         
         
@@ -1226,12 +1236,42 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
     @objc func ApiCallDeliveryInfo(sender:UIButton) {
         filtrview.isHidden = true
 
+        let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryinfoVC") as! DeliveryinfoVC
+        
+        print("Delivery Info ",arrGuestList[sender.tag].activity!)
+        
+        let lblDate = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[0]
+        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+        
+        let lblTime = arrGuestList[sender.tag].inTime?.components(separatedBy: " ")[1]
+        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+        popOverConfirmVC.strTime =  strTime + " , " + strDate
+        
+
+        let str = (arrGuestList[sender.tag].activity?.companyLogoURL)!
+        popOverConfirmVC.getImage = str
+        
+        popOverConfirmVC.strMessage = "Approved by " + (arrGuestList[sender.tag].activity?.approvedBy)!
+
+        popOverConfirmVC.strPhone = (arrGuestList[sender.tag].activity?.phone!)!
+        
+        
+        
+       // "Delivery Entry"
+           
+        popOverConfirmVC.strName = (arrGuestList[sender.tag].activity?.companyName)!
+
+        self.addChildViewController(popOverConfirmVC)
+        popOverConfirmVC.view.frame = self.view.frame
+        self.view.center = popOverConfirmVC.view.center
+        self.view.addSubview(popOverConfirmVC.view)
+        popOverConfirmVC.didMove(toParentViewController: self)
+        
     }
     
     // MARK: - Api Edit
-    
-
-        
+            
     @objc func ApiCallEdit(sender:UIButton)
     {
         
@@ -2311,8 +2351,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.arrGuestList.count
+        
+       // return 10
 
-    /*  if self.arrGuestList.count > 10 {
+     /* if self.arrGuestList.count > 10 {
             return 10 // self.arrGuestList.count // 10 //
         }else{
             return self.arrGuestList.count
@@ -2347,12 +2389,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblStatus.isHidden = false
             
             cell.imgviewCompanyLogo.isHidden = true
+            
+            // 29/1/21 temp comment
 
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+          /*  if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
                 cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-            }
+            } */
             
             
                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -3333,11 +3377,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.imgviewCompanyLogo.isHidden = true
 
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            // 29/1/21 temp comment
+            
+          /*  if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
                 cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-            }
+            } */
             
             
             if arrGuestList[indexPath.row].activity?.isMulti == "0" {
@@ -4347,13 +4393,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 
                 cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
 
-                cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+               // cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
                 
                 if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                      cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "cab"))
                      cell.imgviewCompanyLogo.isHidden = false
                  }else{
-                     cell.imgviewCompanyLogo.isHidden = true
+                    cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+                    cell.imgviewCompanyLogo.isHidden = false
+
+                    // cell.imgviewCompanyLogo.isHidden = true
                  }
             
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -5299,13 +5348,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
 
-            cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+           // cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "cab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                 cell.imgviewCompanyLogo.isHidden = true
+                cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+                cell.imgviewCompanyLogo.isHidden = false
+
+                 // cell.imgviewCompanyLogo.isHidden = true
              }
         
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -6387,11 +6439,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.imgviewCompanyLogo.isHidden = true
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            // 29/1/21 temp comment
+            
+           /* if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
                 cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-            }
+            } */
 
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
             
@@ -7462,16 +7516,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.imgviewCompanyLogo.isHidden = true
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            // 29/1/21 temp comment
+            
+           /* if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
                 cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
-            }
+            } */
 
             cell.lblname.text = arrGuestList[indexPath.row].activity?.name
             
-            cell.lblguest.text = arrGuestList[indexPath.row].activity?.vendorServiceTypeName
-
+            if arrGuestList[indexPath.row].activity?.vendorServiceTypeName != nil {
+                    cell.lblguest.text = arrGuestList[indexPath.row].activity?.vendorServiceTypeName
+            }else{
+                cell.lblguest.text = ""
+            }
 
             cell.lblStatus.isHidden = false
             
@@ -8240,13 +8299,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Delivery"
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+         //   cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
-                 cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
+                 cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_delivery_tab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                 cell.imgviewCompanyLogo.isHidden = true
+                cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+                cell.imgviewCompanyLogo.isHidden = false
+
+                 //cell.imgviewCompanyLogo.isHidden = true
              }
             
             cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
@@ -9884,13 +9946,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Delivery"
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+           // cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
-                 cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: ""))
+                 cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_delivery_tab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                 cell.imgviewCompanyLogo.isHidden = true
+                cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+                cell.imgviewCompanyLogo.isHidden = false
+
+               //  cell.imgviewCompanyLogo.isHidden = true
              }
             
             cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
@@ -13104,13 +13169,16 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                cell.lblguest.text = ""
             }
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+          //  cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
             
            if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_service"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                 cell.imgviewCompanyLogo.isHidden = true
+                cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+                cell.imgviewCompanyLogo.isHidden = false
+
+               //  cell.imgviewCompanyLogo.isHidden = true
              }
 
           /*  if arrGuestList[indexPath.row].activity?.activityIn != nil {
@@ -14678,7 +14746,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             cell.lblguest.text = "Alert"
           
-            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "Group 16679"))
+            cell.imgview.sd_setImage(with: URL(string: "Group 16679"), placeholderImage: UIImage(named: "Group 16679"))
             
             cell.imgviewCompanyLogo.isHidden = true
             
@@ -14786,7 +14854,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                cell.lblname.text = "Complaint"
              
-               cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_complaint"))
+               cell.imgview.sd_setImage(with: URL(string: "ic_complaint"), placeholderImage: UIImage(named: "ic_complaint"))
 
                cell.lblguest.text = "Alert"
                
@@ -14888,7 +14956,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnEdit_OnDemand.isHidden = true
 
 
-           }
+        }
         
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Message to Guard" {
             
@@ -14896,7 +14964,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Message to Guard"
           
-            cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "ic_message"))
+            cell.imgview.sd_setImage(with: URL(string: "ic_message"), placeholderImage: UIImage(named: "ic_message"))
 
             cell.lblguest.text = "Alert"
             
@@ -15066,7 +15134,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Vehicle Added" {
              
-             cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "scooter"))
+             cell.imgview.sd_setImage(with: URL(string: "scooter"), placeholderImage: UIImage(named: "scooter"))
 
              cell.lblStatus.isHidden = true
 
@@ -15169,11 +15237,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Add Family Member" {
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            // 29/1/21 temp comment
+            
+           /* if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
-                cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
-            }
+                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+            } */
 
                  cell.lblStatus.isHidden = true
 
@@ -15282,11 +15352,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
          
          else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Remove Family Member" {
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
+            // 29/1/21 temp comment
+            
+           /* if arrGuestList[indexPath.row].activity?.profilePic != nil {
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
-                cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
-            }
+                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+            } */
 
                  cell.lblStatus.isHidden = true
 
@@ -15394,9 +15466,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
          }
          
         else{
-            cell.lblname.text = ""
-            cell.lblguest.text = ""
             
+            if arrGuestList[indexPath.row].activity?.name != nil {
+                cell.lblname.text = arrGuestList[indexPath.row].activity?.name
+            }else{
+                cell.lblname.text = ""
+            }
+
+            cell.lblguest.text = ""
             
              cell.lbldateintime.isHidden = true
              cell.lblintime.isHidden = true
@@ -15506,7 +15583,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnDeliveryInfo.addTarget(self, action:#selector(ApiCallDeliveryInfo), for: .touchUpInside)
 
             cell.btnCancel_OnDemand.addTarget(self, action:#selector(ApiCallCancel_OnDemand), for: .touchUpInside)
-            cell.btnEdit_OnDemand.addTarget(self, action:#selector(ApiCallEdit_OnDemand), for: .touchUpInside) // renew
+            cell.btnEdit_OnDemand.addTarget(self, action:#selector(ApiCallEdit_OnDemand), for: .touchUpInside)
             cell.btnIn_OnDemand.addTarget(self, action:#selector(ApiCallIn_OnDemand), for: .touchUpInside)
             cell.btnOut_OnDemand.addTarget(self, action:#selector(ApiCallOut_Exit_OnDemand), for: .touchUpInside)
             

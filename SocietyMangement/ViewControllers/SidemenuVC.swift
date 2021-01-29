@@ -148,7 +148,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                     }
                 }else{
                     cell.lblname.text = ""
-                    cell.imagview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor profile"))
+                    cell.imagview.sd_setImage(with: URL(string: "vendor profile"), placeholderImage: UIImage(named: "vendor profile"))
                 }
 
             }
