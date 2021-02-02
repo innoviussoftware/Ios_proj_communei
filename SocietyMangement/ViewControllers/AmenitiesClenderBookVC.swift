@@ -213,7 +213,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         }
 
            //ToolBar
-           let toolbar = UIToolbar();
+           let toolbar = UIToolbar()
            toolbar.sizeToFit()
            
            //done button & cancel button
@@ -235,7 +235,7 @@ class AmenitiesClenderBookVC: UIViewController, UITextFieldDelegate {
         
        }
     
-    @objc  func doneTimePicker(){
+    @objc func doneTimePicker(){
         //For date formate
         let formatter = DateFormatter()
         formatter.dateFormat = "hh:mm a"

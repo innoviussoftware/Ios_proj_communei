@@ -107,7 +107,10 @@ class InvitationPopUpVC: UIViewController {
     
     @IBAction func actionShare(_ sender: UIButton) {
 
-        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [strNamecard], applicationActivities: nil)
+       // let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [strNamecard], applicationActivities: nil)
+        
+        let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [imgViewCard.image!], applicationActivities: nil)
+
        // activityViewController.excludedActivityTypes = [UIActivityType.print, UIActivityType.postToWeibo, UIActivityType.copyToPasteboard, UIActivityType.addToReadingList, UIActivityType.postToVimeo]
         self.present(activityViewController, animated: true, completion: nil)
         

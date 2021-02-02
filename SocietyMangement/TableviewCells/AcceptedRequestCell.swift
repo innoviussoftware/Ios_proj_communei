@@ -48,7 +48,6 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgviewExtra: UIImageView!
 
    
-    
     @IBOutlet weak var imgviewTop1: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop2: NSLayoutConstraint!
     @IBOutlet weak var imgviewTop3: NSLayoutConstraint!
@@ -91,7 +90,6 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var imgviewHightExtra: NSLayoutConstraint!
 
 
-    
 
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var btnEdit: UIButton!
@@ -108,13 +106,12 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet weak var btnDeliveryInfo: UIButton!
 
     
-   // @IBOutlet weak var btnIn: UIButton!
-
     @IBOutlet weak var btnIn_OnDemand: UIButton! // Entry
     @IBOutlet weak var btnEdit_OnDemand: UIButton!
     @IBOutlet weak var btnCancel_OnDemand: UIButton!
     @IBOutlet weak var btnOut_OnDemand: UIButton!  // Exit
 
+   // @IBOutlet weak var btnIn: UIButton!
 
     
     @IBOutlet weak var constraintHightStackBtn: NSLayoutConstraint!

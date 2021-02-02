@@ -5,114 +5,87 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            uuid = "D136429D-437E-4C9F-BED1-EFB0C5E96EEF"
+            uuid = "327141D8-BA37-41BF-B398-DE66757A866A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1546"
-            endingLineNumber = "1546"
-            landmarkName = "ApiCallEdit(sender:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D136429D-437E-4C9F-BED1-EFB0C5E96EEF - 300a3351eb074991"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Communei.ActivityTabVC.ApiCallEdit(sender: __C.UIButton) -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1516"
-                  endingLineNumber = "1516"
-                  offsetFromSymbolStart = "462796">
-               </Location>
-               <Location
-                  uuid = "D136429D-437E-4C9F-BED1-EFB0C5E96EEF - 300a3351eb074991"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Communei.ActivityTabVC.ApiCallEdit(sender: __C.UIButton) -&gt; ()"
-                  moduleName = "Communei"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macmini/Desktop/Ios_proj_communei/SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1516"
-                  endingLineNumber = "1516"
-                  offsetFromSymbolStart = "710481">
-               </Location>
-            </Locations>
+            breakpointStackSelectionBehavior = "1"
+            scope = "1"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SwiftErrorBreakpoint">
+         <BreakpointContent
+            uuid = "66C81EF4-F38F-423B-9842-851F1CF0706D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "947A4AF6-CA04-460D-9367-81F652C74E4F"
+            uuid = "CA9A57C3-9664-4F40-A599-2F048F7CCD74"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            filePath = "SocietyMangement/ViewControllers/DomesticHelperAttendanceVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1278"
-            endingLineNumber = "1278"
-            landmarkName = "ApiCallEdit(sender:)"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "apicallCalendarAttendance()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C936BC41-AC09-4F0B-9EDA-3181EBFA9957"
+            uuid = "C2431600-482E-4646-8B30-CDB5CE6E59E3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            filePath = "SocietyMangement/ViewControllers/DomesticHelperAttendanceVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2353"
-            endingLineNumber = "2353"
-            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            startingLineNumber = "533"
+            endingLineNumber = "533"
+            landmarkName = "calendar(_:shouldSelect:at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "44DBC3EC-7385-4944-ABCC-821FD440D40A"
+            uuid = "090D2D3A-05A5-494A-B9A8-14FA369E327D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            filePath = "SocietyMangement/ViewControllers/DomesticHelperAttendanceVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2366"
-            endingLineNumber = "2366"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "495"
+            endingLineNumber = "495"
+            landmarkName = "calendar(_:didSelect:at:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BB17A525-93DA-4975-A982-F77B8814947F"
+            uuid = "92BA7AF2-91CC-45CE-ACE9-ADB1570C80C3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            filePath = "SocietyMangement/ViewControllers/DomesticHelperAttendanceVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "460"
-            endingLineNumber = "460"
-            landmarkName = "apicallGuestList()"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "apicallCalendarAttendance()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

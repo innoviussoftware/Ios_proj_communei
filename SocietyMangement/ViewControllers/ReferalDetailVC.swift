@@ -94,8 +94,12 @@ class ReferalDetailVC: BaseVC {
         lblcontact.text = String(format: "Contact No: %@", (UsermeResponse?.data!.phone)!)   // "\(UsermeResponse?.data!.phone!)"
         
         //txtcontact.text = UsermeResponse?.data!.phone
-        let strbuilding =  UsermeResponse?.data!.society?.parentProperty
-        lblflatno.text =   String(format: "Flat No: %@-%@", strbuilding!,(UsermeResponse?.data!.society?.parentProperty)!)//strbuilding + "-" + (UsermeResponse?.data!.flats)!
+        
+      //  let strbuilding =  UsermeResponse?.data!.society?.parentProperty
+        
+      //  lblflatno.text =   String(format: "Flat No: %@-%@", strbuilding!,(UsermeResponse?.data!.society?.parentProperty)!)//strbuilding + "-" + (UsermeResponse?.data!.flats)!
+        
+        self.lblflatno.text = "Flat No: \(UsermeResponse?.data!.society?.parentProperty ?? "")-\(UsermeResponse?.data!.society?.property ?? "")"
         
         
     }

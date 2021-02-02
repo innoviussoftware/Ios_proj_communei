@@ -118,13 +118,13 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     
     var arrResent = [GetRecentEntryList]()
     
-   // var arrFinals = [GetRecentEntryList]()
+    var arrFinals = [GetRecentEntryList]()
     
     var arrSelectionCheck = NSMutableArray()
 
-    
     var manuallyary = NSMutableArray()
-    @IBAction func saveaction(_ sender: Any) {
+    
+    @IBAction func saveaction(_ sender: UIButton) {
         
         if(txtname.text!.isEmpty)
         {
@@ -132,12 +132,13 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             self.present(alert, animated: true, completion: nil)
             
         }
-            
-        else if(txtcontact.text!.isEmpty)
-        {
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact")
+        else if txtcontact.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact Number")
             self.present(alert, animated: true, completion: nil)
-            
+        }
+        else if (txtcontact.text!.count < 10){
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
+            self.present(alert, animated: true, completion: nil)
         }
         else
         {
@@ -147,8 +148,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             
             manuallyary.add(dic)
             tblmanually.reloadData()
-            let nameary = NSMutableArray()
             
+            let nameary = NSMutableArray()
             
             if(selectedindex.count > 0)
             {
@@ -376,17 +377,19 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                     }
                         
                         
-                       /* for i in 0 ..< arrResent.count
+                        for i in 0 ..< arrResent.count
                         {
-                                             let dicc = (arrCotact[i] as! NSMutableDictionary)
-                                             let namenew = dicc.value(forKey: "Name") as! String
-                                           if(selectedindex.contains(namenew))
+                                             let dicc = arrResent[i]
+                                             let namenew = dicc.name
+                                           if(selectedindex.contains(namenew!))
                                            {
                                                let dict = NSMutableDictionary()
                                                dict.setValue(namenew, forKey: "Name")
-                                               dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
+                                               dict.setValue(namenew, forKey: "Phone")
+
+                                              // dict.setValue(dicc.value(forKey: "Phone"), forKey: "Phone")
                                                
-                                               nameary.add(namenew)
+                                               nameary.add(namenew!)
                                                lblname.text = nameary.componentsJoined(by:", ")
                                             
                                             lblnamerec.text = nameary.componentsJoined(by:", ")
@@ -397,7 +400,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                                
                                            }
                                            
-                                    } */
+                                    }
                         
          
                     }
@@ -753,6 +756,97 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         if (tableView == tblrecent)
         {
             print("tblrecent")
+            
+            let namenew  = arrResent[indexPath.row].name
+            
+            if(selectedindex.contains(namenew!))
+            {
+                selectedindex.remove(namenew!)
+            }
+            else
+            {
+                selectedindex.add(namenew!)
+            }
+            
+            let nameary = NSMutableArray()
+            
+            if(selectedindex.count > 0)
+            {
+                
+                for i in 0 ..< arrFinals.count
+                {
+                    let dict = arrFinals[i] // as NSMutableDictionary
+
+                    let namenew = dict.name
+                        //dict.value(forKey: "Name") as! String
+                    if(selectedindex.contains(namenew!))
+                        {
+                            nameary.add(namenew!)
+                            lblname.text = nameary.componentsJoined(by:", ")
+                            lblnamerec.text = nameary.componentsJoined(by:", ")
+                            lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                        }
+                }
+                
+            }
+            
+                          
+              if(nameary.count > 6)
+              {
+                   hightcontactview.constant = 202
+                  hightcontactview1.constant = 202
+                  hightcontactview2.constant = 202
+
+                   
+              }
+               else if(nameary.count > 3)
+              {
+                  hightcontactview.constant = 152
+                  hightcontactview1.constant = 152
+                  hightcontactview2.constant = 152
+
+                  
+              }
+              else if(nameary.count > 0)
+              {
+                  let top = CGAffineTransform(translationX: 0, y: 0)
+                  
+                  UIView.animate(withDuration: 0.7, delay: 0.0, options: [], animations: {
+                      // Add the transformation in this block
+                      // self.container is your view that you want to animate
+                      self.viewbottom.transform = top
+                      self.viewbottom.isHidden = false
+                      
+                      self.viewbottom1.transform = top
+                      self.viewbottom1.isHidden = false
+                      
+                      self.viewbottom2.transform = top
+                      self.viewbottom2.isHidden = false
+                      
+                  }, completion: nil)
+                  hightcontactview.constant = 102
+                  hightcontactview1.constant = 102
+                  hightcontactview2.constant = 102
+
+              }
+             
+              else{
+                  self.viewbottom.isHidden = true
+                  self.viewbottom1.isHidden = true
+                  self.viewbottom2.isHidden = true
+
+              }
+              
+              if nameary.count > 1{
+                  lblStaticAllowUser.text = "Allow to Visit"
+              }else{
+                  lblStaticAllowUser.text = "Allow to Visit"
+              }
+            
+            tableView.reloadData()
+
+
         }else{
             
             let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
@@ -1224,7 +1318,11 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         {
                             self.arrResent = resp.data!
                             
-                          //  self.arrFinals = resp.data!
+                           // self.arrFinal = resp.data as! NSMutableArray
+                            
+                              self.arrFinals = resp.data!
+
+                            
 
                             self.tblrecent.reloadData()
                             self.tblrecent.isHidden = false
@@ -1263,8 +1361,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                         else
                         {
                             self.arrResent = resp.data!
+                                                        
+                           // self.arrFinal = resp.data as! NSMutableArray
                             
-                           // self.arrFinals = resp.data!
+                            self.arrFinals = resp.data!
 
                             self.tblrecent.reloadData()
                             self.tblrecent.isHidden = false

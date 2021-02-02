@@ -612,16 +612,19 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
         formatter.dateFormat = "yyyy-MM-dd"
         let strCurrentDate = formatter.string(from: yourDate!)
         return self.dateFormatter2.date(from: strCurrentDate)!
-    }
+    } */
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.date(from: strAddedCalendarDate)
-        
+                
         print("changed added date : ",date!)
-    } */
+        
+        apicallCalendarAttendance()
+
+    }
     
 }
 

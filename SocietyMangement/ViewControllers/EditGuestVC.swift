@@ -325,10 +325,16 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                         self.arrActivityyy = resp.data!
 
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-                        let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
                         
-                        initialViewController.isfrom = 1
+                        // let initialViewController = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+
+
+                        let popOverConfirmVC = storyboard.instantiateViewController(withIdentifier: "InvitationPopUpVC") as! InvitationPopUpVC
+                        
+                        popOverConfirmVC.isfrom = 1
+                        
+                            //  popOverConfirmVC.isfrom = 2
+
                         
                         for dic in self.arrActivityyy {
                            // initialViewController.strNamecard = dic.activity!.shareInviteURL
@@ -336,11 +342,17 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                             self.arrInvitationPop.add(shareURL)
                         }
                         
-                        initialViewController.strNamecard = self.arrActivityyy[0].activity!.shareInviteURL
+                        popOverConfirmVC.strNamecard = self.arrActivityyy[0].activity!.shareInviteURL
                            
                        // initialViewController.getImage = ""
+                        
+                      /*  self.addChildViewController(popOverConfirmVC)
+                        popOverConfirmVC.view.frame = self.view.frame
+                        self.view.center = popOverConfirmVC.view.center
+                        self.view.addSubview(popOverConfirmVC.view)
+                        popOverConfirmVC.didMove(toParentViewController: self) */
 
-                        self.navigationController?.pushViewController(initialViewController, animated: true)
+                       self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
                         
                      /*   let storyboard = UIStoryboard(name: "Main", bundle: nil)

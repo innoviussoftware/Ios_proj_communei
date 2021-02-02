@@ -376,9 +376,9 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
        func apicallHelperDetails()
        {
          if !NetworkState().isInternetAvailable {
-                            ShowNoInternetAlert()
-                            return
-                        }
+            ShowNoInternetAlert()
+            return
+         }
              
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)

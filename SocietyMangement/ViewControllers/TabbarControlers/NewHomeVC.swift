@@ -260,17 +260,17 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
         
     }
     
-    @IBAction func actionNotification(_ sender: Any) {
+    @IBAction func actionNotification(_ sender: UIButton) {
        let vc = self.pushViewController(withName:NotificationVC.id(), fromStoryboard: "Main") as! NotificationVC
         vc.isfrom = 0
      }
     
-    @IBAction func btnOpenQRCodePressed(_ sender: Any) {
+    @IBAction func btnOpenQRCodePressed(_ sender: UIButton) {
         let vc = self.pushViewController(withName:QRCodeVC.id(), fromStoryboard: "Main") as! QRCodeVC
         vc.isfrom = 0
     }
     
-    @IBAction func btnViewAllPressed(_ sender: Any) {
+    @IBAction func btnViewAllPressed(_ sender: UIButton) {
         
       //  _ = self.pushViewController(withName:HomeVC.id(), fromStoryboard: "Main") as! HomeVC
 
