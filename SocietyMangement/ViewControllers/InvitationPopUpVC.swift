@@ -82,12 +82,12 @@ class InvitationPopUpVC: UIViewController {
         self.appDelegate.window?.makeKeyAndVisible() */
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  /* override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if(touches.first?.view != viewinner){
             removeAnimate()
         }
-    }
+    } */
     
     func removeAnimate()
     {

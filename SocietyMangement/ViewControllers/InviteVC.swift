@@ -385,9 +385,13 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                            {
                                                let dict = NSMutableDictionary()
                                                dict.setValue(namenew, forKey: "Name")
-                                               dict.setValue(namenew, forKey: "Phone")
+                                              // dict.setValue(namenew, forKey: "Phone")
+                                            
+                                            dict.setValue(dicc.phone, forKey: "")
+                                                            //.value(forKey: "Phone"), forKey: "Phone")
 
-                                              // dict.setValue(dicc.value(forKey: "Phone"), forKey: "Phone")
+
+                                             // dict.setValue(dicc.value(forKey: "Phone"), forKey: "Phone")
                                                
                                                nameary.add(namenew!)
                                                lblname.text = nameary.componentsJoined(by:", ")
@@ -769,6 +773,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             }
             
             let nameary = NSMutableArray()
+            
             
             if(selectedindex.count > 0)
             {

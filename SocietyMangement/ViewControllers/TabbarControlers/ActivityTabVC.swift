@@ -2520,7 +2520,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btncall.isHidden = true
         }
         
-        if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Visitor Entry" {
+       /* if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Visitor Entry") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  &&  arrGuestList[indexPath.row].activity?.ActivityType  == "Visitor Pre-Approval") {
            
             cell.lblguest.text = "Visitor"
             
@@ -2536,10 +2536,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             // 29/1/21 temp comment
 
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
-                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+           // if arrGuestList[indexPath.row].activity?.profilePic != nil {
+                
+            if (arrGuestList[indexPath.row].activity?.profilePic == "") {
+                cell.imgview.image = UIImage(named: "vendor-1")
+
+               // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
             }else{
-                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }
             
             
@@ -2569,7 +2573,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            if cell.lblStatus.text == "NOT RESPONDED" {
                cell.lblStatus.backgroundColor = AppColor.cancelColor
            
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+               /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
                         
@@ -2580,7 +2584,40 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         cell.lblintime.isHidden = false
                     }else{
                         cell.lblintime.isHidden = true
-                    }
+                    } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                    let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                    let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                    cell.lblintime.isHidden = false
+                    
+                    cell.lblintime.text = "\(strDate) - \(strDate1)"
+
+                    // cell.lblintime.text = strDate + " - " + strDate1
+                }else{
+                    cell.lblintime.isHidden = true
+                }
+            }else {
+                
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                         cell.lblintime.isHidden = false
+                    
+                        cell.lblintime.text = "\(strTime) - \(strDate)"
+
+                       // cell.lblintime.text = strTime + " , " + strDate
+                }else{
+                    cell.lblintime.isHidden = true
+                }
+            }
             
                          
                  cell.lblWrongEntry.text = "No Response"
@@ -2659,7 +2696,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblStatus.backgroundColor = AppColor.deniedColor
          
 
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+               /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
                         
@@ -2670,7 +2707,42 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         cell.lblintime.isHidden = false
                 }else{
                     cell.lblintime.isHidden = true
-                }
+                } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+                  if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                          let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                          let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                          
+                      let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                      let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                      cell.lblintime.isHidden = false
+                    
+                    cell.lblintime.text = "\(strDate) - \(strDate1)"
+
+                         // cell.lblintime.text = strDate + " - " + strDate1
+                  }else{
+                      cell.lblintime.isHidden = true
+                  }
+              }else{
+           
+           if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                   let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                   let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                   
+                   let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                   let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                  
+                        cell.lblintime.isHidden = false
+
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                //   cell.lblintime.text = strTime + " , " + strDate
+           }else{
+               cell.lblintime.isHidden = true
+           }
+       }
             
             if arrGuestList[indexPath.row].activity?.deniedBy != nil {
                 cell.lblWrongEntry.text = "denied by " + (arrGuestList[indexPath.row].activity?.deniedBy)!
@@ -2752,18 +2824,51 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                                
                cell.lblStatus.backgroundColor = AppColor.cancelColor
             
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+               /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
                         
                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblintime.text =  strTime + " , " + strDate
-                        cell.lblintime.isHidden = false
+                        cell.lbldateintime.text =  strTime + " , " + strDate
+                        cell.lbldateintime.isHidden = false
                 }else{
-                    cell.lblintime.isHidden = true
+                    cell.lbldateintime.isHidden = true
+                } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                    let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                    let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                       cell.lbldateintime.isHidden = false
+                        cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                      //  cell.lbldateintime.text =  strDate + " - " + strDate1
+                }else{
+                    cell.lbldateintime.isHidden = true
                 }
+            }else{
+         
+                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                         
+                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                         cell.lbldateintime.isHidden = false
+                       
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                        // cell.lbldateintime.text = strTime + " , " + strDate
+                 }else{
+                     cell.lbldateintime.isHidden = true
+                 }
+             }
                    
                cell.lblcancelby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
                                
@@ -2835,18 +2940,53 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            else if cell.lblStatus.text == "EXPIRED" {
                cell.lblStatus.backgroundColor = AppColor.cancelColor
                
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+           /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                     let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
                     
                     let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lbldateintime.text =  strTime + " , " + strDate
+                    cell.lbldateintime.text = strTime + " , " + strDate
                     cell.lbldateintime.isHidden = false
             }else{
                 cell.lbldateintime.isHidden = true
-            }
+            } */
+              
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                     cell.lbldateintime.isHidden = false
+
+                     cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                     //  cell.lbldateintime.text = strDate + " - " + strDate1
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                        cell.lbldateintime.isHidden = false
+                
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                
+                    // cell.lbldateintime.text = strTime + " , " + strDate
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }
               
                
                // cell.lbldateintime.isHidden = false
@@ -2913,21 +3053,53 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            }
            else if cell.lblStatus.text == "ADDED" {
                
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+            /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                     let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
                     
                     let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lblintime.text =  strTime + " , " + strDate
+                    cell.lblintime.text = strTime + " , " + strDate
                     cell.lblintime.isHidden = false
             }else{
                 cell.lblintime.isHidden = true
-            }
+            } */
         
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                        cell.lblintime.isHidden = false
+
+                        cell.lblintime.text = "\(strDate) - \(strDate1)"
+
+                      // cell.lblintime.text = strDate + " - " + strDate1
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                        cell.lblintime.isHidden = false
+                        cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                     //  cell.lblintime.text = strTime + " , " + strDate
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }
             
             cell.lbldateintime.isHidden = true
            // cell.lblintime.isHidden = false
@@ -2993,7 +3165,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblintime.text =  strTime + " , " + strDate
+                       // cell.lblintime.text = strTime + " , " + strDate
+                    
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
                 }
 
             if arrGuestList[indexPath.row].activity?.out != nil {
@@ -3004,7 +3179,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         
                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblouttime.text =  strDate + " , " + strTime
+                        cell.lblouttime.text = "\(strDate) , \(strTime)"
+
+                       // cell.lblouttime.text = strDate + " , " + strTime
                 }
              
                
@@ -3086,8 +3263,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                cell.imgviewHight5.constant = 0 */
 
             cell.lbldateintime.isHidden = true
-           // cell.lblintime.isHidden = false
-           // cell.lblouttime.isHidden = false
+            cell.lblintime.isHidden = false
+            cell.lblouttime.isHidden = false
             cell.lbladdedby.isHidden = false
             cell.lblparceltime.isHidden = true
             cell.lblLeaveatGate.isHidden = true
@@ -3113,18 +3290,53 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            else if cell.lblStatus.text == "APPROVED" {
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
             
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+           /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                     let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
                     
                     let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lblintime.text =  strTime + " , " + strDate
+                    cell.lblintime.text = strTime + " , " + strDate
                     cell.lblintime.isHidden = false
             }else{
                 cell.lblintime.isHidden = true
-            }
+            } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                cell.lblintime.isHidden = false
+                
+                cell.lblintime.text = "\(strDate) - \(strDate1)"
+
+
+                      // cell.lblintime.text = strDate + " - " + strDate1
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                      cell.lblintime.isHidden = false
+                
+                        cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                      // cell.lblintime.text = strTime + " , " + strDate
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }
                
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
                 cell.lbladdedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
@@ -3197,18 +3409,52 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                    
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+               /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
                         
                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lbldateintime.text =  strTime + " , " + strDate
+                        cell.lbldateintime.text = strTime + " , " + strDate
                         cell.lbldateintime.isHidden = false
                 }else{
                     cell.lbldateintime.isHidden = true
-                }
+                } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                       cell.lbldateintime.isHidden = false
+
+                        cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                      // cell.lbldateintime.text = strDate + " - " + strDate1
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                       cell.lbldateintime.isHidden = false
+
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                      // cell.lbldateintime.text = strTime + " , " + strDate
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }
              
                // 13/1/20 temp comment
 
@@ -3276,20 +3522,42 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            else if cell.lblStatus.text == "DELIVERED" {
                
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
-                   
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                    
-                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                    cell.lbldateintime.text =  strTime + " , " + strDate
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                    let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                    let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
                     cell.lbldateintime.isHidden = false
+                    
+                    cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                       // cell.lbldateintime.text = strDate + " - " + strDate1
+                }else{
+                    cell.lbldateintime.isHidden = true
+                }
+                
             }else{
-                cell.lbldateintime.isHidden = true
+                   
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                            let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                            let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                            
+                            let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                            let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                        cell.lbldateintime.isHidden = false
+
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                           // cell.lbldateintime.text = strTime + " , " + strDate
+                    }else{
+                        cell.lbldateintime.isHidden = true
+                    }
             }
-               
+                       
            // cell.lbldateintime.isHidden = false
             cell.lblintime.isHidden = true
             cell.lblouttime.isHidden = true
@@ -3540,9 +3808,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            cell.imgview9.isHidden = true   // denied by you
            cell.imgview10.isHidden = true  // No response */
            
-        }
+        } */
         
-        else if arrGuestList[indexPath.row].activity?.ActivityType != nil  &&  arrGuestList[indexPath.row].activity?.ActivityType  == "Visitor Pre-Approval" {
+      /*  else if arrGuestList[indexPath.row].activity?.ActivityType != nil  &&  arrGuestList[indexPath.row].activity?.ActivityType  == "Visitor Pre-Approval" {
             
             cell.lblguest.text = "Visitor"
             
@@ -3559,9 +3827,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             // 29/1/21 temp comment
             
             if arrGuestList[indexPath.row].activity?.profilePic != nil {
+         
                 cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
             }else{
-                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                cell.imgview.image = UIImage(named: "vendor-1")
+
+               // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
             }
             
             // 2/2/21 temp comment
@@ -3739,35 +4010,35 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                  cell.lblintime.isHidden = true
              } */
             
-            if arrGuestList[indexPath.row].activity?.isMulti == "0" {
+                      if arrGuestList[indexPath.row].activity?.isMulti == "1" {
 
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                        
-                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                                    
+                                let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                                let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                                
+                                    cell.lblintime.text =  strDate + " - " + strDate1
+                                    cell.lblintime.isHidden = false
+                            }else{
+                                cell.lblintime.isHidden = true
+                            }
+                        }else{
+                     
+                     if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                             let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                             let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                             
+                             let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblintime.text =  strTime + " , " + strDate
-                        cell.lblintime.isHidden = false
-                }else{
-                    cell.lblintime.isHidden = true
-                }
-            }else if arrGuestList[indexPath.row].activity?.isMulti == "1" {
-
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                        
-                    let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
-                    let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
-                    
-                        cell.lblintime.text =  strDate + " - " + strDate1
-                        cell.lblintime.isHidden = false
-                }else{
-                    cell.lblintime.isHidden = true
-                }
-            }
+                             cell.lblintime.text =  strTime + " , " + strDate
+                             cell.lblintime.isHidden = false
+                     }else{
+                         cell.lblintime.isHidden = true
+                     }
+                 }
                            
             if arrGuestList[indexPath.row].activity?.deniedBy != nil {
                 cell.lblWrongEntry.text = "denied by " + (arrGuestList[indexPath.row].activity?.deniedBy)!
@@ -3849,21 +4120,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                
                cell.lblcancelby.text = "Cancelled by " + (arrGuestList[indexPath.row].activity?.cancelledBy)!
                                
-            if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                        
-                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                        cell.lbldateintime.text =  strTime + " , " + strDate
-                        cell.lbldateintime.isHidden = false
-                }else{
-                    cell.lbldateintime.isHidden = true
-                }
-            }else if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
 
                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -3877,7 +4134,21 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 }else{
                     cell.lbldateintime.isHidden = true
                 }
-            }
+            }else{
+         
+                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                         let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                         
+                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                         cell.lbldateintime.text =  strTime + " , " + strDate
+                         cell.lbldateintime.isHidden = false
+                 }else{
+                     cell.lbldateintime.isHidden = true
+                 }
+             }
             
                // 13/1/20 temp comment
 
@@ -3946,21 +4217,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            else if cell.lblStatus.text == "EXPIRED" {
                cell.lblStatus.backgroundColor = AppColor.cancelColor
             
-            if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-
-                if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                        
-                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                        cell.lbldateintime.text =  strTime + " , " + strDate
-                        cell.lbldateintime.isHidden = false
-                }else{
-                    cell.lbldateintime.isHidden = true
-                }
-            }else if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+             if arrGuestList[indexPath.row].activity?.isMulti == "1" {
 
                 if arrGuestList[indexPath.row].activity?.activityIn != nil {
                         let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -3970,6 +4227,20 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
                     
                         cell.lbldateintime.text =  strDate + " - " + strDate1
+                        cell.lbldateintime.isHidden = false
+                }else{
+                    cell.lbldateintime.isHidden = true
+                }
+            }else{
+                
+                if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                        cell.lbldateintime.text =  strTime + " , " + strDate
                         cell.lbldateintime.isHidden = false
                 }else{
                     cell.lbldateintime.isHidden = true
@@ -4042,7 +4313,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
-            if arrGuestList[indexPath.row].activity?.activityIn != nil {
+          /*  if arrGuestList[indexPath.row].activity?.activityIn != nil {
                     let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                     let strDate = strChangeDateFormate(strDateeee: lblDate!)
                     
@@ -4053,10 +4324,40 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.lblintime.isHidden = false
             }else{
                 cell.lblintime.isHidden = true
-            }
+            } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                   
+                       cell.lblintime.text =  strDate + " - " + strDate1
+                       cell.lblintime.isHidden = false
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                       cell.lblintime.text =  strTime + " , " + strDate
+                       cell.lblintime.isHidden = false
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }
             
             cell.lbldateintime.isHidden = true
-            cell.lblintime.isHidden = false
+           // cell.lblintime.isHidden = false
             cell.lblouttime.isHidden = true
             cell.lbladdedby.isHidden = false
             cell.lblparceltime.isHidden = true
@@ -4237,7 +4538,51 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         }  // pending work  // 2/1/21
             
            else if cell.lblStatus.text == "APPROVED" {
+            
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            
+           /* if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                    let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                    cell.lblintime.text =  strTime + " , " + strDate
+                    cell.lblintime.isHidden = false
+            }else{
+                cell.lblintime.isHidden = true
+            } */
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                   
+                       cell.lblintime.text =  strDate + " - " + strDate1
+                       cell.lblintime.isHidden = false
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }else{
+               
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                       cell.lblintime.text =  strTime + " , " + strDate
+                       cell.lblintime.isHidden = false
+               }else{
+                   cell.lblintime.isHidden = true
+               }
+           }
                
             if arrGuestList[indexPath.row].activity?.approvedBy != nil {
                 cell.lbladdedby.text = "Approved by " + (arrGuestList[indexPath.row].activity?.approvedBy)!
@@ -4246,7 +4591,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             }
                
             cell.lbldateintime.isHidden = true
-            cell.lblintime.isHidden = false
+           // cell.lblintime.isHidden = false
             cell.lblouttime.isHidden = true
             cell.lbladdedby.isHidden = false
             cell.lblparceltime.isHidden = true
@@ -4309,7 +4654,37 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            }
            else if cell.lblStatus.text == "PRE-APPROVAL" || cell.lblStatus.text == "PRE-APPROVED" {  // right
                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
+            
+            if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                   let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
+                   let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
+                   
+                       cell.lbldateintime.text =  strDate + " - " + strDate1
+                       cell.lbldateintime.isHidden = false
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }else{
                
+               if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                       let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                       let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                       
+                       let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                       let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                       cell.lbldateintime.text =  strTime + " , " + strDate
+                       cell.lbldateintime.isHidden = false
+               }else{
+                   cell.lbldateintime.isHidden = true
+               }
+           }
+            
              
                // 13/1/20 temp comment
 
@@ -4320,7 +4695,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                cell.imgviewHight5.constant = 0
                cell.imgviewHight6.constant = 0 */
             
-            cell.lbldateintime.isHidden = false
+          //  cell.lbldateintime.isHidden = false
             cell.lblintime.isHidden = true
             cell.lblouttime.isHidden = true
             cell.lbladdedby.isHidden = false
@@ -4617,7 +4992,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
            
         /*   cell.imgview1.isHidden = true   // time
-          // cell.imgview2.isHidden = true   // intime
+          // cell.imgview2.isHidden = true   // Extraintime
           // cell.imgview3.isHidden = true   // outtime
           // cell.imgview4.isHidden = true   // approvedby
            cell.imgview5.isHidden = false   // addedby
@@ -4627,11 +5002,11 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            cell.imgview9.isHidden = true   // denied by you
            cell.imgview10.isHidden = true  // No response */
            
-        }
+        } */
         
         // 2/2/21 temp comment
         
-      else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Entry") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Pre-Approval") {
+     /* else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Entry") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Pre-Approval") {
         
             cell.lblname.text = "Cab"
         
@@ -4649,8 +5024,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
 
         
-        
-             cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+             //cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+            
+             cell.imgview.image = UIImage(named: "cab")
 
         
                 cell.lblStatus.backgroundColor = AppColor.pollborderSelect
@@ -4711,9 +5087,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 cell.btnOut_OnDemand.isHidden = true
                 cell.btnEdit_OnDemand.isHidden = true
 
-      }
+      } */
       
-       else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Delivery Entry") ||  (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Delivery Pre-Approval") {
+       /*  else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Delivery Entry") ||  (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Delivery Pre-Approval") {
+      
         
               cell.lblStatus.isHidden = false
 
@@ -4721,8 +5098,23 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
         
              cell.btnExtraShow.isHidden = false
 
+           /* if arrGuestList[indexPath.row].activity?.ActivityType == "Service Provider Entry" || arrGuestList[indexPath.row].activity?.ActivityType == "Service Provider Pre-Approval"  {
+                cell.lblname.text = "Service Provider"
+                
+                cell.imgview.image = UIImage(named: "ic_service")
+
+               // cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+            }else{
+                cell.lblname.text = "Delivery"
+                cell.imgview.image = UIImage(named: "ic_delivery_tab")
+
+               // cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+            } */
+
             cell.lblname.text = "Delivery"
         
+            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+
             if arrGuestList[indexPath.row].activity?.companyName != nil {
                 cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
             }else{
@@ -4732,7 +5124,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
 
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+           // cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
         
             cell.lblStatus.backgroundColor = AppColor.pollborderSelect
          
@@ -4793,94 +5185,97 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut_OnDemand.isHidden = true
             cell.btnEdit_OnDemand.isHidden = true
 
-        
-      }
+      } */
             
-     else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Pre-Approval") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Entry") {
-        
-            cell.btnInviteShare.isHidden = true
-            cell.btnExtraShow.isHidden = false
-            cell.lblStatus.isHidden = false
+    /* else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Pre-Approval") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Entry") {
+ 
+                 cell.lblStatus.isHidden = false
 
-            cell.lblname.text = "Service Provider"
-            
-            if arrGuestList[indexPath.row].activity?.companyName != nil {
-                cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
-            }else{
-               cell.lblguest.text = ""
-            }
-            
-            cell.lblStatus.isHidden = false
-            
-            cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
+                cell.btnInviteShare.isHidden = true
 
-            cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
-        
-            cell.lblStatus.backgroundColor = AppColor.pollborderSelect
-     
-              cell.lbldateintime.isHidden = true
-              cell.lblintime.isHidden = true
-              cell.lblouttime.isHidden = true
-              cell.lbladdedby.isHidden = true
-              cell.lblparceltime.isHidden = true
-              cell.lblLeaveatGate.isHidden = true
-              cell.lblcancelby.isHidden = true
-              cell.lblWrongEntry.isHidden = true
-              cell.lbldateintimeMulti.isHidden = true // Extra
+                cell.btnExtraShow.isHidden = false
 
-              cell.imgview1.isHidden = true
-              cell.imgview2.isHidden = true
-              cell.imgview3.isHidden = true
-              cell.imgview4.isHidden = true
-              cell.imgview5.isHidden = true
-              cell.imgview6.isHidden = true
-              cell.imgview7.isHidden = true
-              cell.imgview8.isHidden = true
-              cell.imgviewExtra.isHidden = true
+                cell.lblname.text = "Service Provider"
 
-             cell.constraintHightStackBtn.constant = 0
-             
-             cell.constraintHightStacklbl.constant = 0
+                if arrGuestList[indexPath.row].activity?.companyName != nil {
+                   cell.lblguest.text = arrGuestList[indexPath.row].activity?.companyName
+                }else{
+                  cell.lblguest.text = ""
+                }
 
-             cell.lblHightStacklblMiddle.isHidden = true
-          
-         
-             cell.imgviewTop1.constant = -12
-             cell.imgviewTop2.constant = -12
-             cell.imgviewTop3.constant = -12
-             cell.imgviewTop4.constant = -12
-             cell.imgviewTop5.constant = -12
-             cell.imgviewTop6.constant = -12
-             cell.imgviewTop7.constant = -12
-             cell.imgviewTop8.constant = -12
-             cell.imgviewTopExtra.constant = -12
+                cell.lblStatus.text = arrGuestList[indexPath.row].activity?.status
 
-             cell.stackviewStatus.constant = 69.5
-               
-         
-             cell.btnCancel.isHidden = true
-             cell.btnEdit.isHidden = true
-             cell.btnWrong_Entry.isHidden = true
-             cell.btnWrong_Entry_Red.isHidden = true
-             cell.btnRenew.isHidden = true
-             cell.btnClose.isHidden = true
-             cell.btnNote_Guard.isHidden = true
-             cell.btnOut.isHidden = true
-             cell.btnDeliveryInfo.isHidden = true
-             cell.btnAlertInfo.isHidden = true
+                cell.imgview.image = UIImage(named: "ic_service")
+
+              //  cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
 
 
-            cell.btnIn_OnDemand.isHidden = true
-            cell.btnCancel_OnDemand.isHidden = true
-            cell.btnOut_OnDemand.isHidden = true
-            cell.btnEdit_OnDemand.isHidden = true
+                cell.lblStatus.backgroundColor = AppColor.pollborderSelect
 
-        
-      }
+                cell.lbldateintime.isHidden = true
+                cell.lblintime.isHidden = true
+                cell.lblouttime.isHidden = true
+                cell.lbladdedby.isHidden = true
+                cell.lblparceltime.isHidden = true
+                cell.lblLeaveatGate.isHidden = true
+                cell.lblcancelby.isHidden = true
+                cell.lblWrongEntry.isHidden = true
+                cell.lbldateintimeMulti.isHidden = true // Extra
+
+                cell.imgview1.isHidden = true
+                cell.imgview2.isHidden = true
+                cell.imgview3.isHidden = true
+                cell.imgview4.isHidden = true
+                cell.imgview5.isHidden = true
+                cell.imgview6.isHidden = true
+                cell.imgview7.isHidden = true
+                cell.imgview8.isHidden = true
+                cell.imgviewExtra.isHidden = true
+
+                cell.constraintHightStackBtn.constant = 0
+
+                cell.constraintHightStacklbl.constant = 0
+
+                cell.lblHightStacklblMiddle.isHidden = true
+
+
+                cell.imgviewTop1.constant = -12
+                cell.imgviewTop2.constant = -12
+                cell.imgviewTop3.constant = -12
+                cell.imgviewTop4.constant = -12
+                cell.imgviewTop5.constant = -12
+                cell.imgviewTop6.constant = -12
+                cell.imgviewTop7.constant = -12
+                cell.imgviewTop8.constant = -12
+                cell.imgviewTopExtra.constant = -12
+
+                cell.stackviewStatus.constant = 69.5
+                  
+
+                cell.btnCancel.isHidden = true
+                cell.btnEdit.isHidden = true
+                cell.btnWrong_Entry.isHidden = true
+                cell.btnWrong_Entry_Red.isHidden = true
+                cell.btnRenew.isHidden = true
+                cell.btnClose.isHidden = true
+                cell.btnNote_Guard.isHidden = true
+                cell.btnOut.isHidden = true
+                cell.btnDeliveryInfo.isHidden = true
+                cell.btnAlertInfo.isHidden = true
+
+
+                cell.btnIn_OnDemand.isHidden = true
+                cell.btnCancel_OnDemand.isHidden = true
+                cell.btnOut_OnDemand.isHidden = true
+                cell.btnEdit_OnDemand.isHidden = true
+
+        } */
+ 
       
        // 2/2/21 temp comment
 
-      /*  else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Entry" {
+         // else
+        if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Cab Entry" {
                             
                 cell.lblname.text = "Cab"
        
@@ -4890,14 +5285,17 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                   cell.lblguest.text = ""
                }
        
+                  cell.imgview.image = UIImage(named: "cab")
 
-                cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+              //  cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
                 
                 if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                      cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "cab"))
                      cell.imgviewCompanyLogo.isHidden = false
                  }else{
-                    cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+                    cell.imgviewCompanyLogo.image = UIImage(named: "cab")
+
+                   // cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
                     cell.imgviewCompanyLogo.isHidden = false
 
                     // cell.imgviewCompanyLogo.isHidden = true
@@ -5850,14 +6248,17 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                   cell.lblguest.text = ""
                }
        
+             cell.imgview.image = UIImage(named: "cab")
 
-            cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+           // cell.imgview.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "cab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
+                cell.imgviewCompanyLogo.image = UIImage(named: "cab")
+
+               // cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "cab"), placeholderImage: UIImage(named: "cab"))
                 cell.imgviewCompanyLogo.isHidden = false
 
                  // cell.imgviewCompanyLogo.isHidden = true
@@ -6932,7 +7333,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
         }
               
-         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Delivery Entry" {
+      /*  else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Delivery Entry" {
             
             cell.lblStatus.isHidden = false
 
@@ -6941,13 +7342,17 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Delivery"
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+            cell.imgview.image = UIImage(named: "ic_delivery_tab")
+
+           // cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_delivery_tab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+                    cell.imgviewCompanyLogo.image = UIImage(named: "ic_delivery_tab")
+
+                // cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
                 cell.imgviewCompanyLogo.isHidden = false
 
                  //cell.imgviewCompanyLogo.isHidden = true
@@ -8674,13 +9079,18 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Delivery"
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+            cell.imgview.image = UIImage(named: "ic_delivery_tab")
+          
+
+           // cell.imgview.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
             
             if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_delivery_tab"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
+                cell.imgviewCompanyLogo.image = UIImage(named: "ic_delivery_tab")
+
+               // cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_delivery_tab"), placeholderImage: UIImage(named: "ic_delivery_tab"))
                 cell.imgviewCompanyLogo.isHidden = false
 
                //  cell.imgviewCompanyLogo.isHidden = true
@@ -10771,9 +11181,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             cell.btnOut_OnDemand.isHidden = true
             cell.btnEdit_OnDemand.isHidden = true
             
-        }
+        } */
         
-       else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Pre-Approval") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Entry") {
+      /* else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Pre-Approval") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType! == "Service Provider Entry") {
 
             cell.lblname.text = "Service Provider"
             
@@ -10783,13 +11193,18 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                cell.lblguest.text = ""
             }
             
-            cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+           // cell.imgview.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+          
+          cell.imgview.image = UIImage(named: "ic_service")
+
             
            if arrGuestList[indexPath.row].activity?.companyLogoURL != nil {
                  cell.imgviewCompanyLogo.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.companyLogoURL)!), placeholderImage: UIImage(named: "ic_service"))
                  cell.imgviewCompanyLogo.isHidden = false
              }else{
-                cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+               // cell.imgviewCompanyLogo.sd_setImage(with: URL(string: "ic_service"), placeholderImage: UIImage(named: "ic_service"))
+                cell.imgviewCompanyLogo.image = UIImage(named: "ic_service")
+
                 cell.imgviewCompanyLogo.isHidden = false
 
                //  cell.imgviewCompanyLogo.isHidden = true
@@ -10802,7 +11217,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lbldateintime.text =  strTime + " , " + strDate
+                    cell.lbldateintime.text = strTime + " , " + strDate
             } */
 
              
@@ -10822,7 +11237,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                              let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                              let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                             cell.lblintime.text =  strTime + " , " + strDate
+                            cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                           //  cell.lblintime.text = strTime + " , " + strDate
                      }
                           
                     cell.lblWrongEntry.text = "No Response"
@@ -10901,7 +11318,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                          let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                          let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                         cell.lblintime.text =  strTime + " , " + strDate
+                        // cell.lblintime.text =  strTime + " , " + strDate
+                        
+                        cell.lblintime.text = "\(strTime) , \(strDate)"
+
                          cell.lblintime.isHidden = false
                  }
                 
@@ -10992,54 +11412,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewHight4.constant = 12
                     cell.imgviewHight5.constant = 0 */
                 
-               /* if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-                    
-                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                              let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                              let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                              
-                              let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                              let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                              cell.lbldateintime.text =  strTime + " , " + strDate
-                      }
-                    
-                    cell.lbldateintime.isHidden = false
-
-                    cell.lblWrongEntry.isHidden = true
-                    cell.lblintime.isHidden = true
-                    
-                    cell.lbldateintimeMulti.isHidden = true // Extra
-                    cell.lblouttime.isHidden = true
-                    cell.lbladdedby.isHidden = false
-                    cell.lblparceltime.isHidden = true
-                    cell.lblLeaveatGate.isHidden = true
-                    cell.lblcancelby.isHidden = false
-                       
-                    cell.imgview1.isHidden = false
-                    cell.imgview2.isHidden = true
-                    cell.imgview3.isHidden = true
-                    cell.imgview4.isHidden = false
-                    cell.imgview5.isHidden = true
-                    cell.imgview6.isHidden = true
-                    cell.imgview7.isHidden = false
-                    cell.imgview8.isHidden = true
-                    cell.imgviewExtra.isHidden = true
-                     
-                   
-                    cell.imgviewTop1.constant = 64.5
-                    cell.imgviewTop2.constant = -12
-                    cell.imgviewTop3.constant = -12
-                    cell.imgviewTop4.constant = 81.5
-                    cell.imgviewTop5.constant = -12
-                    cell.imgviewTop6.constant = -12
-                    cell.imgviewTop7.constant = 98.5
-                    cell.imgviewTop8.constant = -12
-                    cell.imgviewTopExtra.constant = -12
-
-                    cell.stackviewStatus.constant = 120.5
-                                    
-                }else */ if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                if arrGuestList[indexPath.row].activity?.isMulti == "1" {
                     
                     if arrGuestList[indexPath.row].activity?.activityIn != nil {
                             let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -11047,8 +11420,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         
                         let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
                         let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
-                            
-                        cell.lbldateintime.text =  strDate + " - " + strDate1
+                        
+                        cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                       // cell.lbldateintime.text =  strDate + " - " + strDate1
 
                             let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
@@ -11056,7 +11431,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                         let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
 
-                            cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
+                        cell.lbldateintimeMulti.text = "\(strTime) - \(strTime1)"
+
+                          //  cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
                     }
                     
                     cell.lblWrongEntry.isHidden = true
@@ -11103,7 +11480,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                               let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                               let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                              cell.lbldateintime.text =  strTime + " , " + strDate
+                             // cell.lbldateintime.text =  strTime + " , " + strDate
+                        
+                              cell.lbldateintime.text = "\(strTime) - \(strDate)"
+
                       }
                     
                     cell.lbldateintime.isHidden = false
@@ -11226,7 +11606,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
                             let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
                                 
-                            cell.lbldateintime.text =  strDate + " - " + strDate1
+                           // cell.lbldateintime.text =  strDate + " - " + strDate1
+
+                            cell.lbldateintime.text = "\(strDate) - \(strDate1)"
 
                                 let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                                 let strTime = strChangeTimeFormate(strDateeee: lblTime!)
@@ -11234,7 +11616,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                             let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
 
-                                cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
+                               cell.lbldateintimeMulti.text = "\(strTime) - \(strTime1)"
+
+                              //  cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
                         }
                         
                         cell.lblWrongEntry.isHidden = true
@@ -11280,7 +11664,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                                   let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                                   let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                                  cell.lbldateintime.text =  strTime + " , " + strDate
+                                    cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                                //  cell.lbldateintime.text =  strTime + " , " + strDate
                           }
                         
                         cell.lbldateintime.isHidden = false
@@ -11469,8 +11855,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                              cell.lbladdedby.text = "Approved by "
                          }
                 
-               /* if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-                    
+                 if arrGuestList[indexPath.row].activity?.isMulti == "1" {
                     if arrGuestList[indexPath.row].activity?.activityIn != nil {
                               let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
                               let strDate = strChangeDateFormate(strDateeee: lblDate!)
@@ -11478,61 +11863,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                               let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                               let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                              cell.lblintime.text =  strTime + " , " + strDate
-                      }
-                    
-                    cell.lbldateintime.isHidden = true
-                    cell.lblintime.isHidden = false
-                    cell.lblouttime.isHidden = true
-                    cell.lbladdedby.isHidden = false
-                    cell.lblparceltime.isHidden = true
-                    cell.lblLeaveatGate.isHidden = true
-                    cell.lblcancelby.isHidden = true
-                    cell.lblWrongEntry.isHidden = true
-                    cell.lbldateintimeMulti.isHidden = true // Extra
+                                cell.lblintime.text = "\(strTime) , \(strDate)"
 
-
-                     // 13/1/20 temp comment
-
-                     /*  cell.imgviewHight1.constant = 12
-                       cell.imgviewHight2.constant = 0
-                       cell.imgviewHight3.constant = 12
-                       cell.imgviewHight4.constant = 0
-                       cell.imgviewHight5.constant = 0
-                       cell.imgviewHight6.constant = 0 */
-
-                       cell.imgview1.isHidden = true
-                       cell.imgview2.isHidden = false
-                       cell.imgview3.isHidden = true
-                       cell.imgview4.isHidden = false
-                       cell.imgview5.isHidden = true
-                       cell.imgview6.isHidden = true
-                       cell.imgview7.isHidden = true
-                       cell.imgview8.isHidden = true
-                       cell.imgviewExtra.isHidden = true
-
-                    cell.imgviewTop1.constant = -12
-                    cell.imgviewTop2.constant = 64.5
-                    cell.imgviewTop3.constant = -12
-                    cell.imgviewTop4.constant = 81.5
-                    cell.imgviewTop5.constant = -12
-                    cell.imgviewTop6.constant = -12
-                    cell.imgviewTop7.constant = -12
-                    cell.imgviewTop8.constant = -12
-                    cell.imgviewTopExtra.constant = -12
-
-                    cell.stackviewStatus.constant = 103.5
-                       
-                }
-                else */ if arrGuestList[indexPath.row].activity?.isMulti == "1" {
-                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                              let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                              let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                              
-                              let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                              let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                              cell.lblintime.text =  strTime + " , " + strDate
+                             // cell.lblintime.text =  strTime + " , " + strDate
                       }
                     
                     if arrGuestList[indexPath.row].activity?.out != nil {
@@ -11542,7 +11875,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                               let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                               let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                              cell.lbldateintimeMulti.text =  strTime + " , " + strDate
+                             // cell.lbldateintimeMulti.text =  strTime + " , " + strDate
+                       
+                             cell.lbldateintimeMulti.text = "\(strTime) , \(strDate)"
+
                       }
                     
                     cell.lbldateintime.isHidden = true
@@ -11596,8 +11932,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                               
                               let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                               let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+                            
+                            cell.lblintime.text = "\(strTime) , \(strDate)"
 
-                              cell.lblintime.text =  strTime + " , " + strDate
+                            //  cell.lblintime.text =  strTime + " , " + strDate
                       }
                     
                     cell.lbldateintime.isHidden = true
@@ -11671,52 +12009,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         cell.lbladdedby.text = "Pre Approved by "
                     }
                     
-                   /* if arrGuestList[indexPath.row].activity?.isMulti == "0" {
-                        
-                        if arrGuestList[indexPath.row].activity?.activityIn != nil {
-                                  let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
-                                  let strDate = strChangeDateFormate(strDateeee: lblDate!)
-                                  
-                                  let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
-                                  let strTime = strChangeTimeFormate(strDateeee: lblTime!)
-
-                                  cell.lbldateintime.text =  strTime + " , " + strDate
-                          }
-                        
-                        cell.lbldateintime.isHidden = false
-                        cell.lblintime.isHidden = true
-                        cell.lblouttime.isHidden = true
-                        cell.lbladdedby.isHidden = false
-                        cell.lblparceltime.isHidden = true
-                        cell.lblLeaveatGate.isHidden = true
-                        cell.lblcancelby.isHidden = true
-                        cell.lblWrongEntry.isHidden = true
-                        cell.lbldateintimeMulti.isHidden = true // Extra
-
-
-                        cell.imgview1.isHidden = false
-                        cell.imgview2.isHidden = true
-                        cell.imgview3.isHidden = true
-                        cell.imgview4.isHidden = false
-                        cell.imgview5.isHidden = true
-                        cell.imgview6.isHidden = true
-                        cell.imgview7.isHidden = true
-                        cell.imgview8.isHidden = true
-                        cell.imgviewExtra.isHidden = true
-
-                        cell.imgviewTop1.constant = 64.5
-                        cell.imgviewTop2.constant = -12
-                        cell.imgviewTop3.constant = -12
-                        cell.imgviewTop4.constant = 81.5
-                        cell.imgviewTop5.constant = -12
-                        cell.imgviewTop6.constant = -12
-                        cell.imgviewTop7.constant = -12
-                        cell.imgviewTop8.constant = -12
-                        cell.imgviewTopExtra.constant = -12
-
-                        cell.stackviewStatus.constant = 103.5
-                             
-                    }else */ if arrGuestList[indexPath.row].activity?.isMulti == "1" {
+                    if arrGuestList[indexPath.row].activity?.isMulti == "1" {
                         
                         if arrGuestList[indexPath.row].activity?.activityIn != nil {
                                 let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -11725,7 +12018,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             let lblDate1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[0]
                             let strDate1 = strChangeDateFormate(strDateeee: lblDate1!)
                                 
-                            cell.lbldateintime.text =  strDate + " - " + strDate1
+                            cell.lbldateintime.text = "\(strDate) - \(strDate1)"
+
+                           // cell.lbldateintime.text =  strDate + " - " + strDate1
 
                                 let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                                 let strTime = strChangeTimeFormate(strDateeee: lblTime!)
@@ -11733,7 +12028,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                             let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
 
-                                cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
+                            cell.lbldateintimeMulti.text = "\(strTime) - \(strTime1)"
+
+                               // cell.lbldateintimeMulti.text =  strTime + " - " + strTime1
                         }
                         
                         cell.lbldateintime.isHidden = false
@@ -11779,7 +12076,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                                   let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                                   let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                                  cell.lbldateintime.text =  strTime + " , " + strDate
+                                   cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                                 // cell.lbldateintime.text =  strTime + " , " + strDate
                           }
                         
                         cell.lbldateintime.isHidden = false
@@ -11879,6 +12178,24 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 }
                 else if cell.lblStatus.text == "LEFT" {
                     cell.lblStatus.backgroundColor = AppColor.cancelColor
+                    
+                    if arrGuestList[indexPath.row].activity?.activityIn != nil {
+                        
+                        let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
+                        let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                        
+                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
+                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                       // cell.lblintime.text =  strTime + " , " + strDate
+                       
+                       cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                        cell.lblintime.isHidden = false
+
+                    }else{
+                        cell.lblintime.isHidden = true
+                    }
                  
                  if arrGuestList[indexPath.row].activity?.out != nil {
                      
@@ -11888,8 +12205,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                      let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                      let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                     cell.lblouttime.text =  strTime + " , " + strDate
-                     
+                    // cell.lblouttime.text =  strTime + " , " + strDate
+                    
+                    cell.lblouttime.text = "\(strTime) , \(strDate)"
+
                      cell.lblouttime.isHidden = false
 
                  }else{
@@ -11980,7 +12299,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     cell.imgviewHight5.constant = 0 */
 
                  cell.lbldateintime.isHidden = true
-                 cell.lblintime.isHidden = false
+               //  cell.lblintime.isHidden = false
                 // cell.lblouttime.isHidden = false
                  cell.lbladdedby.isHidden = false
                  cell.lblparceltime.isHidden = true
@@ -12011,7 +12330,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                             let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                            cell.lblintime.text =  strTime + " , " + strDate
+                           // cell.lblintime.text =  strTime + " , " + strDate
+                      
+                            cell.lblintime.text = "\(strTime) , \(strDate)"
+
                             cell.lblintime.isHidden = false
                     }else{
                         cell.lblintime.isHidden = true
@@ -12025,7 +12347,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     
                  cell.lbldateintime.isHidden = true
                  cell.lbldateintimeMulti.isHidden = true // Extra
-                 cell.lblintime.isHidden = false
+                // cell.lblintime.isHidden = false
                  cell.lblouttime.isHidden = true
                  cell.lbladdedby.isHidden = false
                  cell.lblparceltime.isHidden = true
@@ -12094,7 +12416,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblintime.text =  strTime + " , " + strDate
+                    //    cell.lblintime.text = strTime + " , " + strDate
+                        
+                        cell.lblintime.text = "\(strTime) , \(strDate)"
                         
                         cell.lblintime.isHidden = false
 
@@ -12110,8 +12434,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblouttime.text =  strTime + " , " + strDate
+                       // cell.lblouttime.text =  strTime + " , " + strDate
                         
+                        cell.lblouttime.text = "\(strTime) , \(strDate)"
+
                         cell.lblouttime.isHidden = false
 
                     }else{
@@ -12126,8 +12452,8 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     
                  cell.lbldateintime.isHidden = true
                  cell.lbldateintimeMulti.isHidden = true // Extra
-                 cell.lblintime.isHidden = false
-                 cell.lblouttime.isHidden = false
+                // cell.lblintime.isHidden = false
+               //  cell.lblouttime.isHidden = false
                  cell.lbladdedby.isHidden = false
                  cell.lblparceltime.isHidden = true
                  cell.lblLeaveatGate.isHidden = true
@@ -12195,7 +12521,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                         let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                         let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                        cell.lblintime.text =  strTime + " , " + strDate
+                        cell.lblintime.text = strTime + " , " + strDate
                         
                         cell.lblintime.isHidden = false
 
@@ -12350,11 +12676,12 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                cell.btnOut_OnDemand.isHidden = true
                cell.btnEdit_OnDemand.isHidden = true
                  
-                print("Service : Provider : Pre-Approval")  // right code
-
+                print("Service Provider Pre-Approval / Service Provider Entry ")
         } */
        
-       else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Daily Helper") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Daily Helper Entry") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Add Daily Helper") {
+       // 3/2/21 temp comment
+       
+     /*  else if (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Daily Helper") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Daily Helper Entry") || (arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Add Daily Helper") {
                        
            cell.lblStatus.isHidden = false
            
@@ -12364,12 +12691,15 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            cell.imgviewCompanyLogo.isHidden = true
            
            // 29/1/21 temp comment
-           
-           if arrGuestList[indexPath.row].activity?.profilePic != nil {
-               cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
-           }else{
-               cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-           }
+                   
+            if (arrGuestList[indexPath.row].activity?.profilePic == "") {
+               // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                
+                cell.imgview.image = UIImage(named: "vendor-1")
+
+            }else{
+                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+            }
 
            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
            
@@ -12394,7 +12724,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                       cell.lblintime.text =  strTime + " , " + strDate
+                       cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                      // cell.lblintime.text =  strTime + " , " + strDate
                        
                    }
                
@@ -12473,8 +12805,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
-                   
+                  // cell.lblintime.text =  strTime + " , " + strDate
+                
+                   cell.lblintime.text = "\(strTime) , \(strDate)"
+
                    cell.lblintime.isHidden = false
 
                }else{
@@ -12489,7 +12823,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblouttime.text =  strTime + " , " + strDate
+                  // cell.lblouttime.text =  strTime + " , " + strDate
+                
+                  cell.lblouttime.text = "\(strTime) , \(strDate)"
                    
                }
                
@@ -12571,8 +12907,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
+                 //  cell.lblintime.text =  strTime + " , " + strDate
                    
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
                    cell.lblintime.isHidden = false
 
                }else{
@@ -12672,7 +13010,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
+                  // cell.lblintime.text =  strTime + " , " + strDate
+                
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
                    
                }
                
@@ -12767,8 +13108,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
-                   
+                   // cell.lblintime.text =  strTime + " , " + strDate
+                
+                   cell.lblintime.text = "\(strTime) , \(strDate)"
+
                }
                   
                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
@@ -12915,8 +13258,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
+                 //  cell.lblintime.text =  strTime + " , " + strDate
                    
+                   cell.lblintime.text = "\(strTime) , \(strDate)"
+
                }
             
             if arrGuestList[indexPath.row].activity?.out != nil {
@@ -12927,7 +13272,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                 let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                cell.lblouttime.text =  strTime + " , " + strDate
+               // cell.lblouttime.text =  strTime + " , " + strDate
+
+                cell.lblouttime.text = "\(strTime) , \(strDate)"
 
             }
                
@@ -13043,8 +13390,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
-                   
+                  // cell.lblintime.text =  strTime + " , " + strDate
+                
+                   cell.lblintime.text = "\(strTime) , \(strDate)"
+
 
                }
                
@@ -13144,8 +13493,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                        let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                        let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                       cell.lblintime.text =  strTime + " , " + strDate
+                      // cell.lblintime.text =  strTime + " , " + strDate
                        
+                        cell.lblintime.text = "\(strTime) , \(strDate)"
 
                    }
                    
@@ -13442,11 +13792,14 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
            
            // 29/1/21 temp comment
            
-          if arrGuestList[indexPath.row].activity?.profilePic != nil {
-               cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
-           }else{
-               cell.imgview.sd_setImage(with: URL(string: ""), placeholderImage: UIImage(named: "vendor-1"))
-           }
+            if (arrGuestList[indexPath.row].activity?.profilePic == "") {
+               // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                
+                cell.imgview.image = UIImage(named: "vendor-1")
+
+            }else{
+                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+            }
 
            cell.lblname.text = arrGuestList[indexPath.row].activity?.name
            
@@ -13481,7 +13834,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lbldateintime.text =  strTime + " , " + strDate
+                 //  cell.lbldateintime.text =  strTime + " , " + strDate
+                
+                cell.lbldateintime.text = "\(strTime) , \(strDate)"
                    
                    cell.lbldateintime.isHidden = false
 
@@ -13617,7 +13972,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
+                   cell.lblintime.text = "\(strTime) , \(strDate)"
+
+                 //  cell.lblintime.text =  strTime + " , " + strDate
                    
                    cell.lblintime.isHidden = false
 
@@ -13633,8 +13990,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     let lblTime = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lblouttime.text =  strTime + " , " + strDate
+                  //  cell.lblouttime.text =  strTime + " , " + strDate
                     
+                   cell.lblouttime.text = "\(strTime) , \(strDate)"
+
                     cell.lblouttime.isHidden = false
 
                 }else{
@@ -13765,8 +14124,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                   cell.lblintime.text =  strTime + " , " + strDate
-                   
+                  // cell.lblintime.text =  strTime + " , " + strDate
+                    
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
                    cell.lblintime.isHidden = false
 
                }else{
@@ -13896,8 +14257,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                    let lblTime1 = arrGuestList[indexPath.row].activity?.out?.components(separatedBy: " ")[1]
                    let strTime1 = strChangeTimeFormate(strDateeee: lblTime1!)
 
-                   cell.lbldateintime.text =  strTime + " - " + strTime1 + " , " + strDate
+                  // cell.lbldateintime.text =  strTime + " - " + strTime1 + " , " + strDate
                    
+                    cell.lbldateintime.text = "\(strTime) - \(strTime1) , \(strDate)"
+
                }
                
                cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
@@ -13964,7 +14327,6 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
               cell.lblStatus.backgroundColor = AppColor.pollborderSelect
                                
             
-            
             if arrGuestList[indexPath.row].activity?.activityIn != nil {
                 
                 let lblDate = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[0]
@@ -13973,8 +14335,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                 let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                 let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                cell.lblintime.text =  strTime + " , " + strDate
+               // cell.lblintime.text =  strTime + " , " + strDate
                 
+                cell.lblintime.text = "\(strTime) , \(strDate)"
+
             }
                
             cell.lbladdedby.text = "Added by " + (arrGuestList[indexPath.row].activity?.addedBy)!
@@ -14124,8 +14488,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                     let lblTime = arrGuestList[indexPath.row].activity?.activityIn?.components(separatedBy: " ")[1]
                     let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                    cell.lblintime.text =  strTime + " , " + strDate
+                   // cell.lblintime.text =  strTime + " , " + strDate
                     
+                    cell.lblintime.text = "\(strTime) , \(strDate)"
+
 
                 }
                 
@@ -14212,15 +14578,18 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                print("OnDemand : Helper / Entry ")
            
-       }
+       } */
        
-        else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Emergency Alert " {
+      /*  else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType == "Emergency Alert " {
         
             cell.lblname.text = "Emergency"
             
             cell.lblguest.text = "Alert"
           
-            cell.imgview.sd_setImage(with: URL(string: "Group 16679"), placeholderImage: UIImage(named: "Group 16679"))
+           // cell.imgview.sd_setImage(with: URL(string: "Group 16679"), placeholderImage: UIImage(named: "Group 16679"))
+            
+            cell.imgview.image = UIImage(named: "Group 16679")
+
             
             cell.imgviewCompanyLogo.isHidden = true
             
@@ -14233,7 +14602,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-            cell.lbldateintime.text =  strTime + " , " + strDate
+          //  cell.lbldateintime.text =  strTime + " , " + strDate
+
+            cell.lbldateintime.text = "\(strTime) , \(strDate)"
 
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
             
@@ -14328,7 +14699,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
                cell.lblname.text = "Complaint"
              
-               cell.imgview.sd_setImage(with: URL(string: "ic_complaint"), placeholderImage: UIImage(named: "ic_complaint"))
+             //  cell.imgview.sd_setImage(with: URL(string: "ic_complaint"), placeholderImage: UIImage(named: "ic_complaint"))
+            
+               cell.imgview.image = UIImage(named: "ic_complaint")
+
 
                cell.lblguest.text = "Alert"
                
@@ -14343,7 +14717,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
                let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-               cell.lbldateintime.text =  strTime + " , " + strDate
+              // cell.lbldateintime.text =  strTime + " , " + strDate
+ 
+               cell.lbldateintime.text = "\(strTime) , \(strDate)"
 
                cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
                
@@ -14438,7 +14814,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
             cell.lblname.text = "Message to Guard"
           
-            cell.imgview.sd_setImage(with: URL(string: "ic_message"), placeholderImage: UIImage(named: "ic_message"))
+           // cell.imgview.sd_setImage(with: URL(string: "ic_message"), placeholderImage: UIImage(named: "ic_message"))
+            
+            cell.imgview.image = UIImage(named: "ic_message")
+
 
             cell.lblguest.text = "Alert"
             
@@ -14453,7 +14832,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             let lblTime = arrGuestList[indexPath.row].inTime?.components(separatedBy: " ")[1]
             let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-            cell.lbldateintime.text =  strTime + " , " + strDate
+            // cell.lbldateintime.text =  strTime + " , " + strDate
+
+            cell.lbldateintime.text = "\(strTime) , \(strDate)"
 
             
             cell.lblStatus.text = arrGuestList[indexPath.row].activity?.messageStatus
@@ -14608,7 +14989,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 
         else if arrGuestList[indexPath.row].activity?.ActivityType != nil  && arrGuestList[indexPath.row].activity?.ActivityType  == "Vehicle Added" {
              
-             cell.imgview.sd_setImage(with: URL(string: "scooter"), placeholderImage: UIImage(named: "scooter"))
+            // cell.imgview.sd_setImage(with: URL(string: "scooter"), placeholderImage: UIImage(named: "scooter"))
+
+            cell.imgview.image = UIImage(named: "scooter")
 
              cell.lblStatus.isHidden = true
 
@@ -14634,7 +15017,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                      let lblTime = arrGuestList[indexPath.row].activity?.creationDate?.components(separatedBy: " ")[1]
                      let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                     cell.lbldateintime.text =  strTime + " , " + strDate
+                    cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                    // cell.lbldateintime.text =  strTime + " , " + strDate
                      
                  }
                  
@@ -14713,11 +15098,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             // 29/1/21 temp comment
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
-                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
-            }else{
-                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-            }
+                if (arrGuestList[indexPath.row].activity?.profilePic == "") {
+                   // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                    cell.imgview.image = UIImage(named: "vendor-1")
+
+                }else{
+                    cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+                }
 
                  cell.lblStatus.isHidden = true
 
@@ -14749,8 +15136,10 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                          let lblTime = arrGuestList[indexPath.row].activity?.addedOn?.components(separatedBy: " ")[1]
                          let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                         cell.lbldateintime.text =  strTime + " , " + strDate
+                        // cell.lbldateintime.text =  strTime + " , " + strDate
                          
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
                      }
                      
                // 13/1/20 temp comment
@@ -14828,11 +15217,13 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
             
             // 29/1/21 temp comment
             
-            if arrGuestList[indexPath.row].activity?.profilePic != nil {
-                cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
-            }else{
-                cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
-            }
+                if (arrGuestList[indexPath.row].activity?.profilePic == "") {
+                  //  cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+                    cell.imgview.image = UIImage(named: "vendor-1")
+
+                }else{
+                    cell.imgview.sd_setImage(with: URL(string: (arrGuestList[indexPath.row].activity?.profilePic)!), placeholderImage: UIImage(named: "vendor-1"))
+                }
 
                  cell.lblStatus.isHidden = true
 
@@ -14864,7 +15255,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                          let lblTime = arrGuestList[indexPath.row].activity?.deletedOn?.components(separatedBy: " ")[1]
                          let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                         cell.lbldateintime.text =  strTime + " , " + strDate
+                        cell.lbldateintime.text = "\(strTime) , \(strDate)"
+
+                      //   cell.lbldateintime.text =  strTime + " , " + strDate
                          
                      }
                      
@@ -14937,7 +15330,7 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                      cell.btnOut_OnDemand.isHidden = true
                      cell.btnEdit_OnDemand.isHidden = true
                  
-         }
+         } */
          
         else{
             
@@ -14953,7 +15346,9 @@ extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
                  cell.lblguest.text = ""
             }
             
-            cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
+            cell.imgview.image = UIImage(named: "vendor-1")
+
+          // cell.imgview.sd_setImage(with: URL(string: "vendor-1"), placeholderImage: UIImage(named: "vendor-1"))
             
              cell.lbldateintime.isHidden = true
              cell.lblintime.isHidden = true

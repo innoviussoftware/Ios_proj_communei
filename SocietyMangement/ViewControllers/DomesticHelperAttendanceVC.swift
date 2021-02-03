@@ -583,8 +583,6 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
              return nil
          }
      }
-    
-    
  
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderRadiusFor date: Date) -> CGFloat {
         return 1.0
@@ -618,9 +616,21 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = dateFormatter.date(from: strAddedCalendarDate)
-                
-        print("changed added date : ",date!)
+        let date11 = dateFormatter.date(from: strAddedCalendarDate)
+        
+       // print(getDateAsStringInUTC(calendar.currentPage))
+        
+        let currentMonth = calendar.currentPage
+        
+        let calendarnew = Calendar.current
+
+        year =  calendarnew.component(.year, from: currentMonth as Date)
+        month = calendarnew.component(.month, from: currentMonth as Date)
+        day = calendarnew.component(.day, from: currentMonth as Date)
+          
+        print("calendarCurrentPageDidChange year:month:day : ",year!,month!,day!)
+
+        print("changed added date : ",date11!)
         
         apicallCalendarAttendance()
 

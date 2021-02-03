@@ -397,9 +397,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                         return
                     }
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }
