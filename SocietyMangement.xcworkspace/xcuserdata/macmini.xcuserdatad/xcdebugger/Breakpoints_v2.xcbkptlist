@@ -7,15 +7,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "84250D75-BC39-4B85-B6C9-479F87EF8C96"
+            uuid = "635BEE9C-CEF6-4E96-AE1C-C50172A20EDE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2523"
-            endingLineNumber = "2523"
+            startingLineNumber = "9135"
+            endingLineNumber = "9135"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -23,47 +23,84 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3A665FEF-B62D-4480-A2CB-6033FE86A656"
+            uuid = "B81D0322-7B8A-445D-AB9C-CCA27260C65F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2510"
-            endingLineNumber = "2510"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "2500"
+            endingLineNumber = "2500"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FFD13E96-01F1-48A4-9D99-78FCBCA1385C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/InviteVC.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "386"
-            endingLineNumber = "386"
-            landmarkName = "actionNext(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "11F26AA3-43CB-48DB-8492-D5081262FDF0"
+            uuid = "4ADD52D6-4D10-4A96-AD33-B63EACA61FF3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5278"
-            endingLineNumber = "5278"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
+            landmarkName = "apicallGuestList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6274F7F7-307C-4043-84D7-22B83F2AEB86"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
+            landmarkName = "apicallGuestList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SwiftErrorBreakpoint">
+         <BreakpointContent
+            uuid = "3EB4D9C4-157C-4C93-82F4-6033E23BC2F2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "2"
+            continueAfterRunningActions = "Yes">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            uuid = "72C05E69-F35C-4B0C-BDDB-6989A5007A9A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "2"
+            continueAfterRunningActions = "No"
+            breakpointStackSelectionBehavior = "1"
+            scope = "0"
+            stopOnStyle = "1">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "827E98BD-9081-4C9B-BD8F-593770FBE777"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2513"
+            endingLineNumber = "2513"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
