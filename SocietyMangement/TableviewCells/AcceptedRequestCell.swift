@@ -10,115 +10,115 @@ import UIKit
 
 class AcceptedRequestCell: UITableViewCell {
     
-    @IBOutlet weak var imgview: UIImageView!
+    @IBOutlet  var imgview: UIImageView!
     
-    @IBOutlet weak var imgviewCompanyLogo: UIImageView!
+    @IBOutlet  var imgviewCompanyLogo: UIImageView!
 
         
-    @IBOutlet weak var lblname: UILabel!
-    @IBOutlet weak var lblguest: UILabel!
+    @IBOutlet  var lblname: UILabel!
+    @IBOutlet  var lblguest: UILabel!
     
-    @IBOutlet weak var lbldateintime: UILabel!
-    @IBOutlet weak var lbldateintimeMulti: UILabel!  // Extra
-    @IBOutlet weak var lblintime: UILabel!
-    @IBOutlet weak var lblouttime: UILabel!
-    @IBOutlet weak var lbladdedby: UILabel!
-    @IBOutlet weak var lblparceltime: UILabel!
-    @IBOutlet weak var lblLeaveatGate: UILabel!
-    @IBOutlet weak var lblcancelby: UILabel!
-    @IBOutlet weak var lblWrongEntry: UILabel!
+    @IBOutlet  var lbldateintime: UILabel!
+    @IBOutlet  var lbldateintimeMulti: UILabel!  // Extra
+    @IBOutlet  var lblintime: UILabel!
+    @IBOutlet  var lblouttime: UILabel!
+    @IBOutlet  var lbladdedby: UILabel!
+    @IBOutlet  var lblparceltime: UILabel!
+    @IBOutlet  var lblLeaveatGate: UILabel!
+    @IBOutlet  var lblcancelby: UILabel!
+    @IBOutlet  var lblWrongEntry: UILabel!
 
-    @IBOutlet weak var lblStatus: UILabel!
+    @IBOutlet  var lblStatus: UILabel!
     
-    @IBOutlet weak var btnInviteShare: UIButton!
-    @IBOutlet weak var btncall: UIButton!
+    @IBOutlet  var btnInviteShare: UIButton!
+    @IBOutlet  var btncall: UIButton!
 
-    @IBOutlet weak var btnExtraShow: UIButton!
+    @IBOutlet  var btnExtraShow: UIButton!
 
     
-    @IBOutlet weak var imgview1: UIImageView!
-    @IBOutlet weak var imgview2: UIImageView!
-    @IBOutlet weak var imgview3: UIImageView!
-    @IBOutlet weak var imgview4: UIImageView!
-    @IBOutlet weak var imgview5: UIImageView!
-    @IBOutlet weak var imgview6: UIImageView!
-    @IBOutlet weak var imgview7: UIImageView!
-    @IBOutlet weak var imgview8: UIImageView!
+    @IBOutlet  var imgview1: UIImageView!
+    @IBOutlet  var imgview2: UIImageView!
+    @IBOutlet  var imgview3: UIImageView!
+    @IBOutlet  var imgview4: UIImageView!
+    @IBOutlet  var imgview5: UIImageView!
+    @IBOutlet  var imgview6: UIImageView!
+    @IBOutlet  var imgview7: UIImageView!
+    @IBOutlet  var imgview8: UIImageView!
     
-    @IBOutlet weak var imgviewExtra: UIImageView!
+    @IBOutlet  var imgviewExtra: UIImageView!
 
    
-    @IBOutlet weak var imgviewTop1: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop2: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop3: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop4: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop5: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop6: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop7: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop8: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop1: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop2: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop3: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop4: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop5: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop6: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop7: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop8: NSLayoutConstraint!
 
-    @IBOutlet weak var imgviewTopExtra: NSLayoutConstraint!
+    @IBOutlet  var imgviewTopExtra: NSLayoutConstraint!
 
-    @IBOutlet weak var stackviewStatus: NSLayoutConstraint!
-
-    
-   /* @IBOutlet weak var imgviewBottom6: NSLayoutConstraint!
-    
-    @IBOutlet weak var imgviewTop3_1: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop6_3: NSLayoutConstraint!
-    @IBOutlet weak var imgviewTop6_1: NSLayoutConstraint!
+    @IBOutlet  var stackviewStatus: NSLayoutConstraint!
 
     
-    @IBOutlet weak var imgviewStackTop1: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop2: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop3: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop4: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop5: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop6: NSLayoutConstraint!
-    @IBOutlet weak var imgviewStackTop7: NSLayoutConstraint! */
+   /* @IBOutlet  var imgviewBottom6: NSLayoutConstraint!
+    
+    @IBOutlet  var imgviewTop3_1: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop6_3: NSLayoutConstraint!
+    @IBOutlet  var imgviewTop6_1: NSLayoutConstraint!
 
     
-    @IBOutlet weak var imgviewHight1: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight2: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight3: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight4: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight5: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight6: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight7: NSLayoutConstraint!
-    @IBOutlet weak var imgviewHight8: NSLayoutConstraint!
-
-    @IBOutlet weak var imgviewHightExtra: NSLayoutConstraint!
-
-
-
-    @IBOutlet weak var btnCancel: UIButton!
-    @IBOutlet weak var btnEdit: UIButton!
-    @IBOutlet weak var btnRenew: UIButton!
-    @IBOutlet weak var btnClose: UIButton!
-    
-    @IBOutlet weak var btnWrong_Entry: UIButton!
-    @IBOutlet weak var btnWrong_Entry_Red: UIButton!
-
-    @IBOutlet weak var btnNote_Guard: UIButton!
-    @IBOutlet weak var btnOut: UIButton!
-    
-    @IBOutlet weak var btnAlertInfo: UIButton!
-    @IBOutlet weak var btnDeliveryInfo: UIButton!
+    @IBOutlet  var imgviewStackTop1: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop2: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop3: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop4: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop5: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop6: NSLayoutConstraint!
+    @IBOutlet  var imgviewStackTop7: NSLayoutConstraint! */
 
     
-    @IBOutlet weak var btnIn_OnDemand: UIButton! // Entry
-    @IBOutlet weak var btnEdit_OnDemand: UIButton!
-    @IBOutlet weak var btnCancel_OnDemand: UIButton!
-    @IBOutlet weak var btnOut_OnDemand: UIButton!  // Exit
+    @IBOutlet  var imgviewHight1: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight2: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight3: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight4: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight5: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight6: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight7: NSLayoutConstraint!
+    @IBOutlet  var imgviewHight8: NSLayoutConstraint!
 
-   // @IBOutlet weak var btnIn: UIButton!
+    @IBOutlet  var imgviewHightExtra: NSLayoutConstraint!
+
+
+
+    @IBOutlet  var btnCancel: UIButton!
+    @IBOutlet  var btnEdit: UIButton!
+    @IBOutlet  var btnRenew: UIButton!
+    @IBOutlet  var btnClose: UIButton!
+    
+    @IBOutlet  var btnWrong_Entry: UIButton!
+    @IBOutlet  var btnWrong_Entry_Red: UIButton!
+
+    @IBOutlet  var btnNote_Guard: UIButton!
+    @IBOutlet  var btnOut: UIButton!
+    
+    @IBOutlet  var btnAlertInfo: UIButton!
+    @IBOutlet  var btnDeliveryInfo: UIButton!
 
     
-    @IBOutlet weak var constraintHightStackBtn: NSLayoutConstraint!
+    @IBOutlet  var btnIn_OnDemand: UIButton! // Entry
+    @IBOutlet  var btnEdit_OnDemand: UIButton!
+    @IBOutlet  var btnCancel_OnDemand: UIButton!
+    @IBOutlet  var btnOut_OnDemand: UIButton!  // Exit
 
-    @IBOutlet weak var constraintHightStacklbl: NSLayoutConstraint!
+   // @IBOutlet  var btnIn: UIButton!
 
-    @IBOutlet weak var lblHightStacklblMiddle: UILabel!
+    
+    @IBOutlet  var constraintHightStackBtn: NSLayoutConstraint!
+
+    @IBOutlet  var constraintHightStacklbl: NSLayoutConstraint!
+
+    @IBOutlet  var lblHightStacklblMiddle: UILabel!
 
 
     override func awakeFromNib() {

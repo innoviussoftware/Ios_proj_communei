@@ -117,6 +117,9 @@
 		9A384558230E956300B64AC2 /* AddAnnounceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A384557230E956300B64AC2 /* AddAnnounceVC.swift */; };
 		9A423119257A3A6600EF69D6 /* PollListDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A423118257A3A6600EF69D6 /* PollListDetails.swift */; };
 		9A460454255AA55700E5AA7D /* BookingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A460453255AA55700E5AA7D /* BookingsModel.swift */; };
+		9A4B3B5425CD568D00E5432C /* AcceptedRequestCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B3B5325CD568B00E5432C /* AcceptedRequestCell1.swift */; };
+		9A4B3B5925CD56BA00E5432C /* AcceptedRequestCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B3B5825CD56BA00E5432C /* AcceptedRequestCell2.swift */; };
+		9A4B3B5E25CD56D900E5432C /* AcceptedRequestCell3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4B3B5D25CD56D900E5432C /* AcceptedRequestCell3.swift */; };
 		9A532545230BCA0A003E5F29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A532544230BCA0A003E5F29 /* AppDelegate.swift */; };
 		9A53254A230BCA0B003E5F29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A532548230BCA0B003E5F29 /* Main.storyboard */; };
 		9A53254C230BCA0D003E5F29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A53254B230BCA0D003E5F29 /* Assets.xcassets */; };
@@ -421,6 +424,9 @@
 		9A384557230E956300B64AC2 /* AddAnnounceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAnnounceVC.swift; sourceTree = "<group>"; };
 		9A423118257A3A6600EF69D6 /* PollListDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollListDetails.swift; sourceTree = "<group>"; };
 		9A460453255AA55700E5AA7D /* BookingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingsModel.swift; sourceTree = "<group>"; };
+		9A4B3B5325CD568B00E5432C /* AcceptedRequestCell1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptedRequestCell1.swift; sourceTree = "<group>"; };
+		9A4B3B5825CD56BA00E5432C /* AcceptedRequestCell2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptedRequestCell2.swift; sourceTree = "<group>"; };
+		9A4B3B5D25CD56D900E5432C /* AcceptedRequestCell3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptedRequestCell3.swift; sourceTree = "<group>"; };
 		9A532541230BCA0A003E5F29 /* Communei.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Communei.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A532544230BCA0A003E5F29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A532549230BCA0B003E5F29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1005,6 +1011,9 @@
 				4E5B4DA22375336600F51F9F /* FamilyCell.xib */,
 				056179FF24BD87A2002E2C3D /* selectbuildingcelll.swift */,
 				058EECA524C5A5F200D30B23 /* AcceptedRequestCell.swift */,
+				9A4B3B5325CD568B00E5432C /* AcceptedRequestCell1.swift */,
+				9A4B3B5825CD56BA00E5432C /* AcceptedRequestCell2.swift */,
+				9A4B3B5D25CD56D900E5432C /* AcceptedRequestCell3.swift */,
 				0507FC5024C6B9740069A1E4 /* OUTUserCell.swift */,
 				058EECA724C5B50600D30B23 /* AcceptRejectCell.swift */,
 				D23DF19324F62CE200888ADE /* BuycategoryCell.swift */,
@@ -1460,6 +1469,7 @@
 				4EEA6EF8235DD07500B53E98 /* DomesticHelpVC.swift in Sources */,
 				4E68BE33237D226700BCC15C /* ReferAFriendVC.swift in Sources */,
 				9AF770BE233A14E0006220BA /* EditGuestVC.swift in Sources */,
+				9A4B3B5E25CD56D900E5432C /* AcceptedRequestCell3.swift in Sources */,
 				9A92A2FC2314E7A10032AB2D /* MemberRoleVC.swift in Sources */,
 				9A07B6C8230EBBF200ED5C6C /* EventResponse.swift in Sources */,
 				D2A9397824F0F80B0027D8EA /* QRCodeVC.swift in Sources */,
@@ -1475,6 +1485,7 @@
 				4EEA6EFB235DD3A200B53E98 /* DomesticHelpCell.swift in Sources */,
 				9A955AAD230FB1C6004A4668 /* BuildingResponse.swift in Sources */,
 				D22FAE4C25187FD400707966 /* DeliveryEntryVC.swift in Sources */,
+				9A4B3B5925CD56BA00E5432C /* AcceptedRequestCell2.swift in Sources */,
 				9AEE802E236C539000068075 /* UpdateNotifiCount.swift in Sources */,
 				9AAF0E102372C035008587E3 /* NotificationCell.swift in Sources */,
 				4EC1A239235F18980060A507 /* RatingReviewListVC.swift in Sources */,
@@ -1492,6 +1503,7 @@
 				9A625FF02578E50500F52C56 /* GetRecentContactResponse.swift in Sources */,
 				4E617F2A234F0614008EC601 /* VehicleCollectionCell.swift in Sources */,
 				4E617F2F234F2ABC008EC601 /* GetVehicleListRes.swift in Sources */,
+				9A4B3B5425CD568D00E5432C /* AcceptedRequestCell1.swift in Sources */,
 				4E1F9C2E233CDEAE000B84D3 /* HourlyEntryPermissionPopUpVC.swift in Sources */,
 				D23C3A052524497A00366CCB /* MessageGuardVC.swift in Sources */,
 				05349F9F24BC3DE200EC598B /* RSLabel.swift in Sources */,
