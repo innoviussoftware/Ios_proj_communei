@@ -328,7 +328,11 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
 
             popOverConfirmVC.VendorServiceTypeID =  self.dictHelperData.vendorServiceTypeID // self.arrRating[sender.tag].vendorServiceTypeID
             
-            popOverConfirmVC.dailyHelpPropertyID = self.dictHelperData.dailyHelpPropertyID // self.arrRating[sender.tag].dailyHelpPropertyID
+            if isfrom == 1 {
+                popOverConfirmVC.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
+            }else{
+                popOverConfirmVC.dailyHelpPropertyID =  self.dictHelperData.dailyHelpPropertyID // self.arrRating[sender.tag].dailyHelpPropertyID
+            }
             
             self.addChildViewController(popOverConfirmVC)
             popOverConfirmVC.view.frame = self.view.frame

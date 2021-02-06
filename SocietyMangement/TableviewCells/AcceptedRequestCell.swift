@@ -90,7 +90,6 @@ class AcceptedRequestCell: UITableViewCell {
     @IBOutlet  var imgviewHightExtra: NSLayoutConstraint!
 
 
-
     @IBOutlet  var btnCancel: UIButton!
     @IBOutlet  var btnEdit: UIButton!
     @IBOutlet  var btnRenew: UIButton!
@@ -113,13 +112,11 @@ class AcceptedRequestCell: UITableViewCell {
 
    // @IBOutlet  var btnIn: UIButton!
 
-    
     @IBOutlet  var constraintHightStackBtn: NSLayoutConstraint!
 
     @IBOutlet  var constraintHightStacklbl: NSLayoutConstraint!
 
     @IBOutlet  var lblHightStacklblMiddle: UILabel!
-
 
     override func awakeFromNib() {
         super.awakeFromNib()
