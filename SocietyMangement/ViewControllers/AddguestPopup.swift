@@ -71,6 +71,12 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     @IBOutlet weak var lblrecent: UILabel!
 
+   // @IBOutlet weak var lblcontact1: UILabel!
+    
+  //  @IBOutlet weak var lblmanually1: UILabel!
+    
+  //  @IBOutlet weak var lblrecent1: UILabel!
+
     
     @IBOutlet weak var txtcontact1: UITextField!
        
@@ -105,7 +111,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     var isfrom = 1
     
     
-    @IBAction func AddFromcontact(_ sender: Any) {
+    @IBAction func AddFromcontact(_ sender: UIButton) {
         if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
@@ -275,18 +281,25 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         showTimepPicker()
         showDatePicker()
         
-        txtvaildtill.text = hourary[0]
+        txtvaildtill.text = hourary[6]
 
+        selectedindex = 6
         
         let tap2 = UITapGestureRecognizer()
         tap2.addTarget(self, action: #selector(tapcontact))
         lblcontact.addGestureRecognizer(tap2)
+        
+       // lblcontact1.addGestureRecognizer(tap2)
+
         
         let tap4 = UITapGestureRecognizer()
         tap4.addTarget(self, action: #selector(tapcontact))
         lblfrecontact.addGestureRecognizer(tap4)
         
         lblcontact.isUserInteractionEnabled = true
+        
+       // lblcontact1.isUserInteractionEnabled = true
+
         lblfrecontact.isUserInteractionEnabled = true
         
         lblrecent.isUserInteractionEnabled = true
@@ -313,7 +326,6 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
                
         collectionHours.collectionViewLayout = alignedFlowLayout
          
-        
         
         let datee = Date()
         let formatter = DateFormatter()
@@ -765,7 +777,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             else{
                 let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                    self.txtenddate.text = ""
+                   // self.txtenddate.text = ""
                 }))
                 self.present(alert, animated: true, completion: nil)
             }

@@ -57,6 +57,8 @@ class SignUPStep2: BaseVC {
     
     @IBOutlet weak var txtblockname: RSTextFieldCustomisation!
     
+    @IBOutlet weak var img_ic_blockname: UIImageView!
+    
     @IBOutlet weak var txtflats: RSTextFieldCustomisation!
 
      //  @IBOutlet weak var cbowner: Checkbox!
@@ -1404,7 +1406,8 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
 
     }
     
-    // The data to return fopr the row and component (column) that's being passed in
+    // The data to return for the row and component (column) that's being passed in
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(pickerView == pickerview1)
         {
@@ -1416,6 +1419,19 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
         }
         else if(pickerView == pickerview3)
         {
+            self.viewbottom.isHidden = false
+
+            self.hightbottomview.constant = 50
+            self.highttxtblockConst.constant = 50
+            self.highttxtfalt.constant = 0
+
+            txtblockname.isHidden = false
+            txtflats.isHidden = true
+            txtflatTypeRole.isHidden = true
+            txtflatTypeStatus.isHidden = true
+
+            self.btnaddfarmviall.isHidden = true
+            
             return societyary[row].SocietyName
         }
         else if(pickerView == pickerview4)
@@ -1490,6 +1506,9 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
             txtflats.isHidden = true
             txtflatTypeRole.isHidden = true
             txtflatTypeStatus.isHidden = true
+            
+            imgflatserarch.isHidden = true
+            
 
             self.btnaddfarmviall.isHidden = true
 
@@ -1684,7 +1703,7 @@ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
                        self.hightflat.constant = 137
                        self.highttxtfalt.constant = 50
                        self.imgflatserarch.isHidden = false
-                     self.hightcheckboxview.constant = 0
+                       self.hightcheckboxview.constant = 0
                        self.viewcheckbox.isHidden = true
                     self.hightbuilding.constant = 0
                     self.tblbuilding.isHidden = true

@@ -220,7 +220,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
             else{
                 let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                    self.txtenddate.text = ""
+                  //  self.txtenddate.text = ""
                 }))
                 self.present(alert, animated: true, completion: nil)
             } */
@@ -241,60 +241,64 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
     }
     
     func showTimepPicker_Multiple() {
-              //Formate Date
-           datePicker_start.datePickerMode = .time
-           
-           datePicker_end.datePickerMode = .time
+        //Formate Date
+         datePicker_start.datePickerMode = .time
+         
+         datePicker_end.datePickerMode = .time
 
-            if #available(iOS 13.4, *) {
-                datePicker_start.preferredDatePickerStyle = .wheels
-                datePicker_end.preferredDatePickerStyle = .wheels
-            } else {
-                // Fallback on earlier versions
-            }
-                  
-              //ToolBar
-              let toolbar = UIToolbar();
-              toolbar.sizeToFit()
-              
-              //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker_Multiple))
-              let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker_Multiple))
-              toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
-              //timePicker.minimumDate = Date()
-              // add toolbar to textField
-              txtStartTime.inputAccessoryView = toolbar
-              // add datepicker to textField
-              txtStartTime.inputView = datePicker_start
-           
-               txtEndTime.inputAccessoryView = toolbar
-                     // add datepicker to textField
-               txtEndTime.inputView = datePicker_end
-           
+          if #available(iOS 13.4, *) {
+              datePicker_start.preferredDatePickerStyle = .wheels
+              datePicker_end.preferredDatePickerStyle = .wheels
+          } else {
+              // Fallback on earlier versions
           }
+            
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        
+        //done button & cancel button
+        
+          let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker_Multiple))
+                let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+          let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker_Multiple))
+            toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
+        //timePicker.minimumDate = Date()
+        // add toolbar to textField
+        txtStartTime.inputAccessoryView = toolbar
+        // add datepicker to textField
+        txtStartTime.inputView = datePicker_start
+     
+         txtEndTime.inputAccessoryView = toolbar
+               // add datepicker to textField
+         txtEndTime.inputView = datePicker_end
+     
+    }
           
        @objc func doneTimePicker_Multiple(){
                  //For date formate
                  let formatter = DateFormatter()
                  formatter.dateFormat = "hh:mm a"
               
-                 txtStartTime.text = formatter.string(from: datePicker_start.date)
-                 
-                 txtEndTime.text = formatter.string(from: datePicker_end.date)
-                 
+                if(textfield == txtStartTime) {
+                    txtStartTime.text = formatter.string(from: datePicker_start.date)
+                }
+        
+                if(textfield == txtEndTime) {
+                    txtEndTime.text = formatter.string(from: datePicker_end.date)
+                }
+        
                  //dismiss date picker dialog
                  self.view.endEditing(true)
              }
              
-             @objc func cancelTimePicker_Multiple(){
-                 //cancel button dismiss datepicker dialog
-                 self.view.endEditing(true)
-             }
+    @objc func cancelTimePicker_Multiple(){
+        //cancel button dismiss datepicker dialog
+        self.view.endEditing(true)
+    }
           
     
     @IBAction func btnClosePressed(_ sender: UIButton) {
-
         removeAnimate()
     }
     
@@ -327,7 +331,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         }
     }
     
-    @IBAction func btnCheckaction(_ sender: Any) {
+    @IBAction func btnCheckaction(_ sender: UIButton) {
         if btncheckMark.isSelected == false {
             multiDeliveryCheckGate = "1"
             btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
@@ -341,7 +345,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         self.view.endEditing(true)
     }
     
-    @IBAction func btnaddDateDeliveryAction(_ sender: Any) {
+    @IBAction func btnaddDateDeliveryAction(_ sender: UIButton) {
+        
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
@@ -370,7 +375,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                          ShowNoInternetAlert()
                          return
                      }
-            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
         var param = Parameters()
 
@@ -403,7 +409,6 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         
             webservices().StartSpinner()
             
-            
         Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + "user/pre-approved/edit" ,token: token as! String, param: param) { JSON in
 
                 switch JSON.result{
@@ -415,7 +420,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                             {
                                 self.delegate?.addedDeliveryMultiDate()
                                 self.removeAnimate()
-                                self.dismiss(animated: true, completion: nil)
+                                self.dismiss(animated: false, completion: nil)
                             }
                             else if(JSON.response?.statusCode == 401)
                             {
@@ -449,8 +454,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                     print(resp)
                 case .failure(let err):
                     webservices().StopSpinner()
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                  //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     
                 }

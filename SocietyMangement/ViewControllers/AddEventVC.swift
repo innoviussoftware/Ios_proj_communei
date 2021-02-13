@@ -905,7 +905,8 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
 
                 }
                 
-                if self.imgData!.count != 0{
+                if self.imgData!.count != 0 {
+                    
                    // MultipartFormData.append(self.imgData!, withName: "event_attachment", fileName: "\(strFileName).jpeg", mimeType:"image/jpeg")
                   
                     MultipartFormData.append(self.imgData!, withName: "Attachments", fileName: strFileName, mimeType: "image/png/jpeg/application/pdf")
@@ -949,7 +950,6 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                         }
                         
                       //  self.navigationController?.popViewController(animated: true)
-
                         
                     }
                     
@@ -969,9 +969,9 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
                         
                                  let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                                               let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
-                                                                           let navController = UINavigationController(rootViewController: aVC)
-                                                                           navController.isNavigationBarHidden = true
-                                                              self.appDelegate.window!.rootViewController  = navController
+                                    let navController = UINavigationController(rootViewController: aVC)
+                                    navController.isNavigationBarHidden = true
+                                    self.appDelegate.window!.rootViewController  = navController
                                                               
                         
                         

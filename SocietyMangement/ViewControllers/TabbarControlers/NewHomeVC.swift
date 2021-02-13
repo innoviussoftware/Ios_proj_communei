@@ -136,7 +136,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
                             
                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
                 
-                nextViewController.deliverydic = object
+                            nextViewController.deliverydic = object
 
                           //  nextViewController.isFrormDashboard = 0
                             navigationController?.pushViewController(nextViewController, animated: true)

@@ -117,7 +117,6 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                
         collectionHours.collectionViewLayout = alignedFlowLayout
         
-        txtvaildtill.text = hourary[0]
 
          let formatter = DateFormatter()
          formatter.dateFormat = "dd-MM-yyyy"
@@ -126,22 +125,47 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 
         // txtdate.text = strStartDate
         
-        let formatter1 = DateFormatter()
-        formatter1.dateFormat = "h:mm a"
+       // let formatter1 = DateFormatter()
+       // formatter1.dateFormat = "h:mm a"
                 
-        var Msg_Date = StrTime
+       // var Msg_Date = StrTime
 
-           let dateFormatterGet = DateFormatter()
-           dateFormatterGet.dateFormat = "HH:mm:ss"
-           let dateFormatterPrint = DateFormatter()
-           dateFormatterPrint.dateFormat = "h:mm a"
+         //  let dateFormatterGet = DateFormatter()
+         //  dateFormatterGet.dateFormat = "HH:mm:ss"
+         //  let dateFormatterPrint = DateFormatter()
+        //   dateFormatterPrint.dateFormat = "h:mm a"
+        
+         var Msg_Date = ""
+        
+        if isfrom == 1 {
+            let timeFormat = DateFormatter()
+            timeFormat.dateFormat = "h:mm a"
+            let dateFromStr = timeFormat.date(from: StrTime)!
+            Msg_Date = timeFormat.string(from: dateFromStr)
+            
+            txtvaildtill.text = hourary[6]
+
+            
+        }else{
+            let timeFormat = DateFormatter()
+            timeFormat.dateFormat = "HH:mm:ss"
+            let dateFromStr = timeFormat.date(from: StrTime)!
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "h:mm a"
+            Msg_Date = dateFormatterPrint.string(from: dateFromStr)
+            
+            txtvaildtill.text = hourary[0]
+            
+        }
+       
         
         // // / / / / / ///// // / /
         
-           let datee = dateFormatterGet.date(from: Msg_Date)
-           Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
-        
-        txttime.text = Msg_Date
+         //  let datee = dateFormatterGet.date(from: Msg_Date)
+        //   Msg_Date =  dateFormatterPrint.string(from: datee ?? Date())
+       // Msg_Date =  dateFormatterPrint.string(from: datee!)
+
+        txttime.text =  Msg_Date
         
         showDatePicker()
         
@@ -781,18 +805,3 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 }
 
 
-extension Date {
-
-  func isEqualTo(_ date: Date) -> Bool {
-    return self == date
-  }
-  
-  func isGreaterThan(_ date: Date) -> Bool {
-     return self > date
-  }
-  
-  func isSmallerThan(_ date: Date) -> Bool {
-     return self < date
-  }
-    
-}

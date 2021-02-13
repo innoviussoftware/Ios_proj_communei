@@ -117,12 +117,12 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         let formatter = DateFormatter()
       //  formatter.dateFormat = "yyyy-MM-dd"
         
-        formatter.dateFormat = "dd MMM"
+        formatter.dateFormat = "dd-MM-yyyy" // "dd MMM"
 
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker1.date)
-            formatter.dateFormat = "yyyy MM dd"
+            formatter.dateFormat = "dd-MM-yyyy" // "yyyy MM dd"
 
             date2 = datePicker1.date
             let cal = NSCalendar.current
@@ -139,7 +139,7 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
             else{
                 let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                    self.txtenddate.text = ""
+                  //  self.txtenddate.text = ""
                 }))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -192,11 +192,11 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
     
     func strChangeDateFormate(strDateeee: String) -> String
         {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM"
-            let date = dateFormatter.date(from: strDateeee)
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            return  dateFormatter.string(from: date!)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy" // "yyyy-MM-dd" // "dd MMM"
+        let date = dateFormatter.date(from: strDateeee)
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        return  dateFormatter.string(from: date!)
 
         }
     
@@ -210,21 +210,37 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         
         print("strEndDate ",strEndDate)
 
-        let formatter = DateFormatter()
+       /* let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
        let startdate = formatter.date(from: strStartDate)
        let enddate = formatter.date(from: strEndDate)
      
         print("startdate ",date1)
-        print("enddate ",date2)
+        print("enddate ",date2) */
+        
+        let startdate = strChangeDateFormate(strDateeee: strStartDate)
+        let enddate = strChangeDateFormate(strDateeee: strEndDate)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+          
+        let startD = formatter.date(from: startdate)!
+        let endD = formatter.date(from: enddate)!
+      
+        print("startdate ",startdate)
+        print("enddate ",enddate)
+        
+        print("startD ",startD)
+        print("endD ",endD)
 
        // if startdate!.compare(enddate!) != .orderedDescending {
         if self.txtenddate.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"enter end date")
             self.present(alert, animated: true, completion: nil)
         }
-        else if(date2 > date1) {
+       // else if(date2 > date1) {
+        else if(startD > endD) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else{
@@ -361,4 +377,21 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
             }
     }
 
+}
+
+
+extension Date {
+
+  func isEqualTo(_ date: Date) -> Bool {
+    return self == date
+  }
+  
+  func isGreaterThan(_ date: Date) -> Bool {
+     return self > date
+  }
+  
+  func isSmallerThan(_ date: Date) -> Bool {
+     return self < date
+  }
+    
 }

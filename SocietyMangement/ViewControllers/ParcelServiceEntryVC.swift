@@ -71,6 +71,8 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
             
         showDatePicker()
         
+        showTimepPicker()
+        
         let datee = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy"
@@ -121,6 +123,12 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
     func showTimepPicker(){
         //Formate Date
         timePicker.datePickerMode = .time
+        
+        if #available(iOS 13.4, *) {
+            timePicker.preferredDatePickerStyle = .wheels
+        } else {
+            // Fallback on earlier versions
+        }
         
         //ToolBar
         let toolbar = UIToolbar();

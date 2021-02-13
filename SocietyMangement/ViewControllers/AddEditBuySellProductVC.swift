@@ -66,7 +66,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
 //        txtDescription.text = "Type here"
 //        txtDescription.textColor = UIColor.lightGray
         
-        txtperice.placeholder = "Price"+"\u{20B9}"
+        txtperice.placeholder = "Price" + " (\u{20B9})"
         txtItemCondition.text = "Brand New"
                 
         arrItemCondition = ["Brand New","Like New","Very Good","Good"]
@@ -96,7 +96,7 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                     btnUpdate.setTitle("UPDATE", for: .normal)
                     lblTitel.text = "Update Details" // "Update Item Details"
                    txttitel.text = arrRecommendData.title
-                    txtperice.text = "\u{20B9}"+"\(arrRecommendData.amount!)"
+                    txtperice.text = "\u{20B9}" + "\(arrRecommendData.amount!)"
  
                     txtItemCondition.text = arrRecommendData.qualityStatus
                     txtDescription.text = arrRecommendData.datumDescription

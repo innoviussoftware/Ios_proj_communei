@@ -294,7 +294,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         
        // setborders(textfield: txtOtherName)
         
-        print("strlbl :- ",strlbl)
+        print("view strlbl :- ",strlbl)
         
         txtOtherName.delegate = self
         
@@ -496,11 +496,15 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if(collectionView == collectionFrequent_Deliveries){
-            selectedindex = indexPath.row
+            if isfrom == "Single" {
+                selectedindex = indexPath.row
+            }else{
+                selectedindex1 = indexPath.row
+            }
         }else{
-            selectedindex1 = indexPath.row
+            selectedindex = indexPath.row
         }
-
+        
         collectionView.reloadData()
 
         if(collectionView == collectionFrequent_Deliveries){
@@ -508,7 +512,9 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
             if isfrom == "Single" {
                 delegate?.deliveryList(name: entryary[indexPath.row].companyName!, VendorID: entryary[indexPath.row].vendorID!, IsPublic: entryary[indexPath.row].isPublic!, selectNumber: selectedindex!)
             }else if isfrom == "Multiple"{
-                delegate?.deliveryList1(name1: entryary[indexPath.row].companyName!, VendorID1: entryary[indexPath.row].vendorID!, IsPublic1: entryary[indexPath.row].isPublic!, selectNumber1: selectedindex!)
+                delegate?.deliveryList1(name1: entryary[indexPath.row].companyName!, VendorID1: entryary[indexPath.row].vendorID!, IsPublic1: entryary[indexPath.row].isPublic!, selectNumber1: selectedindex1!)
+            }else{
+                delegate?.deliveryList(name: entryary[indexPath.row].companyName!, VendorID: entryary[indexPath.row].vendorID!, IsPublic: entryary[indexPath.row].isPublic!, selectNumber: selectedindex!)
             }
             
             strlbl = entryary[indexPath.row].companyName!

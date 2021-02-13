@@ -80,7 +80,6 @@ PODS:
     - nanopb/encode (= 2.30906.0)
   - nanopb/decode (2.30906.0)
   - nanopb/encode (2.30906.0)
-  - PKHUD (5.3.0)
   - PromisesObjC (1.2.11)
   - ScrollPager (0.9)
   - SDWebImage (5.10.0):
@@ -100,7 +99,6 @@ DEPENDENCIES:
   - FSPagerView
   - IHProgressHUD (from `https://github.com/Swiftify-Corp/IHProgressHUD.git`)
   - IQKeyboardManagerSwift
-  - PKHUD
   - ScrollPager
   - SDWebImage
   - SkyFloatingLabelTextField
@@ -125,7 +123,6 @@ SPEC REPOS:
     - GoogleUtilities
     - IQKeyboardManagerSwift
     - nanopb
-    - PKHUD
     - PromisesObjC
     - ScrollPager
     - SDWebImage
@@ -171,7 +168,6 @@ SPEC CHECKSUMS:
   IHProgressHUD: 554f1e4cb088cf82c238dc1c607f5fadfd81ab89
   IQKeyboardManagerSwift: c7df9d2deb356c04522f5c4b7b6e4ce4d8ed94fe
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
-  PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   ScrollPager: d717fef02a9b04f158696eaac715377fbe3f6acd
   SDWebImage: 9169792e9eec3e45bba2a0c02f74bf8bd922d1ee
@@ -180,6 +176,6 @@ SPEC CHECKSUMS:
   SwiftSVG: ca7f64e403b8ea7ea8eba8c823b83ba4a059834c
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: b4e38c8872a529b84087fa69672cb0146d3f3719
+PODFILE CHECKSUM: 88d2d1b1727debf95ee283c6387af8975c0bec4d
 
 COCOAPODS: 1.10.0

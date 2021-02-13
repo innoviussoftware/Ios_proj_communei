@@ -139,7 +139,7 @@ class BuySellProductDetailsVC: BaseVC {
         
       // lblPrice.text = String(format: "Price: \u{20B9} %@", arrProductDetails.amount!)
         
-        lblPrice.text = "\u{20B9}"+"\(arrProductDetails.amount!)" //"\(arrProductDetails.amount!)"
+        lblPrice.text = "\u{20B9}" + "\(arrProductDetails.amount!)" //"\(arrProductDetails.amount!)"
 
         
        // lblBloodGroup.text =  arrProductDetails.bloodgroup!
@@ -616,7 +616,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                   }
                   
                   //            let rupee = "\u{20B9}"
-        cell.lblPrice.text = "\u{20B9}"+"\(arrRelatedProduct[indexPath.row].amount!)"//"\(arrRelatedProduct[indexPath.row].amount!)"
+        cell.lblPrice.text = "\u{20B9} "+"\(arrRelatedProduct[indexPath.row].amount!)"//"\(arrRelatedProduct[indexPath.row].amount!)"
             //String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
         cell.lblName.text = arrRelatedProduct[indexPath.row].title
                   
@@ -655,7 +655,7 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                     
               
                     
-                    cell.lblPrice.text = "\u{20B9}"+"\(arrRelatedProduct[indexPath.row].amount!)" // "\(arrRelatedProduct[indexPath.row].amount!)"
+                    cell.lblPrice.text = "\u{20B9} "+"\(arrRelatedProduct[indexPath.row].amount!)" // "\(arrRelatedProduct[indexPath.row].amount!)"
             // String(format: "\u{20B9} %@", arrRelatedProduct[indexPath.row].amount!)
                     cell.lblName.text = arrRelatedProduct[indexPath.row].title
                     

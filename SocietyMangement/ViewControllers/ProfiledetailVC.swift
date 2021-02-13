@@ -56,7 +56,9 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
     
     var isfrom : Int? = 0
     
-    var imgData = Data()
+  //  var imgData = Data()
+    
+    var imgData : Data?
         
     var member : Members?
     
@@ -1126,6 +1128,7 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
             imgview.image =  image
             
             imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
+
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -1243,18 +1246,19 @@ class ProfiledetailVC: BaseVC , UIPickerViewDelegate , UIPickerViewDataSource  ,
 
                 }
                 
-
-                if UsermeResponse?.data!.profilePhotoPath != nil
-                {
-                   // let imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)
-                    
-                   // imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)!
-                    
-                    imgData = (UIImagePNGRepresentation(self.imgview.image!)! as NSData) as Data
-
-                    MultipartFormData.append(imgData, withName: "ProfilePicture", fileName: "\(strFileName).png", mimeType: "image/jpeg/png")
-                }
+                // if UsermeResponse?.data!.profilePhotoPath != nil
                 
+                 if (self.imgData == nil)
+                 {
+                    print("empty image data")
+                }else {
+                    
+                   // imgData = (UIImagePNGRepresentation(self.imgview.image!)! as NSData) as Data
+                    
+                   // let imgData = UIImageJPEGRepresentation(self.imgview.image!, 1.0)
+
+                    MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "\(strFileName).png", mimeType: "image/jpeg/png")
+                }
                 
                 
         }, to:  webservices().baseurl + API_UPDATE_PROFILE , headers:["Authorization": "Bearer "+token]).uploadProgress(queue: .main, closure: { progress in

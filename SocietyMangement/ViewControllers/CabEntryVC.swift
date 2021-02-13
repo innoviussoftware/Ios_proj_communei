@@ -89,6 +89,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     var vendorID:Int?
     var isPublic:Int?
     
+    var vendorID1:Int?
+    var isPublic1:Int?
+
+    
     var textfield = UITextField()
        var datePicker = UIDatePicker()
        var timePicker = UIDatePicker()
@@ -99,6 +103,16 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     let datePicker_end = UIDatePicker()
 
 
+    func isValidVehicle(vehicleStr:String) -> Bool {
+        
+       // let vehicleRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let vehicleRegEx = "[a-z]{2}[0-9]{2}[a-z]{1,2}[0-9]{3,4}"
+        
+        let vehiclePred = NSPredicate(format:"SELF MATCHES %@", vehicleRegEx)
+        return vehiclePred.evaluate(with: vehicleStr)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -456,7 +470,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                   else{
                       let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                       alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                          self.txtenddate.text = ""
+                        //  self.txtenddate.text = ""
                       }))
                       self.present(alert, animated: true, completion: nil)
                   }
@@ -476,7 +490,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
            self.view.endEditing(true)
        }
 
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
         view.endEditing(true)
         self.navigationController?.popViewController(animated: true)
     }
@@ -486,13 +500,26 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         if txtCabCompanyName.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Cab Company Name")
             self.present(alert, animated: true, completion: nil)
-        }else{
+        }
+        else if(txtVehicleNumber.hasText) {
+            if (isValidVehicle(vehicleStr: txtVehicleNumber.text!) == false) {
+                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild Vehicle Number")
+                self.present(alert, animated: true, completion: nil)
+            }
+            else{
+                self.apicallCabSingleEntry()
+            }
+        }
+        else{
             self.apicallCabSingleEntry()
         }
+        
         print("btnaddCabaction")
+        
     }
        
     @IBAction func btnaddCabaction_1(_ sender: UIButton) {
+        
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
@@ -502,7 +529,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtCabCompanyName1.text == "" {
+        }else if(txtStartTime.text! > txtEndTime.text!) {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if txtCabCompanyName1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Cab Company Name")
             self.present(alert, animated: true, completion: nil)
         }else{
@@ -510,9 +541,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         }
         
         print("btnaddCabaction_1")
+        
     }
     
-    @IBAction func btnClose_hour(_ sender: Any) {
+    @IBAction func btnClose_hour(_ sender: UIButton) {
              self.viewbottom.isHidden = true
       }
          
@@ -539,11 +571,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
       }
       
       
-      @IBAction func btnClose_days(_ sender: Any) {
+      @IBAction func btnClose_days(_ sender: UIButton) {
           self.viewbottom1.isHidden = true
       }
             
-      @IBAction func btnApply_days(_ sender: Any) {
+      @IBAction func btnApply_days(_ sender: UIButton) {
         
         self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
         collectionDays.reloadData()
@@ -551,7 +583,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
           self.viewbottom1.isHidden = true
       }
             
-    @IBAction func btnReset_days(_ sender: Any) {
+    @IBAction func btnReset_days(_ sender: UIButton) {
                 
         txtAllWeek.text = ""
         
@@ -674,8 +706,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
          if(isfrom == "Multiple"){
             self.txtCabCompanyName1.text = name1
-             vendorID = VendorID1
-             isPublic = IsPublic1
+             vendorID1 = VendorID1
+             isPublic1 = IsPublic1
         }
     }
     
@@ -922,11 +954,11 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 "VisitEndDate": endDate,
                 "FromTime": txtStartTime.text!, // time, //txtStartTime.text!, //time, // start time
                 "ToTime": txtEndTime.text!, // after_add_time, // txtEndTime.text!, //validtill,  // to time
-                "VendorID":vendorID!,
+                "VendorID":vendorID1!,
                 "VendorName": self.txtCabCompanyName1.text!,
                 "VendorServiceTypeID": vendorServiceTypeID!,
                // "IsLeaveAtGate": singleDeliveryCheckGate!,
-                "IsPublicVendor":isPublic!,
+                "IsPublicVendor":isPublic1!,
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
         
@@ -1080,6 +1112,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
                    if(txtCabCompanyName.text != "")
                    {
+                        print("Single Select Your Cab")
 
                       // popOverConfirmVC.selectedary = self.selectedary
                        // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
@@ -1109,6 +1142,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
                    if(txtCabCompanyName1.text != "")
                    {
+                        print("Multiple Select Your Cab")
+
                        // popOverConfirmVC.alertGuardary = self.nameary
                    }
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)

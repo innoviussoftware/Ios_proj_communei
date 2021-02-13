@@ -112,7 +112,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     var isfrom = ""
     
     
-    //Manish
+    //
     var arrCotact = NSMutableArray()
     var arrFinal = NSMutableArray()
     
@@ -187,13 +187,13 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                 for i in 0...arrFinal.count - 1{
                       let dicc = (arrFinal[i] as! NSMutableDictionary)
                       let namenew = dicc.value(forKey: "Name")
-                    if(selectedindex.contains(namenew))
+                    if(selectedindex.contains(namenew!))
                     {
                         let dict = NSMutableDictionary()
                         dict.setValue(namenew, forKey: "Name")
                         dict.setValue(dicc.value(forKey: "Mobile"), forKey: "Mobile")
                         
-                        nameary.add(namenew)
+                        nameary.add(namenew!)
                         lblname.text = nameary.componentsJoined(by:", ")
                         lblnamerec.text = nameary.componentsJoined(by:", ")
                         lblnamemanu.text = nameary.componentsJoined(by:", ")
@@ -203,6 +203,36 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     }
                     
                 }
+                
+                
+                for i in 0 ..< arrFinals.count - 1
+                {
+                                     let dicc = arrFinals[i]
+                                     let namenew = dicc.name
+                                   if(selectedindex.contains(namenew!))
+                                   {
+                                       let dict = NSMutableDictionary()
+                                       dict.setValue(namenew, forKey: "Name")
+                                      // dict.setValue(namenew, forKey: "Phone")
+                                    
+                                    dict.setValue(dicc.phone, forKey: "Mobile")
+                                                    //.value(forKey: "Phone"), forKey: "Phone")
+
+
+                                     // dict.setValue(dicc.value(forKey: "Phone"), forKey: "Phone")
+                                       
+                                       nameary.add(namenew!)
+                                       lblname.text = nameary.componentsJoined(by:", ")
+                                    
+                                    lblnamerec.text = nameary.componentsJoined(by:", ")
+                                                           lblnamemanu.text = nameary.componentsJoined(by:", ")
+
+                                       
+                                       arrContactName.add(dict)
+                                       
+                                   }
+                                   
+                            }
                 
                 
                /* for i in 0...arrFinals.count - 1{
@@ -387,7 +417,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                                                dict.setValue(namenew, forKey: "Name")
                                               // dict.setValue(namenew, forKey: "Phone")
                                             
-                                            dict.setValue(dicc.phone, forKey: "")
+                                            dict.setValue(dicc.phone, forKey: "Mobile")
                                                             //.value(forKey: "Phone"), forKey: "Phone")
 
 
@@ -507,7 +537,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         viewbottom1.isHidden = true
         viewbottom2.isHidden = true
 
-        // 17/9/20.
+        print("InviteVC")
         
      //   webservices.sharedInstance.setShadow(view: viewbottom)
         let contactStore = CNContactStore()
@@ -656,8 +686,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             
             // Get The Name
                                 let name = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
-                                print(name)
-                                if(selectedindex.contains(name))
+                                print(name!)
+                                if(selectedindex.contains(name!))
                                 {
                                     cell.imagview.image = #imageLiteral(resourceName: "ic_checked")
                                 }
@@ -755,6 +785,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         }
         
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        // let namenew = results[indexPath.row].givenName + " " + results[indexPath.row].familyName
         if (tableView == tblrecent)
@@ -854,6 +885,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 
         }else{
             
+            print("tblcontact")
+
             let namenew = (arrCotact[indexPath.row] as! NSMutableDictionary).value(forKey: "Name") as? String
             
             if(selectedindex.contains(namenew!))
@@ -890,8 +923,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     let namenew = dict.value(forKey: "Name") as! String
                     if(selectedindex.contains(namenew))
                     {
-                     nameary.add(namenew)
-                     lblname.text = nameary.componentsJoined(by:", ")
+                        nameary.add(namenew)
+                        lblname.text = nameary.componentsJoined(by:", ")
                         lblnamerec.text = nameary.componentsJoined(by:", ")
                         lblnamemanu.text = nameary.componentsJoined(by:", ")
 

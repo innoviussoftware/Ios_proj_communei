@@ -162,7 +162,9 @@ extension DataRequest {
 
                 self.eventMonitor?.request(self, didParseResponse: response)
 
-                (queue ?? .main).async { completionHandler(response) }
+                (queue ?? .main).sync { completionHandler(response)
+                    
+                }
             }
         }
 

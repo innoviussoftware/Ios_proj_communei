@@ -24,7 +24,7 @@ struct DeliveryatGate: Codable {
     let dateLastUpadted: String?
     let inTime: String
     let isIn, isParent, userID: Int
-    let parentActivityID: Int
+  //  let parentActivityID: Int
     let isGuardActivity, estimatedTime: String?
     let activity: ActivityGate?
 
@@ -41,7 +41,7 @@ struct DeliveryatGate: Codable {
         case isIn = "IsIn"
         case isParent = "IsParent"
         case userID = "UserID"
-        case parentActivityID = "ParentActivityID"
+      //  case parentActivityID = "ParentActivityID"
         case isGuardActivity = "IsGuardActivity"
         case estimatedTime = "EstimatedTime"
         case activity = "Activity"

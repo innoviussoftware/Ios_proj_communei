@@ -561,7 +561,6 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                     let cal = NSCalendar.current
                     
                     
-                    
                     let components = cal.dateComponents([.day], from: date1, to: date2)
                     
                     if (components.day! >= 0)
@@ -572,7 +571,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                     else{
                         let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                            self.txtenddate.text = ""
+                           // self.txtenddate.text = ""
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }
@@ -631,6 +630,38 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
        
     @IBAction func btnaddServiceProvideraction_1(_ sender: UIButton) {
         
+       /* let strStartTime = txtStartTime.text! // first Time
+        let strEndTime = txtEndTime.text! // end Time
+        
+        print("strStartTime ",strStartTime)
+        
+        print("strEndTime ",strEndTime)
+
+       /* let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+       let startdate = formatter.date(from: strStartDate)
+       let enddate = formatter.date(from: strEndDate)
+     
+        print("startdate ",date1)
+        print("enddate ",date2) */
+        
+        let startTime = strChangeTimeFormate(strDateeee: strStartTime)
+        let endTime = strChangeTimeFormate(strDateeee: strEndTime)
+        
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "hh:mm a" // "dd-MM-yyyy"
+        
+        let startT = formatter.date(from: startTime)!
+        let endT = formatter.date(from: endTime)!
+      
+        print("startTime ",startTime)
+        print("endTime ",endTime)
+        
+        print("startT ",startT)
+        print("endT ",endT) */
+        
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
@@ -646,7 +677,17 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         }else if txtEndTime.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter End Time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtCompanyName1.text == "" {
+        }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedSame  {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if txtCompanyName1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Company Name")
             self.present(alert, animated: true, completion: nil)
         }else if txtServiceType1.text == "" {
@@ -658,7 +699,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         }else if txtMobileNumber1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Mobile Number")
             self.present(alert, animated: true, completion: nil)
-        }else if (txtMobileNumber1.text!.count < 10){
+        }else if (txtMobileNumber1.text!.count < 10) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter contact number 10 digit")
             self.present(alert, animated: true, completion: nil)
         }
@@ -675,6 +716,19 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         }
                     
         print("btnaddServiceProvideraction_1")
+
+    }
+    
+    // MARK: - Change Time Formate
+    
+    func strChangeTimeFormate(strDateeee: String) -> String
+    {
+            let dateFormatter = DateFormatter()
+          //  dateFormatter.dateFormat = "HH:mm:ss"
+            dateFormatter.dateFormat = "hh:mm a"
+            let date = dateFormatter.date(from: strDateeee)
+           // dateFormatter.dateFormat = "hh:mm a"
+            return  dateFormatter.string(from: date!)
 
     }
     
@@ -1157,6 +1211,8 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                       if(txtCompanyName.text != "")
                       {
 
+                        print("Single Select Service Provider")
+
                          // popOverConfirmVC.selectedary = self.selectedary
                           // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
                       }
@@ -1183,6 +1239,9 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
 
                       if(txtCompanyName1.text != "")
                       {
+                        
+                            print("Multiple Select Service Provider")
+                        
                           // popOverConfirmVC.alertGuardary = self.nameary
                       }
                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)

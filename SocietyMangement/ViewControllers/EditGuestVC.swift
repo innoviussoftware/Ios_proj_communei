@@ -76,9 +76,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
       //  tblView.separatorStyle = .none
         print(arrInvitedmember)
         
-        
+        print("EditGuestVC")
+
     }
-    
     
     //MARK:- tableview delegate
     
@@ -195,7 +195,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                 let jsonData = try JSONSerialization.data(withJSONObject: arrInvitedmember, options: JSONSerialization.WritingOptions.prettyPrinted)
                 
                 if let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
-                    print(JSONString)
+                    print("JSONString ",JSONString)
                     string = JSONString
                 }
                 

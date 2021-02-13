@@ -10,6 +10,8 @@ import UIKit
 import SDWebImage
 import SWRevealViewController
 
+import Alamofire
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -23,8 +25,9 @@ class DeliveryWaitingPopupVC: UIViewController {
     
     var dicdeviveryatgate: DeliveryatGate?
     
-    var UserActivityID:Int?
-    var VisitingFlatID:Int?
+    var UserActivityID = NSString()
+    var VisitingFlatID = NSString()
+    var ActivityID = NSString()
 
     
     var isfromnotification = 0
@@ -88,17 +91,30 @@ class DeliveryWaitingPopupVC: UIViewController {
         }
         
         if deliverydic.value(forKey: "Mask") != nil {
-            lblMask.text = (deliverydic.value(forKey:"Mask") as! String)
+            if let num = deliverydic.value(forKey: "Mask") as? Int {
+                if num == 1 {
+                    lblMask.text = "Yes"
+                }else{
+                    lblMask.text = "No"
+                }
+            }
         }else{
-            lblMask.text = ""
+            lblMask.text = "No"
         }
         
         if deliverydic.value(forKey: "UserActivityID") != nil {
-            UserActivityID = deliverydic.value(forKey: "UserActivityID") as? Int
+            ActivityID = (deliverydic.value(forKey: "UserActivityID")) as! NSString
+            print("ActivityID : ", ActivityID)
+        }
+        
+        if deliverydic.value(forKey: "UserActivityID") != nil {
+            UserActivityID = (deliverydic.value(forKey: "UserActivityID")) as! NSString
+            print("UserActivityID : ", UserActivityID)
         }
         
         if deliverydic.value(forKey: "VisitingFlatID") != nil {
-            VisitingFlatID = deliverydic.value(forKey: "VisitingFlatID") as? Int
+            VisitingFlatID = (deliverydic.value(forKey: "VisitingFlatID")) as! NSString
+            print("VisitingFlatID : ", VisitingFlatID)
         }
         
         if deliverydic.value(forKey: "ActivityType") as! String == "Visitor Entry"
@@ -119,6 +135,8 @@ class DeliveryWaitingPopupVC: UIViewController {
         }else{
             imgview.isHidden = true
         }
+        
+       // print("ActivityID UserActivityID VisitingFlatID : ", ActivityID,UserActivityID,VisitingFlatID)
 
     }
     
@@ -181,13 +199,16 @@ class DeliveryWaitingPopupVC: UIViewController {
     @IBAction func acceptaction(_ sender: UIButton) {
         if deliverydic.value(forKey: "ActivityType") as! String == "Visitor Entry"
         {
+            visitorApprove_1()
           //  user/pre-approved/1/approve
         }else{
+            visitorApprove_2()
           //  user/pre-approved/2/approve
         }
     }
     
     @IBAction func denyaction(_ sender: UIButton) {
+        deny()
         // user/pre-approved/1/deny
     }
     
@@ -198,8 +219,281 @@ class DeliveryWaitingPopupVC: UIViewController {
         // VisitingFlatID = VisitingID
 //        }
         
-       // ApiCallDeliveryGate()
+        ApiCallDeliveryGate()
     }
+    
+    func deny() {
+       
+       if !NetworkState().isInternetAvailable {
+            ShowNoInternetAlert()
+            return
+        }
+        
+        
+        if deliverydic.value(forKey: "VisitingFlatID") != nil {
+           let VisitingID = (deliverydic.value(forKey: "VisitingFlatID")) as! NSString
+           VisitingFlatID = VisitingID
+        }
+        
+        if deliverydic.value(forKey: "ActivityID") != nil {
+           let UserActivityID = (deliverydic.value(forKey: "ActivityID")) as! NSString
+            ActivityID = UserActivityID
+        }
+       
+       let param : Parameters = [
+            "VisitingFlatID" : VisitingFlatID,
+            "ActivityID" : ActivityID
+        ]
+       
+        print("deny param", param)
+        
+        let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+
+       webservices().StartSpinner()
+       
+       Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + "user/pre-approved/1/deny", token: token  as! String) { [self] JSON in
+
+           switch JSON.result{
+           case .success(let resp):
+               
+               webservices().StopSpinner()
+               if(JSON.response?.statusCode == 200)
+               {
+                
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                   // vc.isFromDash = 1
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                       
+                 //  lblPresent.isHidden = true
+                 //  lblAbsent.isHidden = true
+                //   lbldateSelectDateCalendar.isHidden = true
+                //   btnPresent.isHidden = true
+                //   btnAbsent.isHidden = true
+                   
+                 //  apicallCalendarAttendance()
+                   
+                   print("user/pre-approved/1/deny")
+
+               }
+               
+               else if(JSON.response?.statusCode == 401)
+               {
+                  
+                   UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                   UserDefaults.standard.removeObject(forKey:USER_ID)
+                   UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                   UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                   UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                   UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                   UserDefaults.standard.removeObject(forKey:USER_NAME)
+                   UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                   UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                   
+                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                         let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                      let navController = UINavigationController(rootViewController: aVC)
+                                                                      navController.isNavigationBarHidden = true
+                                                         self.appDelegate.window!.rootViewController  = navController
+                                                         
+                   
+               }
+               else
+               {
+                  // let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message!)
+                  // self.present(alert, animated: true, completion: nil)
+               }
+               
+               print(resp)
+           case .failure(let err):
+               webservices().StopSpinner()
+               if JSON.response?.statusCode == 401{
+                   
+                   UserDefaults.standard.removeObject(forKey:USER_TOKEN)
+                   UserDefaults.standard.removeObject(forKey:USER_ID)
+                   UserDefaults.standard.removeObject(forKey:USER_SOCIETY_ID)
+                   UserDefaults.standard.removeObject(forKey:USER_ROLE)
+                   UserDefaults.standard.removeObject(forKey:USER_PHONE)
+                   UserDefaults.standard.removeObject(forKey:USER_EMAIL)
+                   UserDefaults.standard.removeObject(forKey:USER_NAME)
+                   UserDefaults.standard.removeObject(forKey:USER_SECRET)
+                   UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
+                   
+                   
+                       let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                       
+                       let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
+                                                                      let navController = UINavigationController(rootViewController: aVC)
+                                                                      navController.isNavigationBarHidden = true
+                                                         self.appDelegate.window!.rootViewController  = navController
+                       
+                   
+                   return
+               }
+              // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+             //  self.present(alert, animated: true, completion: nil)
+             //  print(err.asAFError!)
+               
+           }
+       }
+   }
+    
+    // MARK: - VISITOR AT APPROVE
+    
+    func visitorApprove_1() { // 1
+        
+                if !NetworkState().isInternetAvailable {
+                        ShowNoInternetAlert()
+                        return
+                }
+            
+                let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+                webservices().StartSpinner()
+            
+            Apicallhandler().ApicallDeliveryVisitorApprove(URL:  webservices().baseurl + "user/pre-approved/1/approve", token: token as! String, VisitingFlatID: VisitingFlatID, ActivityID: ActivityID) { JSON in
+                
+            
+                    switch JSON.result{
+                    case .success(let resp):
+                        
+                        webservices().StopSpinner()
+                        
+                        if(JSON.response?.statusCode == 200)
+                        {
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                           // vc.isFromDash = 1
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                        
+                        // 11/2/21
+                        
+                      /*  if(resp.status == 1)
+                        {
+                            
+                        if(self.isfromnotification == 0)
+                        {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        else
+                        {
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
+                            }
+                            
+                        }else if (resp.status == 0){
+                            
+                            let alert = UIAlertController(title: Alert_Titel, message:resp.message , preferredStyle: UIAlertController.Style.alert)
+                                          alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { alert in
+                                           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                           let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                           self.navigationController?.pushViewController(nextViewController, animated: true)
+                                            
+                                          }))
+                                          self.present(alert, animated: true, completion: nil)
+                            
+    //                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+    //                        self.present(alert, animated: true, completion: nil)
+                        } */
+                        else
+                        {
+                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"visitor Approve done." )
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        
+                        print(resp)
+                    case .failure(let err):
+                       // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                       // self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+                        webservices().StopSpinner()
+                        
+                    }
+                    
+                }
+        
+    }
+    
+    func visitorApprove_2() { // 2
+        
+              if !NetworkState().isInternetAvailable {
+                             ShowNoInternetAlert()
+                             return
+                         }
+            
+                let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+                webservices().StartSpinner()
+            
+            Apicallhandler().ApicallDeliveryVisitorApprove(URL:  webservices().baseurl + "user/pre-approved/2/approve", token: token as! String, VisitingFlatID: VisitingFlatID, ActivityID: ActivityID) { JSON in
+                
+            
+                    switch JSON.result{
+                    case .success(let resp):
+                        
+                        webservices().StopSpinner()
+                        
+                        if(JSON.response?.statusCode == 200)
+                        {
+                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                           // vc.isFromDash = 1
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                        
+                        // 11/2/21
+                        
+                       /* if(resp.status == 1)
+                        {
+                            
+                        if(self.isfromnotification == 0)
+                        {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        else
+                        {
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
+                            }
+                            
+                        }else if (resp.status == 0){
+                            
+                            let alert = UIAlertController(title: Alert_Titel, message:resp.message , preferredStyle: UIAlertController.Style.alert)
+                                          alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { alert in
+                                           let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                           let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                           self.navigationController?.pushViewController(nextViewController, animated: true)
+                                            
+                                          }))
+                                          self.present(alert, animated: true, completion: nil)
+                            
+    //                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
+    //                        self.present(alert, animated: true, completion: nil)
+                        } */
+                        else
+                        {
+                            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"visitor Approve done." )
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        
+                        print(resp)
+                    case .failure(let err):
+                      //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      //  self.present(alert, animated: true, completion: nil)
+                        print(err.asAFError!)
+                        webservices().StopSpinner()
+                        
+                    }
+                    
+                }
+                
+           
+        
+    }
+    
     
     // MARK: - Delivery at Gate
     
@@ -212,14 +506,24 @@ class DeliveryWaitingPopupVC: UIViewController {
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             webservices().StartSpinner()
         
-        Apicallhandler().ApicallDeliveryLeaveatGate(URL:  webservices().baseurl + API_DELIVERY_LEAVE_GATE, token: token as! String, VisitingFlatID: VisitingFlatID!, UserActivityID: UserActivityID!) { JSON in
+        Apicallhandler().ApicallDeliveryLeaveatGate(URL:  webservices().baseurl + API_DELIVERY_LEAVE_GATE, token: token as! String, VisitingFlatID: VisitingFlatID, UserActivityID: UserActivityID) { JSON in
             
         
                 switch JSON.result{
                 case .success(let resp):
-                    
+                                        
                     webservices().StopSpinner()
-                    if(resp.status == 1)
+                    
+                    if(JSON.response?.statusCode == 200)
+                    {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                       // vc.isFromDash = 1
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                    
+                    // 11/2/21
+                    
+                   /* if(resp.status == 1)
                     {
                         
                     if(self.isfromnotification == 0)
@@ -247,7 +551,7 @@ class DeliveryWaitingPopupVC: UIViewController {
                         
 //                        let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:resp.message)
 //                        self.present(alert, animated: true, completion: nil)
-                    }
+                    } */
                     else
                     {
                         let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Delivery leave at gate done." )
@@ -256,8 +560,8 @@ class DeliveryWaitingPopupVC: UIViewController {
                     
                     print(resp)
                 case .failure(let err):
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     webservices().StopSpinner()
                     
@@ -341,11 +645,11 @@ class DeliveryWaitingPopupVC: UIViewController {
                 }
                 
                 if deliverydic.value(forKey: "UserActivityID") != nil {
-                    UserActivityID = deliverydic.value(forKey: "UserActivityID") as? Int
+                    UserActivityID = (deliverydic.value(forKey: "UserActivityID")) as! NSString
                 }
                 
                 if deliverydic.value(forKey: "VisitingFlatID") != nil {
-                    VisitingFlatID = deliverydic.value(forKey: "VisitingFlatID") as? Int
+                    VisitingFlatID = (deliverydic.value(forKey: "VisitingFlatID")) as! NSString
                 }
                 
                 if deliverydic.value(forKey: "ActivityType") as! String == "Visitor Entry"

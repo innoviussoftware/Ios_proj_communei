@@ -963,7 +963,7 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
                   //            let rupee = "\u{20B9}"
        // cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
             
-        cell.lblPrice.text = "\u{20B9}"+"\(arrRecommend[indexPath.row].amount!)" //"\(arrRecommend[indexPath.row].amount!)"
+        cell.lblPrice.text = "\u{20B9} "+"\(arrRecommend[indexPath.row].amount!)" //"\(arrRecommend[indexPath.row].amount!)"
 
         cell.lblName.text = arrRecommend[indexPath.row].title
                   
@@ -999,7 +999,7 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
                         }
                     }
                                         
-                    cell.lblPrice.text = "\u{20B9}"+"\(arrSellData[indexPath.row].amount!)" // "\(arrSellData[indexPath.row].amount!)"
+                    cell.lblPrice.text = "\u{20B9} "+"\(arrSellData[indexPath.row].amount!)" // "\(arrSellData[indexPath.row].amount!)"
                 // String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
             
             cell.lblQuality.text = arrSellData[indexPath.row].qualityStatus

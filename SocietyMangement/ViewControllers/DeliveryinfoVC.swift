@@ -18,6 +18,12 @@ class DeliveryinfoVC: UIViewController {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblAllowed: UILabel!
     @IBOutlet weak var lbltime: UILabel!
+    
+    @IBOutlet weak var lblAdded: UILabel!
+
+    
+    @IBOutlet weak var lblvehicle: UILabel!
+
    // @IBOutlet weak var lblMessage: UILabel!
     
     @IBOutlet weak var imgviewLogo: UIImageView!
@@ -28,6 +34,8 @@ class DeliveryinfoVC: UIViewController {
     var strTime = ""
     var strMessage = ""
     var strPhone = ""
+    var strVehicle = ""
+    var strAdded = ""
 
     
     var getImage = "" //UIImage()
@@ -47,11 +55,15 @@ class DeliveryinfoVC: UIViewController {
         lblName.text = strName
         lblAllowed.text = strAllowed
         lbltime.text = strTime
+        
+        lblvehicle.text = strVehicle
+        lblAdded.text = strAdded
+
       //  lblMessage.text = strMessage
         
         if getImage == "" {
         }else{
-            imgviewLogo.sd_setImage(with: URL(string: getImage), placeholderImage: UIImage(named: ""))
+            imgviewLogo.sd_setImage(with: URL(string: getImage), placeholderImage: UIImage(named: "default_logo"))
         }
         
         // Do any additional setup after loading the view.

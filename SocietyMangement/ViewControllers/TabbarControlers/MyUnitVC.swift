@@ -246,16 +246,18 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
     
     func apicallUserMe()
     {
-        if !NetworkState().isInternetAvailable {
-                         ShowNoInternetAlert()
-                         return
-                     }
+            
+            if !NetworkState().isInternetAvailable {
+                    ShowNoInternetAlert()
+                    return
+                }
+        
             webservices().StartSpinner()
 
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
-          //  Apicallhandler.sharedInstance.ApiCallUserMe(token: token as! String) { JSON in
-                
-                Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
+        
+            
+            Apicallhandler().ApiCallUserMe(URL: webservices().baseurl + "user", token: token as! String) { JSON in
                 
                 let statusCode = JSON.response?.statusCode
                 
@@ -362,6 +364,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                     if err.asAFError == nil {
                         webservices().StopSpinner()
                     }else {
+                        webservices().StopSpinner()
                        // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                       //  self.present(alert, animated: true, completion: nil)
                         print(err.asAFError!)

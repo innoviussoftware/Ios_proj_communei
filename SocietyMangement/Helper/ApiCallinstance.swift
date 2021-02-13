@@ -604,8 +604,8 @@ struct Apicallhandler {
 
        }
     
-    //Mark : Api call Delivery Leave Gate
-    func ApicallDeliveryLeaveatGate(URL: String, token:String,VisitingFlatID:Int,UserActivityID:Int, onCompletion: @escaping ((_ response: DataResponse<DeliveryatGateResponse>) -> Void)) {
+    //MARK : Api call Delivery Leave Gate
+    func ApicallDeliveryLeaveatGate(URL: String, token:String,VisitingFlatID:NSString,UserActivityID:NSString, onCompletion: @escaping ((_ response: DataResponse<DeliveryatGateResponse>) -> Void)) {
         
         let parameter:Parameters = ["VisitingFlatID":VisitingFlatID,"UserActivityID":UserActivityID]
         AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryatGateResponse>) in
@@ -613,11 +613,23 @@ struct Apicallhandler {
             onCompletion(response)
         }
         
-
+    }
+    
+    // MARK: - Api call Delivery Visitor Approve
+    
+    func ApicallDeliveryVisitorApprove(URL: String, token:String,VisitingFlatID:NSString,ActivityID:NSString, onCompletion: @escaping ((_ response: DataResponse<DeliveryApproveResponse>) -> Void)) {
+        
+        let parameter:Parameters = ["VisitingFlatID":VisitingFlatID,"ActivityID":ActivityID]
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<DeliveryApproveResponse>) in
+            
+            onCompletion(response)
+        }
+        
     }
     
     
-    //Mark : Api call Accept guest request
+    //MARK : Api call Accept guest request
+    
     func ApiAcceptGuestRequest(URL: String, token:String,type:Int,guest_id:String, onCompletion: @escaping ((_ response: DataResponse<AcceptReject>) -> Void)) {
         
         let parameter:Parameters = ["type":type,"guest_id":guest_id]

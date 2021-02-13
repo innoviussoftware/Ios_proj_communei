@@ -269,8 +269,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         super.viewDidLoad()
         
         if #available(iOS 13.0, *) {
-                     // Always adopt a light interface style.
-          overrideUserInterfaceStyle = .light
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
         }
         
         viewCamera.isHidden = true
@@ -632,7 +632,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         }else if activeTextField == txtGender{
             return arrGender.count
         }else if(pickerView == pickerview1){
-            return professionary.count + 1
+            return professionary.count // + 1
         }else{
             return arrRelation.count
         }
@@ -1196,7 +1196,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                    case .failure(let err):
                        let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                        self.present(alert, animated: true, completion: nil)
-                       print(err.asAFError)
+                       print(err.asAFError!)
                        webservices().StopSpinner()
                        
                    }

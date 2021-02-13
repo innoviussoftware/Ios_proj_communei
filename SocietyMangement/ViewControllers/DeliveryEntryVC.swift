@@ -463,7 +463,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                else{
                    let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                       self.txtenddate.text = ""
+                      // self.txtenddate.text = ""
                    }))
                    self.present(alert, animated: true, completion: nil)
                }
@@ -702,6 +702,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
                    {
 
+                        print("Single Select Delivery Company")
+
                       // popOverConfirmVC.selectedary = self.selectedary
                        // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
                    }
@@ -731,6 +733,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                
                    if(txtDeliveryCompanyName1.text != "")
                    {
+                        print("Multiple Select Delivery Company")
                        // popOverConfirmVC.alertGuardary = self.nameary
                    }
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
