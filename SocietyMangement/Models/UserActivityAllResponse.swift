@@ -76,6 +76,7 @@ struct ActivityAll: Codable {
     let removedBy,addedOn: String?
     let out, leaveAtGate, vendorID, companyName: String?
     let allowedInTime,allowedOutTime : String?
+    let daysOfWeek : String?
     let companyLogoURL: String?
     let approvedBy: String?
     let societyName: String?
@@ -114,6 +115,7 @@ struct ActivityAll: Codable {
         case actualOut = "ActualOut"
         case allowedInTime = "AllowedInTime"
         case allowedOutTime = "AllowedOutTime"
+        case daysOfWeek = "DaysOfWeek"
         case addedBy = "AddedBy"
         case relation = "Relation"
         case cancelledBy = "CancelledBy"

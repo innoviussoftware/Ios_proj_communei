@@ -29,8 +29,9 @@ class DeliveryWaitingPopupVC: UIViewController {
     var VisitingFlatID = NSString()
     var ActivityID = NSString()
 
-    
     var isfromnotification = 0
+    
+    @IBOutlet weak var lblPropertyName: UILabel!
 
     @IBOutlet weak var viewinner: UIView!
 
@@ -85,9 +86,9 @@ class DeliveryWaitingPopupVC: UIViewController {
         
         
         if deliverydic.value(forKey: "PropertyFullName") != nil {
-            lblVisitor.text = (deliverydic.value(forKey:"PropertyFullName") as! String)
+            lblPropertyName.text = (deliverydic.value(forKey:"PropertyFullName") as! String)
         }else{
-            lblVisitor.text = ""
+            lblPropertyName.text = ""
         }
         
         if deliverydic.value(forKey: "Mask") != nil {
@@ -119,8 +120,10 @@ class DeliveryWaitingPopupVC: UIViewController {
         
         if deliverydic.value(forKey: "ActivityType") as! String == "Visitor Entry"
         {
+            lblVisitor.text = "Visitor"
             btnDeliveryatGate.isHidden = true
         }else{
+            lblVisitor.text = "Delivery"
             btnDeliveryatGate.isHidden = false
         }
         
@@ -169,21 +172,60 @@ class DeliveryWaitingPopupVC: UIViewController {
         }, completion:{(finished : Bool)  in
             if (finished)
             {
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                 nextViewController.selectedtabindex = 0
+
+                self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+                
                 self.view.removeFromSuperview()
                 
             }
         });
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    func removeAnimate1()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                 nextViewController.selectedtabindex = 1
+                               // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                    self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+                
+                self.view.removeFromSuperview()
+                
+            }
+        });
+    }
+    
+    /* override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if(touches.first?.view != viewinner){
             removeAnimate()
         }
-    }
+    } */
     
     @IBAction func btnClosePressed(_ sender: UIButton) {
         
+      /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+         let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+         nextViewController.selectedtabindex = 0
+
+         revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+        
+       /* let navigationController:UINavigationController = self.storyboard?.instantiateInitialViewController() as! UINavigationController
+          let initialViewController = self.storyboard?.instantiateViewController(withIdentifier: NewHomeVC.id()) as! NewHomeVC
+          navigationController.pushViewController(initialViewController, animated: true)
+          appDelegate.window?.rootViewController = navigationController
+          appDelegate.window?.makeKeyAndVisible() */
+      
         removeAnimate()
 
         
@@ -260,10 +302,15 @@ class DeliveryWaitingPopupVC: UIViewController {
                if(JSON.response?.statusCode == 200)
                {
                 
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
-                   // vc.isFromDash = 1
-                    self.navigationController?.pushViewController(vc, animated: true)
+              /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                 nextViewController.selectedtabindex = 0
+                               // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                 revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
                     
+                removeAnimate()
+
                        
                  //  lblPresent.isHidden = true
                  //  lblAbsent.isHidden = true
@@ -332,7 +379,7 @@ class DeliveryWaitingPopupVC: UIViewController {
                }
               // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
              //  self.present(alert, animated: true, completion: nil)
-             //  print(err.asAFError!)
+               print(err.asAFError!)
                
            }
        }
@@ -361,9 +408,20 @@ class DeliveryWaitingPopupVC: UIViewController {
                         
                         if(JSON.response?.statusCode == 200)
                         {
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                           // let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
                            // vc.isFromDash = 1
-                            self.navigationController?.pushViewController(vc, animated: true)
+                         //   self.navigationController?.pushViewController(vc, animated: true)
+                            
+                           /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                             nextViewController.selectedtabindex = 1
+                                           // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                                self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                            
+                            self.removeAnimate1()
+
+                           
                         }
                         
                         // 11/2/21
@@ -437,9 +495,25 @@ class DeliveryWaitingPopupVC: UIViewController {
                         
                         if(JSON.response?.statusCode == 200)
                         {
-                            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                            
+                           /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                             nextViewController.selectedtabindex = 1
+                                           // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                                self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                            
+                            self.removeAnimate1()
+                            
+                           // let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
                            // vc.isFromDash = 1
-                            self.navigationController?.pushViewController(vc, animated: true)
+                         //   self.navigationController?.pushViewController(vc, animated: true)
+                            
+                           /* let navigationController:UINavigationController = self.storyboard?.instantiateInitialViewController() as! UINavigationController
+                              let initialViewController = self.storyboard?.instantiateViewController(withIdentifier: ActivityTabVC.id()) as! ActivityTabVC
+                              navigationController.pushViewController(initialViewController, animated: true)
+                                self.appDelegate.window?.rootViewController = navigationController
+                            self.appDelegate.window?.makeKeyAndVisible() */
                         }
                         
                         // 11/2/21
@@ -506,6 +580,8 @@ class DeliveryWaitingPopupVC: UIViewController {
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             webservices().StartSpinner()
         
+        // "user/pre-approved/2/leave-at-gate"
+        
         Apicallhandler().ApicallDeliveryLeaveatGate(URL:  webservices().baseurl + API_DELIVERY_LEAVE_GATE, token: token as! String, VisitingFlatID: VisitingFlatID, UserActivityID: UserActivityID) { JSON in
             
         
@@ -516,9 +592,20 @@ class DeliveryWaitingPopupVC: UIViewController {
                     
                     if(JSON.response?.statusCode == 200)
                     {
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
+                        
+                       /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                         let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                         nextViewController.selectedtabindex = 1
+                                       // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                            self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                        
+                        self.removeAnimate1()
+
+                        
+                       // let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
                        // vc.isFromDash = 1
-                        self.navigationController?.pushViewController(vc, animated: true)
+                       // self.navigationController?.pushViewController(vc, animated: true)
                     }
                     
                     // 11/2/21
@@ -637,6 +724,8 @@ class DeliveryWaitingPopupVC: UIViewController {
                 }else{
                     lblVisitor.text = ""
                 }
+                
+                
                 
                 if deliverydic.value(forKey: "Mask") != nil {
                     lblMask.text = (deliverydic.value(forKey:"Mask") as! String)

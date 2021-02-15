@@ -136,6 +136,16 @@ class EntryVehicleDetailPopUpVC: BaseVC {
         apicallGetVehicleListType()
     }
     
+    func isValidVehicle(vehicleStr:String) -> Bool {
+        
+       // let vehicleRegEx = "[a-z]{2}[0-9]{2}[a-z]{1,2}[0-9]{3,4}"
+        
+        let vehicleRegEx = "[a-z]{2}[0-9]{2}[a-z]{2}[0-9]{4}"
+        
+        let vehiclePred = NSPredicate(format:"SELF MATCHES %@", vehicleRegEx)
+        return vehiclePred.evaluate(with: vehicleStr)
+    }
+    
     //MARK:- action method
     
     @IBAction func actionSubmit(_ sender: Any) {
@@ -144,10 +154,13 @@ class EntryVehicleDetailPopUpVC: BaseVC {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please select vehicle type")
             self.present(alert, animated: true, completion: nil)
         }else if !txtVehicleNumber.hasText{
-            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vehcle number")
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vehicle number")
             self.present(alert, animated: true, completion: nil)
         }else if txtVehicleNumber.maxLength < 10 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter valid vehicle number")
+            self.present(alert, animated: true, completion: nil)
+        }else if (isValidVehicle(vehicleStr: txtVehicleNumber.text!) == false) {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter vaild vehicle number")
             self.present(alert, animated: true, completion: nil)
         }
         else{

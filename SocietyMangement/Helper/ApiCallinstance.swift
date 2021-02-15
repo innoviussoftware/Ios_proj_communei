@@ -1595,7 +1595,7 @@ struct Apicallhandler {
     
     //Mark : Api Get get Blood
     
-    func ApiCallGetBlood (URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<BloodGroupResponse>) -> Void)) {
+    func ApiCallGetBlood(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<BloodGroupResponse>) -> Void)) {
        
         AF.request(URL, method: .get, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<BloodGroupResponse>) in
          

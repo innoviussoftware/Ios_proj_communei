@@ -18,14 +18,15 @@ struct DeliveryatGateResponse: Codable {
 
 // MARK: - DeliveryatGate
 struct DeliveryatGate: Codable {
-    let userActivityID, userActivityTypeID: Int
+    let userActivityID, userActivityTypeID: Int?
     let guardActivityID: Int?
-    let societyID, visitorEntryID, visitingFlatID, propertyID: Int
+    let societyID, visitorEntryID, visitingFlatID, propertyID: Int?
     let dateLastUpadted: String?
-    let inTime: String
-    let isIn, isParent, userID: Int
+    let inTime: String?
+    let isIn, isParent, userID: Int?
   //  let parentActivityID: Int
-    let isGuardActivity, estimatedTime: String?
+    let isGuardActivity: Int?
+    let estimatedTime: String?
     let activity: ActivityGate?
 
     enum CodingKeys: String, CodingKey {
@@ -50,13 +51,13 @@ struct DeliveryatGate: Codable {
 
 // MARK: - ActivityGate
 struct ActivityGate: Codable {
-    let activityType, name, phone, status: String
-    let leaveAtGate, vendorID, companyName: String
-    let companyLogoURL: String
-    let activityIn, addedBy, dBy, approvedBy: String
-    let materialAtGateID, rackID, materialQR, numberOfBoxes: Int
-    let recivedBy, recivedAt, familyMembers, dispatcedBy: String
-    let collectedBy, collectedAt, rackName: String
+    let activityType, name, phone, status: String?
+    let leaveAtGate, vendorID, companyName: String?
+    let companyLogoURL: String?
+    let activityIn, addedBy, dBy, approvedBy: String?
+    let materialAtGateID, rackID, materialQR, numberOfBoxes: Int?
+    let recivedBy, recivedAt, familyMembers, dispatcedBy: String?
+    let collectedBy, collectedAt, rackName: String?
 
     enum CodingKeys: String, CodingKey {
         case activityType = "ActivityType"

@@ -918,7 +918,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             case .failure(let err):
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
-                print(err.asAFError)
+                print(err.asAFError!)
                 webservices().StopSpinner()
                 
             }
@@ -1374,7 +1374,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         cell.btnCall.tag = indexPath.item
                         
                         if membersary[indexPath.row].profilePhotoPath != nil{
-                              cell.imgMember.sd_setImage(with: URL(string: membersary[indexPath.item].profilePhotoPath!), placeholderImage: UIImage(named: "vendor-1"))
+                              cell.imgMember.sd_setImage(with: URL(string: membersary[indexPath.item].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                        }else{
+                            cell.imgMember.image = UIImage(named: "vendor profile")
                         }
                         
                         cell.lblName.text = membersary[indexPath.item].name
@@ -1471,6 +1473,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         if allmembersary[indexPath.row].profilePhotoPath != nil{
                             // 3/9/20.
                               cell.imgMember.sd_setImage(with: URL(string: allmembersary[indexPath.item].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                        }else{
+                            cell.imgMember.image = UIImage(named: "vendor profile")
                         }
                         
                         cell.lblName.text = allmembersary[indexPath.item].name

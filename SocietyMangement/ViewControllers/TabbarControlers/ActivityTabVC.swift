@@ -230,6 +230,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
         
         super.viewWillAppear(true)
         
+        NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+
        // filtrview.isHidden = true
         
          self.apicallUserMe()
@@ -247,6 +249,83 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
       
     }
     
+    
+    @objc func AcceptRequest(notification: NSNotification) {
+        
+        let object = notification.object as! NSDictionary
+        
+        if let key = object.object(forKey: "notification_type")
+        {
+            let value = object.value(forKey: "notification_type") as! String
+            
+            if(value == "security")
+            {
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "GuestPopVC") as! GuestPopVC
+                nextViewController.guestdic = object
+                nextViewController.isfromnotification = 0
+                navigationController?.pushViewController(nextViewController, animated: true)
+                
+            }
+            else if object.value(forKey: "notification_type") as! String == "alert"{
+                       
+              let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                
+                            nextViewController.deliverydic = object
+
+                          //  nextViewController.isFrormDashboard = 0
+                            navigationController?.pushViewController(nextViewController, animated: true)
+                       
+                       
+                   }
+            
+              else  if object.value(forKey: "notification_type") as! String == "Notice"{
+                         
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                              
+                              let nextViewController = storyBoard.instantiateViewController(withIdentifier: "NoticeVC") as! NoticeVC
+                              nextViewController.isFrormDashboard = 0
+                              navigationController?.pushViewController(nextViewController, animated: true)
+                         
+                         
+                     }else if object.value(forKey: "notification_type") as! String == "Circular"{
+                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+                               let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CircularVC") as! CircularVC
+                                                              nextViewController.isfrom = 0
+                                                              navigationController?.pushViewController(nextViewController, animated: true)
+                
+                         
+                         
+                     }else if object.value(forKey: "notification_type") as! String == "Event"{
+                         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SocietyEventsVC") as! SocietyEventsVC
+                                                                           nextViewController.isfrom = 1
+                                                                           navigationController?.pushViewController(nextViewController, animated: true)
+                
+                     }
+                
+                
+                
+                
+            else
+            {
+              //  apicallNotificationCount()
+                
+            }
+            
+        }
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+    }
     
     override func didReceiveMemoryWarning() {
         didReceiveMemoryWarning()
@@ -1656,7 +1735,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 isfromNo = 2
                 
                 popOverConfirmVC.isfrom = isfromNo // 2
-
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
@@ -1678,6 +1756,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                     popOverConfirmVC.strEndTime = out!
                 }
                
+                popOverConfirmVC.daysOfWeek = (arrGuestList[sender.tag].activity?.daysOfWeek)!
                 popOverConfirmVC.multiDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -1817,6 +1896,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                     popOverConfirmVC.strEndTime = out!
                 }
                
+                popOverConfirmVC.daysOfWeek = (arrGuestList[sender.tag].activity?.daysOfWeek)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID!
@@ -1892,6 +1972,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                     popOverConfirmVC.strEndTime = out!
                 }
                
+                popOverConfirmVC.daysOfWeek = (arrGuestList[sender.tag].activity?.daysOfWeek)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID!

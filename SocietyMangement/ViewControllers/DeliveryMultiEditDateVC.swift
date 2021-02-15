@@ -64,6 +64,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
     var strStartTime = ""
     var strEndTime = ""
     
+    var daysOfWeek = ""
+    
     var isfrom = 1
     
     var arrDays = [GetDays]()
@@ -359,6 +361,12 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         }else if txtEndTime.text! == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Enter End time")
             self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedSame  {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
         }
         else{
             self.apicallDeliveryMultipleEditDate()
@@ -514,6 +522,19 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 if statusCode == 200{
                     
                     self.arrDays = resp.data!
+                    
+                  /*  for dic in self.arrDays
+                    {
+                        if(self.arrSelectionDayId.contains(dic.daysTypeID!))
+                        {
+                            
+                            self.arrSelectionCheck.add(dic.daysName!)
+                            self.arrSelectionCheck.add(dic.daysTypeID!)
+
+                        }
+                        
+                    } */
+                    
                     if self.arrDays.count > 0{
                         self.collectionDays.dataSource = self
                         self.collectionDays.delegate = self
@@ -604,26 +625,21 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                            cell.lblname.textColor = UIColor.white
                           // cell.lblname.layer.borderWidth = 0.0
                        }
-                       else{
-                           
-                           cell.lblname.backgroundColor = AppColor.lblFilterUnselect
-                           cell.lblname.textColor = UIColor.white
-                          // cell.lblname.layer.borderColor = UIColor.lightGray.cgColor
-                         //  cell.lblname.layer.borderWidth = 1.0
-                       }
+                       else if(arrSelectionDayId.contains(arrDays[indexPath.row].daysTypeID!))
+                       {
+                       
+                        cell.lblname.backgroundColor = AppColor.borderColor
+                        cell.lblname.textColor = UIColor.white
+                   }
+                   else{
+                       
+                       cell.lblname.backgroundColor = AppColor.lblFilterUnselect
+                       cell.lblname.textColor = UIColor.white
+                      // cell.lblname.layer.borderColor = UIColor.lightGray.cgColor
+                     //  cell.lblname.layer.borderWidth = 1.0
+                   }
                        
                        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-            let contentNSString = arrDays[indexPath.row].daysName
-            let expectedLabelSize = contentNSString?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
-            
-            print("\(String(describing: expectedLabelSize))")
-            return CGSize(width:(expectedLabelSize?.size.width)! + 25, height: expectedLabelSize!.size.height + 25)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -638,13 +654,27 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 arrSelectionDayId.add(arrDays[indexPath.row].daysTypeID!)
             }
             
-            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+            // 15/2/21 comment check
+        
+          //  self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
 
              // selectedindex = indexPath.row
             
              // viewbottom.isHidden = true
             //  viewmain.backgroundColor = UIColor.white
+        
               collectionDays.reloadData()
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = arrDays[indexPath.row].daysName
+            let expectedLabelSize = contentNSString?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+            
+            print("\(String(describing: expectedLabelSize))")
+            return CGSize(width:(expectedLabelSize?.size.width)! + 25, height: expectedLabelSize!.size.height + 25)
         
     }
     
