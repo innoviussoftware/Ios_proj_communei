@@ -50,7 +50,10 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     var dic:PollListData?
 
 
-    var selectedIndex : Int! = -5
+   // var selectedIndex : Int! = -5
+    
+    var selectedIndex = Int()
+
     var arrPollDetail = NSMutableArray()
     var selectedtType = ""
     var selectedOption = ""
@@ -86,17 +89,22 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         self.tblView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
 
-        
         ViewBg.layer.cornerRadius = 12
         ViewBg.clipsToBounds = true
         
-        if (arrPollData[indexPoll].isAnswerSubmitted == 0 ) {
+        // tblView.register(UINib(nibName: "PollDetailCell", bundle: nil), forCellReuseIdentifier: "PollDetailCell")
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+       // if (arrPollData[indexPoll].isAnswerSubmitted == 0) {
+        if (arrPollData[indexPoll].pollTotalVotes == 0) {
             btnSubmit.isHidden = false
         }else{
             btnSubmit.isHidden = true
         }
-        
-        // tblView.register(UINib(nibName: "PollDetailCell", bundle: nil), forCellReuseIdentifier: "PollDetailCell")
         
     }
     
@@ -833,7 +841,9 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
         
-        if (arrPollData[indexPoll].multiPollEnable == 0) {
+        
+        
+        if ((arrPollData[indexPoll].pollOptions) != nil) {
             if(selectedIndex == indexPath.row){
                 
                 cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor

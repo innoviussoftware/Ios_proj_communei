@@ -56,13 +56,39 @@ class DeliveryWaitingPopupVC: UIViewController {
     @IBOutlet weak var btnCall: UIButton!
 
     @IBOutlet weak var btnDeliveryatGate: UIButton!
+    
+   /* @IBOutlet weak var btnClose: UIButton!
+    
+    @IBOutlet weak var btnVisitor1: UIButton!
+    
+    @IBOutlet weak var btnVisitor2: UIButton!
 
+    @IBOutlet weak var btnDelivery: UIButton! */
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         self.showAnimate()
+        
+      /*  if(revealViewController() != nil)
+            {
+                btnClose.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+            
+                btnVisitor1.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+
+                btnVisitor2.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+
+                btnDelivery.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+                
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                
+                print("revealViewController auto")
+
+            } */
         
         print("deliverydic :- ",deliverydic)
 
@@ -172,14 +198,14 @@ class DeliveryWaitingPopupVC: UIViewController {
         }, completion:{(finished : Bool)  in
             if (finished)
             {
+                self.viewinner.removeFromSuperview()
+
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                  nextViewController.selectedtabindex = 0
 
                 self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
-                
-                self.view.removeFromSuperview()
-                
+                                
             }
         });
     }
@@ -192,14 +218,14 @@ class DeliveryWaitingPopupVC: UIViewController {
         }, completion:{(finished : Bool)  in
             if (finished)
             {
+                self.viewinner.removeFromSuperview()
+
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                  nextViewController.selectedtabindex = 1
                                // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
 
                     self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
-                
-                self.view.removeFromSuperview()
                 
             }
         });

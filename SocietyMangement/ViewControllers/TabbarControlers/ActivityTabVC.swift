@@ -49,6 +49,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
 
     @IBOutlet weak var txtdate: UITextField!
 
+    @IBOutlet weak var collectionHeightConstraint: NSLayoutConstraint!
+
 
     var toolBar = UIToolbar()
     var datePicker  = UIDatePicker()
@@ -198,6 +200,8 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
 
         self.collectionActivity.isHidden = true
         
+        self.collectionActivity.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+        
       //  setUpFilterActivityView()
         
         let alignedFlowLayout = AlignedCollectionViewFlowLayout(horizontalAlignment:.left, verticalAlignment: .center)
@@ -249,6 +253,17 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
       
     }
     
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        collectionActivity.layer.removeAllAnimations()
+        print("tblView contentSize height :- ",collectionActivity.contentSize.height + 5)
+        collectionHeightConstraint.constant = collectionActivity.contentSize.height + 5
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+            self.view.layoutIfNeeded()
+        }
+
+    }
     
     @objc func AcceptRequest(notification: NSNotification) {
         
@@ -1238,10 +1253,11 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
         let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
         let contentNSString = arrActivity[indexPath.row].activityName
-        let expectedLabelSize = contentNSString!.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
         
+        let expectedLabelSize = contentNSString!.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 14)!], context: nil)
+
         print("\(expectedLabelSize)")
-        return CGSize(width:expectedLabelSize.size.width + 45, height: expectedLabelSize.size.height + 12) //31
+        return CGSize(width:expectedLabelSize.size.width + 42.5, height: expectedLabelSize.size.height + 12)
         
     }
     

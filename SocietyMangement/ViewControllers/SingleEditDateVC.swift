@@ -145,8 +145,16 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             
             txtvaildtill.text = hourary[6]
 
+        }else if isfrom == 4 {
+            let timeFormat = DateFormatter()
+            timeFormat.dateFormat = "h:mm a"
+            let dateFromStr = timeFormat.date(from: StrTime)!
+            Msg_Date = timeFormat.string(from: dateFromStr)
             
-        }else{
+            txtvaildtill.text = hourary[0]
+            
+        }
+        else{
             let timeFormat = DateFormatter()
             timeFormat.dateFormat = "HH:mm:ss"
             let dateFromStr = timeFormat.date(from: StrTime)!

@@ -1057,6 +1057,14 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  cell.lblname.text =  familymeberary[indexPath.row].name
                  cell.lblMobilenumber.text = familymeberary[indexPath.row].phone
                 
+                if(familymeberary[indexPath.row].profilePhotoPath != nil)
+                {
+                   cell.imguser.sd_setImage(with: URL(string: familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
+                }else{
+                   cell.imguser.image = UIImage(named: "vendor profile")
+                }
+                
+                
                 if UsermeResponse?.data?.relation == nil {
                     cell.btnEdit.isHidden = false
                     cell.lblline.isHidden = false
@@ -1082,10 +1090,7 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                  cell.btnCall.tag = indexPath.row
                  cell.btnDelete.tag = indexPath.row
                  
-                 if(familymeberary[indexPath.row].profilePhotoPath != nil)
-                 {
-                 cell.imguser.sd_setImage(with: URL(string: familymeberary[indexPath.row].profilePhotoPath!), placeholderImage: UIImage(named: "vendor profile"))
-                 }
+                 
                  cell.btnEdit.addTarget(self, action:#selector(editmember), for: .touchUpInside)
                  cell.btnCall.addTarget(self, action:#selector(callmember), for: .touchUpInside)
                  

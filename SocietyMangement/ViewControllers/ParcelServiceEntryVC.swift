@@ -460,11 +460,18 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
        
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            
-           let numberOfSets = CGFloat(4.0)
+          /* let numberOfSets = CGFloat(4.0)
            
            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
            
-           return CGSize(width:width,height: 42)
+           return CGSize(width:width,height: 42) */
+        
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = hourary[indexPath.row]
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+            
+            print("\(expectedLabelSize)")
+            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 25) //31
            
        }
        

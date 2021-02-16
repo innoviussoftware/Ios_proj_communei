@@ -406,6 +406,16 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
 
         }
     
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            return  dateFormatter.string(from: date!)
+        
+        }
+    
     @objc func actionViewDetailFacilities(sender:UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "AmenitiesClenderBookVC") as! AmenitiesClenderBookVC
         vc.isfrom = 1
@@ -534,9 +544,29 @@ class AmenitiesVC: BaseVC,ScrollPagerDelegate,UITableViewDelegate,UITableViewDat
                 
             cell.lblStatus.text = arrBookings[indexPath.row].bookingStatusName
             
-            cell.lblDateTimeBooked.text = "\("Create on: " + arrBookings[indexPath.row].createdAt!)"
+          //  cell.lblDateTimeBooked.text = "\("Create on: " + arrBookings[indexPath.row].createdAt!)"
             
-            cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
+            let lblCreateDate = arrBookings[indexPath.row].createdAt?.components(separatedBy: " ")[0]
+            let strCreateDate = strChangeDateFormate(strDateeee: lblCreateDate!)
+            
+            let lblCreateTime = arrBookings[indexPath.row].createdAt?.components(separatedBy: " ")[1]
+            let strCreateTime = strChangeTimeFormate(strDateeee: lblCreateTime!)
+
+            cell.lblDateTimeBooked.text = "\("Create on: ") \(strCreateDate) \(strCreateTime)"
+
+            
+            let lblStartDate = arrBookings[indexPath.row].startDate?.components(separatedBy: " ")[0]
+            let strStartDate = strChangeDateFormate(strDateeee: lblStartDate!)
+            
+            let lblStartTime = arrBookings[indexPath.row].startDate?.components(separatedBy: " ")[1]
+            let strStartTime = strChangeTimeFormate(strDateeee: lblStartTime!)
+            
+            let lblEndTime = arrBookings[indexPath.row].endDate?.components(separatedBy: " ")[1]
+            let strEndTime = strChangeTimeFormate(strDateeee: lblEndTime!)
+            
+            cell.lblDatetimeBlow.text = "\(strStartDate)  \(strStartTime) to \(strEndTime)"
+            
+           // cell.lblDatetimeBlow.text = arrBookings[indexPath.row].startDate
 
             cell.btnCancel.addTarget(self, action: #selector(DeleteBookingEntry(sender:)), for: .touchUpInside)
             

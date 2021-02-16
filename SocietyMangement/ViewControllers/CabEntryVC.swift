@@ -532,6 +532,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         }else if(txtStartTime.text! > txtEndTime.text!) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedSame {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
         }
         else if txtCabCompanyName1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Cab Company Name")

@@ -925,12 +925,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                if(self.imguser.image != nil)
-                {
-                    let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                    MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
-                }
+                DispatchQueue.main.async {
                 
+                    if(self.imguser.image != nil)
+                    {
+                        let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
+                        MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                    }
+                }
                 
                 
         }, to: webservices().baseurl + API_ADD_FAMILY_MEMBER,headers:["Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
@@ -1074,12 +1076,15 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                if(self.imguser.image != nil)
-                {
-                    let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                    MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                DispatchQueue.main.async {
+
+                    if(self.imguser.image != nil)
+                    {
+                        let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
+                        MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                    }
+                    
                 }
-                
                 
                 
             }, to: webservices().baseurl + API_UPDATE_FAMILY_MEMBER ,headers:["Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
@@ -1194,8 +1199,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                        
                        print(resp)
                    case .failure(let err):
-                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                       self.present(alert, animated: true, completion: nil)
+                      // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                     //  self.present(alert, animated: true, completion: nil)
                        print(err.asAFError!)
                        webservices().StopSpinner()
                        

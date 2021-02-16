@@ -626,7 +626,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtDeliveryCompanyName1.text == "" {
+        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedSame {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if txtDeliveryCompanyName1.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Delivery Company Name")
             self.present(alert, animated: true, completion: nil)
         }else{

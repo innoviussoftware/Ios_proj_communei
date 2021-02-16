@@ -431,10 +431,19 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
                          self.lblRatingReviewStatic.isHidden = false
                         self.btnAddRatings.isHidden = false
 
-                        if self.dictHelperData.workingWithMe == 0 {
-                            self.btnAddHelper.isHidden = true
+                        if isfrom == 1 {
+                           // popOverConfirmVC.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
+                            if self.dictHelperData.workingWithMe == 0 {
+                                self.btnAddHelper.isHidden = true
+                            }else{
+                                self.btnAddHelper.isHidden = false
+                            }
                         }else{
-                            self.btnAddHelper.isHidden = false
+                            if self.dictHelperData.workingWithMe == 0 {
+                                self.btnAddHelper.isHidden = true
+                            }else{
+                                self.btnAddHelper.isHidden = false
+                            }
                         }
                         
                         let lblin = self.dictHelperData.societyWorkingSince.components(separatedBy: " ")[0]

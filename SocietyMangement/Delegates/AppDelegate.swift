@@ -368,7 +368,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
                 if(state == .active && dic.value(forKey:"notification_type") as! String == "alert")
                 {
+                    
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+                    
+                    initialViewController.deliverydic = dic
+                    
+                    let navigationController = UINavigationController.init(rootViewController: initialViewController)
+                    navigationController.navigationBar.isHidden = true
+                    
+                  //  navigationController.pushViewController(initialViewController, animated: true)
+
+                    self.window?.rootViewController = navigationController
+                    
+                    self.window?.makeKeyAndVisible()
+                    
+                    print("DeliveryWaitingPopupVC")
+                    
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: dic)
+                    
                 }
                else if(state == .active && dic.value(forKey:"notification_type") as! String == "security")
                 {
@@ -465,11 +483,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        print("applicationDidEnterBackground")
+        
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        
+        print("applicationWillEnterForeground")
+
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
