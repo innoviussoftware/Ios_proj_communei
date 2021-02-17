@@ -220,7 +220,8 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
             
             nextViewController.isfrom = 0
 
-                          revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+            revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+            
            // let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
           //  let nextViewController = storyBoard.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         //    nextViewController.isfrom = 0

@@ -319,7 +319,8 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
     @IBAction func actionAddRatings(_ sender: UIButton) {
         
       //  if self.arrRating.count > 0  {
-            
+                    
+
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
             
             popOverConfirmVC.delegate = self
@@ -340,7 +341,8 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
             self.view.addSubview(popOverConfirmVC.view)
             popOverConfirmVC.didMove(toParentViewController: self)
         
-            
+         // }
+        
           /*  let navigationController = UINavigationController(rootViewController: popOverConfirmVC)
             navigationController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
             self.present(navigationController, animated: true) */
@@ -434,9 +436,9 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
                         if isfrom == 1 {
                            // popOverConfirmVC.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
                             if self.dictHelperData.workingWithMe == 0 {
-                                self.btnAddHelper.isHidden = true
+                                self.btnAddHelper.isHidden = false 
                             }else{
-                                self.btnAddHelper.isHidden = false
+                                self.btnAddHelper.isHidden = true
                             }
                         }else{
                             if self.dictHelperData.workingWithMe == 0 {

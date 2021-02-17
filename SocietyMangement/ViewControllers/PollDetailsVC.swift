@@ -46,6 +46,8 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     var arrSelectionCheck = NSMutableArray()
     
     var indexPoll = Int()
+    
+    var strGreen = ""
 
     var dic:PollListData?
 
@@ -142,7 +144,6 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         // 12/11/20. temp comment
         
-       
         lblDemo.text = arrPollData[indexPoll].title
         
         if arrPollData[indexPoll].visibleTill != nil{
@@ -152,19 +153,27 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strdate = dateFormatterGet.string(from: date as Date)
             
+            let lblVisibleDate = arrPollData[indexPoll].visibleTill?.components(separatedBy: " ")[0]
+            let strVisibleDate = strChangeDateFormate(strDateeee: lblVisibleDate!)
+            
+            let lblVisibleTime = arrPollData[indexPoll].visibleTill?.components(separatedBy: " ")[1]
+            let strVisibleTime = strChangeTimeFormate(strDateeee: lblVisibleTime!)
+            
             let strOURDate = dateFormateChangeNEW(str: (arrPollData[indexPoll].visibleTill!))
             
             if strdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let TodayDate = dateFormatterGet.date(from: (arrPollData[indexPoll].visibleTill!))
-                dateFormatterGet.dateFormat = "HH:mm a"
+                dateFormatterGet.dateFormat = "hh:mm a" // "HH:mm a"
                 if TodayDate != nil{
                     let strDtae = dateFormatterGet.string(from: TodayDate!)
                     lblExpireDate.text = "Expire On: Today \(strDtae)"
                 }
                
             }else{
-                lblExpireDate.text = "Expire On: \(dateFormateChange(str: (arrPollData[indexPoll].visibleTill!)))"
+                lblExpireDate.text = "\("Expire On: ") \(strVisibleDate) \(strVisibleTime)"
+
+               // lblExpireDate.text = "Expire On: \(dateFormateChange(str: (arrPollData[indexPoll].visibleTill!)))"
             }
             
         }else{
@@ -293,6 +302,25 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
     }
     
+    func strChangeTimeFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "hh:mm a"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            return  dateFormatter.string(from: date!)
+        
+        }
     
     func dateFormateChange(str:String)->String {
         //2019-12-06 12:15:02"
@@ -842,35 +870,40 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PollListDetailsCell
         
         
-        
-        if ((arrPollData[indexPoll].pollOptions) != nil) {
-            if(selectedIndex == indexPath.row){
-                
-                cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
-                cell.bgView.layer.borderWidth = 3.0
+        let voting = (arrPollData[indexPoll].pollOptions?[indexPath.row].votes)! as Int
 
-                
-                //userActIndex = arrActivity[indexPath.row].userActivityTypeID
-            }else{
-                
-                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
-                cell.bgView.layer.borderWidth = 1.0
-                
-              //  userActIndex = 0
-            }
+        if voting > 0 {
+            
+            cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+            cell.bgView.layer.borderWidth = 3.0
+         
         }else{
-            if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
-            {
-                cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
-                cell.bgView.layer.borderWidth = 3.0
+            if (arrPollData[indexPoll].multiPollEnable == 0) {
+                if(selectedIndex == indexPath.row) && (strGreen == "green"){
+                    
+                    cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor // Green
+                    cell.bgView.layer.borderWidth = 3.0
+
+                    //userActIndex = arrActivity[indexPath.row].userActivityTypeID
+                }else{
+                    
+                    cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+                    cell.bgView.layer.borderWidth = 1.0
+                    
+                  //  userActIndex = 0
+                }
             }else{
-                cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
-                cell.bgView.layer.borderWidth = 1.0
+                if arrSelectionCheck.contains(arrPollData[indexPoll].pollOptions?[indexPath.row].optionText! ?? "")
+                {
+                    cell.bgView.layer.borderColor = AppColor.pollborderSelect.cgColor
+                    cell.bgView.layer.borderWidth = 3.0
+                }else{
+                    cell.bgView.layer.borderColor = AppColor.pollborder.cgColor
+                    cell.bgView.layer.borderWidth = 1.0
+                }
             }
         }
-          
        
-        
         cell.lblOptionText.text = arrPollData[indexPoll].pollOptions?[indexPath.row].optionText
         
         let lblVote = String(format: "%d",(arrPollData[indexPoll].pollOptions?[indexPath.row].votes)! as Int)
@@ -885,6 +918,7 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
         
         if arrPollData[indexPoll].multiPollEnable == 0 {
             selectedIndex = indexPath.row
+            strGreen = "green"
             
             selectNoticeOptionID = (arrPollData[indexPoll].pollOptions?[indexPath.row].noticePollOptionID!)!
 

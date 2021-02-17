@@ -404,6 +404,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                   didReceive response: UNNotificationResponse,
+                                   withCompletionHandler completionHandler: @escaping () -> Void) {
+           let userInfo = response.notification.request.content.userInfo
+           var userdicionary = NSDictionary()
+         
+           userdicionary = userInfo as NSDictionary
+        
+           if((userdicionary.object(forKey:"notification_type")) != nil)
+           {
+               if(userdicionary.value(forKey: "notification_type") as! String == "alert")
+               {
+                   let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+                    let initialViewController = storyboard.instantiateViewController(withIdentifier: "DeliveryWaitingPopupVC") as! DeliveryWaitingPopupVC
+
+                   let navigationController = UINavigationController.init(rootViewController: initialViewController)
+                   navigationController.navigationBar.isHidden = true
+                
+                     initialViewController.deliverydic = userdicionary
+
+                  // initialViewController.IsFromNotification = true
+                   
+                   self.window?.rootViewController = navigationController
+                   self.window?.makeKeyAndVisible()
+                   
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: userdicionary)
+
+                   
+               }
+           }
+       }
+       
     
     
     func reDirect(dict:NSDictionary) {

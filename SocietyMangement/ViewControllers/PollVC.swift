@@ -108,6 +108,25 @@ class PollVC: BaseVC {
         
     }
     
+    func strChangeTimeFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "hh:mm a"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            return  dateFormatter.string(from: date!)
+        
+        }
     
     
     // MARK: - Get Poll List
@@ -232,17 +251,26 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strCurrentdate = dateFormatterGet.string(from: date as Date)
             
+            let lblPublishDate = arrPollList[indexPath.row].publishDate?.components(separatedBy: " ")[0]
+            let strPublishDate = strChangeDateFormate(strDateeee: lblPublishDate!)
+            
+            let lblPublishTime = arrPollList[indexPath.row].publishDate?.components(separatedBy: " ")[1]
+            let strPublishTime = strChangeTimeFormate(strDateeee: lblPublishTime!)
+            
             let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].publishDate!)
             
             if strCurrentdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].publishDate!)
-                 dateFormatterGet.dateFormat = "HH:mm a"
+                 dateFormatterGet.dateFormat = "hh:mm a" // "HH:mm a"
                 let strDtae = dateFormatterGet.string(from: TodayDate!)
                 
                 cell.lblDate.text = "Posted On: Today \(strDtae)"
             }else{
-                 cell.lblDate.text = "Posted On: \(dateFormateChange(str: arrPollList[indexPath.row].publishDate!))"
+                
+                cell.lblDate.text = "\("Posted On: ") \(strPublishDate) \(strPublishTime)"
+
+               //  cell.lblDate.text = "Posted On: \(dateFormateChange(str: arrPollList[indexPath.row].publishDate!))"
             }
             
         }else{
@@ -259,17 +287,26 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
             dateFormatterGet.dateFormat = "dd/MM/yyyy"
             let strCurrentdate = dateFormatterGet.string(from: date as Date)
             
+            let lblVisibleDate = arrPollList[indexPath.row].visibleTill?.components(separatedBy: " ")[0]
+            let strVisibleDate = strChangeDateFormate(strDateeee: lblVisibleDate!)
+            
+            let lblVisibleTime = arrPollList[indexPath.row].visibleTill?.components(separatedBy: " ")[1]
+            let strVisibleTime = strChangeTimeFormate(strDateeee: lblVisibleTime!)
+            
             let strOURDate = dateFormateChangeNEW(str: arrPollList[indexPath.row].visibleTill!)
             
             if strCurrentdate == strOURDate{
                 dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let TodayDate = dateFormatterGet.date(from: arrPollList[indexPath.row].visibleTill!)
-                 dateFormatterGet.dateFormat = "HH:mm a"
+                 dateFormatterGet.dateFormat = "hh:mm a" // "HH:mm a"
                 let strDtae = dateFormatterGet.string(from: TodayDate!)
                 
                 cell.lblExpireDate.text = "Expire On: \(strDtae)"
             }else{
-                 cell.lblExpireDate.text = "Expire On: \(dateFormateChange(str: arrPollList[indexPath.row].visibleTill!))"
+                
+                cell.lblExpireDate.text = "\("Expire On: ") \(strVisibleDate) \(strVisibleTime)"
+
+               //  cell.lblExpireDate.text = "Expire On: \(dateFormateChange(str: arrPollList[indexPath.row].visibleTill!))"
             }
             
         }else{
@@ -288,12 +325,18 @@ extension PollVC : UITableViewDelegate,UITableViewDataSource{
             let vc = self.storyboard?.instantiateViewController(identifier: "PollDetailsVC") as! PollDetailsVC
             vc.arrPollData = arrPollList//[indexPath.row]
             vc.indexPoll = indexPath.row
+            
+           // vc.selectedIndex = (arrPollList[indexPath.row].pollOptions?[indexPath.row].votes)!
+            
             //vc.lblTitel.text = arrPollList[indexPath.row].question
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "PollDetailsVC") as! PollDetailsVC
              vc.arrPollData = arrPollList//[indexPath.row]
             vc.indexPoll = indexPath.row
+            
+           // vc.selectedIndex = (arrPollList[indexPath.row].pollOptions?[indexPath.row].votes)!
+            
             //vc.lblTitel.text = arrPollList[indexPath.row].question
             self.navigationController?.pushViewController(vc, animated: true)
         }

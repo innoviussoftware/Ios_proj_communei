@@ -198,7 +198,7 @@ class DeliveryWaitingPopupVC: UIViewController {
         }, completion:{(finished : Bool)  in
             if (finished)
             {
-                self.viewinner.removeFromSuperview()
+               // self.viewinner.removeFromSuperview()
 
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
@@ -218,7 +218,7 @@ class DeliveryWaitingPopupVC: UIViewController {
         }, completion:{(finished : Bool)  in
             if (finished)
             {
-                self.viewinner.removeFromSuperview()
+               // self.viewinner.removeFromSuperview()
 
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
@@ -251,8 +251,12 @@ class DeliveryWaitingPopupVC: UIViewController {
           navigationController.pushViewController(initialViewController, animated: true)
           appDelegate.window?.rootViewController = navigationController
           appDelegate.window?.makeKeyAndVisible() */
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+        self.navigationController?.pushViewController(nextViewController, animated: true)
       
-        removeAnimate()
+      //  removeAnimate()
 
         
        /* UIView.animate(withDuration: 0.3, animations: {
@@ -328,14 +332,18 @@ class DeliveryWaitingPopupVC: UIViewController {
                if(JSON.response?.statusCode == 200)
                {
                 
-              /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+               /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                  let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                  nextViewController.selectedtabindex = 0
                                // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
 
                  revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                self.navigationController?.pushViewController(nextViewController, animated: true)
                     
-                removeAnimate()
+              //  removeAnimate()
 
                        
                  //  lblPresent.isHidden = true
@@ -438,14 +446,28 @@ class DeliveryWaitingPopupVC: UIViewController {
                            // vc.isFromDash = 1
                          //   self.navigationController?.pushViewController(vc, animated: true)
                             
-                           /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                          /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                              let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                              nextViewController.selectedtabindex = 1
                                            // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
 
-                                self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                                self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)  */
                             
-                            self.removeAnimate1()
+                              let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                           // nextViewController.selectedtabindex = 1
+
+                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
+                          /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                             let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                             nextViewController.selectedtabindex = 1
+                            
+                           // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
+
+                            self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                            
+                          //  self.removeAnimate1()
 
                            
                         }
@@ -522,14 +544,18 @@ class DeliveryWaitingPopupVC: UIViewController {
                         if(JSON.response?.statusCode == 200)
                         {
                             
-                           /* let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                          /*  let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                              let nextViewController = storyBoard.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
                              nextViewController.selectedtabindex = 1
                                            // revealViewController()?.pushFrontViewController(navgitaionCon, animated: true)
 
                                 self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
                             
-                            self.removeAnimate1()
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                            
+                         //   self.removeAnimate1()
                             
                            // let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC
                            // vc.isFromDash = 1
@@ -626,7 +652,11 @@ class DeliveryWaitingPopupVC: UIViewController {
 
                             self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
                         
-                        self.removeAnimate1()
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                        self.navigationController?.pushViewController(nextViewController, animated: true)
+                        
+                       // self.removeAnimate1()
 
                         
                        // let vc = self.storyboard?.instantiateViewController(withIdentifier: "ActivityTabVC") as! ActivityTabVC

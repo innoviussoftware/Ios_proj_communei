@@ -123,10 +123,18 @@ class QRCodeVC: BaseVC {
                                // svgLayer.fillColor = UIColor(red:0.52, green:0.16, blue:0.32, alpha:1.00).cgColor
                                // svgLayer.resizeToFit(self.view.bounds)
                                 
-                                svgLayer.resizeToFit(self.viewQrCode.bounds)
+                              //  svgLayer.resizeToFit(self.viewQrCode.bounds)
+                                
+                               // svgLayer.resizeToFit(self.imgvwScaner.bounds)
+
                             }
+                            
                             self.imgvwScaner.addSubview(hammock)
+                            
+                           // self.viewQrCode.addSubview(hammock)
                         
+                          //  self.imgvwScaner.isHidden = true
+                            
                           //  self.view.addSubview(hammock)
                         }
                         

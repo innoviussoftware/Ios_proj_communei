@@ -30,6 +30,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
     var strGender = "Male"
     var strRelation = ""
     
+    var imgData : Data?
+
 
     
     @IBOutlet weak var txtprofession: SkyFloatingLabelTextField!
@@ -276,9 +278,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         viewCamera.isHidden = true
         
         txtProfessionOther.isHidden = true
-        constraintHeightProfessionOther.constant = 0
-        constraintTopProfessionOther.constant = 0
-        
+      //  constraintHeightProfessionOther.constant = 0
+      //  constraintTopProfessionOther.constant = 0
 
         txtbloodgroup.addTarget(self, action: #selector(OpenPicker(txt:)), for: .editingDidBegin)
         txtbloodgroup.addDoneOnKeyboardWithTarget(self, action: #selector(DoneBlodGroup), shouldShowPlaceholder: true)
@@ -293,14 +294,28 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         tap.addTarget(self, action: #selector(tapviewCameraimage))
         viewCamera.addGestureRecognizer(tap)
         
+        pickerview1.delegate = self
+        
+        pickerview1.dataSource = self
+        
+        let toolBar1 = UIToolbar()
+        toolBar1.barStyle = .default
+        toolBar1.isTranslucent = true
+        toolBar1.tintColor = AppColor.appcolor
+        let doneButton1 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed1))
+        let cancelButton1 = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
+        let spaceButton1 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar1.setItems([cancelButton1, spaceButton1, doneButton1], animated: false)
+               
+        toolBar1.isUserInteractionEnabled = true
+        toolBar1.sizeToFit()
+        txtprofession.inputAccessoryView = toolBar1
+        txtprofession.inputView = pickerview1
         
         ApiCallGetProfession()
         
         ApiCallGetBlood()
 
-        pickerview1.delegate = self
-        pickerview1.dataSource = self
-        
         if(isfrom == 1)
         {
             
@@ -318,7 +333,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             
             txtprofession.text = member?.professionName
             
-            txtProfessionOther.text = member?.professionDetails
+           // txtProfessionOther.text = member?.professionDetails
             
             let date =   member?.dateOfBirth // "2016-02-10 00:00:00"
             let dateFormatter = DateFormatter()
@@ -341,6 +356,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             } */
 //            let str = formatter.string(from: strDate!)
 //            txtbirthdate.text = str //member?.dob
+            
             txtbloodgroup.text = member?.bloodGroupName
             txtGender.text = member?.gender
             txtRelation.text = member?.relation
@@ -362,20 +378,6 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         setrightviewnew(textfield:txtRelation, image: #imageLiteral(resourceName: "ic_downorange")) */
         
        
-        let toolBar1 = UIToolbar()
-        toolBar1.barStyle = .default
-        toolBar1.isTranslucent = true
-        toolBar1.tintColor = AppColor.appcolor
-        let doneButton1 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed1))
-        let cancelButton1 = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelPressed))
-        let spaceButton1 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar1.setItems([cancelButton1, spaceButton1, doneButton1], animated: false)
-               
-               
-        toolBar1.isUserInteractionEnabled = true
-        toolBar1.sizeToFit()
-        txtprofession.inputAccessoryView = toolBar1
-        txtprofession.inputView = pickerview1
         
                
         // 21/10/20. temp comment
@@ -394,7 +396,6 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
         
     }
-    
     
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -644,14 +645,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         if(pickerView == pickerview1){
-           if(row == professionary.count + 1){
+         /*  if(row == professionary.count + 1){
                     return "other"
-            }else{
+            }else{ */
                 return professionary[row].name
 
                 // Fatal error: Index out of range: file Swift/ContiguousArrayBuffer.swift, line 444
 
-            }
+          // }
       //  }else{ */
            }else if activeTextField == txtbloodgroup{
                 return bloodgroupary[row].name
@@ -669,19 +670,19 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
         if(pickerView == pickerview1)
         {
-            if(row == professionary.count + 1)
+          /*  if(row == professionary.count + 1)
             {
                 txtprofession.text =  "other"
                 professiongroupId = 0
 
             }
             else
-            {
+            { */
                // txtprofession.text = professionary[row].name
 
             professiongroupId = professionary[row].id //row
 
-            }
+           // }
         }else{
             if activeTextField == txtbloodgroup{
                 txtbloodgroup.text = bloodgroupary[row].name
@@ -717,10 +718,10 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         toolbar.sizeToFit()
         
         //done button & cancel button
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(donedatePicker))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donedatePicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(cancelDatePicker))
-        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: false)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
         datePicker.maximumDate = Date()
         txtbirthdate.inputAccessoryView = toolbar
         txtbirthdate.inputView = datePicker
@@ -755,6 +756,11 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             imguser.layer.cornerRadius = imguser.frame.size.height/2
             imguser.clipsToBounds = true
             imguser.image =  image
+            
+            self.imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
+
+          //  imgData = (UIImagePNGRepresentation(image)! as NSData) as Data
+
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -925,13 +931,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                DispatchQueue.main.async {
-                
-                    if(self.imguser.image != nil)
-                    {
-                        let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                        MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
-                    }
+                   // if(self.imguser.image != nil)
+                // (self.imguser.image == nil) &&
+                    
+                if (self.imgData == nil) {
+                    print("imgData is empty")
+                }else{
+                   // self.imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
+                    MultipartFormData.append(self.imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg/png")
                 }
                 
                 
@@ -1076,15 +1083,16 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                     MultipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
                 }
                 
-                DispatchQueue.main.async {
-
-                    if(self.imguser.image != nil)
+                   // if(self.imguser.image != nil)
+                if (self.imgData == nil) {
+                    print("imgData is empty")
+                }else
                     {
-                        let imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
-                        MultipartFormData.append(imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                       // self.imgData = UIImageJPEGRepresentation(self.imguser.image!, 1.0)
+                        MultipartFormData.append(self.imgData!, withName: "ProfilePicture", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
                     }
                     
-                }
+                
                 
                 
             }, to: webservices().baseurl + API_UPDATE_FAMILY_MEMBER ,headers:["Authorization": "Bearer " + token]).uploadProgress(queue: .main, closure: { progress in
@@ -1187,7 +1195,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
                        {
                            
                            self.professionary = resp.data
-                        self.pickerview1.reloadAllComponents()
+                        
+                           self.pickerview1.reloadAllComponents()
                            
                        }
                        else
