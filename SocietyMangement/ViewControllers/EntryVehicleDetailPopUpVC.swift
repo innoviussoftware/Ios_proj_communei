@@ -97,7 +97,7 @@ class EntryVehicleDetailPopUpVC: BaseVC {
                    
                     let alert = webservices.sharedInstance.AlertBuilder(title:Alert_Titel, message:err.localizedDescription)
                     self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError ?? "")
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }

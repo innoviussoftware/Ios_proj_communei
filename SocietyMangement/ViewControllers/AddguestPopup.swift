@@ -410,7 +410,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     @objc func taprecent()
     {
-        if(frequencyType == "once"){
+        if(frequencyType == "once") {  // single
             if(txtdate.text!.isEmpty)
             {
                 let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter date")

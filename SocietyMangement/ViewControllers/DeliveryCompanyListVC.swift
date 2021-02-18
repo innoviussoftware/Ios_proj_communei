@@ -311,7 +311,7 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
          self.navigationController?.popViewController(animated: true)
      }
     
@@ -526,7 +526,6 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
             print("strlbl : ",strlbl)
         } */
         
-
         self.navigationController?.popViewController(animated: true)
 
     }

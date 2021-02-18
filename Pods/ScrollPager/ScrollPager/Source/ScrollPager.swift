@@ -267,7 +267,6 @@ import UIKit
             let button = buttons[i]
             button.frame = CGRect(x: width * CGFloat(i), y: y, width: width, height: height)
             button.setTitleColor((i == selectedIndex) ? selectedTextColor : textColor, for: .normal)
-          //  button.titleLabel?.font = (i == selectedIndex) ? selectedFont : font
             button.titleLabel?.font = (i == selectedIndex) ? selectedFont : font
         }
     }

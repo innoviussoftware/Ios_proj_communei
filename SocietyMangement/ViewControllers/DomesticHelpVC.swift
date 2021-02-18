@@ -67,6 +67,7 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
         self.navigationController?.isNavigationBarHidden = true
         
         pager.delegate = self
+        
         pager.tintColor  = AppColor.appcolor
         
         txtSearchbar.layer.borderColor = UIColor.clear.cgColor
@@ -236,8 +237,10 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
         
         if changedIndex == 0{//Daily
             apicallGetDailyhelperList()
+            view.endEditing(true)
         }else{
             apicallGetOnDemandhelperList()
+            view.endEditing(true)
         }
         
         

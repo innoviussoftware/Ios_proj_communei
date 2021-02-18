@@ -61,10 +61,10 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
         
         
         pager.delegate = self
+        
         pager.tintColor  = AppColor.appcolor
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Buy", viewBuy),("Sell", viewSell)])
-        
 
         collectionBuyCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
         collectionSellCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
@@ -845,12 +845,19 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
                // }
             }
             
-            
-            if arrRecommend[indexPath.row].productsimages!.count > 0{
-                if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
-                {
-                    cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "vendor profile"))
+            if arrSellData[indexPath.row].productsimages != nil {
+                if arrRecommend[indexPath.row].productsimages!.count > 0{
+                    if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
+                    {
+                        cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "vendor profile"))
+                    }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                    }
+                }else{
+                    cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                 }
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
             }
             
             cell.btnEdit.tag = indexPath.row
@@ -951,15 +958,22 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
            cell.selectionStyle = .none
                    
           cell.stkviw.isHidden = true
-                  
-          if arrRecommend[indexPath.row].productsimages!.count > 0{
-                if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
-                      {
-                          cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
-                        }
-                      
-                  }
-                  
+            
+            if arrRecommend[indexPath.row].productsimages != nil {
+                if arrRecommend[indexPath.row].productsimages!.count > 0 {
+                    if arrRecommend[indexPath.row].productsimages?[0].attachment != nil
+                          {
+                              cell.imgProduct.sd_setImage(with: URL(string: (arrRecommend[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                    }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                    }
+                }else{
+                    cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                }
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+            }
+            
                   //            let rupee = "\u{20B9}"
        // cell.lblPrice.text = String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)
             
@@ -991,13 +1005,20 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
                          cell.btnDelete.tag = indexPath.row
                   //  }
                     
-                    
+            if arrSellData[indexPath.row].productsimages != nil {
                     if arrSellData[indexPath.row].productsimages!.count > 0{
                         if arrSellData[indexPath.row].productsimages?[0].attachment != nil
                         {
                             cell.imgProduct.sd_setImage(with: URL(string: (arrSellData[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                        }else{
+                            cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                         }
+                    }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                     }
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+            }
                                         
                     cell.lblPrice.text = "\u{20B9} "+"\(arrSellData[indexPath.row].amount!)" // "\(arrSellData[indexPath.row].amount!)"
                 // String(format: "\u{20B9} %@", arrRecommend[indexPath.row].amount!)

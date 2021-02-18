@@ -339,12 +339,20 @@ extension CategoryDetailsVC : UICollectionViewDataSource,UICollectionViewDelegat
 //            }
         //}
         
-        if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
+        if arrCategoryDetails[indexPath.row].productsimages != nil {
+                if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
                        if arrCategoryDetails[indexPath.row].productsimages?[0].attachment != nil
                        {
                            cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "vendor-1"))
-                       }
-                   }
+                       }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                    }
+                }else{
+                    cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                }
+        }else{
+            cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+        }
   
                
         cell.lblPrice.text =  "\u{20B9}"+"\(arrCategoryDetails[indexPath.row].amount!)"// //String(format: "\u{20B9} %@", arrCategoryDetails[indexPath.row].amount!)
@@ -416,13 +424,20 @@ extension CategoryDetailsVC : UITableViewDelegate,UITableViewDataSource {
           //            }
                   //}
                   
+            if arrCategoryDetails[indexPath.row].productsimages != nil {
                   if arrCategoryDetails[indexPath.row].productsimages!.count > 0{
-                                 if arrCategoryDetails[indexPath.row].productsimages?[0].attachment != nil
-                                 {
-                                     cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
-                                 }
-                             }
-            
+                        if arrCategoryDetails[indexPath.row].productsimages?[0].attachment != nil
+                            {
+                                    cell.imgProduct.sd_setImage(with: URL(string: (arrCategoryDetails[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                            }else{
+                                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                            }
+                    }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                    }
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+            }
                          
                   cell.lblPrice.text =  "\u{20B9}"+"\(arrCategoryDetails[indexPath.row].amount!)"// "\(arrCategoryDetails[indexPath.row].amount!)"
                   cell.lblName.text = arrCategoryDetails[indexPath.row].title

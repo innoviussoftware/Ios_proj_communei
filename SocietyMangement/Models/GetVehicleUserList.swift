@@ -13,16 +13,16 @@ import Foundation
 // MARK: - GetVehicleUserList
 struct GetVehicleUserList: Codable {
     let data: [VehicleDataUser]?
-    let status: Int
-    let message: String
+    let status: Int?
+    let message: String?
 }
 
 // MARK: - Datum
 struct VehicleDataUser: Codable {
-    let id: Int
-    let number: String
-    let numberDigits, vehicleTypeID: Int
-    let type: String
+    let id: Int?
+    let number: String?
+    let numberDigits, vehicleTypeID: Int?
+    let type: String?
 
     enum CodingKeys: String, CodingKey {
         case id = "VehicleID"

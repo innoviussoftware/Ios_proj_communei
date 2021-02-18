@@ -1385,9 +1385,9 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
                         return
                     }
                     
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    print(err.asAFError)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                   // self.present(alert, animated: true, completion: nil)
+                    print(err.asAFError!)
                     webservices().StopSpinner()
                     
                 }
@@ -1397,13 +1397,13 @@ class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource ,
         @objc func deletevehicle(sender:UIButton)
         {
             
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+           // let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                              let avc = storyboard?.instantiateViewController(withClass: AlertBottomViewController.self)
                                              avc?.titleStr = "Delete Vehicle"
                                              avc?.subtitleStr = "Are you sure you want to delete this vehicle?"
                                              avc?.yesAct = {
                                              
-                                                self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id)
+                                                self.ApiCallDeleteVehicle(id: self.arrVehicleList[sender.tag].id!)
 
                                                  }
                                              avc?.noAct = {

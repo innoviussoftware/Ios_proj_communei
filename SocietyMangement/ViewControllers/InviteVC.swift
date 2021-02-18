@@ -491,6 +491,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
           overrideUserInterfaceStyle = .light
         }
         
+        pager.delegate = self
+        
         txtSearchbar.layer.borderColor = UIColor.clear.cgColor
         
         txtSearchbar.borderStyle = .none

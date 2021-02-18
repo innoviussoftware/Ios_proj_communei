@@ -57,7 +57,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     @IBOutlet weak var collectionHours: UICollectionView!
 
     @IBOutlet weak var collectionDays: UICollectionView!
-
        
     @IBOutlet weak var pager: ScrollPager!
        
@@ -111,6 +110,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pager.delegate = self
+
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Single", ViewSingle),
             ("Multiple", ViewMultiple)
@@ -663,7 +664,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            if(isfrom == "Single") {
                self.txtDeliveryCompanyName.text = name
                vendorID = VendorID
-                isPublic = IsPublic
+               isPublic = IsPublic
            }
     }
     
@@ -683,7 +684,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-            
+                    
         if(textField == txtDeliveryCompanyName)
             {
                    txtDeliveryCompanyName.resignFirstResponder()
@@ -691,26 +692,27 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
                                 
-            popOverConfirmVC.isfrom = "Single"
+                popOverConfirmVC.isfrom = "Single"
 
                     popOverConfirmVC.selectedindex = index
             
-            popOverConfirmVC.strTitleName = "Select Delivery Company"
+                popOverConfirmVC.strTitleName = "Select Delivery Company"
                 
-            popOverConfirmVC.api_Company_Selection = "user/vendors/2"
+                popOverConfirmVC.api_Company_Selection = "user/vendors/2"
 
                 popOverConfirmVC.strlbl = txtDeliveryCompanyName.text!
             
-            popOverConfirmVC.visitorTypeID = 2
+                popOverConfirmVC.visitorTypeID = 2
 
-                   if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
+                  /* if(txtDeliveryCompanyName.text == popOverConfirmVC.strlbl)
                    {
 
                         print("Single Select Delivery Company")
 
                       // popOverConfirmVC.selectedary = self.selectedary
                        // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
-                   }
+                   } */
+            
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
         }
@@ -734,12 +736,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             popOverConfirmVC.visitorTypeID = 2
 
-               
-                   if(txtDeliveryCompanyName1.text != "")
+                  /* if(txtDeliveryCompanyName1.text != "")
                    {
                         print("Multiple Select Delivery Company")
                        // popOverConfirmVC.alertGuardary = self.nameary
-                   }
+                   } */
+            
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
         }
@@ -813,6 +815,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             viewbottom1.isHidden = true
 
         }
+        
             
     }
     
@@ -1414,7 +1417,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 arrSelectionDayId.add(arrDays[indexPath.row].daysTypeID!)
             }
             
-            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+           // self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
 
              // selectedindex = indexPath.row
             

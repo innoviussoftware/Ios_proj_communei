@@ -606,14 +606,21 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
            cell.selectionStyle = .none
                    
            cell.stkviw.isHidden = true
-                  
-          if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
-                if arrRelatedProduct[indexPath.row].productsimages?[0].attachment != nil
+               
+            if arrRelatedProduct[indexPath.row].productsimages != nil {
+                if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
+                    if arrRelatedProduct[indexPath.row].productsimages?[0].attachment != nil
                       {
                           cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
+                        }else{
+                            cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                         }
-                      
-                  }
+                  }else{
+                    cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+                }
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+            }
                   
                   //            let rupee = "\u{20B9}"
         cell.lblPrice.text = "\u{20B9} "+"\(arrRelatedProduct[indexPath.row].amount!)"//"\(arrRelatedProduct[indexPath.row].amount!)"
@@ -643,16 +650,22 @@ extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
                        // }
                  //   }
                     
-                    
+            if arrRelatedProduct[indexPath.row].productsimages != nil {
                     if arrRelatedProduct[indexPath.row].productsimages!.count > 0{
                         if arrRelatedProduct[indexPath.row].productsimages?[0].attachment != nil
                         {
                             
                             cell.imgProduct.sd_setImage(with: URL(string: (arrRelatedProduct[indexPath.row].productsimages?[0].attachment!)!), placeholderImage: UIImage(named: "ic_bg_buy"))
                             
+                        }else{
+                            cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                         }
+                    }else{
+                        cell.imgProduct.image = UIImage(named: "ic_bg_buy")
                     }
-                    
+            }else{
+                cell.imgProduct.image = UIImage(named: "ic_bg_buy")
+            }
               
                     
                     cell.lblPrice.text = "\u{20B9} "+"\(arrRelatedProduct[indexPath.row].amount!)" // "\(arrRelatedProduct[indexPath.row].amount!)"

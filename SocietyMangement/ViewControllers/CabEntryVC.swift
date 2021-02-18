@@ -116,6 +116,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pager.delegate = self
+        
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Single", ViewSingle),
             ("Multiple", ViewMultiple)
@@ -1054,7 +1056,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     // MARK: - textField delegate methods
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textfield == txtstartdate {
+        
+       /* if textfield == txtstartdate {
             viewbottom.isHidden = true
             viewbottom1.isHidden = true
            //view.endEditing(true)
@@ -1084,7 +1087,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             viewbottom.isHidden = true
             viewbottom1.isHidden = false
            // self.view.endEditing(true)
-        }
+        } */
         
         return true
     }
@@ -1113,13 +1116,14 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
             popOverConfirmVC.visitorTypeID = 3
 
-                   if(txtCabCompanyName.text != "")
+                  /* if(txtCabCompanyName.text != "")
                    {
                         print("Single Select Your Cab")
 
                       // popOverConfirmVC.selectedary = self.selectedary
                        // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
-                   }
+                   } */
+            
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
         }
@@ -1143,12 +1147,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
 
            // popOverConfirmVC. = "user/vendor/add"
 
-                   if(txtCabCompanyName1.text != "")
+                  /* if(txtCabCompanyName1.text != "")
                    {
                         print("Multiple Select Your Cab")
 
                        // popOverConfirmVC.alertGuardary = self.nameary
-                   }
+                   } */
+            
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
             viewbottom1.isHidden = true
@@ -1369,7 +1374,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 arrSelectionDayId.add(arrDays[indexPath.row].daysTypeID!)
             }
             
-            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+         //   self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
 
               
            //   selectedindex = indexPath.row

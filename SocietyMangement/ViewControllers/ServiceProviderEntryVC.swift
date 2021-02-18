@@ -205,6 +205,8 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        pager.delegate = self
+        
         pager.addSegmentsWithTitlesAndViews(segments: [
                    ("Single", ViewSingle),
                    ("Multiple", ViewMultiple)
@@ -1208,14 +1210,15 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
 
             popOverConfirmVC.visitorTypeID = 5
 
-                      if(txtCompanyName.text != "")
+                     /* if(txtCompanyName.text != "")
                       {
 
                         print("Single Select Service Provider")
 
                          // popOverConfirmVC.selectedary = self.selectedary
                           // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
-                      }
+                      } */
+            
                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
            }
@@ -1237,13 +1240,14 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
 
             popOverConfirmVC.visitorTypeID = 5
 
-                      if(txtCompanyName1.text != "")
+                     /* if(txtCompanyName1.text != "")
                       {
                         
                             print("Multiple Select Service Provider")
                         
                           // popOverConfirmVC.alertGuardary = self.nameary
-                      }
+                      } */
+            
                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
             
            }
@@ -1259,10 +1263,12 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
             
             popOverConfirmVC.selectedindex = indexservice
             
-            if(txtServiceType.text != "")
+           /* if(txtServiceType.text != "")
             {
+                print("Single Select Service Provider Service")
+         
                 // popOverConfirmVC.alertGuardary = self.nameary
-            }
+            } */
             
           self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
@@ -1279,12 +1285,14 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
 
             popOverConfirmVC.selectedindex1 = indexservice1
             
-            if(txtServiceType1.text != "")
+           /* if(txtServiceType1.text != "")
             {
+                print("Multiple Select Service Provider Service")
+
                 // popOverConfirmVC.alertGuardary = self.nameary
-            }
+            } */
             
-          self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+            self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
             
         }
         
@@ -1457,7 +1465,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
                 arrSelectionDayId.add(arrDays[indexPath.row].daysTypeID!)
             }
             
-            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+          //  self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
 
              // selectedindex = indexPath.row
             
