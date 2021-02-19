@@ -92,6 +92,15 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
 
         }
     
+    func strChangeDateFormate11(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            return  dateFormatter.string(from: date!)
+
+        }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,8 +130,13 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
          let formatter = DateFormatter()
          formatter.dateFormat = "dd-MM-yyyy"
         
-        txtdate.text =  strChangeDateFormate(strDateeee: strStartDate)
-
+        
+        if isfrom == 11 || isfrom == 22 || isfrom == 33 {
+            txtdate.text = strChangeDateFormate11(strDateeee: strStartDate)
+        }else{
+            txtdate.text =  strChangeDateFormate(strDateeee: strStartDate)
+        }
+    
         // txtdate.text = strStartDate
         
        // let formatter1 = DateFormatter()
@@ -137,7 +151,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         
          var Msg_Date = ""
         
-        if isfrom == 1 {
+        if isfrom == 1 || isfrom == 11 {
             let timeFormat = DateFormatter()
             timeFormat.dateFormat = "h:mm a"
             let dateFromStr = timeFormat.date(from: StrTime)!
@@ -145,7 +159,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             
             txtvaildtill.text = hourary[6]
 
-        }else if isfrom == 4 {
+        }else if isfrom == 4 || isfrom == 33 {
             let timeFormat = DateFormatter()
             timeFormat.dateFormat = "h:mm a"
             let dateFromStr = timeFormat.date(from: StrTime)!
@@ -179,12 +193,12 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         
         showTimepPicker()
         
-        if isfrom == 1 {
+        if isfrom == 1 || isfrom == 11 {
             viewinnerHeightCons.constant = 255
             btncheckMark.isHidden = true
             lblDeliveryName.isHidden = true
             btnUpdateTopCons.constant = 20
-        }else if isfrom == 2 {
+        }else if isfrom == 2 || isfrom == 22 {
             btncheckMark.isHidden = false
             lblDeliveryName.isHidden = false
             viewinnerHeightCons.constant = 300
@@ -196,7 +210,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                 btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
                 btncheckMark.isSelected = true
             }
-        }else if isfrom == 3 {
+        }else if isfrom == 3 || isfrom == 33 {
             viewinnerHeightCons.constant = 255
             btncheckMark.isHidden = true
             lblDeliveryName.isHidden = true
@@ -404,15 +418,18 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
         var after_add_time = ""
-
+        
         if txtvaildtill.text == "Day End" {
-            txtvaildtill.text = time
             
+            // 19/02/21
             
-            let dateFormatter = DateFormatter()
+           /* txtvaildtill.text = time
             
-           // let isoDate = time
-            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd" // h:mm"
+          //  let dateFormatter = DateFormatter()
+            
+         //   dateFormatter.dateFormat = "h:mm a"  */ // "yyyy-MM-dd" // h:mm"
+            
+            // let isoDate = time
 
           //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
           //  let date = dateFormatter.date(from:isoDate)!
@@ -465,7 +482,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             
         var param = Parameters()
 
-        if isfrom == 1 {
+        if isfrom == 1 || isfrom == 11 {
             param  = [
                "VisitStartDate": txtdate.text!,
                "FromTime": txttime.text!,
@@ -474,7 +491,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                "UserActivityID": UserActivityID!,
                "VisitorEntryTypeID": VisitorEntryTypeID!
            ]
-        }else if isfrom == 2 {
+        }else if isfrom == 2 || isfrom == 22 {
             param  = [
                "VisitStartDate": txtdate.text!,
                "FromTime": txttime.text!,
@@ -484,7 +501,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
                "VisitorEntryTypeID": VisitorEntryTypeID!,
                 "IsLeaveAtGate": singleDeliveryCheckGate
            ]
-        }else if isfrom == 3 {
+        }else if isfrom == 3 || isfrom == 33 {
             param  = [
                "VisitStartDate": txtdate.text!,
                "FromTime": txttime.text!,
@@ -582,13 +599,14 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         var preApprovedOutTime = ""
 
         if txtvaildtill.text == "Day End" {
-            txtvaildtill.text = time
             
+          /*  txtvaildtill.text = time
             
             let dateFormatter = DateFormatter()
             
            // let isoDate = time
-            dateFormatter.dateFormat = "h:mm a" // "yyyy-MM-dd" // h:mm"
+            
+            dateFormatter.dateFormat = "h:mm a" */ // "yyyy-MM-dd" // h:mm"
 
           //  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
           //  let date = dateFormatter.date(from:isoDate)!
@@ -763,7 +781,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         
         let cell: Buildingcell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! Buildingcell
         
-        cell.lblname.text = hourary[indexPath.row] as? String
+        cell.lblname.text = hourary[indexPath.row] //as? String
         if(selectedindex == indexPath.row)
         {
             

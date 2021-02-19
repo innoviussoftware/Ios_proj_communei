@@ -208,7 +208,11 @@ import UIKit
         UIView.animate(withDuration: animated ? TimeInterval(animationDuration) : 0.0, delay: 0.0, options: .curveEaseOut, animations: { [weak self] in
             
             guard let strongSelf = self else { return }
+            
+            // 19/02/21 temp comment
+
             let width = strongSelf.frame.size.width / CGFloat(strongSelf.buttons.count)
+            
             let button = strongSelf.buttons[index]
             
             strongSelf.redrawButtons()

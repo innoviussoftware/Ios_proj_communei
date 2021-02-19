@@ -635,8 +635,8 @@ class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectio
                     }
                     print(resp)
                 case .failure(let err):
-                    let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
+                   // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                  //  self.present(alert, animated: true, completion: nil)
                     print(err.asAFError!)
                     webservices().StopSpinner()
                     

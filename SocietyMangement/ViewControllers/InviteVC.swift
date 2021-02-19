@@ -322,7 +322,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                      
                  }
             
-                 pager.setSelectedIndex(index: 0, animated: true)
+                 pager.setSelectedIndex(index: 2, animated: true)
                  txtname.text = ""
                  txtcontact.text = ""
             
@@ -461,10 +461,10 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "EditGuestVC") as! EditGuestVC
         vc.arrInvitedmember = arrContactName
         
-        
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+    
     
     func strChangeDateFormate(strDateeee:String) -> String {
         let formatter = DateFormatter()

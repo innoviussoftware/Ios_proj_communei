@@ -283,10 +283,8 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
             ]
         
         print("param Multi add date : ",param)
-
         
             webservices().StartSpinner()
-            
             
         Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + "user/pre-approved/edit" ,token: token as! String, param: param) { JSON in
 

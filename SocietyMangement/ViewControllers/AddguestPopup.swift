@@ -94,6 +94,8 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     @IBOutlet weak var lblfrecontact: UILabel!
     
+    @IBOutlet weak var lblfrerecent: UILabel!
+    
     @IBOutlet weak var lblfreemanually: UILabel!
     
     @IBOutlet weak var collectionHours: UICollectionView!
@@ -304,10 +306,16 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         
         lblrecent.isUserInteractionEnabled = true
 
+        lblfrerecent.isUserInteractionEnabled = true
+
         
         let tap12 = UITapGestureRecognizer()
         tap12.addTarget(self, action: #selector(taprecent))
         lblrecent.addGestureRecognizer(tap12)
+        
+        let tap21 = UITapGestureRecognizer()
+        tap21.addTarget(self, action: #selector(taprecent))
+        lblfrerecent.addGestureRecognizer(tap21)
         
         
         let tap3 = UITapGestureRecognizer()

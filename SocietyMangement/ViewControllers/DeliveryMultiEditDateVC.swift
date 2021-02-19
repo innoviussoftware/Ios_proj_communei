@@ -115,7 +115,6 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         
         var Msg_Date1 = strEndTime
 
-
            let dateFormatterGet = DateFormatter()
            dateFormatterGet.dateFormat = "HH:mm:ss"
            let dateFormatterPrint = DateFormatter()
@@ -134,7 +133,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         
         showTimepPicker_Multiple()
         
-        if isfrom == 2 {
+        if isfrom == 2 || isfrom == 22 {
             
             viewinnerHeightCons.constant = 390
             btnUpdateTopCons.constant = 60
@@ -149,7 +148,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
                 btncheckMark.isSelected = true
             }
-        }else if isfrom == 3 {
+        }else if isfrom == 3 || isfrom == 33 {
             
             viewinnerHeightCons.constant = 350
             btnUpdateTopCons.constant = 20
@@ -347,7 +346,40 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         self.view.endEditing(true)
     }
     
+    func strChangeDateFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "dd-MM-yyyy"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
     @IBAction func btnaddDateDeliveryAction(_ sender: UIButton) {
+        
+        let strStartDate = txtstartdate.text! // first date
+        let strEndDate = txtenddate.text! // end date
+        
+        print("strStartDate ",strStartDate)
+        
+        print("strEndDate ",strEndDate)
+
+       
+        let startdate = strChangeDateFormate(strDateeee: strStartDate)
+        let enddate = strChangeDateFormate(strDateeee: strEndDate)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+          
+        let startD = formatter.date(from: startdate)!
+        let endD = formatter.date(from: enddate)!
+      
+        print("startdate ",startdate)
+        print("enddate ",enddate)
+        
+        print("startD ",startD)
+        print("endD ",endD)
         
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
@@ -388,7 +420,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
             
         var param = Parameters()
 
-        if isfrom == 2 {
+        if isfrom == 2 || isfrom == 22 {
              param  = [
                 "VisitStartDate": txtstartdate.text!,
                 "VisitEndDate": txtenddate.text!,

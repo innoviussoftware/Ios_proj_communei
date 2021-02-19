@@ -522,10 +522,42 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
        
     @IBAction func btnaddCabaction_1(_ sender: UIButton) {
         
+        let strStartDate = txtstartdate.text! // first date
+        let strEndDate = txtenddate.text! // end date
+        
+        print("strStartDate ",strStartDate)
+        
+        print("strEndDate ",strEndDate)
+
+       /* let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+       let startdate = formatter.date(from: strStartDate)
+       let enddate = formatter.date(from: strEndDate)
+     
+        print("startdate ",date1)
+        print("enddate ",date2) */
+        
+        let startdate = strChangeDateFormate(strDateeee: strStartDate)
+        let enddate = strChangeDateFormate(strDateeee: strEndDate)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+          
+        let startD = formatter.date(from: startdate)!
+        let endD = formatter.date(from: enddate)!
+      
+        print("startdate ",startdate)
+        print("enddate ",enddate)
+        
+        print("startD ",startD)
+        print("endD ",endD)
+        
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-        }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+      //}else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        }else if(startD > endD) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {

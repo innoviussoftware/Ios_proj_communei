@@ -117,21 +117,20 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             ("Multiple", ViewMultiple)
         ])
         
-
-        if(isfrom == "")
-        {
-            pager.setSelectedIndex(index: 0, animated: true)
-        }
-        
-        if(isfrom == "Single")
-        {
-            pager.setSelectedIndex(index: 0, animated: true)
-        }
-        
-        if(isfrom == "Multiple")
-        {
-            pager.setSelectedIndex(index: 1, animated: true)
-        }
+//        if(isfrom == "")
+//        {
+//            pager.setSelectedIndex(index: 0, animated: true)
+//        }
+//
+//        if(isfrom == "Single")
+//        {
+//            pager.setSelectedIndex(index: 0, animated: true)
+//        }
+//
+//        if(isfrom == "Multiple")
+//        {
+//            pager.setSelectedIndex(index: 1, animated: true)
+//        }
         
         singleDeliveryCheckGate = 0
         
@@ -645,9 +644,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         
         if changedIndex == 0{
-            view.endEditing(true)
+            self.view.endEditing(true)
         }else{
-            view.endEditing(true)
+            self.view.endEditing(true)
         }
         
     }
@@ -687,14 +686,14 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                     
         if(textField == txtDeliveryCompanyName)
             {
-                   txtDeliveryCompanyName.resignFirstResponder()
+                  // txtDeliveryCompanyName.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
                                 
                 popOverConfirmVC.isfrom = "Single"
 
-                    popOverConfirmVC.selectedindex = index
+                popOverConfirmVC.selectedindex = index
             
                 popOverConfirmVC.strTitleName = "Select Delivery Company"
                 
@@ -719,7 +718,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         if (textField == txtDeliveryCompanyName1)
             {
-                   txtDeliveryCompanyName1.resignFirstResponder()
+                  // txtDeliveryCompanyName1.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
@@ -751,8 +750,10 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             viewbottom1.isHidden = false
             
             viewbottom.isHidden = true
+            
+            view.endEditing(true)
 
-            txtAllWeek.resignFirstResponder()
+          //  txtAllWeek.becomeFirstResponder()
                     
             // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
@@ -763,7 +764,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             viewbottom1.isHidden = true
             
-            txtvaildtill.resignFirstResponder()
+            view.endEditing(true)
+
+           // txtvaildtill.becomeFirstResponder()
 
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
@@ -772,6 +775,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 textfield = txtdate
                 viewbottom.isHidden = true
                 viewbottom1.isHidden = true
+                
+              //  txtdate.becomeFirstResponder()
 
             }
             if(textField == txtstartdate)
@@ -780,6 +785,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 textfield = txtstartdate
                 viewbottom.isHidden = true
                 viewbottom1.isHidden = true
+                
+              //  txtstartdate.becomeFirstResponder()
+
 
             }
             if(textField == txtenddate)
@@ -797,14 +805,29 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
               //  lbldays.text =  (components.day! as NSNumber).stringValue
                 viewbottom.isHidden = true
                 viewbottom1.isHidden = true
+                
+              //  txtenddate.becomeFirstResponder()
 
             }
+        if(textField == txttime) {
+            textfield = txttime
+            
+            viewbottom.isHidden = true
+            viewbottom1.isHidden = true
+            
+           // txttime.becomeFirstResponder()
+
+
+        }
         
         if(textField == txtStartTime) {
             textfield = txtStartTime
             
             viewbottom.isHidden = true
             viewbottom1.isHidden = true
+            
+           // txtStartTime.becomeFirstResponder()
+
 
         }
              
@@ -813,6 +836,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             viewbottom.isHidden = true
             viewbottom1.isHidden = true
+
+           // txtEndTime.becomeFirstResponder()
 
         }
         
@@ -1423,7 +1448,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
              // viewbottom.isHidden = true
             //  viewmain.backgroundColor = UIColor.white
+            
               collectionDays.reloadData()
+            
         }
         
     }
