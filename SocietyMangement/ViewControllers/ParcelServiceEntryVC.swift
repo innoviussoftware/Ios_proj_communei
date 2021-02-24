@@ -8,12 +8,15 @@
 
 import UIKit
 import SkyFloatingLabelTextField
+import SWRevealViewController
 
 import Alamofire
 
+
+
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
+class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate {
 //, DeliveryCompanyListProtocol {
     
     var hourary = ["2 Hr" , "4 Hr" , "6 Hr" , "8 Hr" , "10 Hr" , "12 Hr"  ,"Day End"]
@@ -228,10 +231,14 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
 
         avc?.yesAct = {
            
-            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
             
-            self.navigationController?.pushViewController(nextViewController, animated: true)
-                                         
+            let navController = UINavigationController(rootViewController: nextViewController)
+                                            
+            navController.isNavigationBarHidden = true
+            
+            self.appDelegate.window!.rootViewController  = navController
+
         }
         avc?.noAct = {
             

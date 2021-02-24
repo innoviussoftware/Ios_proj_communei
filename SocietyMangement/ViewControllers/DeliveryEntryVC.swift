@@ -575,7 +575,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
        }
        
     
-    @IBAction func btnCheckaction(_ sender: Any) {
+    @IBAction func btnCheckaction(_ sender: UIButton) {
         if btncheckMark.isSelected == false {
             singleDeliveryCheckGate = 1
             btncheckMark.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
@@ -590,7 +590,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.view.endEditing(true)
     }
     
-    @IBAction func btnCheckaction_1(_ sender: Any) {
+    @IBAction func btnCheckaction_1(_ sender: UIButton) {
         if btncheckMark1.isSelected == false {
             multipleDeliveryCheckGate = 1
             btncheckMark1.setImage(UIImage(named: "ic_radiobuttonselect"), for: .normal)
@@ -601,7 +601,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             btncheckMark1.isSelected = false
           //  setView(view: filtrview, hidden: true)
         }
-        
         self.view.endEditing(true)
     }
     
@@ -616,11 +615,20 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         print("btnaddDeliveryaction")
     }
        
-    @IBAction func btnaddDeliveryaction_1(_ sender: Any) {
+    @IBAction func btnaddDeliveryaction_1(_ sender: UIButton) {
+        
+       // arrSelectionDayId.removeAllObjects()
+        
         if arrSelectionDayId.count == 0 {
+            for dic in arrDays {
+                arrSelectionDayId.add(dic.daysTypeID!)
+            }
+        }
+        
+       /* if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-        }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        }else */if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
@@ -678,6 +686,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            }                 
        }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        textfield.resignFirstResponder()
+      }
     
     // MARK: - textField delegate methods
 
@@ -686,7 +697,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                     
         if(textField == txtDeliveryCompanyName)
             {
-                  // txtDeliveryCompanyName.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
@@ -713,12 +723,14 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    } */
             
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+            
+                txtDeliveryCompanyName.resignFirstResponder()
+
 
         }
         
         if (textField == txtDeliveryCompanyName1)
             {
-                  // txtDeliveryCompanyName1.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
@@ -743,6 +755,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
+                txtDeliveryCompanyName1.resignFirstResponder()
+
         }
         
         if(textField == txtAllWeek)
@@ -751,9 +765,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             viewbottom.isHidden = true
             
-            view.endEditing(true)
+           // view.endEditing(true)
 
-          //  txtAllWeek.becomeFirstResponder()
+           // txtAllWeek.becomeFirstResponder()
                     
             // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
@@ -944,10 +958,17 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             print("after add time 3 --> ",after_add_time)
         }
         
+        if arrSelectionDayId.count == 0 {
+            for dic in arrDays {
+                arrSelectionDayId.add(dic.daysTypeID!)
+            }
+        }
+        
         var param = Parameters()
         
         var vendorServiceTypeID:Int?
         vendorServiceTypeID = 1
+        
         
             param  = [
                 "VisitStartDate": strDateee, // date = txtdate.text!

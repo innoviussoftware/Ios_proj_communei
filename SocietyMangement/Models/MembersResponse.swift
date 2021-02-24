@@ -27,6 +27,7 @@ struct MembersResponse: Codable {
 // MARK: - Datum
 struct Members: Codable {
     let active, bloodGroupID, contactStatus: Int?
+    let age: Int?
     let dateOfBirth, fcmToken: String?
     let gender: String?
     let memberStatus: Int?
@@ -48,6 +49,7 @@ struct Members: Codable {
 
     enum CodingKeys: String, CodingKey {
         case active = "Active"
+        case age = "Age"
         case bloodGroupID = "BloodGroupID"
         case contactStatus = "ContactStatus"
         case dateOfBirth = "DateOfBirth"
@@ -72,8 +74,6 @@ struct Members: Codable {
         case professionName = "ProfessionName"
     }
 }
-
-
 
 
 

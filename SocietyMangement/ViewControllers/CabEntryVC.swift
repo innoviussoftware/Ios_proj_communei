@@ -522,7 +522,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
        
     @IBAction func btnaddCabaction_1(_ sender: UIButton) {
         
-        let strStartDate = txtstartdate.text! // first date
+       /* let strStartDate = txtstartdate.text! // first date
         let strEndDate = txtenddate.text! // end date
         
         print("strStartDate ",strStartDate)
@@ -551,13 +551,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         print("enddate ",enddate)
         
         print("startD ",startD)
-        print("endD ",endD)
+        print("endD ",endD) */
         
         if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-      //}else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
-        }else if(startD > endD) {
+      }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+       // }else if(startD > endD) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
@@ -1133,20 +1133,19 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             
         if(textField == txtCabCompanyName)
             {
-                   txtCabCompanyName.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
                 
                     popOverConfirmVC.selectedindex = index
             
-            popOverConfirmVC.isfrom = "Single"
+                popOverConfirmVC.isfrom = "Single"
 
-            popOverConfirmVC.strTitleName = "Select Your Cab"
+                popOverConfirmVC.strTitleName = "Select Your Cab"
 
-            popOverConfirmVC.api_Company_Selection = "user/vendors/3"
+                popOverConfirmVC.api_Company_Selection = "user/vendors/3"
 
-            popOverConfirmVC.visitorTypeID = 3
+                popOverConfirmVC.visitorTypeID = 3
 
                   /* if(txtCabCompanyName.text != "")
                    {
@@ -1157,12 +1156,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                    } */
             
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+            
+                txtCabCompanyName.resignFirstResponder()
 
         }
         
         if (textField == txtCabCompanyName1)
             {
-                   txtCabCompanyName1.resignFirstResponder()
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
@@ -1189,6 +1189,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
             viewbottom1.isHidden = true
+            
+            txtCabCompanyName1.resignFirstResponder()
+
 
         }
         

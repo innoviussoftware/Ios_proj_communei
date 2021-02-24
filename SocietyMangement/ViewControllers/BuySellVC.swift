@@ -320,9 +320,9 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     
     
     
-    func apiProductList(type:String) {
+   /* func apiProductList(type:String) {
         
-    }
+    } */
     
     func apiProductListBuy()
     {
@@ -583,13 +583,13 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
         
     }
     
-    
     func apiProductDelete(id:Int)
        {
            if !NetworkState().isInternetAvailable {
                ShowNoInternetAlert()
                return
            }
+        
            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
            
            let pram:Parameters = [
@@ -604,9 +604,11 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                    if(JSON.response?.statusCode == 200)
                    {
                       
-                    self.apiProductListBuy()
+                    // 23/02/21 comment temp
                     
-                   // self.apiProductList1()
+                   // self.apiProductListBuy()
+                    
+                    self.apiProductList1()
                     
                     /*if self.strType == "1"{
                         self.apiProductList(type: "1")
@@ -990,7 +992,7 @@ extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
         
            return cell
         
-        }else{
+        }else{  // delete
             
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BuycategoryCell") as! BuycategoryCell
 

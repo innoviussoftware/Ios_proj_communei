@@ -150,7 +150,6 @@ class CategoryDetailsVC: UIViewController {
     
     
     //webservice
-    
       
         func apiProductList(ProductCategoryID:Int)
         {
@@ -160,7 +159,8 @@ class CategoryDetailsVC: UIViewController {
                          }
     //            let SociId =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
     //            let strSociId  = (SociId as NSNumber).stringValue
-                let token = UserDefaults.standard.value(forKey: USER_TOKEN)
+            
+            let token = UserDefaults.standard.value(forKey: USER_TOKEN)
             
             let pram:Parameters = [
                 "ProductCategoryID":ProductCategoryID,

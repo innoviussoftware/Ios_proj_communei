@@ -2046,7 +2046,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
        filtrview.isHidden = true
         
-        let date = NSDate()
+       let date = NSDate()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"
         let strDate = dateFormatter.string(from: date as Date)
@@ -2495,7 +2495,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
             }
-        }
+        } 
         
     }
     

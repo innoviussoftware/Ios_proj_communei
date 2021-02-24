@@ -615,6 +615,19 @@ struct Apicallhandler {
         
     }
     
+    // MARK: - Api call Deny
+    
+    func LogoutAPIDeny(URL: String,token: String,VisitingFlatID:NSString,ActivityID:NSString, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
+       
+        let parameter:Parameters = ["VisitingFlatID":VisitingFlatID,"ActivityID":ActivityID]
+
+        AF.request(URL, method: .post,parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<logout>) in
+         
+            onCompletion(response)
+            
+        }
+    }
+    
     // MARK: - Api call Delivery Visitor Approve
     
     func ApicallDeliveryVisitorApprove(URL: String, token:String,VisitingFlatID:NSString,ActivityID:NSString, onCompletion: @escaping ((_ response: DataResponse<DeliveryApproveResponse>) -> Void)) {

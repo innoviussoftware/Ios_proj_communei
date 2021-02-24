@@ -125,10 +125,16 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     
     var arrAge = NSMutableArray()
 
+    var bloodgroupary = [BloodGroup]()
+       // ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
+    
+    var agegroupary = ["0-10 Age","10-20 Age","20-30 Age","30-40 Age","40-50 Age","60-70 Age","Above 70 Age"]
+    
+    var arrTemp = NSMutableArray()
     
  //  @IBOutlet weak var tblview: UITableView!
     
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
         
         if isFromDash == 0{
             revealViewController()?.revealToggle(self)
@@ -185,7 +191,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
 
            }
-           lblProfession.textColor = AppColor.lblFilterUnselect
+            lblProfession.textColor = AppColor.lblFilterUnselect
             lblAge.textColor = AppColor.lblFilterUnselect
        }
     
@@ -384,7 +390,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
         apicallGetAllMembers()
         self.searchActive = true
-        
      
         
     }
@@ -443,16 +448,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
        // searchActive = false
 
     }
-    
-    
-    var bloodgroupary = [BloodGroup]()
-       // ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
-    
-    var agegroupary = ["0-10 Age","10-20 Age","20-30 Age","30-40 Age","40-50 Age","60-70 Age","Above 70 Age"]
-    
-  
-
-    var arrTemp = NSMutableArray()
+       
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -593,16 +589,24 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         if textfield.text?.count != 0 {
             for strCountry in membersary {
                 let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
-                
+            
                 if range != nil {
                     allmembersary.append(strCountry)
                     
                     searchActive = true
+                    lblnoproperty.isHidden = true
                     collectionbuildings.isHidden = true
                     tblMembers.isHidden = false
                     tblMembers.reloadData()
                 }
+                
+                if (allmembersary.count == 0){
+                    // searchActive = true
+                    tblMembers.isHidden = true
+                    lblnoproperty.isHidden = false
+                }
             }
+            
         }else if textfield.text?.count == 0 {
            // searchActive = false
             apicallGetBuildings()
@@ -627,6 +631,36 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         
     }
     
+    
+    /* @objc func searchRecordsAsPerText(_ textfield:UITextField) {
+
+        allmembersary.removeAll()
+            
+            if textfield.text?.count != 0 {
+                searchActive = true
+
+                for strCountry in membersary {
+                    let range = strCountry.name!.lowercased().range(of: textfield.text!, options: .caseInsensitive, range: nil,   locale: nil)
+                    
+                    if range != nil {
+                        allmembersary.append(strCountry)
+                        collectionbuildings.isHidden = true
+                        tblMembers.isHidden = false
+                        tblMembers.reloadData()
+                    }
+                }
+            }else if textfield.text?.count == 0 {
+                searchActive = false
+                
+                apicallGetBuildings()
+                collectionbuildings.isHidden = false
+            }
+            else {
+                allmembersary = membersary
+            }
+            
+        } */
+        
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
@@ -1134,19 +1168,12 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                     cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "age_grp") as? String
 
-                    
-                    //
-        //            if(selectedbloodgrop == bloodgroupary[indexPath.row])
-        //            {
-        //                cell.cb.isChecked = true
-        //
-        //            }else{
-        //
-        //                cell.cb.isChecked = false
-        //
-        //            }
-                    
+    
+            
+            // 23/2/21 temp comment
+            
                     if((arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+                   // if(arrAge.contains(agegroupary[indexPath.row]))
                     {
                         cell.bgViw.backgroundColor = UIColor(red: 242/255, green: 97/255, blue: 1/255, alpha: 1.0)
 
@@ -1188,66 +1215,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-       
-    
-         if(collectionView == collectionProfession)
-        {
-            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-            let contentNSString = arrProfessionList[indexPath.row].name
-            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
-
-            print("\(expectedLabelSize)")
-            
-            print("collectionProfession expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 35)")
-
-            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12)
-            
-        }
-        else if(collectionView == CollectionBloodGrp)
-        {
-          /*  let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-            let contentNSString = bloodgroupary[indexPath.row]
-            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:14.0)], context: nil)
-            
-            print("expectedLabelSize :- \(expectedLabelSize)")
-            
-            print("CollectionBloodGrp expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 25)")
-
-            return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31 */
-            
-            let numberOfSets = CGFloat(4.0)
-             
-             let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
-             
-             return CGSize(width:width,height: 31)
-            
-        }
-            else if(collectionView == collectionAge)
-            {
-                let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-                let contentNSString = agegroupary[indexPath.row]
-                let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
-                
-                print("\(expectedLabelSize)")
-                
-                print("collectionAge expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 25 width :- \(expectedLabelSize.size.width + 25)")
-
-                return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
-                
-            }
-         else {
-        
-            let collectionViewWidth = self.view.bounds.width - 10
-                
-            return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2 + 2)
-            
-           // return CGSize(width: 59, height:59)
-            
-        }
-    }
-    
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if (collectionView == collectionbuildings) {
@@ -1273,7 +1240,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         {
             arrSelectionCheck.removeAllObjects()
             collectionProfession.reloadData()
-            
+            collectionAge.reloadData()
+
             if (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                 
                 let dict = arrBloodGrp[indexPath.row] as! NSMutableDictionary
@@ -1307,6 +1275,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             }else{
                 arrSelectionCheck.add(arrProfessionList[indexPath.row].name)
             }
+            
             collectionProfession.reloadData()
         }
          
@@ -1330,7 +1299,16 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                 }
                 
+                let age = String(membersary[indexPath.row].age!)
+                
+                if agegroupary.contains(age){
+                    agegroupary.remove(at: membersary[indexPath.row].age!)
+                }else{
+                    arrAge.add(membersary[indexPath.row].age!)
+                }
+                
                 //selectedbloodgrop = bloodgroupary[indexPath.row]
+                
                 collectionAge.reloadData()
             }
         else
@@ -1342,6 +1320,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             // 3/9/20.
             
            // collectionbuildings.reloadData()
+            
             tblMembers.reloadData()
             apicallGetMembers()
             
@@ -1349,6 +1328,69 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         }
         
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+       
+    
+         if(collectionView == collectionProfession)
+        {
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = arrProfessionList[indexPath.row].name
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+            
+            print("\(expectedLabelSize)")
+            
+            print("collectionProfession expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 35)")
+
+            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12)
+            
+        }
+        else if(collectionView == CollectionBloodGrp)
+        {
+          /*  let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = bloodgroupary[indexPath.row]
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:14.0)], context: nil)
+            
+            print("expectedLabelSize :- \(expectedLabelSize)")
+            
+            print("CollectionBloodGrp expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 25)")
+
+            return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31 */
+            
+            let numberOfSets = CGFloat(4.0)
+             
+             let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
+             
+             return CGSize(width:width,height: 31)
+            
+        }
+            else if(collectionView == collectionAge)
+            {
+               // let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+              /*  let contentNSString = agegroupary[indexPath.row]
+                let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+                
+                print("\(expectedLabelSize)")
+                
+                print("collectionAge expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 25 width :- \(expectedLabelSize.size.width + 25)") */
+                
+              //  let expectedLabelSize = self.view.bounds.width - 10
+                
+                return CGSize(width: 110, height: 31)
+
+               // return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
+                
+            }
+         else {
+        
+            let collectionViewWidth = self.view.bounds.width - 10
+                
+            return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2 + 2)
+            
+           // return CGSize(width: 59, height:59)
+            
+        }
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -1485,7 +1527,10 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: "MembersCell") as! MembersCell
 
+                    if allmembersary.count > 0 {
                         
+                        lblnoproperty.isHidden = true
+
                         if allmembersary[indexPath.item].memberStatus == 0 ||  allmembersary[indexPath.item].memberStatus == 2{
                             //  cell.lblContact.isHidden = true
                             cell.btnCall.isHidden = true
@@ -1562,6 +1607,12 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                             cell.lblStatic.textColor =  UIColor.black
                         } */
                         
+                    }
+                        /*else{
+                        tblMembers.isHidden = true
+                        lblnoproperty.isHidden = false
+                    } */
+            
                         return cell
                        
                     }
@@ -1783,6 +1834,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         
                         self.collectionbuildings.isHidden = true
 
+                        //self.tblMembers.isHidden = true
+
                         self.lblnoproperty.isHidden = false
                         
                         self.viewnoresult.isHidden = false
@@ -1834,7 +1887,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 
             Apicallhandler().GetAllMembers(URL: webservices().baseurl + "user/society-members" ,token:strToken as! String) { JSON in
 
-
             switch JSON.result{
             case .success(let resp):
                 
@@ -1861,7 +1913,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                         }else{
                           //  self.lblNoDataFound.isHidden = true
                         }
-                        
                         
                     }
                     else
@@ -1948,7 +1999,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                             navController.isNavigationBarHidden = true
                             self.appDelegate.window!.rootViewController  = navController
                             
-                       
                     
                     return
                 }
@@ -2149,11 +2199,9 @@ extension MembersVC : UISearchBarDelegate
         imgUpDownAge.image = UIImage(named: "ic_nxt_click")
 
                arrSelectionCheck.removeAllObjects()
-               collectionProfession.reloadData()
         
-               
-                
-               
+               collectionProfession.reloadData()
+                       
                for i in 0..<self.arrBloodGrp.count{
                    if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
                        let dict = arrBloodGrp[i] as! NSMutableDictionary
@@ -2161,8 +2209,6 @@ extension MembersVC : UISearchBarDelegate
                        arrBloodGrp.replaceObject(at: i, with: dict)
                    }
                }
-               ////
-        
               
             CollectionBloodGrp.reloadData()
         

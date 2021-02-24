@@ -48,7 +48,6 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
         collectionshortcut.clipsToBounds = false
         collectionshortcut.layer.masksToBounds = false
         */
-      
         
         if(revealViewController() != nil)
         {

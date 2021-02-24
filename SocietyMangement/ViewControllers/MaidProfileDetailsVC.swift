@@ -8,6 +8,8 @@
 
 import UIKit
 import FloatRatingView
+import SWRevealViewController
+
 
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
@@ -15,7 +17,7 @@ import FloatRatingView
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
 @available(iOS 13.0, *)
-class MaidProfileDetailsVC: UIViewController , updateReviewView {
+class MaidProfileDetailsVC: UIViewController , updateReviewView, SWRevealViewControllerDelegate {
 
     @IBOutlet weak var lblRatingReviewStatic: UILabel!
     @IBOutlet weak var ratingTopView: FloatRatingView!
@@ -156,9 +158,50 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
                                             
                                             self.apicallHelperDetails()
                                             
-                                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
                                             
-                                            self.navigationController?.pushViewController(nextViewController, animated: true)
+                                            let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                            
+                                            let navController = UINavigationController(rootViewController: nextViewController)
+                                                                            
+                                            navController.isNavigationBarHidden = true
+                                            
+                                            self.appDelegate.window!.rootViewController  = navController
+
+                                         //   self.revealViewController()?.pushFrontViewController(nextViewController, animated: true)
+                                            
+                                            
+                                           /*  let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: TabbarVC.id()) as! TabbarVC
+                                            
+                                            // nextViewController.selectedtabindex = 0
+
+                                            self.revealViewController()?.pushFrontViewController(nextViewController, animated: true) */
+                                            
+                                          /*  let svc = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+                                            
+                                              let navigationController = UINavigationController(rootViewController: svc)
+                                            
+                                           // navigationController.pushViewController(svc, animated: true)
+                                            
+                                            self.navigationController?.pushViewController(navigationController, animated: true) */
+                                             
+                                        
+                                           // self.navigationController?.pushViewController(nextViewController, animated: true)
+
+
+                                           /* if <#condition#> {
+                                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                                self.navigationController?.pushViewController(nextViewController, animated: true)
+                                             
+                                            }else{
+                                            
+                                                let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "NewHomeVC") as! NewHomeVC
+                                                 
+                                                 self.navigationController?.pushViewController(nextViewController, animated: true)
+                                            
+                                            } */
+                                           
+                                            
                                         }
 
                                         avc?.noAct = {
@@ -320,7 +363,6 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
         
       //  if self.arrRating.count > 0  {
                     
-
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
             
             popOverConfirmVC.delegate = self
@@ -409,6 +451,7 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
                              //   self.imgUser.clipsToBounds = true
                             self.imgUser.sd_setImage(with: URL(string: self.dictHelperData.profilePicture), placeholderImage: UIImage(named: "vendor-1"))
                                }
+                        
                         self.lblName.text = self.dictHelperData.name
                         self.lblProfession.text = self.dictHelperData.vendorServiceType
                         
@@ -430,22 +473,29 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView {
                         if self.dictHelperData.comments.count > 0 {
                             self.arrRating = self.dictHelperData.comments
                         }
+                        
                          self.lblRatingReviewStatic.isHidden = false
-                        self.btnAddRatings.isHidden = false
+                        
+                       // self.btnAddRatings.isHidden = false
 
                         if isfrom == 1 {
                            // popOverConfirmVC.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
                             if self.dictHelperData.workingWithMe == 0 {
-                                self.btnAddHelper.isHidden = false 
+                                self.btnAddHelper.isHidden = false
+                                self.btnAddRatings.isHidden = true
                             }else{
                                 self.btnAddHelper.isHidden = true
+                                self.btnAddRatings.isHidden = false
                             }
                         }else{
                             if self.dictHelperData.workingWithMe == 0 {
                                 self.btnAddHelper.isHidden = true
+                                self.btnAddRatings.isHidden = false
                             }else{
                                 self.btnAddHelper.isHidden = false
+                                self.btnAddRatings.isHidden = true
                             }
+
                         }
                         
                         let lblin = self.dictHelperData.societyWorkingSince.components(separatedBy: " ")[0]

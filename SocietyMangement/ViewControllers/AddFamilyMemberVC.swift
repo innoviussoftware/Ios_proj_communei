@@ -342,6 +342,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             let dateFromString : NSDate = dateFormatter.date(from: date!)! as NSDate
               dateFormatter.dateFormat = "dd-MM-yyyy"
             let datenew = dateFormatter.string(from: dateFromString as Date)
+            
             txtbirthdate.text = datenew
 
           //  txtbirthdate.text = dateee
@@ -358,7 +359,23 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
 //            txtbirthdate.text = str //member?.dob
             
             txtbloodgroup.text = member?.bloodGroupName
-            txtGender.text = member?.gender
+            
+            bloodgroupId = (member?.bloodGroupID!)!
+            
+            professiongroupId = (member?.professionID!)!
+
+           // txtGender.text = member?.gender
+            
+            if member?.gender == "Male"{
+                strGender = "Male"
+            }else if member?.gender == "Female"{
+                strGender = "Female"
+            }else{
+                strGender = "Prefer not to say"
+            }
+            
+            txtGender.text = strGender
+            
             txtRelation.text = member?.relation
             
         }
@@ -372,13 +389,12 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
        // setrightviewnew(textfield:txtbirthdate, image: #imageLiteral(resourceName: "ic-calender")) // Dropdown
         
         // 11/8/20.
+        
       /*  setrightviewnew(textfield: txtbirthdate, image: #imageLiteral(resourceName: "Dropdown"))
         setrightviewnew(textfield:txtbloodgroup, image: #imageLiteral(resourceName: "ic_downarrow"))
         setrightviewnew(textfield:txtGender, image: #imageLiteral(resourceName: "ic_downarrow"))
         setrightviewnew(textfield:txtRelation, image: #imageLiteral(resourceName: "ic_downorange")) */
-        
-       
-        
+                
                
         // 21/10/20. temp comment
         
@@ -876,10 +892,14 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         let token = UserDefaults.standard.value(forKey: USER_TOKEN) as! String
         
         var str1 = ""
-               if txtProfessionOther.text!.count > 0{
+        
+        
+               if txtProfessionOther.text!.count > 0 {
                    str1 = txtProfessionOther.text!
+               }else if txtViewProfessionDetail.text!.count > 0 {
+                    str1 = txtViewProfessionDetail.text!
                }else{
-                   str1 = ""
+                    str1 = ""
                }
         
         if txtprofession.text == "other" {
@@ -923,6 +943,9 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
            // "profession_detail":txtViewProfessionDetail.text!,
             "Relation" : txtRelation.text!
         ]
+        
+        print("Parameters add family : ",param)
+
         
         webservices().StartSpinner()
         AF.upload(
@@ -1075,6 +1098,8 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
             "Relation" : txtRelation.text!,
             "guid" : strFamilyMemberID!
         ]
+        
+        print("Parameters update family : ",param)
         
         webservices().StartSpinner()
         AF.upload(

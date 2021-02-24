@@ -233,6 +233,9 @@ class AcceptedRequestCell: UITableViewCell {
              }
              
                 if wrong.isWrongEntry == 0 {
+                    
+                    // lblWrongEntry.isHidden = false
+
                      lblWrongEntry.text = "No Response"
                     
                     btnWrong_Entry.isHidden = false
@@ -240,6 +243,8 @@ class AcceptedRequestCell: UITableViewCell {
 
                 }else{
                     
+                   // lblWrongEntry.isHidden = false
+
                     lblWrongEntry.text = "Wrong Entry Reported by " + (activity.wrongEntryBy)!
 
                     btnWrong_Entry.isHidden = true
@@ -342,11 +347,24 @@ class AcceptedRequestCell: UITableViewCell {
         }
              
              if activity.deniedBy != nil {
-                 lblWrongEntry.text = "denied by " + (activity.deniedBy)!
+                 lblWrongEntry.text = "Denied by " + (activity.deniedBy)!
              }else {
-                 lblWrongEntry.text = "denied by "
+                 lblWrongEntry.text = "Denied by "
              }
+                
+                if wrong.isWrongEntry == 0 {
+                    // lblWrongEntry.isHidden = false
+                    
+                    btnWrong_Entry.isHidden = false
+                    btnWrong_Entry_Red.isHidden = true
+                }else{
+                   // lblWrongEntry.isHidden = false
 
+                    btnWrong_Entry.isHidden = true
+                    btnWrong_Entry_Red.isHidden = false
+                }
+
+                
                  imgview1.isHidden = true
                  imgview2.isHidden = false
                  imgview3.isHidden = true
@@ -390,8 +408,8 @@ class AcceptedRequestCell: UITableViewCell {
 
                  btnExtraShow.isHidden = false
 
-                  btnWrong_Entry.isHidden = false
-                  btnWrong_Entry_Red.isHidden = true
+                //  btnWrong_Entry.isHidden = false
+                //  btnWrong_Entry_Red.isHidden = true
 
                  btnCancel.isHidden = true
                  btnEdit.isHidden = true
@@ -940,6 +958,30 @@ class AcceptedRequestCell: UITableViewCell {
           }else {
               lbladdedby.text = "Approved by "
           }
+            
+            if wrong.isWrongEntry == 0 {
+                lblWrongEntry.isHidden = true
+                
+                imgview8.isHidden = true
+                
+                imgviewTop8.constant = -12
+
+                stackviewStatus.constant = 103.5
+                   
+                btnWrong_Entry.isHidden = false
+                btnWrong_Entry_Red.isHidden = true
+            }else{
+                lblWrongEntry.isHidden = false
+                
+                imgview8.isHidden = false
+                
+                imgviewTop8.constant = 98.5
+
+                stackviewStatus.constant = 120.5
+
+                btnWrong_Entry.isHidden = true
+                btnWrong_Entry_Red.isHidden = false
+            }
              
           lbldateintime.isHidden = true
          // lblintime.isHidden = false
@@ -948,7 +990,7 @@ class AcceptedRequestCell: UITableViewCell {
           lblparceltime.isHidden = true
           lblLeaveatGate.isHidden = true
           lblcancelby.isHidden = true
-          lblWrongEntry.isHidden = true
+         // lblWrongEntry.isHidden = true
           lbldateintimeMulti.isHidden = true // Extra
 
 
@@ -968,7 +1010,7 @@ class AcceptedRequestCell: UITableViewCell {
              imgview5.isHidden = true
              imgview6.isHidden = true
              imgview7.isHidden = true
-             imgview8.isHidden = true
+            // imgview8.isHidden = true
              imgviewExtra.isHidden = true
 
           imgviewTop1.constant = -12
@@ -978,11 +1020,10 @@ class AcceptedRequestCell: UITableViewCell {
           imgviewTop5.constant = -12
           imgviewTop6.constant = -12
           imgviewTop7.constant = -12
-          imgviewTop8.constant = -12
+            
           imgviewTopExtra.constant = -12
-
-          stackviewStatus.constant = 103.5
-               
+            
+           
           
           constraintHightStackBtn.constant = 50
           constraintHightStacklbl.constant = 0.5
@@ -994,8 +1035,8 @@ class AcceptedRequestCell: UITableViewCell {
              btnClose.isHidden = true
              btnCancel.isHidden = true
              btnEdit.isHidden = true
-             btnWrong_Entry.isHidden = false
-             btnWrong_Entry_Red.isHidden = true
+           //  btnWrong_Entry.isHidden = false
+           //  btnWrong_Entry_Red.isHidden = true
              btnRenew.isHidden = true
              btnNote_Guard.isHidden = true
              btnOut.isHidden = false
@@ -1498,7 +1539,13 @@ class AcceptedRequestCell: UITableViewCell {
               btnExtraShow.isHidden = false
               btnInviteShare.isHidden = true
              
-             imgview.image = UIImage(named: "ic_delivery_tab")
+            if activity.profilePic == "" || activity.profilePic == nil {
+                imgview.image = UIImage(named: "ic_delivery_tab")
+            }else{
+                imgview.sd_setImage(with: URL(string: (activity.profilePic)!), placeholderImage: UIImage(named: "ic_delivery_tab"))
+            }
+        
+            // imgview.image = UIImage(named: "ic_delivery_tab")
 
              if activity.companyLogoURL == "" || activity.companyLogoURL == nil {
                  imgviewCompanyLogo.image = UIImage(named: "default_logo")
@@ -2208,12 +2255,11 @@ class AcceptedRequestCell: UITableViewCell {
             //  lblWrongEntry.isHidden = true
               lbldateintimeMulti.isHidden = true // Extra
 
-
               btnInviteShare.isHidden = true
 
               btnExtraShow.isHidden = false
 
-                  btnDeliveryInfo.isHidden = true
+                 btnDeliveryInfo.isHidden = true
                  btnCancel.isHidden = true
                  btnEdit.isHidden = true
                  btnRenew.isHidden = true
@@ -2221,6 +2267,11 @@ class AcceptedRequestCell: UITableViewCell {
                  btnNote_Guard.isHidden = true
                  btnOut.isHidden = true
                  btnAlertInfo.isHidden = true
+                
+                btnIn_OnDemand.isHidden = true
+                btnCancel_OnDemand.isHidden = true
+                btnOut_OnDemand.isHidden = true
+                btnEdit_OnDemand.isHidden = true
 
              }
               else if lblStatus.text == "CANCELLED" {
@@ -3141,21 +3192,19 @@ class AcceptedRequestCell: UITableViewCell {
                          
                          imgviewTop8.constant = -12
 
-                         stackviewStatus.constant = 137.5
+                        stackviewStatus.constant = 120.5 // 137.5
                          
-
                          btnWrong_Entry.isHidden = false
                          btnWrong_Entry_Red.isHidden = true
                      }else{
                          lblWrongEntry.isHidden = false
                          imgview8.isHidden = false
 
-                         imgviewTop8.constant = 132.5
+                         imgviewTop8.constant = 115.5
 
-                         stackviewStatus.constant = 154.5
+                        stackviewStatus.constant = 137.5
                          
                          lblWrongEntry.text = "Wrong Entry Reported by " + (activity.wrongEntryBy)!
-
 
                          btnWrong_Entry.isHidden = true
                          btnWrong_Entry_Red.isHidden = false
@@ -3186,7 +3235,7 @@ class AcceptedRequestCell: UITableViewCell {
                      imgviewTop4.constant = 81.5
                      imgviewTop5.constant = -12
                      imgviewTop6.constant = 98.5
-                     imgviewTop7.constant = 115.5
+                     imgviewTop7.constant = -12 // 115.5
                      
                      imgviewTopExtra.constant = -12
 
@@ -3210,24 +3259,25 @@ class AcceptedRequestCell: UITableViewCell {
                          lblWrongEntry.isHidden = false
                          imgview8.isHidden = false
 
-                         imgviewTop8.constant = 115.5
+                         imgviewTop8.constant = 98.5
 
-                         stackviewStatus.constant = 132.5
+                         stackviewStatus.constant = 120.5
                          
                          lblWrongEntry.text = "Wrong Entry Reported by " + (activity.wrongEntryBy)!
-
 
                          btnWrong_Entry.isHidden = true
                          btnWrong_Entry_Red.isHidden = false
                      }
                      
+                    lbladdedby.text = "Added by " + (activity.addedBy)!
+
                      lbldateintime.isHidden = true
                      lblintime.isHidden = false
                      lblouttime.isHidden = true
                      lbladdedby.isHidden = false
                      lblparceltime.isHidden = true
                      lblLeaveatGate.isHidden = true
-                     lblcancelby.isHidden = false
+                     lblcancelby.isHidden = true
                      lbldateintimeMulti.isHidden = true // Extra
 
                      imgview1.isHidden = true
@@ -3245,7 +3295,7 @@ class AcceptedRequestCell: UITableViewCell {
                      imgviewTop4.constant = 81.5
                      imgviewTop5.constant = -12
                      imgviewTop6.constant = -12
-                     imgviewTop7.constant = 98.5
+                     imgviewTop7.constant = -12 // 98.5
                      
                      imgviewTopExtra.constant = -12
                     
@@ -3822,7 +3872,6 @@ class AcceptedRequestCell: UITableViewCell {
                  btnEdit_OnDemand.isHidden = true
 
                 }
-             
          
     }
     
@@ -3831,10 +3880,20 @@ class AcceptedRequestCell: UITableViewCell {
         
         if (activity.ActivityType! == "Service Provider Pre-Approval") || (activity.ActivityType! == "Service Provider Entry") {
                 lblname.text = "Service Provider"
+               // imgview.image = UIImage(named: "ic_service")
+            if activity.profilePic == "" || activity.profilePic == nil {
                 imgview.image = UIImage(named: "ic_service")
+            }else{
+                imgview.sd_setImage(with: URL(string: (activity.profilePic)!), placeholderImage: UIImage(named: "ic_service"))
+            }
         }else if (activity.ActivityType  == "Cab Pre-Approval") || (activity.ActivityType  == "Cab Entry") {
             lblname.text = "Cab"
-            imgview.image = UIImage(named: "cab")
+            if activity.profilePic == "" || activity.profilePic == nil {
+                imgview.image = UIImage(named: "cab")
+            }else{
+                imgview.sd_setImage(with: URL(string: (activity.profilePic)!), placeholderImage: UIImage(named: "cab"))
+            }
+           // imgview.image = UIImage(named: "cab")
         }
     
        
@@ -3851,9 +3910,7 @@ class AcceptedRequestCell: UITableViewCell {
          }else{
             imgviewCompanyLogo.sd_setImage(with: URL(string: (activity.companyLogoURL)!), placeholderImage: UIImage(named: "default_logo"))
             imgviewCompanyLogo.isHidden = false
-         }
-
-     
+         }     
 
             lblStatus.isHidden = false
 
@@ -3972,9 +4029,9 @@ class AcceptedRequestCell: UITableViewCell {
              }
             
                 if activity.addedBy != nil {
-                    lblWrongEntry.text = "denied by " + (activity.deniedBy)!  //addedBy)!
+                    lblWrongEntry.text = "Denied by " + (activity.deniedBy)!  //addedBy)!
                 }else {
-                    lblWrongEntry.text = "denied by "
+                    lblWrongEntry.text = "Denied by "
                 }
             
                 if wrong.isWrongEntry == 0 {
@@ -4444,9 +4501,10 @@ class AcceptedRequestCell: UITableViewCell {
 
                    btnWrong_Entry.isHidden = true
                    btnWrong_Entry_Red.isHidden = false
-                   
 
                }
+
+                lbladdedby.text = "Added by " + (activity.addedBy)!
 
              lbldateintime.isHidden = true
             // lblintime.isHidden = false

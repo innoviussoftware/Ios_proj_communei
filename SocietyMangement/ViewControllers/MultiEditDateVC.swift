@@ -235,7 +235,11 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         print("endD ",endD)
 
        // if startdate!.compare(enddate!) != .orderedDescending {
-        if self.txtenddate.text == "" {
+        if self.txtstartdate.text == "" {
+            let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"enter start date")
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if self.txtenddate.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"enter end date")
             self.present(alert, animated: true, completion: nil)
         }

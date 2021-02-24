@@ -147,11 +147,26 @@ class DeliveryWaitingPopupVC: UIViewController {
         if deliverydic.value(forKey: "ActivityType") as! String == "Visitor Entry"
         {
             lblVisitor.text = "Visitor"
+            lbldescription.text = "Guest is Waiting at the Gate"
             btnDeliveryatGate.isHidden = true
-        }else{
+        }else if deliverydic.value(forKey: "ActivityType") as! String == "Delivery Entry" {
             lblVisitor.text = "Delivery"
+            lbldescription.text = "Delivery person at Gate"
             btnDeliveryatGate.isHidden = false
+        }else if deliverydic.value(forKey: "ActivityType") as! String == "Cab Entry" {
+            lblVisitor.text = "Cab"
+            lbldescription.text = "Cab driver at Gate"
+            btnDeliveryatGate.isHidden = true
+        }else if deliverydic.value(forKey: "ActivityType") as! String == "Service Provider Entry" {
+            lblVisitor.text = "Service"
+           // lbldescription.text = ""
+            btnDeliveryatGate.isHidden = true
+        }else {
+            lblVisitor.text = "" // xyz name
+           // lbldescription.text = ""
+            btnDeliveryatGate.isHidden = true
         }
+        
         
         if deliverydic.value(forKey: "ProfilePic") != nil {
             imgDeliveryProfile.sd_setImage(with: URL(string: deliverydic.value(forKey: "ProfilePic") as! String), placeholderImage: UIImage(named: ""))
@@ -286,12 +301,8 @@ class DeliveryWaitingPopupVC: UIViewController {
     
     @IBAction func btnDeliveryatGatePressed(_ sender: UIButton){
         
-//        if deliverydic.value(forKey: "VisitingFlatID") != nil {
-//          let VisitingID = String(format: "%d",(deliverydic.value(forKey: "VisitingFlatID"))! as! Int)
-        // VisitingFlatID = VisitingID
-//        }
-        
         ApiCallDeliveryGate()
+        
     }
     
     func deny() {
@@ -312,18 +323,20 @@ class DeliveryWaitingPopupVC: UIViewController {
             ActivityID = UserActivityID
         }
        
-       let param : Parameters = [
+      /* let param : Parameters = [
             "VisitingFlatID" : VisitingFlatID,
             "ActivityID" : ActivityID
         ]
        
-        print("deny param", param)
+        print("deny param", param) */
         
         let token = UserDefaults.standard.value(forKey: USER_TOKEN)
 
        webservices().StartSpinner()
        
-       Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + "user/pre-approved/1/deny", token: token  as! String) { [self] JSON in
+        Apicallhandler().LogoutAPIDeny(URL:  webservices().baseurl + "user/pre-approved/1/deny", token: token as! String, VisitingFlatID: VisitingFlatID, ActivityID: ActivityID) { JSON in
+
+     //  Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + "user/pre-approved/1/deny", token: token  as! String) { [self] JSON in
 
            switch JSON.result{
            case .success(let resp):

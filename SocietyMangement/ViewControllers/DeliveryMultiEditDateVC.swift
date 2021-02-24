@@ -102,6 +102,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         webservices.sharedInstance.PaddingTextfiled(textfield: txtenddate)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtStartTime)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtEndTime)
+        
 
         txtstartdate.text = strStartDate
         
@@ -203,12 +204,12 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
     @objc  func donedatePicker(){
         //For date formate
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "dd-MM-yyyy" // "yyyy-MM-dd"
         
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker.date)
-          /*  date2 = datePicker.date
+            date2 = datePicker.date
             let cal = NSCalendar.current
             
             let components = cal.dateComponents([.day], from: date1, to: date2)
@@ -224,13 +225,13 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                   //  self.txtenddate.text = ""
                 }))
                 self.present(alert, animated: true, completion: nil)
-            } */
+            }
             
         }
         if(textfield == txtstartdate)
         {
             txtstartdate.text = formatter.string(from: datePicker.date)
-           // date1 = datePicker.date
+            date1 = datePicker.date
             
         }
         self.view.endEditing(true)
@@ -291,7 +292,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         
                  //dismiss date picker dialog
                  self.view.endEditing(true)
-             }
+    }
              
     @objc func cancelTimePicker_Multiple(){
         //cancel button dismiss datepicker dialog
@@ -356,6 +357,16 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
 
         }
     
+    func strChangeTimeFormate(strDateeee: String) -> String
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm a"
+            let date = dateFormatter.date(from: strDateeee)
+            dateFormatter.dateFormat = "hh:mm a"
+            return  dateFormatter.string(from: date!)
+
+        }
+    
     @IBAction func btnaddDateDeliveryAction(_ sender: UIButton) {
         
         let strStartDate = txtstartdate.text! // first date
@@ -365,7 +376,6 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         
         print("strEndDate ",strEndDate)
 
-       
         let startdate = strChangeDateFormate(strDateeee: strStartDate)
         let enddate = strChangeDateFormate(strDateeee: strEndDate)
         
@@ -374,17 +384,29 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
           
         let startD = formatter.date(from: startdate)!
         let endD = formatter.date(from: enddate)!
-      
-        print("startdate ",startdate)
-        print("enddate ",enddate)
+        
+              
+       // print("startdate ",startdate)
+       // print("enddate ",enddate)
         
         print("startD ",startD)
         print("endD ",endD)
         
-        if arrSelectionDayId.count == 0 {
+        let formatterTime = DateFormatter()
+        formatterTime.dateFormat = "hh:mm a"
+        
+        let strTime = strChangeTimeFormate(strDateeee: txtStartTime.text!)
+        let endTime = strChangeTimeFormate(strDateeee: txtEndTime.text!)
+
+        let startT = formatterTime.date(from: strTime)!
+        let endT = formatterTime.date(from: endTime)!
+        
+        
+        if arrSelectionCheck.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-        }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        }//*else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+         else if startD > endD {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text! == "" {
@@ -393,10 +415,11 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         }else if txtEndTime.text! == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Enter End time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
+        } else if startT > endT {
+        //else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
-        }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedSame  {
+        }else if startT == endT  {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End time must be greater than Start time")
             self.present(alert, animated: true, completion: nil)
         }
@@ -432,7 +455,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 "IsLeaveAtGate": multiDeliveryCheckGate,
                 "DaysOfWeek": arrSelectionDayId.componentsJoined(by: ",")
             ]
-        }else if isfrom == 3 {
+        }else if isfrom == 3 || isfrom == 33 {
             param  = [
                 "VisitStartDate": txtstartdate.text!,
                 "VisitEndDate": txtenddate.text!,
@@ -517,6 +540,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
 
     }
           
+
+    
        @IBAction func btnReset_days(_ sender: Any) {
               
         txtAllWeek.text = "" //arrDays[0]
@@ -530,6 +555,7 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
 
             self.viewbottom1.isHidden = true
        }
+    
     
     // MARK: - APICallGetDays
     
@@ -555,17 +581,27 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                     
                     self.arrDays = resp.data!
                     
-                  /*  for dic in self.arrDays
-                    {
-                        if(self.arrSelectionDayId.contains(dic.daysTypeID!))
-                        {
-                            
-                            self.arrSelectionCheck.add(dic.daysName!)
-                            self.arrSelectionCheck.add(dic.daysTypeID!)
+                    let array = self.daysOfWeek.components(separatedBy: ",")
 
+                    let intArray = array.compactMap { Int($0) }
+
+                    for dic in self.arrDays
+                    {
+                        if(intArray.contains(dic.daysTypeID!))
+                        {
+                            self.arrSelectionDayId.add(dic.daysTypeID!)
+                            self.arrSelectionCheck.add(dic.daysName!)
+                                                        
+                            self.txtAllWeek.text = self.arrSelectionCheck.componentsJoined(by:",")
+
+                        }else{
+                            if(array.contains(dic.daysName!)) {
+                                self.txtAllWeek.text = array.joined(separator: ",")
+                                self.arrSelectionCheck.add(dic.daysName!)
+                            }
                         }
                         
-                    } */
+                    }
                     
                     if self.arrDays.count > 0{
                         self.collectionDays.dataSource = self

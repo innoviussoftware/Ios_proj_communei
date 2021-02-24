@@ -124,18 +124,29 @@ class BuySellProductDetailsVC: BaseVC {
     
     func fillData() {
         
-        arrProductImage = arrProductDetails.productsimages!
-        
-        if arrProductImage.count == 0{
+        if arrProductDetails.productsimages != nil {
+
+            arrProductImage = arrProductDetails.productsimages!
+            
+            if arrProductImage.count == 0{
+                constraintPagerViewHight.constant = 0
+                page.isHidden = true
+                
+                pagerView.contentMode = .right
+                page.numberOfPages = 0
+            }else{
+                constraintPagerViewHight.constant = 200
+                page.isHidden = false
+                
+                pagerView.contentMode = .right
+                page.numberOfPages = arrProductImage.count
+            }
+            
+        }else{
             constraintPagerViewHight.constant = 0
             page.isHidden = true
-        }else{
-            constraintPagerViewHight.constant = 200
-            page.isHidden = false
+            page.numberOfPages = 0
         }
-       
-        pagerView.contentMode = .right
-        page.numberOfPages = arrProductImage.count
         
       // lblPrice.text = String(format: "Price: \u{20B9} %@", arrProductDetails.amount!)
         

@@ -189,7 +189,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
 
         }
         
-        // temp comment live app 26/11/20.
+      // live app 26/11/20.
         
         if(indexPath.row == 3) {
       
