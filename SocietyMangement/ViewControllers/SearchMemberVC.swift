@@ -8,16 +8,8 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class SearchMemberVC: UIViewController , UISearchBarDelegate , UITableViewDelegate , UITableViewDataSource{
 
     @IBAction func backaction(_ sender: Any) {

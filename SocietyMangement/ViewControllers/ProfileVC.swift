@@ -11,10 +11,7 @@ import SWRevealViewController
 import SDWebImage
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class ProfileVC: BaseVC, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
     

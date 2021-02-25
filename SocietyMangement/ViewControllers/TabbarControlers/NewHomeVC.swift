@@ -11,9 +11,6 @@ import UIKit
 import SWRevealViewController
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
 class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     
     @IBOutlet weak var lblflatno: UILabel!
@@ -481,7 +478,7 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     
    
 }
-@available(iOS 13.0, *)
+
 extension NewHomeVC:UICollectionViewDelegate ,UICollectionViewDataSource , UICollectionViewDelegateFlowLayout
     
 {

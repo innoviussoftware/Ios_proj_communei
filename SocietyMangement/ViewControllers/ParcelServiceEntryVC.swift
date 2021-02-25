@@ -14,8 +14,7 @@ import Alamofire
 
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, SWRevealViewControllerDelegate {
 //, DeliveryCompanyListProtocol {
     

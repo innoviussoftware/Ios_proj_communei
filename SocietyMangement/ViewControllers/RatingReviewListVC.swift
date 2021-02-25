@@ -9,14 +9,8 @@
 import UIKit
 import FloatRatingView
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class RatingReviewListVC: UIViewController {
     @IBOutlet weak var ratingView: FloatRatingView!
     
@@ -248,7 +242,7 @@ class RatingReviewListVC: UIViewController {
 }
 
 
-@available(iOS 13.0, *)
+
 extension RatingReviewListVC : UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrRatingReview.count

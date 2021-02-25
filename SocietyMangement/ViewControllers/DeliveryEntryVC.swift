@@ -11,16 +11,8 @@ import ScrollPager
 import Alamofire
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , DeliveryCompanyListProtocol {
    
     // var selectedindex = NSMutableArray()
@@ -522,11 +514,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
     } */
     
-    @IBAction func btnClose_hour(_ sender: Any) {
+    @IBAction func btnClose_hour(_ sender: UIButton) {
            self.viewbottom.isHidden = true
     }
        
-    @IBAction func btnApply(_ sender: Any) {
+    @IBAction func btnApply(_ sender: UIButton) {
         
         txtvaildtill.text = hourary[selectedindex]
 
@@ -535,10 +527,10 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         self.viewbottom.isHidden = true
     }
        
-    @IBAction func btnReset(_ sender: Any) {
+    @IBAction func btnReset(_ sender: UIButton) {
            
            txtvaildtill.text = hourary[0]
-
+        
            selectedindex = 0
            
            collectionHours.reloadData()
@@ -547,7 +539,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     }
     
     
-    @IBAction func btnClose_days(_ sender: Any) {
+    @IBAction func btnClose_days(_ sender: UIButton) {
         self.viewbottom1.isHidden = true
     }
           
@@ -564,6 +556,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
               
         txtAllWeek.text = "" //arrDays[0]
         
+        arrSelectionDayId.removeAllObjects()
+
        // arrDays.removeAllObjects()
         arrSelectionCheck.removeAllObjects()
 
@@ -617,18 +611,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
        
     @IBAction func btnaddDeliveryaction_1(_ sender: UIButton) {
         
-       // arrSelectionDayId.removeAllObjects()
-        
-        if arrSelectionDayId.count == 0 {
-            for dic in arrDays {
-                arrSelectionDayId.add(dic.daysTypeID!)
-            }
-        }
-        
        /* if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-        }else */if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+        } */
+        
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
         }else if txtStartTime.text!.compare(txtEndTime.text!) == .orderedDescending {
@@ -697,6 +685,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                     
         if(textField == txtDeliveryCompanyName)
             {
+                txtDeliveryCompanyName.resignFirstResponder()
+
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                     isfrom = "Single"
@@ -724,13 +714,14 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
             
-                txtDeliveryCompanyName.resignFirstResponder()
 
 
         }
         
         if (textField == txtDeliveryCompanyName1)
             {
+                txtDeliveryCompanyName1.resignFirstResponder()
+            
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
                    popOverConfirmVC.delegate = self
                 isfrom = "Multiple"
@@ -755,7 +746,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
                 self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
 
-                txtDeliveryCompanyName1.resignFirstResponder()
 
         }
         
@@ -767,7 +757,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
            // view.endEditing(true)
 
-           // txtAllWeek.becomeFirstResponder()
+            txtAllWeek.resignFirstResponder()
                     
             // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
@@ -778,9 +768,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             
             viewbottom1.isHidden = true
             
-            view.endEditing(true)
-
-           // txtvaildtill.becomeFirstResponder()
+           // view.endEditing(true)
+            
+            txtvaildtill.resignFirstResponder()
 
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }

@@ -8,7 +8,8 @@
 
 import UIKit
 import Alamofire
-@available(iOS 13.0, *)
+
+
 class ViewPastActivityVC: UIViewController , UITableViewDelegate , UITableViewDataSource{
 
     @IBOutlet weak var tblview: UITableView!

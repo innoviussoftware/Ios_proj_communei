@@ -12,7 +12,6 @@ import Alamofire
 import ScrollPager
 
 
-@available(iOS 13.0, *)
 class BuySellVC: BaseVC ,ScrollPagerDelegate{
     
     @IBOutlet weak var btnNotification: UIButton!
@@ -758,7 +757,6 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
 }
 
 
-@available(iOS 13.0, *)
 extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -940,7 +938,6 @@ extension BuySellVC : UICollectionViewDataSource,UICollectionViewDelegate,UIColl
 
 
 
-@available(iOS 13.0, *)
 extension BuySellVC : UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

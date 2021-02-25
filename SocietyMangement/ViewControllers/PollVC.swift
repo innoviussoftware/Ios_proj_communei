@@ -13,15 +13,6 @@ import SWRevealViewController
 
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
 class PollVC: BaseVC {
     @IBOutlet weak var tblView: UITableView!
     @IBOutlet weak var btnNotification: UIButton!
@@ -230,7 +221,6 @@ class PollVC: BaseVC {
 }
 
 
-@available(iOS 13.0, *)
 extension PollVC : UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -10,9 +10,8 @@ import UIKit
 
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class ComplaintManagementMessageVC: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     
     

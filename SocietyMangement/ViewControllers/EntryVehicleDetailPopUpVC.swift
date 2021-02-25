@@ -13,15 +13,8 @@ protocol addedVehicle {
     func addedNewVehicle()
 }
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class EntryVehicleDetailPopUpVC: BaseVC {
     var delegate : addedVehicle?
     @IBOutlet weak var containerView: UIView!
@@ -329,7 +322,6 @@ class EntryVehicleDetailPopUpVC: BaseVC {
 }
 
 
-@available(iOS 13.0, *)
 extension EntryVehicleDetailPopUpVC : UIPickerViewDelegate , UIPickerViewDataSource{
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -351,7 +343,6 @@ extension EntryVehicleDetailPopUpVC : UIPickerViewDelegate , UIPickerViewDataSou
 }
 
 
-@available(iOS 13.0, *)
 extension EntryVehicleDetailPopUpVC : UITextFieldDelegate{
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

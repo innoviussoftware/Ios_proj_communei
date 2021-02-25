@@ -9,7 +9,6 @@
 import UIKit
 import Alamofire
 
-@available(iOS 13.0, *)
 class NotificationVC: UIViewController {
     @IBOutlet weak var btnDelete: UIButton!
     @IBOutlet weak var lbltotalSelected: UILabel!
@@ -383,7 +382,6 @@ class NotificationVC: UIViewController {
 
 
 
-@available(iOS 13.0, *)
 extension NotificationVC : UITableViewDelegate , UITableViewDataSource{
 
 

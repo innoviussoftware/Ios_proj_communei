@@ -10,8 +10,7 @@ import UIKit
 
 import SWRevealViewController
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     
    /* var homeViewController: NewHomeVC!
@@ -23,7 +22,6 @@ class TabbarVC: UITabBarController, UITabBarControllerDelegate {
     
     var isfrom = 1
 
-   // @available(iOS 13.0, *)
     override func viewDidLoad() {
         super.viewDidLoad()
         

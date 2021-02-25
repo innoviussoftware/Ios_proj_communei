@@ -13,9 +13,7 @@ protocol addMultiDate {
     func addedMultiDate()
 }
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class MultiEditDateVC: UIViewController, UITextFieldDelegate{
     
     var delegate : addMultiDate?

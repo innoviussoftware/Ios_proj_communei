@@ -23,9 +23,8 @@ protocol  Invite {
     func inviteaction(from:String)
 }
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate{
     
  //   @IBOutlet weak var lbldays: UILabel!

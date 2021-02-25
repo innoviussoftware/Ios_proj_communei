@@ -12,9 +12,7 @@ import SDWebImage
 import Alamofire
 import SWRevealViewController
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class ReferalDetailVC: BaseVC {
     
     @IBOutlet weak var vwrefer: UIView!

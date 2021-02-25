@@ -10,44 +10,8 @@ import UIKit
 import Alamofire
 import FSPagerView
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class BuySellProductDetailsVC: BaseVC {
     @IBOutlet weak var btnBack: UIButton!
    
@@ -471,11 +435,7 @@ class BuySellProductDetailsVC: BaseVC {
 
 /*
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+ 
 extension BuySellProductDetailsVC : UICollectionViewDataSource,UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -560,7 +520,7 @@ extension BuySellProductDetailsVC : UICollectionViewDataSource,UICollectionViewD
 */
 
 /*
-@available(iOS 13.0, *)
+ 
 extension BuySellProductDetailsVC:UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
      
@@ -570,7 +530,7 @@ extension BuySellProductDetailsVC:UICollectionViewDelegateFlowLayout{
 }
 */
 
-@available(iOS 13.0, *)
+
 extension BuySellProductDetailsVC : FSPagerViewDelegate,FSPagerViewDataSource{
     func numberOfItems(in pagerView: FSPagerView) -> Int {
         return arrProductImage.count
@@ -599,7 +559,7 @@ extension BuySellProductDetailsVC : FSPagerViewDelegate,FSPagerViewDataSource{
 
 
 
-@available(iOS 13.0, *)
+
 extension BuySellProductDetailsVC : UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

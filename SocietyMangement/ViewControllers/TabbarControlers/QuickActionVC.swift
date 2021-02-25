@@ -11,12 +11,8 @@ import UIKit
 import SWRevealViewController
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class QuickActionVC: BaseVC ,Invite {
     
     

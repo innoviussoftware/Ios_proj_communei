@@ -10,8 +10,7 @@ import UIKit
 import FSCalendar
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 
 class DomesticHelperAttendanceVC: UIViewController {
     
@@ -487,7 +486,6 @@ class DomesticHelperAttendanceVC: UIViewController {
 }
 
 
-@available(iOS 13.0, *)
 extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance
 {
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {

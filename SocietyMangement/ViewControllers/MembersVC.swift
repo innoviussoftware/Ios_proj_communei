@@ -12,18 +12,8 @@ import SDWebImage
 
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate, UITableViewDelegate,UITableViewDataSource {
     
     
@@ -101,6 +91,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     var isFromDash = 0
     var selectedbuilding = 0
     var selectedbloodgrop = ""
+    
+    var selectedAgegrop = ""
+    
    // @IBOutlet weak var lblNoDataFound: UILabel!
     
     @IBOutlet weak var hightcollectionbuilding: NSLayoutConstraint!
@@ -436,6 +429,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         clearlbl()
         setUpView()
         selectedbloodgrop = ""
+        selectedAgegrop = ""
         setUpAgeView()
 
         
@@ -881,9 +875,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                        webservices().StopSpinner()
                        if(JSON.response?.statusCode == 200)
                        {
-                           
                            self.bloodgroupary = resp.data
-                           
                        }
                        else
                        {
@@ -1167,7 +1159,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                   //  cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
                     
                     cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "age_grp") as? String
-
+            
+           // cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String
     
             
             // 23/2/21 temp comment
@@ -1281,9 +1274,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
          
             else if (collectionView == collectionAge)
             {
+               
                 arrSelectionCheck.removeAllObjects()
                 
-               // collectionProfession.reloadData()
+               // arrBloodGrp.removeAllObjects()
+                
+                CollectionBloodGrp.reloadData()
+                collectionProfession.reloadData()
                 
                 if (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                     
@@ -1299,13 +1296,17 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     
                 }
                 
-                let age = String(membersary[indexPath.row].age!)
+               // let age = String(membersary[indexPath.row].age!)
                 
-                if agegroupary.contains(age){
+               // let age = (membersary[indexPath.row].age!)
+                
+               // print("age :- ",age)
+                
+              /*  if agegroupary.contains(age){
                     agegroupary.remove(at: membersary[indexPath.row].age!)
                 }else{
                     arrAge.add(membersary[indexPath.row].age!)
-                }
+                } */
                 
                 //selectedbloodgrop = bloodgroupary[indexPath.row]
                 
@@ -1341,8 +1342,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             
             print("\(expectedLabelSize)")
             
-            print("collectionProfession expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 35 width :- \(expectedLabelSize.size.width + 35)")
-
             return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 12)
             
         }
@@ -1367,19 +1366,13 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         }
             else if(collectionView == collectionAge)
             {
-               // let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-              /*  let contentNSString = agegroupary[indexPath.row]
+                let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+                let contentNSString = agegroupary[indexPath.row]
                 let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
                 
                 print("\(expectedLabelSize)")
                 
-                print("collectionAge expectedLabelSize height :- \(expectedLabelSize.size.height) expectedLabelSize 12 height  :- \(expectedLabelSize.size.height + 12) expectedLabelSize width :- \(expectedLabelSize.size.width) expectedLabelSize 25 width :- \(expectedLabelSize.size.width + 25)") */
-                
-              //  let expectedLabelSize = self.view.bounds.width - 10
-                
-                return CGSize(width: 110, height: 31)
-
-               // return CGSize(width:expectedLabelSize.size.width + 25, height: expectedLabelSize.size.height + 12) //31
+                return CGSize(width:expectedLabelSize.size.width + 32, height: expectedLabelSize.size.height + 13) //31
                 
             }
          else {
@@ -1387,8 +1380,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             let collectionViewWidth = self.view.bounds.width - 10
                 
             return CGSize(width: collectionViewWidth/2 - 2, height: collectionViewWidth/2 + 2)
-            
-           // return CGSize(width: 59, height:59)
             
         }
     }
@@ -2031,8 +2022,17 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         }
         
         
+        for i in 0..<self.arrAge.count{
+            
+            if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                selectedAgegrop = ((arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String)!
+                break
+            }
+        }
         
-        let building_id =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+        
+      //  let building_id =  UserDefaults.standard.value(forKey:USER_SOCIETY_ID) as! Int
+        
       //  let strSociId  = (building_id as NSNumber).stringValue
         
       //  let id = String(format: "%d",building_id)
@@ -2050,7 +2050,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
 
          //   "user/society-members"
             
-        Apicallhandler().GetAllMembers(URL: webservices().baseurl + "user/society-members" ,token:strToken as! String) { JSON in
+        Apicallhandler().GetAllMembers(URL: webservices().baseurl + "user/society-members" ,token:strToken as! String) { [self] JSON in
 
             switch JSON.result{
             case .success(let resp):
@@ -2058,7 +2058,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                 webservices().StopSpinner()
                 if(JSON.response?.statusCode == 200)
                 {
-                    if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
+                    if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0  && self.selectedAgegrop == "")
                     {
                         self.membersary = resp.data!
                         self.allmembersary = resp.data!
@@ -2101,6 +2101,53 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                                 
                             }
                             
+                            //for Age
+                            
+//                            for index in 0...10 {
+//                                print("index :- ",index)
+//                            }
+
+                            if self.selectedAgegrop != "" {
+                                
+                                for i in 0..<self.arrAge.count{
+                                
+                                    let ages = "\(dic.age!)"
+                                    
+                                    print("ages : ",ages)
+                                    
+                                    let agelength = self.arrAge[i]
+                                    
+                                  //  print("selectedAgegrop :- ",selectedAgegrop)
+                                    
+                                   // let aa = (self.arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"
+                                    
+                                    print("agelength :- ",agelength)
+                                    
+                                   // print("a[i] :- ",aa)
+                                    
+                                   // let string = (self.arrAge[i] as! NSMutableDictionary).value(forKey: "age_grp") as? String
+                                   
+                                    //let age = dic.age
+                                    
+                                }
+                                
+                               // if dic.age != nil {
+                              /*  for i in 0..<self.arrAge.count{
+                                  //  if(self.arrAge.contains(dic.age!))
+                                    
+                                    let ages = "\(dic.age!) Age"
+                                    
+                                    print("ages : ",ages)
+
+                                   if(ages == (self.arrAge[i] as! NSMutableDictionary).value(forKey: "age_grp") as? String && (self.arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
+                                    
+                                   {
+                                        self.allmembersary.append(dic)
+                                        self.Finalallmembersary.append(dic)
+                                    }
+                                } */
+                                
+                            }
                             
                             //      self.allmembersary  = self.Finalallmembersary
                             
@@ -2179,7 +2226,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
    
 }
 
-@available(iOS 13.0, *)
 extension MembersVC : UISearchBarDelegate
 {
     

@@ -13,13 +13,11 @@ import UIKit
 let Alert_Titel = "Communei"
 let Role_Doctor = "doctor"
 
-@available(iOS 13.0, *)
 let APPDELEGATE = UIApplication.shared.delegate as! AppDelegate
 
 struct FunctionsConstants {
    
    static let kSharedUserDefaults = UserDefaults.standard
-    @available(iOS 13.0, *)
     static let kSharedAppDelegate = UIApplication.shared.delegate as! AppDelegate
    static let kScreenWidth = UIScreen.main.bounds.width
    static let kScreenHeight = UIScreen.main.bounds.height

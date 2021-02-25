@@ -12,15 +12,8 @@ import SDWebImage
 
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 
 class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITextFieldDelegate, UITableViewDelegate,UITableViewDataSource  {
     
@@ -2064,8 +2057,8 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
 
 
 /*
-@available(iOS 13.0, *)
-extension MembersDetailsVC : UISearchBarDelegate
+
+ extension MembersDetailsVC : UISearchBarDelegate
 {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

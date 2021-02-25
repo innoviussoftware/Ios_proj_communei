@@ -17,14 +17,7 @@ var UsermeResponse:UserMeResponse?
 var BuidigResponse:BuidingResponse?
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDate, addLeaveNoteGuard  {
     
     @IBOutlet weak var lblname: UILabel!
@@ -1211,7 +1204,6 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
 
 }
 
-@available(iOS 13.0, *)
 extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -1710,7 +1702,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
             }
         }
-         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
+        /* else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
@@ -2037,7 +2029,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
             }
-        }
+        } */
         
     }
     
@@ -2166,7 +2158,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
             }
         }
-         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
+        /* else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
@@ -2495,7 +2487,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
             }
-        } 
+        }  */
         
     }
     
@@ -3161,7 +3153,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 }
 
 
-@available(iOS 13.0, *)
 extension ActivityTabVC:UITableViewDelegate , UITableViewDataSource
 {
     

@@ -13,8 +13,6 @@ import ScrollPager
 import Alamofire
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
 class MyUnitVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , Invite, addedVehicle {
     
     @IBOutlet weak var menuaction: UIButton!

@@ -14,22 +14,8 @@ import Alamofire
 import MobileCoreServices
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDataSource , UIPickerViewDelegate{
     
     @IBOutlet weak var btnMenu: UIButton!
@@ -1016,7 +1002,6 @@ class AddEventVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControl
 }
 
 
-@available(iOS 13.0, *)
 extension AddEventVC : UIDocumentPickerDelegate
 {
      func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {

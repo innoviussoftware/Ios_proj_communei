@@ -10,8 +10,8 @@ import UIKit
 import Alamofire
 import SWRevealViewController
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var tblView: UITableView!

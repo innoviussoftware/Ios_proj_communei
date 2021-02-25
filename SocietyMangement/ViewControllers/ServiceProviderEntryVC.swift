@@ -11,8 +11,8 @@ import ScrollPager
 
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegate, UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, DeliveryCompanyListProtocol, ServiceTypeListProtocol {
     
     var selectedindex : Int = 0
@@ -664,10 +664,12 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         print("startT ",startT)
         print("endT ",endT) */
         
-        if arrSelectionDayId.count == 0 {
+       /* if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-        }else if txtstartdate.text == "" {
+        }*/
+        
+        if txtstartdate.text == "" {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"Please enter Start Date")
             self.present(alert, animated: true, completion: nil)
         }else if txtenddate.text == "" {
@@ -968,6 +970,12 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         
         strJsonInvetigationMuliple = GetJsonString(arrObje: arrCotactMultiple)!
         
+        if arrSelectionDayId.count == 0 {
+            for dic in arrDays {
+                arrSelectionDayId.add(dic.daysTypeID!)
+            }
+        }
+        
         var param = Parameters()
       
             param  = [
@@ -1074,37 +1082,37 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     }
     
     @IBAction func btnClose_hour(_ sender: UIButton) {
-                self.viewbottom.isHidden = true
-         }
+        self.viewbottom.isHidden = true
+    }
             
     @IBAction func btnApply(_ sender: UIButton) {
         txtvaildtill.text = hourary[selectedindex]
 
-                self.viewbottom.isHidden = true
+        self.viewbottom.isHidden = true
     }
             
     @IBAction func btnReset(_ sender: UIButton) {
                 
-                txtvaildtill.text = hourary[0]
+        txtvaildtill.text = hourary[0]
 
-                selectedindex = 0
+        selectedindex = 0
                 
-                collectionHours.reloadData()
+        collectionHours.reloadData()
 
-                self.viewbottom.isHidden = true
+        self.viewbottom.isHidden = true
     }
          
          
     @IBAction func btnClose_days(_ sender: UIButton) {
-             self.viewbottom1.isHidden = true
+        self.viewbottom1.isHidden = true
     }
                
     @IBAction func btnApply_days(_ sender: UIButton) {
         
-            self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
-            collectionDays.reloadData()
+        self.txtAllWeek.text = arrSelectionCheck.componentsJoined(by:",")
+        collectionDays.reloadData()
 
-            self.viewbottom1.isHidden = true
+        self.viewbottom1.isHidden = true
 
     }
                
@@ -1112,6 +1120,8 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
         
          txtAllWeek.text = "" //arrDays[0]
          
+        arrSelectionDayId.removeAllObjects()
+
         // arrDays.removeAllObjects()
          arrSelectionCheck.removeAllObjects()
 

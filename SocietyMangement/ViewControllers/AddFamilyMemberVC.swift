@@ -13,8 +13,7 @@ import Alamofire
 import IQKeyboardManagerSwift
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigationControllerDelegate , UIPickerViewDelegate , UIPickerViewDataSource, addedOther{
     
     @IBOutlet weak var lblname: UILabel!
@@ -419,7 +418,7 @@ class AddFamilyMemberVC: BaseVC , UIImagePickerControllerDelegate , UINavigation
         
     }
     
-    @available(iOS 13.0, *)
+
     @objc func AcceptRequest(notification: NSNotification) {
         
         let object = notification.object as! NSDictionary

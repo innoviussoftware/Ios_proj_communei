@@ -12,14 +12,8 @@ import SwiftSVG
 
 import SDWebImage
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class QRCodeVC: BaseVC {
     
     @IBOutlet weak var btnMenu: UIButton!

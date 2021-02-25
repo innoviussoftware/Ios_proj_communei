@@ -11,7 +11,7 @@ import ScrollPager
 import Alamofire
 
 
-@available(iOS 13.0, *)
+
 class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout, DeliveryCompanyListProtocol
 {
     
@@ -553,10 +553,12 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
         print("startD ",startD)
         print("endD ",endD) */
         
-        if arrSelectionDayId.count == 0 {
+        /* if arrSelectionDayId.count == 0 {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"select must be at least one day")
             self.present(alert, animated: true, completion: nil)
-      }else if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
+      } */
+        
+        if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
        // }else if(startD > endD) {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
@@ -585,7 +587,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
              self.viewbottom.isHidden = true
       }
          
-      @IBAction func btnApply(_ sender: Any) {
+      @IBAction func btnApply(_ sender: UIButton) {
         
            txtvaildtill.text = hourary[selectedindex]
 
@@ -596,7 +598,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
              self.viewbottom.isHidden = true
       }
          
-      @IBAction func btnReset(_ sender: Any) {
+      @IBAction func btnReset(_ sender: UIButton) {
              
              txtvaildtill.text = hourary[0]
 
@@ -623,6 +625,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     @IBAction func btnReset_days(_ sender: UIButton) {
                 
         txtAllWeek.text = ""
+        
+        arrSelectionDayId.removeAllObjects()
         
        // arrDays.removeAllObjects()
         arrSelectionCheck.removeAllObjects()
@@ -980,6 +984,13 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             
             print("after add time 3 --> ",after_add_time)
         } */
+        
+
+        if arrSelectionDayId.count == 0 {
+            for dic in arrDays {
+                arrSelectionDayId.add(dic.daysTypeID!)
+            }
+        }
         
         var param = Parameters()
         

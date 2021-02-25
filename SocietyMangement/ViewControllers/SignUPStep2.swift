@@ -8,10 +8,7 @@
 
 import UIKit
 import Alamofire
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class SignUPStep2: BaseVC {
 
     var cityary = [City]()
@@ -1183,7 +1180,6 @@ class SignUPStep2: BaseVC {
 
 }
 
-@available(iOS 13.0, *)
 extension SignUPStep2 :UITextFieldDelegate
 {
     
@@ -1366,7 +1362,7 @@ extension SignUPStep2 :UITextFieldDelegate
        
     
 }
-@available(iOS 13.0, *)
+
 extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
 {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -1646,8 +1642,8 @@ extension SignUPStep2:UIPickerViewDelegate, UIPickerViewDataSource
 }
 
 /*
-@available(iOS 13.0, *)
-extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
+
+ extension SignUPStep2:UITableViewDelegate , UITableViewDataSource
 {
     // MARK: = tableview delegate and datasource methods
        

@@ -9,9 +9,8 @@
 import UIKit
 import SWRevealViewController
 import Alamofire
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class OTPVC: UIViewController , UITextFieldDelegate {
     var count = 60
     @IBOutlet weak var btnresendcode: UIButton!

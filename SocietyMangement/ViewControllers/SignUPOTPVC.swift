@@ -10,7 +10,7 @@
 import UIKit
 import Alamofire
 
-@available(iOS 13.0, *)
+
 class SignUPOTPVC: BaseVC  , UITextFieldDelegate{
     
     @IBOutlet weak var btncreatenew: UIButton!

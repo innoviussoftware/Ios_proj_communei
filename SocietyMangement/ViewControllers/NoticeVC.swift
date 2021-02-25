@@ -8,17 +8,9 @@
 
 import UIKit
 import SWRevealViewController
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
+
 class NoticeVC: BaseVC  , UITableViewDataSource , UITableViewDelegate ,UITextFieldDelegate{
     
     @IBOutlet weak var btnMenu: UIButton!

@@ -11,12 +11,7 @@ import FloatRatingView
 import SWRevealViewController
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class MaidProfileDetailsVC: UIViewController , updateReviewView, SWRevealViewControllerDelegate {
 
     @IBOutlet weak var lblRatingReviewStatic: UILabel!
@@ -684,7 +679,7 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView, SWRevealViewCon
 }
 
 
-@available(iOS 13.0, *)
+
 extension MaidProfileDetailsVC : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         

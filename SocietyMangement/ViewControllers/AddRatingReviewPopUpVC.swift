@@ -14,9 +14,7 @@ protocol  updateReviewView {
     func getupReviewView()
 }
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class AddRatingReviewPopUpVC: UIViewController {
     @IBOutlet weak var bgView: UIView!
     
@@ -354,7 +352,7 @@ class AddRatingReviewPopUpVC: UIViewController {
 
 
 
-@available(iOS 13.0, *)
+
 extension AddRatingReviewPopUpVC: FloatRatingViewDelegate {
 
     // MARK: FloatRatingViewDelegate
@@ -380,7 +378,7 @@ extension AddRatingReviewPopUpVC: FloatRatingViewDelegate {
 
 
 
-@available(iOS 13.0, *)
+
 extension AddRatingReviewPopUpVC : UITextViewDelegate{
     
     func textViewDidBeginEditing(_ textView: UITextView) {

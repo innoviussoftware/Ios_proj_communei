@@ -19,13 +19,6 @@ class PollListDetailsCell: UITableViewCell {
 }
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
 
 class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
@@ -769,7 +762,6 @@ class PollDetailsVC: BaseVC,UITableViewDelegate,UITableViewDataSource {
     
     
     
-    @available(iOS 13.0, *)
     func apicallPreviusPollDetails(strOption:String,strType:String)
     {
         if !NetworkState().isInternetAvailable {

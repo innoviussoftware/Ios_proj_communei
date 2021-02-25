@@ -11,13 +11,7 @@ import IQKeyboardManagerSwift
 import SkyFloatingLabelTextField
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate , UINavigationControllerDelegate,UITextViewDelegate{
     @IBOutlet weak var btnUpdate: UIButton!
     
@@ -612,7 +606,6 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
 }
 
 
-@available(iOS 13.0, *)
 extension AddEditBuySellProductVC : UIPickerViewDelegate,UIPickerViewDataSource{
     
     // MARK: - pickerview delegate and data source methods
@@ -645,7 +638,6 @@ extension AddEditBuySellProductVC : UIPickerViewDelegate,UIPickerViewDataSource{
 }
 
 
-@available(iOS 13.0, *)
 extension AddEditBuySellProductVC : UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

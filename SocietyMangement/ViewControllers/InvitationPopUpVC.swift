@@ -10,10 +10,7 @@ import UIKit
 import SWRevealViewController
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class InvitationPopUpVC: UIViewController {
     
     @IBOutlet weak var lblName: UILabel!

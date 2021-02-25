@@ -8,14 +8,8 @@
 
 import UIKit
 import SWRevealViewController
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource, URLSessionDownloadDelegate {
 
     @IBOutlet weak var vwbtnadd: UIView!
@@ -746,7 +740,6 @@ class SocietyEventsVC: BaseVC  , UITableViewDelegate , UITableViewDataSource, UR
 }
 
 
-@available(iOS 13.0, *)
 
 extension Array {
     public func toDictionary<Key: Hashable>(with selectKey: (Element) -> Key) -> [Key:Element] {

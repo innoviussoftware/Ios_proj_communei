@@ -11,15 +11,8 @@ import SWRevealViewController
 import ScrollPager
 
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegate {
         
     @IBOutlet weak var btnNotification: UIButton!
@@ -246,7 +239,6 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
         
     }
        
-    @available(iOS 13.0, *)
     @objc func AcceptRequest(notification: NSNotification) {
            
            let object = notification.object as! NSDictionary
@@ -567,7 +559,6 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
     
 }
 
-@available(iOS 13.0, *)
 extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tblView {

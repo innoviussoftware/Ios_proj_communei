@@ -371,8 +371,7 @@ struct NetworkState {
     }
 }
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 extension UIViewController {
     var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate

@@ -84,7 +84,6 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
         self.navigationController?.popViewController(animated: true)
     }
     
-    @available(iOS 13.0, *)
     func apiCallEmergencyRaiseAlarm() {
         
         if !NetworkState().isInternetAvailable {
@@ -225,7 +224,6 @@ class EmergencyAlertVC: UIViewController, UICollectionViewDelegate , UICollectio
   
     }
     
-    @available(iOS 13.0, *)
     @IBAction func btnRaiseAlarmClicked(_ sender: Any) {
        // let vc = self.storyboard?.instantiateViewController(withIdentifier: "EmergencyRespondPopUpVC") as! EmergencyRespondPopUpVC
         // vc.isfrom = 1

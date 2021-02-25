@@ -10,10 +10,7 @@ import UIKit
 import Alamofire
 import SWRevealViewController
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class HelpDeskVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var tblHelpDesk: UITableView!

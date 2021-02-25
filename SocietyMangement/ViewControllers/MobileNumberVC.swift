@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-@available(iOS 13.0, *)
+
 class MobileNumberVC: BaseVC  , UITextFieldDelegate{
     
     var isfrom = 0

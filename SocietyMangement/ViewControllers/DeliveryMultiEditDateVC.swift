@@ -13,7 +13,7 @@ protocol addDeliveryMultiDate {
     func addedDeliveryMultiDate()
 }
 
-@available(iOS 13.0, *)
+
 class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
     var delegate : addDeliveryMultiDate?

@@ -13,7 +13,6 @@ import Alamofire
 import MobileCoreServices
 
 
-@available(iOS 13.0, *)
 class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerControllerDelegate , UINavigationControllerDelegate{
     
     
@@ -832,7 +831,6 @@ class AddCircularVC: BaseVC , UITextFieldDelegate , Buildings , UIImagePickerCon
 
 
 
-@available(iOS 13.0, *)
 extension AddCircularVC : UIDocumentPickerDelegate // ,UIDocumentMenuDelegate
 {
      func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {

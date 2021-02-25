@@ -16,26 +16,7 @@ import Alamofire
 
 var ChangedIndex:Int = 0
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 
 class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout , UITableViewDelegate , UITableViewDataSource , Invite,addedVehicle{
     
@@ -2484,7 +2465,6 @@ class HomeVC: UIViewController  , UICollectionViewDelegate , UICollectionViewDat
 
 
 
-@available(iOS 13.0, *)
 extension HomeVC : ScrollPagerDelegate{
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {

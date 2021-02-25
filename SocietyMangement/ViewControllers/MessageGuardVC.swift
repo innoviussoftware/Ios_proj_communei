@@ -9,11 +9,7 @@
 import UIKit
 import Alamofire
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 
 class MessageGuardVC: UIViewController, UICollectionViewDelegate , UICollectionViewDataSource, UIImagePickerControllerDelegate , UINavigationControllerDelegate {
     

@@ -8,8 +8,8 @@
 
 import UIKit
 import Alamofire
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
+
 class IntroScreenVC: BaseVC {
 
 //    @IBOutlet weak var lblhighligh1: RSLabelCustomisation!
@@ -72,7 +72,7 @@ class IntroScreenVC: BaseVC {
 
 }
 
-@available(iOS 13.0, *)
+
 extension IntroScreenVC:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
     

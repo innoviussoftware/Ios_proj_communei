@@ -15,7 +15,6 @@ class complaintManagementcell:UITableViewCell
 
 
 
-@available(iOS 13.0, *)
 class ComplaintManagementVC: UIViewController, UITableViewDelegate , UITableViewDataSource {
     
     @IBOutlet weak var tblComplaintManage: UITableView!

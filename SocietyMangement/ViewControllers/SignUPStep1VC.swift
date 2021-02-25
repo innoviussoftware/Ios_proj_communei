@@ -13,22 +13,7 @@ var fullname:String?
 var email:String?
 var mobile:String?
 
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
-@available(iOS 13.0, *)
+
 class SignUPStep1VC: BaseVC {
     @IBOutlet weak var btnterms: UIButton!
     @IBOutlet weak var txtemail: RSTextFieldCustomisation!
