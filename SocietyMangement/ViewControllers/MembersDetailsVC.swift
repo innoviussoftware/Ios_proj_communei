@@ -93,6 +93,9 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
     var isFromDash = 0
     var selectedbuilding = 0
     var selectedbloodgrop = ""
+    
+    var selectedAgegrop = ""
+
    // @IBOutlet weak var lblNoDataFound: UILabel!
     
     @IBOutlet weak var hightcollectionbuilding: NSLayoutConstraint!
@@ -1109,20 +1112,13 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
         }
             else if(collectionView == collectionAge)
             {
-                
-                let numberOfSets = CGFloat(3.0)
-                 
-                 let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 45))/numberOfSets
-                 
-                 return CGSize(width:width,height: 31)
-                
-              /* let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
-                let contentNSString = arrAge[indexPath.row]
-                //agegroupary[indexPath.row]
-                let expectedLabelSize = (contentNSString as! String).boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
+                let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+                let contentNSString = agegroupary[indexPath.row]
+                let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize:15.0)], context: nil)
                 
                 print("\(expectedLabelSize)")
-                return CGSize(width:expectedLabelSize.size.width + 30, height: expectedLabelSize.size.height + 12) */
+                
+                return CGSize(width:expectedLabelSize.size.width + 32, height: expectedLabelSize.size.height + 13) //31
                 
             }
          else {
@@ -1143,7 +1139,18 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
          if (collectionView == CollectionBloodGrp)
         {
             arrSelectionCheck.removeAllObjects()
+            
             collectionProfession.reloadData()
+                        
+            for i in 0..<self.arrAge.count{
+                           if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                               let dict = arrAge[i] as! NSMutableDictionary
+                               dict.setValue("0", forKey: "is_selected")
+                            arrAge.replaceObject(at: i, with: dict)
+                           }
+                       }
+                    
+            collectionAge.reloadData()
             
             if (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                 
@@ -1160,6 +1167,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             }
             
             //selectedbloodgrop = bloodgroupary[indexPath.row]
+            
             CollectionBloodGrp.reloadData()
         }
         else if collectionView == collectionProfession{
@@ -1171,7 +1179,19 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                                arrBloodGrp.replaceObject(at: i, with: dict)
                            }
                        }
+            
                        CollectionBloodGrp.reloadData()
+            
+            for i in 0..<self.arrAge.count{
+                           if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                               let dict = arrAge[i] as! NSMutableDictionary
+                               dict.setValue("0", forKey: "is_selected")
+                            arrAge.replaceObject(at: i, with: dict)
+                           }
+                       }
+            
+                       collectionAge.reloadData()
+            
             
             if arrSelectionCheck.contains(arrProfessionList[indexPath.row].name){
                 arrSelectionCheck.remove(arrProfessionList[indexPath.row].name)
@@ -1184,7 +1204,18 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             else if (collectionView == collectionAge)
             {
                 arrSelectionCheck.removeAllObjects()
-               // collectionProfession.reloadData()
+                collectionProfession.reloadData()
+                
+                for i in 0..<self.arrBloodGrp.count{
+                               if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                                   let dict = arrBloodGrp[i] as! NSMutableDictionary
+                                   dict.setValue("0", forKey: "is_selected")
+                                   arrBloodGrp.replaceObject(at: i, with: dict)
+                               }
+                           }
+                
+                    CollectionBloodGrp.reloadData()
+                
                 
                 if (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                     
@@ -1201,6 +1232,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                 }
                 
                 //selectedbloodgrop = bloodgroupary[indexPath.row]
+                
                 collectionAge.reloadData()
             }
         else
@@ -1208,14 +1240,12 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             buildingid = buildingary[indexPath.item].PropertyID
             
             lblTitleName.text = "Resident of \(buildingary[indexPath.row].PropertyName)"
-
             
-            // 3/9/20.
             
            // collectionbuildings.reloadData()
+            
             tblMembers.reloadData()
             apicallGetMembers()
-            
             
         }
         
@@ -1841,6 +1871,14 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
             }
         }
         
+        for i in 0..<self.arrAge.count{
+            
+            if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                selectedAgegrop = ((arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String)!
+                break
+            }
+        }
+        
         
         let id = String(format: "%d",buildingid!)
 
@@ -1865,7 +1903,7 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                 webservices().StopSpinner()
                 if(JSON.response?.statusCode == 200)
                 {
-                    if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0)
+                    if(self.selectedbloodgrop == "" && self.arrSelectionCheck.count == 0 && self.selectedAgegrop == "")
                     {
                         self.membersary = resp.data!
 
@@ -1911,6 +1949,44 @@ class MembersDetailsVC: BaseVC, UICollectionViewDelegate , UICollectionViewDataS
                                 
                             }
                             
+                            //for Age
+                            
+                            if self.selectedAgegrop != "" {
+                                
+                                for i in 0..<self.arrAge.count{
+                                    
+                                   // let ages = "\(dic.age!)"
+                                    
+                                    let agelength = self.arrAge[i]
+                                    
+                                    if (self.arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                                    print("agelength :- ",agelength)
+                                    var agegroup = (agelength as! NSDictionary).value(forKey:"age_grp") as! String
+                                    
+                                    agegroup = agegroup.replacingOccurrences(of: "Age", with: "", options: NSString.CompareOptions.literal, range:nil)
+                                    agegroup = agegroup.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range:nil)
+
+                                        if agegroup == "Above70" {
+                                            agegroup = "70-1000"
+                                        }
+                                        
+                                   let agrary = agegroup.components(separatedBy:"-")
+
+                                        let lowerbounds = (agrary[0] as NSString).integerValue
+                                        let upperbounds = (agrary[1] as NSString).integerValue
+
+                                    let contains = (lowerbounds...upperbounds).contains(dic.age!)
+                                      if(contains)
+                                      {
+                                        self.allmembersary.append(dic)
+                                        self.Finalallmembersary.append(dic)
+                                      }
+                                    }
+                                    
+                                }
+                                
+                                
+                            }
                             
                             //      self.allmembersary  = self.Finalallmembersary
                             

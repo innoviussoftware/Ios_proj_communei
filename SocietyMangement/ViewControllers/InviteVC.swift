@@ -302,7 +302,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                      
                  }
             
-                 pager.setSelectedIndex(index: 2, animated: true)
+                // pager.setSelectedIndex(index: 2, animated: false)
+            
                  txtname.text = ""
                  txtcontact.text = ""
             
@@ -322,11 +323,11 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
 //        txtcontact.text = ""
 //    }
     
-    @IBAction func backaction(_ sender: Any) {
+    @IBAction func backaction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func actionNext(_ sender: Any) {
+    @IBAction func actionNext(_ sender: UIButton) {
          
                    let nameary = NSMutableArray()
                    arrContactName.removeAllObjects()
@@ -1099,7 +1100,8 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
                     //                                          }
                     //                                      }
                                                           
-                                              // arrContactName.add(dic)
+
+                                            
                                                self.arrContactName.add(dic)
                                            }
                                            

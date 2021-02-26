@@ -96,6 +96,10 @@ let API_ACTIVITY_CLOSE = "user/pre-approved/close"
 
 let API_ACTIVITY_EXIT_OUT = "user/pre-approved/exit"
 
+let API_ACTIVITY_ONDEMAND_IN = "user/on-demand-helper/entry"
+
+let API_ACTIVITY_ONDEMAND_OUT = "user/on-demand-helper/exit"
+
 let API_ACTIVITY_WRONG_ENTRY  = "user/pre-approved/wrong-entry"
 
 let API_LOGOUT = "user/signout" //"logout"

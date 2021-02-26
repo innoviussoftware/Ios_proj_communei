@@ -4560,6 +4560,20 @@ class AcceptedRequestCell: UITableViewCell {
             }
             else if lblStatus.text == "VISITED" {
                 lblStatus.backgroundColor = AppColor.cancelColor
+                
+                if activity.activityIn != nil {
+                    
+                    let lblDate = activity.activityIn?.components(separatedBy: " ")[0]
+                    let strDate = strChangeDateFormate(strDateeee: lblDate!)
+                    
+                    let lblTime = activity.activityIn?.components(separatedBy: " ")[1]
+                    let strTime = strChangeTimeFormate(strDateeee: lblTime!)
+
+                  //  lblintime.text =  strTime + " , " + strDate
+                    
+                    lblintime.text = "\(strTime) , \(strDate)"
+
+                }
              
              if activity.out != nil {
                  
@@ -4569,12 +4583,11 @@ class AcceptedRequestCell: UITableViewCell {
                  let lblTime = activity.out?.components(separatedBy: " ")[1]
                  let strTime = strChangeTimeFormate(strDateeee: lblTime!)
 
-                 lblouttime.text =  strTime + " , " + strDate
-                 
-                 lblouttime.isHidden = false
+                // lblouttime.text =  strTime + " , " + strDate
+                
+                 lblouttime.text = "\(strTime) , \(strDate)"
 
-             }else{
-                 lblouttime.isHidden = true
+                 
              }
                 
                 
@@ -4657,7 +4670,7 @@ class AcceptedRequestCell: UITableViewCell {
 
              lbldateintime.isHidden = true
              lblintime.isHidden = false
-            // lblouttime.isHidden = false
+             lblouttime.isHidden = false
              lbladdedby.isHidden = false
              lblparceltime.isHidden = true
              lblLeaveatGate.isHidden = true
@@ -6836,7 +6849,7 @@ class AcceptedRequestCell: UITableViewCell {
                                                             
             }else{
                                       
-                lblWrongEntry.text = "Wrong Entry Reported by" + (activity.wrongEntryBy)!
+                lblWrongEntry.text = "Wrong Entry Reported by " + (activity.wrongEntryBy)!
               
                   btnWrong_Entry.isHidden = true
                   btnWrong_Entry_Red.isHidden = false

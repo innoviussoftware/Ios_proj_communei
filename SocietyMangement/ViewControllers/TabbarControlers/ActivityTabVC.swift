@@ -993,6 +993,7 @@ class ActivityTabVC: BaseVC , addSingleDate , addMultiDate , addDeliveryMultiDat
 
         }
     
+    
     func strChangeTimeFormate(strDateeee: String) -> String
         {
             let dateFormatter = DateFormatter()
@@ -1702,7 +1703,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
             }
         }
-        /* else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
+         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
@@ -1746,12 +1747,18 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.strStartDate = activityIn!
+                    
+                    let strIn = strChangeDateFormate_Multi(strDateeee: activityIn!)
+
+                    popOverConfirmVC.strStartDate = strIn // activityIn!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.out) != nil {
                   let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.StrEndDate = out!
+                    
+                    let strOut = strChangeDateFormate_Multi(strDateeee: out!)
+
+                    popOverConfirmVC.StrEndDate = strOut // out!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
@@ -1813,7 +1820,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
         }
-         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Cab Entry" {
+        else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Cab Entry" {
             
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
             popOverConfirmVC.delegate = self
@@ -1825,6 +1832,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
            if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                 let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
             
+               // let strIn = strChangeDateFormate_Multi(strDateeee: activityIn!)
+
                 popOverConfirmVC.strStartDate = activityIn!
             }
             
@@ -1858,6 +1867,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                     let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
                 
+                
                     popOverConfirmVC.strStartDate = activityIn!
                 }
                 
@@ -1888,12 +1898,18 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.strStartDate = activityIn!
+                    
+                    let strIn = strChangeDateFormate_Multi(strDateeee: activityIn!)
+
+                    popOverConfirmVC.strStartDate = strIn // activityIn!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.out) != nil {
                   let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.StrEndDate = out!
+                    
+                    let strOut = strChangeDateFormate_Multi(strDateeee: out!)
+
+                    popOverConfirmVC.StrEndDate = strOut // out!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
@@ -1966,12 +1982,18 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
                   let activityIn = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.strStartDate = activityIn!
+                    
+                    let strIn = strChangeDateFormate_Multi(strDateeee: activityIn!)
+
+                    popOverConfirmVC.strStartDate = strIn // activityIn!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.out) != nil {
                   let out = arrGuestList[sender.tag].activity?.out!.components(separatedBy:" ")[0]
-                    popOverConfirmVC.StrEndDate = out!
+                    
+                    let strOut = strChangeDateFormate_Multi(strDateeee: out!)
+
+                    popOverConfirmVC.StrEndDate = strOut // out!
                 }
                 
                 if (arrGuestList[sender.tag].activity?.allowedInTime) != nil {
@@ -2029,7 +2051,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
             }
-        } */
+        }
         
     }
     
@@ -2158,7 +2180,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
             }
         }
-        /* else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
+         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Delivery Pre-Approval" {
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
                 let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
@@ -2270,7 +2292,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
         }
-         else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Cab Entry" {
+          else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Cab Entry" {
             
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "SingleEditDateVC") as! SingleEditDateVC
             popOverConfirmVC.delegate = self
@@ -2380,7 +2402,6 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             }
         }
          else if self.arrGuestList[sender.tag].activity?.ActivityType! == "Service Provider Pre-Approval"  || self.arrGuestList[sender.tag].activity?.ActivityType! == "Service Provider Entry" {
-         //  else if  ((arrGuestList[sender.tag].activity?.ActivityType!.contains("Service Provider")) != nil)
 
             if arrGuestList[sender.tag].activity?.isMulti == "0" { // single
                 
@@ -2487,7 +2508,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 popOverConfirmVC.didMove(toParentViewController: self)
                 
             }
-        }  */
+        }
         
     }
     
@@ -2557,7 +2578,9 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             "DailyHelpPropertyID" : my_DailyHelpPropertyID
         ]
 
-        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+        //  Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+            
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_ONDEMAND_IN ,token: token as! String, param: param) { JSON in
             
         let statusCode = JSON.response?.statusCode
             
@@ -2958,7 +2981,9 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
             "DailyHelpPropertyID" : DailyHelpPropertyID,
         ]
 
-        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+      //  Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_EXIT_OUT ,token: token as! String, param: param) { JSON in
+                        
+        Apicallhandler().ApiCallUserActivityListcancel(URL: webservices().baseurl + API_ACTIVITY_ONDEMAND_OUT ,token: token as! String, param: param) { JSON in
             
         let statusCode = JSON.response?.statusCode
             
@@ -3030,9 +3055,11 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
                                    avc?.yesAct = {
                                     
-                                    if self.arrGuestList[sender.tag].visitingFlatID != nil {
+                                    // 26/02/21
+                                    
+                                   // if self.arrGuestList[sender.tag].visitingFlatID != nil {
                                         self.ApiCallOutList_onDemand(UserActivityID: self.arrGuestList[sender.tag].userActivityID!, DailyHelpPropertyID: my_DailyHelpPropertyID)
-                                    }
+                                 //   }
                                     
                                    // self.dialNumber(number: <#T##String#>)
                                     

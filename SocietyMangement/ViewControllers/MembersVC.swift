@@ -400,7 +400,9 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
     }
     
     @IBAction func clearaction(_ sender: UIButton) {
+        
     //    arrBloodGrp.removeAllObjects()
+        
 //        for i in 0..<bloodgroupary.count{
 //            arrTemp.add("0")
 //        }
@@ -598,6 +600,8 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                     // searchActive = true
                     tblMembers.isHidden = true
                     lblnoproperty.isHidden = false
+                    collectionbuildings.isHidden = true
+
                 }
             }
             
@@ -1096,8 +1100,6 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         {
             let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
             
-           // checkbox(cb: cell.cb)
-          //  cell.cb.isUserInteractionEnabled = false
             
            // cell.lblname.text = bloodgroupary[indexPath.row]
           //  cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
@@ -1129,6 +1131,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             
         }
         else if(collectionView == collectionProfession) {
+            
             let cell:UserCell = collectionView.dequeueReusableCell(withReuseIdentifier:"cell", for: indexPath) as! UserCell
             
           //  checkbox(cb: cell.cb)
@@ -1159,12 +1162,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                   //  cell.lblname.text = (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "blood_grp") as? String
                     
                     cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "age_grp") as? String
-            
-           // cell.lblname.text = (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String
-    
-            
-            // 23/2/21 temp comment
-            
+                
                     if((arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
                    // if(arrAge.contains(agegroupary[indexPath.row]))
                     {
@@ -1232,8 +1230,20 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         else if (collectionView == CollectionBloodGrp)
         {
             arrSelectionCheck.removeAllObjects()
+                        
             collectionProfession.reloadData()
+            
+            for i in 0..<self.arrAge.count{
+                           if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                               let dict = arrAge[i] as! NSMutableDictionary
+                               dict.setValue("0", forKey: "is_selected")
+                            arrAge.replaceObject(at: i, with: dict)
+                           }
+                       }
+                    
             collectionAge.reloadData()
+            
+            
 
             if (arrBloodGrp[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                 
@@ -1254,6 +1264,7 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
         }
         else if collectionView == collectionProfession{
             
+            
             for i in 0..<self.arrBloodGrp.count{
                            if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
                                let dict = arrBloodGrp[i] as! NSMutableDictionary
@@ -1262,6 +1273,15 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                            }
                        }
                        CollectionBloodGrp.reloadData()
+            
+            for i in 0..<self.arrAge.count{
+                           if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                               let dict = arrAge[i] as! NSMutableDictionary
+                               dict.setValue("0", forKey: "is_selected")
+                            arrAge.replaceObject(at: i, with: dict)
+                           }
+                       }
+                       collectionAge.reloadData()
             
             if arrSelectionCheck.contains(arrProfessionList[indexPath.row].name){
                 arrSelectionCheck.remove(arrProfessionList[indexPath.row].name)
@@ -1276,11 +1296,19 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
             {
                
                 arrSelectionCheck.removeAllObjects()
-                
-               // arrBloodGrp.removeAllObjects()
-                
-                CollectionBloodGrp.reloadData()
+                                
                 collectionProfession.reloadData()
+                
+                for i in 0..<self.arrBloodGrp.count{
+                               if (arrBloodGrp[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
+                                   let dict = arrBloodGrp[i] as! NSMutableDictionary
+                                   dict.setValue("0", forKey: "is_selected")
+                                   arrBloodGrp.replaceObject(at: i, with: dict)
+                               }
+                           }
+                
+                    CollectionBloodGrp.reloadData()
+                
                 
                 if (arrAge[indexPath.row] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "0"{
                     
@@ -2103,54 +2131,46 @@ class MembersVC: BaseVC , UICollectionViewDelegate , UICollectionViewDataSource 
                             
                             //for Age
                             
-//                            for index in 0...10 {
-//                                print("index :- ",index)
-//                            }
-
                             if self.selectedAgegrop != "" {
                                 
                                 for i in 0..<self.arrAge.count{
-                                
-                                    let ages = "\(dic.age!)"
                                     
-                                    print("ages : ",ages)
+                                   // let ages = "\(dic.age!)"
                                     
                                     let agelength = self.arrAge[i]
                                     
-                                  //  print("selectedAgegrop :- ",selectedAgegrop)
-                                    
-                                   // let aa = (self.arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"
-                                    
+                                    if (arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1"{
                                     print("agelength :- ",agelength)
+                                    var agegroup = (agelength as! NSDictionary).value(forKey:"age_grp") as! String
                                     
-                                   // print("a[i] :- ",aa)
-                                    
-                                   // let string = (self.arrAge[i] as! NSMutableDictionary).value(forKey: "age_grp") as? String
-                                   
-                                    //let age = dic.age
+                                    agegroup = agegroup.replacingOccurrences(of: "Age", with: "", options: NSString.CompareOptions.literal, range:nil)
+                                    agegroup = agegroup.replacingOccurrences(of: " ", with: "", options: NSString.CompareOptions.literal, range:nil)
+                                        
+                                        
+                                    if agegroup == "Above70" {
+                                        agegroup = "70-1000"
+                                    }
+                                        
+                                  let agrary = agegroup.components(separatedBy:"-")
+                                        
+                                    let lowerbounds = (agrary[0] as NSString).integerValue
+                                      
+                                    let  upperbounds = (agrary[1] as NSString).integerValue
+
+                                    let contains = (lowerbounds...upperbounds).contains(dic.age!)
+                                      if(contains)
+                                      {
+                                        self.allmembersary.append(dic)
+                                        self.Finalallmembersary.append(dic)
+                                      }
+                                    }
                                     
                                 }
                                 
-                               // if dic.age != nil {
-                              /*  for i in 0..<self.arrAge.count{
-                                  //  if(self.arrAge.contains(dic.age!))
-                                    
-                                    let ages = "\(dic.age!) Age"
-                                    
-                                    print("ages : ",ages)
-
-                                   if(ages == (self.arrAge[i] as! NSMutableDictionary).value(forKey: "age_grp") as? String && (self.arrAge[i] as! NSMutableDictionary).value(forKey: "is_selected") as? String == "1")
-                                    
-                                   {
-                                        self.allmembersary.append(dic)
-                                        self.Finalallmembersary.append(dic)
-                                    }
-                                } */
                                 
                             }
                             
-                            //      self.allmembersary  = self.Finalallmembersary
-                            
+                              //   self.allmembersary  = self.Finalallmembersary
                             
                             
                         }

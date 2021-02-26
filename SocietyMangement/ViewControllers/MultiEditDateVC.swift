@@ -264,17 +264,17 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
                          ShowNoInternetAlert()
                          return
                      }
+        
             let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
+      //  let formatter = DateFormatter()
         
+      //  formatter.dateFormat = "dd-MM-yyyy"
         
-        txtstartdate.text = formatter.string(from: datePicker.date)
+       // txtstartdate.text = formatter.string(from: datePicker.date)
            // date1 = datePicker.date
 
-        txtenddate.text = formatter.string(from: datePicker1.date)
-        
+       // txtenddate.text = formatter.string(from: datePicker1.date)
             
             let param : Parameters = [
                 "VisitStartDate": txtstartdate.text!,
