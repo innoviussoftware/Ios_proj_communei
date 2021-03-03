@@ -139,9 +139,11 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             let dateFromStr = timeFormat.date(from: StrTime)!
             Msg_Date = timeFormat.string(from: dateFromStr)
             
+            selectedindex = 6
+            
             txtvaildtill.text = hourary[6]
 
-        }else if isfrom == 4 || isfrom == 33 {
+        }else if isfrom == 4 || isfrom == 33 || isfrom == 22 {
             let timeFormat = DateFormatter()
             timeFormat.dateFormat = "h:mm a"
             let dateFromStr = timeFormat.date(from: StrTime)!
@@ -737,6 +739,8 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             viewbottom.isHidden = false
             txtvaildtill.resignFirstResponder()
             
+           // collectionHours.reloadData()
+            
            // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         }
         if(textField == txtdate)
@@ -802,7 +806,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        txtvaildtill.text = hourary[indexPath.row]
+       // txtvaildtill.text = hourary[indexPath.row]
         
         selectedindex = indexPath.row
        // viewbottom.isHidden = true

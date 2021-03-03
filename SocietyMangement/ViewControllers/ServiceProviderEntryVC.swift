@@ -1441,9 +1441,16 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if (collectionView == collectionHours) {
-            let numberOfSets = CGFloat(4.0)
-            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 31))/numberOfSets
-            return CGSize(width:width,height: 42)
+//            let numberOfSets = CGFloat(4.0)
+//            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 31))/numberOfSets
+//            return CGSize(width:width,height: 42)
+//            
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = hourary[indexPath.row]
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+            
+            print("\(expectedLabelSize)")
+            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 25) //31
         }else{
             let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
             let contentNSString = arrDays[indexPath.row].daysName
@@ -1458,7 +1465,7 @@ class ServiceProviderEntryVC: UIViewController, ScrollPagerDelegate, UITextField
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if (collectionView == collectionHours) {
-            txtvaildtill.text = hourary[indexPath.row]
+           // txtvaildtill.text = hourary[indexPath.row]
               
               selectedindex = indexPath.row
              // viewbottom.isHidden = true

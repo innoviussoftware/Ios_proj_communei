@@ -7250,17 +7250,19 @@ class AcceptedRequestCell: UITableViewCell {
     func setEmergencyAlert(activity:ActivityAll,message:UserActivityAll) // EmergencyAlert 
     {
         
-            lblname.text = "Emergency"
+            if activity.emergencyAlertType == "SOS" {
+                lblname.text = "SOS"
+            }else{
+                lblname.text = "Emergency"
+            }
             
             lblguest.text = "Alert"
           
             imgview.image = UIImage(named: "Group 16679")
-
             
             imgviewCompanyLogo.isHidden = true
             
             lblStatus.isHidden = false
-
             
             let lblDate = message.inTime?.components(separatedBy: " ")[0]
             let strDate = strChangeDateFormate(strDateeee: lblDate!)
@@ -7275,7 +7277,6 @@ class AcceptedRequestCell: UITableViewCell {
             lblStatus.text = activity.messageStatus
             
            
-
             lblHightStacklblMiddle.isHidden = true
             
             constraintHightStackBtn.constant = 50

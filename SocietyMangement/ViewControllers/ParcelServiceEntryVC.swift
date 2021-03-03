@@ -382,7 +382,12 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
       }
          
       @IBAction func btnApply(_ sender: Any) {
-             self.viewbottom.isHidden = true
+        
+         txtvaildtill.text = hourary[selectedindex]
+        
+         collectionHours.reloadData()
+
+          self.viewbottom.isHidden = true
       }
          
       @IBAction func btnReset(_ sender: Any) {
@@ -483,7 +488,7 @@ class ParcelServiceEntryVC: UIViewController, UITextFieldDelegate,  UICollection
        
        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
            
-               txtvaildtill.text = hourary[indexPath.row]
+              // txtvaildtill.text = hourary[indexPath.row]
                  
                  selectedindex = indexPath.row
                 // viewbottom.isHidden = true

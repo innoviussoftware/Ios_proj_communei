@@ -213,22 +213,24 @@ import UIKit
 
             let width = strongSelf.frame.size.width / CGFloat(strongSelf.buttons.count)
             
-            let button = strongSelf.buttons[index]
+                let button = strongSelf.buttons[index]
+                
+                strongSelf.redrawButtons()
+                
+                let indicatorY: CGFloat = strongSelf.indicatorIsAtBottom ? strongSelf.frame.size.height - strongSelf.indicatorHeight : 0
+                
+                if strongSelf.indicatorSizeMatchesTitle {
+                    guard let string = button.titleLabel?.text else { fatalError("missing title on button, title is required for width calculation") }
+                    guard let font = button.titleLabel?.font else { fatalError("missing dont on button, title is required for width calculation")  }
+                    let size = string.size(withAttributes: [NSAttributedStringKey.font: font])
+                    let x = width * CGFloat(index) + ((width - size.width) / CGFloat(2))
+                    strongSelf.indicatorView.frame = CGRect(x: x, y: indicatorY, width: size.width, height: strongSelf.indicatorHeight)
+                
+                }
+                else {
+                    strongSelf.indicatorView.frame = CGRect(x: width * CGFloat(index), y: indicatorY, width: button.frame.size.width, height: strongSelf.indicatorHeight)
+                }
             
-            strongSelf.redrawButtons()
-            
-            let indicatorY: CGFloat = strongSelf.indicatorIsAtBottom ? strongSelf.frame.size.height - strongSelf.indicatorHeight : 0
-            
-            if strongSelf.indicatorSizeMatchesTitle {
-                guard let string = button.titleLabel?.text else { fatalError("missing title on button, title is required for width calculation") }
-                guard let font = button.titleLabel?.font else { fatalError("missing dont on button, title is required for width calculation")  }
-                let size = string.size(withAttributes: [NSAttributedStringKey.font: font])
-                let x = width * CGFloat(index) + ((width - size.width) / CGFloat(2))
-                strongSelf.indicatorView.frame = CGRect(x: x, y: indicatorY, width: size.width, height: strongSelf.indicatorHeight)
-            }
-            else {
-                strongSelf.indicatorView.frame = CGRect(x: width * CGFloat(index), y: indicatorY, width: button.frame.size.width, height: strongSelf.indicatorHeight)
-            }
             
             if let scrollView = strongSelf.scrollView {
                 if moveScrollView {

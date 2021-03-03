@@ -67,7 +67,7 @@ class DomesticHelperAttendanceVC: UIViewController {
         
         lblName.text = strlbl + "'s Attendance"
         
-        calenderView.placeholderType = .none
+      //  calenderView.placeholderType = .fillHeadTail
         
         calenderView.allowsMultipleSelection = false
         calenderView.swipeToChooseGesture.isEnabled = true
@@ -86,6 +86,7 @@ class DomesticHelperAttendanceVC: UIViewController {
               
         print("year:month:day : ",year!,month!,day!)
         
+            
         lblPresent.isHidden = true
         lblAbsent.isHidden = true
         lbldateSelectDateCalendar.isHidden = true
@@ -137,6 +138,7 @@ class DomesticHelperAttendanceVC: UIViewController {
  
          let token = UserDefaults.standard.value(forKey: USER_TOKEN)
         
+        
         let param : Parameters = [
             "DailyHelperID" : dailyHelperID!,
             "Year" : year!,
@@ -165,10 +167,15 @@ class DomesticHelperAttendanceVC: UIViewController {
                         if(dic.isPresent == 1)
                         {
                             let meetingStartDate = self.strChangeDateFormate(strDateeee: dic.daysAttended!)
-                            arrPresentAttendance.add(meetingStartDate)
+                           // if meetingStartDate.toDate(withFormat: "yyyy-MM-dd")! == Date() {
+                                arrPresentAttendance.add(meetingStartDate)
+                           // }
+                            
                         }else{
                             let meetingStartDate = self.strChangeDateFormate(strDateeee: dic.daysAttended!)
-                            arrAbsentAttendance.add(meetingStartDate)
+                            if meetingStartDate.toDate(withFormat: "yyyy-MM-dd")! < Date() {
+                                arrAbsentAttendance.add(meetingStartDate)
+                            }
                         }
                     }
             
@@ -271,7 +278,10 @@ class DomesticHelperAttendanceVC: UIViewController {
         
        // Apicallhandler().APIAttenceHelperList(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_ABSENT, param:param, token: token as! String) { [self] JSON in
             
-        Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_ABSENT, token: token  as! String) { [self] JSON in
+       // Apicallhandler.sharedInstance.LogoutAPIParam(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_ABSENT, token: token  as! String) { [self] JSON in
+            
+        Apicallhandler.sharedInstance.LogoutAPIParam(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_ABSENT, token: token  as! String, param:param) { [self] JSON in
+
 
             switch JSON.result{
             case .success(let resp):
@@ -372,7 +382,8 @@ class DomesticHelperAttendanceVC: UIViewController {
         webservices().StartSpinner()
         
        // Apicallhandler().APIAttenceHelperList(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_PRESENT, param:param, token: token as! String) { [self] JSON in
-        Apicallhandler.sharedInstance.LogoutAPI(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_PRESENT, token: token  as! String) { [self] JSON in
+        
+        Apicallhandler.sharedInstance.LogoutAPIParam(URL: webservices().baseurl + API_HELPER_DETAIL_ATTENDANCE_PRESENT, token: token  as! String, param:param) { [self] JSON in
 
             switch JSON.result{
             case .success(let resp):
@@ -447,7 +458,7 @@ class DomesticHelperAttendanceVC: UIViewController {
                 }
                // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
               //  self.present(alert, animated: true, completion: nil)
-              //  print(err.asAFError!)
+                print(err.asAFError!)
                 
             }
         }
@@ -532,12 +543,7 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
            
                 if(arrPresentAttendance.contains(key))
                 {
-                   /* lblPresent.isHidden = true
-                    lblAbsent.isHidden = false
-                    lbldateSelectDateCalendar.isHidden = false
-                    btnPresent.isHidden = true
-                    btnAbsent.isHidden = false */
-                    
+                   
                     lblPresent.isHidden = false
                     lblAbsent.isHidden = true
                     lbldateSelectDateCalendar.isHidden = false
@@ -547,12 +553,7 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
                     print("date is selectable Green")
 
                 }else{
-                   /* lblPresent.isHidden = false
-                    lblAbsent.isHidden = true
-                    lbldateSelectDateCalendar.isHidden = false
-                    btnPresent.isHidden = false
-                    btnAbsent.isHidden = true */
-                    
+                   
                     lblPresent.isHidden = true
                     lblAbsent.isHidden = false
                     lbldateSelectDateCalendar.isHidden = false
@@ -569,18 +570,39 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
          let key = self.dateFormatter1.string(from: date)
          print("key",key)
+        
          if(arrPresentAttendance.contains(key))
          {
             return AppColor.pollborderSelect
-         }else if(arrAbsentAttendance.contains(key))
+         }
+         else if(arrAbsentAttendance.contains(key))
          {
             return UIColor.systemRed
          }
          else
          {
-             return nil
+             return UIColor.clear
          }
      }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        
+        let key = self.dateFormatter1.string(from: date)
+        print("key",key)
+        
+        if(arrPresentAttendance.contains(key))
+        {
+           return UIColor.white
+        }
+        else if(arrAbsentAttendance.contains(key))
+        {
+           return UIColor.white
+        }
+        else
+        {
+            return UIColor.darkGray
+        }
+    }
  
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderRadiusFor date: Date) -> CGFloat {
         return 1.0
@@ -630,8 +652,15 @@ extension  DomesticHelperAttendanceVC:FSCalendarDataSource, FSCalendarDelegate, 
 
         print("changed added date : ",date11!)
         
+        
         apicallCalendarAttendance()
 
+    }
+    
+    func switchDateComponent(component: Calendar.Component, isNextDirection: Bool) {
+        if let nextDate = Calendar.current.date(byAdding: component, value: isNextDirection ? 1 : -1, to: calenderView.selectedDate ?? Date()) {
+            calenderView.select(nextDate, scrollToDate: true)
+        }
     }
     
 }

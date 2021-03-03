@@ -82,6 +82,12 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
         constraintHightCollection.constant = 0
         
     self.collectionImg.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
+        
+        viewCamera.isHidden = true
+        
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(tapviewCameraimage))
+        viewCamera.addGestureRecognizer(tap)
 
                if isEditProdcut == false{
                     lblTitel.text = "Add Details" // "Include Some Details"
@@ -98,25 +104,23 @@ class AddEditBuySellProductVC: UIViewController ,UIImagePickerControllerDelegate
                     
               //  DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) { [self] in
 
-                    for img in arrRecommendData.productsimages!{
+               // DispatchQueue.main.async {
+
+                  /*  for img in self.arrRecommendData.productsimages!{
                         let str =  img.attachment!
                         let img = UIImageView()
                         img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor profile"))
-                        arrEditProductImg.add(img.image!)
-                    }
+                        self.arrEditProductImg.add(img.image!)
+                    } */
                     
-                        collectionImg.reloadData()
+                    self.collectionImg.reloadData()
+                    
                // }
-//
-//                   arrEditProductImg = arrRecommendData.productsimages!
+                
+                  // arrEditProductImg = arrRecommendData.productsimages!
                    
                }
-               
-        viewCamera.isHidden = true
-        
-        let tap = UITapGestureRecognizer()
-        tap.addTarget(self, action: #selector(tapviewCameraimage))
-        viewCamera.addGestureRecognizer(tap)
+       
 
     }
     
@@ -656,13 +660,23 @@ extension AddEditBuySellProductVC : UICollectionViewDataSource,UICollectionViewD
         cell.imgProduct.contentMode = .scaleAspectFit
         
         if isEditProdcut == false{
-        cell.imgProduct.image = arrproductImg[indexPath.row] as? UIImage
-        cell.btnClose.addTarget(self, action: #selector(DeleteImage(sender:)), for: .touchUpInside)
-        
-        return cell
+            cell.imgProduct.image = arrproductImg[indexPath.row] as? UIImage
+            cell.btnClose.addTarget(self, action: #selector(DeleteImage(sender:)), for: .touchUpInside)
+            
+            return cell
+            
         }else{
             
+          /* for img in self.arrRecommendData.productsimages!{
+                let str =  img.attachment!
+                let img = UIImageView()
+                img.sd_setImage(with: URL(string:str), placeholderImage: UIImage(named: "vendor profile"))
+                self.arrEditProductImg.add(img.image!)
+            } */
+                        
             cell.imgProduct.image = arrEditProductImg[indexPath.row] as? UIImage
+            
+            
 //            if(arrEditProductImg[indexPath.row].image != nil)
 //                   {
 //                    cell.imgProduct.sd_setImage(with: URL(string:webservices().imgurl + arrEditProductImg[indexPath.row].image!), placeholderImage: UIImage(named: "vendor-1"))
@@ -670,7 +684,7 @@ extension AddEditBuySellProductVC : UICollectionViewDataSource,UICollectionViewD
             
             cell.btnClose.addTarget(self, action: #selector(DeleteImage(sender:)), for: .touchUpInside)
         
-          return cell
+            return cell
         }
         
     }

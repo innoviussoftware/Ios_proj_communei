@@ -80,6 +80,8 @@ let API_GET_FLAT = "communei/properties"   //"get/flat"
 let API_EMAIL_VERIFY = "verifyemail"
 let API_USER_ME = "user"   //  "user/me"
 
+let API_SOS_ALERT = "user/send/sos-alert"
+
 let API_GET_BUILDING_SOCIETY = "society/properties"  //"get/building"
 
 

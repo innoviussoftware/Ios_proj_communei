@@ -124,7 +124,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         }
     }
     
-    @IBAction func AddFromRecent(_ sender: Any) {
+    @IBAction func AddFromRecent(_ sender: UIButton) {
         if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
@@ -136,7 +136,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         }
       }
     
-    @IBAction func ManuallyAction(_ sender: Any) {
+    @IBAction func ManuallyAction(_ sender: UIButton) {
         if txtstartdate.text!.compare(txtenddate.text!) == .orderedDescending {
             let alert = webservices.sharedInstance.AlertBuilder(title:"", message:"End date must be greater than Start date")
             self.present(alert, animated: true, completion: nil)
@@ -148,7 +148,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         }
     }
     
-    @IBAction func AdOptionAction(_ sender: Any) {
+    @IBAction func AdOptionAction(_ sender: UIButton) {
         
         
         viewstatic.isHidden = true
@@ -157,7 +157,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         viewselection.isHidden = false
     }
     
-    @IBAction func CloseAction(_ sender: Any) {
+    @IBAction func CloseAction(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
 
 //        removeAnimate()
@@ -169,7 +169,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         
     }
     
-    @IBAction func btnClose_hour(_ sender: Any) {
+    @IBAction func btnClose_hour(_ sender: UIButton) {
         self.viewbottom.isHidden = true
     }
     
@@ -184,7 +184,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         self.viewbottom.isHidden = true
     }
     
-    @IBAction func btnReset(_ sender: Any) {
+    @IBAction func btnReset(_ sender: UIButton) {
         
         self.viewbottom.isHidden = true
     }
@@ -951,7 +951,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        txtvaildtill.text = hourary[indexPath.row]
+       // txtvaildtill.text = hourary[indexPath.row]
         
         selectedindex = indexPath.row
        // viewbottom.isHidden = true

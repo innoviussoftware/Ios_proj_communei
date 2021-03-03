@@ -50,6 +50,8 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     var arrRecommend = [BuySellProductListData]()
     var arrSellData = [BuySellProductListData]()
     
+    var arrEditProductImg = NSMutableArray()//[Productsimage]()
+
     var strType = "1"
     
     var isfrom = 1
@@ -431,7 +433,7 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                     UserDefaults.standard.removeObject(forKey:USER_SECRET)
                     UserDefaults.standard.removeObject(forKey:USER_BUILDING_ID)
                     
-                            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                             let aVC = storyBoard.instantiateViewController(withIdentifier: "MobileNumberVC") as! MobileNumberVC
                             let navController = UINavigationController(rootViewController: aVC)
                             navController.isNavigationBarHidden = true
@@ -442,8 +444,8 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
                     return
                 }
                 
-                let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+              //  let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+              //  self.present(alert, animated: true, completion: nil)
                 print(err.asAFError!)
                 
             }
@@ -706,6 +708,20 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
             let vc = self.storyboard?.instantiateViewController(identifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
             vc.arrRecommendData = arrSellData[sender.tag]
             vc.isEditProdcut = true
+            
+            for img in self.arrSellData[sender.tag].productsimages!{
+                let str =  img.attachment!
+                let img = UIImageView()
+                if let url = NSURL(string: str) {
+                    if let data = NSData(contentsOf: url as URL) {
+                        img.image = UIImage(data: data as Data)
+                        self.arrEditProductImg.add(img.image!)
+                    }
+                }
+            }
+            
+            vc.arrEditProductImg = self.arrEditProductImg
+            
             vc.CategoryID = (arrSellData[sender.tag].productCategoryID!) // as NSNumber).stringValue
            vc.ProductId = (arrSellData[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
@@ -714,6 +730,20 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
             vc.arrRecommendData = arrSellData[sender.tag]
            vc.CategoryID = (arrSellData[sender.tag].productCategoryID!) // as NSNumber).stringValue
             vc.isEditProdcut = true
+            
+            for img in self.arrSellData[sender.tag].productsimages!{
+                let str =  img.attachment!
+                let img = UIImageView()
+                if let url = NSURL(string: str) {
+                    if let data = NSData(contentsOf: url as URL) {
+                        img.image = UIImage(data: data as Data)
+                        self.arrEditProductImg.add(img.image!)
+                    }
+                }
+            }
+            
+            vc.arrEditProductImg = self.arrEditProductImg
+            
             vc.ProductId = (arrSellData[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         }

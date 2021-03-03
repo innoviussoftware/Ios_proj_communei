@@ -25,6 +25,8 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     
     @IBOutlet weak var collectionshortcut: UICollectionView!
     
+    @IBOutlet weak var btnLongPressCount: UIButton!
+    
     var shortcutary = ["Invite Visitor","Delivery","Cab","Domestic Helper","Help Desk"]
     
     var iconary = [UIImage(named:"ic_user"),UIImage (named:"ic_delivery"),UIImage (named:"ic_cab"),UIImage (named:"ic_domestic_helper"),UIImage (named:"ic_helpdesk")] // ic_domestic
@@ -67,12 +69,21 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
       //  collectionshortcut.clipsToBounds = false
      //   collectionshortcut.layer.masksToBounds = false
         
-
+       
         print("viewDidLoad NewHomeVC")
          
         // Do any additional setup after loading the view.
         
     }
+    
+    @objc func longPressed(gesture: UILongPressGestureRecognizer) {
+            if gesture.state == UIGestureRecognizerState.began {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "SosAlertVC") as! SosAlertVC
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+                print("btnLongPressPressed click")
+            }
+        }
     
     func dropShadow() {
         collectionshortcut.layer.masksToBounds = true
@@ -85,10 +96,15 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         NotificationCenter.default.addObserver(self, selector:  #selector(AcceptRequest), name: NSNotification.Name(rawValue: "DeliveryWaiting"), object: nil)
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))  // (longPressed(_:)))
+        self.btnLongPressCount.addGestureRecognizer(longPress)
 
         apicallUserMe()
+        
         // 28/10/20. temp comment
      //   apicallGuestList()
        
@@ -102,7 +118,8 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-               
+        super.viewDidAppear(true)
+        
         print("viewDidAppear NewHomeVC")
     }
     
@@ -179,6 +196,21 @@ class NewHomeVC: BaseVC, Invite, SWRevealViewControllerDelegate  {
         }
         
     }
+    
+    
+    
+    @IBAction func btnLongPressPressed(_ sender: UIButton) {
+        
+       // _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(SosLongPressPressed), userInfo: nil, repeats: true)
+                   
+    }
+    
+   /* @objc func SosLongPressPressed() {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SosAlertVC") as! SosAlertVC
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        print("btnLongPressPressed click")
+    } */
     
     @IBAction func btnNoticeBoardPressed(_ sender: UIButton) {
         

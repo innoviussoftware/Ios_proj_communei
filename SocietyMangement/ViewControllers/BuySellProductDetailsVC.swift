@@ -50,6 +50,8 @@ class BuySellProductDetailsVC: BaseVC {
     var ProductID : Int?
     var CategoryId : Int?
     
+
+    
     
    // var strProductID = ""
    // var strCategoryId = ""
@@ -414,6 +416,7 @@ class BuySellProductDetailsVC: BaseVC {
             let vc = self.storyboard?.instantiateViewController(identifier: "AddEditBuySellProductVC") as! AddEditBuySellProductVC
             vc.arrRecommendData = arrRelatedProduct[sender.tag]
             vc.isEditProdcut = true
+            
             vc.CategoryID = (arrRelatedProduct[sender.tag].productCategoryID!) // as NSNumber).stringValue
             vc.ProductId = (arrRelatedProduct[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
@@ -422,6 +425,8 @@ class BuySellProductDetailsVC: BaseVC {
             vc.arrRecommendData = arrRelatedProduct[sender.tag]
             vc.CategoryID = (arrRelatedProduct[sender.tag].productCategoryID!) //  as NSNumber).stringValue
             vc.isEditProdcut = true
+            
+            
             vc.ProductId = (arrRelatedProduct[sender.tag].productID!) // as NSNumber).stringValue
             self.navigationController?.pushViewController(vc, animated: true)
         }

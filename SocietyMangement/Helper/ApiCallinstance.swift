@@ -705,6 +705,15 @@ struct Apicallhandler {
         }
     }
     
+    func LogoutAPIParam(URL: String,token: String,param:Parameters, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
+       
+        AF.request(URL, method: .post,parameters:param, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<logout>) in
+         
+            onCompletion(response)
+            
+        }
+    }
+    
     // read notice
     func apiCallNoticeRead(URL: String,token: String, onCompletion: @escaping ((_ response: DataResponse<logout>) -> Void)) {
        
@@ -1527,6 +1536,17 @@ struct Apicallhandler {
        
         AF.request(URL, method: .post, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseDecodable { (response:DataResponse<UserMeResponse>) in
          
+            onCompletion(response)
+            
+        }
+    }
+    
+    
+    func apiCallSosAlert(URL: String, token:String, onCompletion: @escaping ((_ response: DataResponse<Any>) -> Void)) {
+        let parameter:Parameters = [:]
+        
+        AF.request(URL, method: .post, parameters:parameter, encoding: JSONEncoding.default, headers:["Authorization": "Bearer "+token]).responseJSON { (response:DataResponse<Any>) in
+            
             onCompletion(response)
             
         }

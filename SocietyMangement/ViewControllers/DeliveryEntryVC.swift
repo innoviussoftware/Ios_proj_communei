@@ -281,6 +281,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
      }
     
      override func viewWillDisappear(_ animated: Bool) {
+        
          NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "Acceptnotification"), object: nil)
          
      }
@@ -419,6 +420,14 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            txttime.text = formatter.string(from: timePicker.date)
         
         print("txttime text :- ",txttime.text!)
+        
+       /* if txttime.text!.toDate(withFormat: "dd-MM-yyyy") >= Date() {
+            print("Date")
+        }else{
+            print("Time")
+        } */
+        
+        
            //dismiss date picker dialog
            self.view.endEditing(true)
        }
@@ -442,9 +451,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                txtenddate.text = formatter.string(from: datePicker.date)
                date2 = datePicker.date
                let cal = NSCalendar.current
-               
-               
-               
+                              
                let components = cal.dateComponents([.day], from: date1, to: date2)
                
                if (components.day! >= 0)
@@ -1419,9 +1426,17 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if (collectionView == collectionHours) {
-            let numberOfSets = CGFloat(4.0)
-            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 31))/numberOfSets
-            return CGSize(width:width,height: 42)
+//            let numberOfSets = CGFloat(4.0)
+//            let width = (collectionView.frame.size.width - (numberOfSets * view.frame.size.width / 31))/numberOfSets
+//            return CGSize(width:width,height: 42)
+            
+            let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
+            let contentNSString = hourary[indexPath.row]
+            let expectedLabelSize = contentNSString.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
+            
+            print("\(expectedLabelSize)")
+            return CGSize(width:expectedLabelSize.size.width + 35, height: expectedLabelSize.size.height + 25) //31
+            
         }else{
             let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
             let contentNSString = arrDays[indexPath.row].daysName
@@ -1436,7 +1451,7 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if (collectionView == collectionHours) {
-            txtvaildtill.text = hourary[indexPath.row]
+           // txtvaildtill.text = hourary[indexPath.row]
               
               selectedindex = indexPath.row
              // viewbottom.isHidden = true

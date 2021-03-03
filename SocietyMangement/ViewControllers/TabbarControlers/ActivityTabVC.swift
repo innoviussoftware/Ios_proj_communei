@@ -2197,9 +2197,9 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 }
                 
                 if (arrGuestList[sender.tag].activity?.activityIn) != nil {
-                     let activityInTime = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[1]
+                    // let activityInTime = arrGuestList[sender.tag].activity?.activityIn!.components(separatedBy:" ")[1]
 
-                     popOverConfirmVC.StrTime = activityInTime!
+                     popOverConfirmVC.StrTime = strTime // activityInTime!
                  }
                  
                 popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
