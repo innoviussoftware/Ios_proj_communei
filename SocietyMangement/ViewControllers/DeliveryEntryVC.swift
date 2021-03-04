@@ -97,6 +97,9 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     let datePicker_start = UIDatePicker()
     let datePicker_end = UIDatePicker()
+    
+    let datePickerTime_start = UIDatePicker()
+    let datePickerTime_end = UIDatePicker()
 
     
     override func viewDidLoad() {
@@ -192,7 +195,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                
         collectionDays.collectionViewLayout = alignedFlowLayout1
                
-        showTimepPicker()
         showDatePicker()
 
         showTimepPicker_Multiple()
@@ -205,6 +207,17 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         txtstartdate.text = formatter.string(from: datee)
         txtenddate.text = formatter.string(from: datee)
         date = txtdate.text!
+        
+        if txtdate.text?.toDate(withFormat: "dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+            timePicker.minimumDate = Date()
+        }
+        
+        if (txtstartdate.text?.toDate(withFormat: "dd-MM-yyyy") == txtenddate.text?.toDate(withFormat: "dd-MM-yyyy")) == (Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") != nil) {
+            datePickerTime_start.minimumDate = Date()
+            datePickerTime_end.minimumDate = Date()
+        }
+        
+        showTimepPicker()
         
         let formatt = DateFormatter()
         formatt.dateFormat = "hh:mm a"
@@ -223,13 +236,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
     func showTimepPicker_Multiple() {
               //Formate Date
-           datePicker_start.datePickerMode = .time
+           datePickerTime_start.datePickerMode = .time
            
-           datePicker_end.datePickerMode = .time
+           datePickerTime_end.datePickerMode = .time
 
             if #available(iOS 13.4, *) {
-                datePicker_start.preferredDatePickerStyle = .wheels
-                datePicker_end.preferredDatePickerStyle = .wheels
+                datePickerTime_start.preferredDatePickerStyle = .wheels
+                datePickerTime_end.preferredDatePickerStyle = .wheels
             } else {
                 // Fallback on earlier versions
             }
@@ -247,11 +260,11 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
               // add toolbar to textField
               txtStartTime.inputAccessoryView = toolbar
               // add datepicker to textField
-              txtStartTime.inputView = datePicker_start
+              txtStartTime.inputView = datePickerTime_start
            
                txtEndTime.inputAccessoryView = toolbar
                      // add datepicker to textField
-               txtEndTime.inputView = datePicker_end
+               txtEndTime.inputView = datePickerTime_end
            
           }
           
@@ -260,13 +273,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                  let formatter = DateFormatter()
                  formatter.dateFormat = "hh:mm a"
               
-                 txtStartTime.text = formatter.string(from: datePicker_start.date)
+                 txtStartTime.text = formatter.string(from: datePickerTime_start.date)
                  
-                 txtEndTime.text = formatter.string(from: datePicker_end.date)
+                 txtEndTime.text = formatter.string(from: datePickerTime_end.date)
                  
                  //dismiss date picker dialog
                  self.view.endEditing(true)
-             }
+        }
              
              @objc func cancelTimePicker_Multiple(){
                  //cancel button dismiss datepicker dialog
@@ -328,8 +341,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
 
                           let nextViewController = storyBoard.instantiateViewController(withIdentifier: "SocietyEventsVC") as! SocietyEventsVC
                         
-                nextViewController.isfrom = 1
-                                                                        navigationController?.pushViewController(nextViewController, animated: true)
+                            nextViewController.isfrom = 1
+                            navigationController?.pushViewController(nextViewController, animated: true)
                           
                               
                                    
@@ -347,10 +360,19 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
     
        func showDatePicker(){
            //Formate Date
-           datePicker.datePickerMode = .date
         
+           datePicker.datePickerMode = .date
+
+           datePicker_start.datePickerMode = .date
+           datePicker_end.datePickerMode = .date
+
         if #available(iOS 13.4, *) {
+            
             datePicker.preferredDatePickerStyle = .wheels
+            
+            datePicker_start.preferredDatePickerStyle = .wheels
+            datePicker_end.preferredDatePickerStyle = .wheels
+
         } else {
             // Fallback on earlier versions
         }
@@ -369,29 +391,33 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            txtdate.inputAccessoryView = toolbar
            // add datepicker to textField
            txtdate.inputView = datePicker
-           
+        
+            // add toolbar to textField
+            txtstartdate.inputAccessoryView = toolbar
+            // add datepicker to textField
+            txtstartdate.inputView = datePicker_start
+               
            // add toolbar to textField
            txtenddate.inputAccessoryView = toolbar
            // add datepicker to textField
-           txtenddate.inputView = datePicker
-           
-           // add toolbar to textField
-           txtstartdate.inputAccessoryView = toolbar
-           // add datepicker to textField
-           txtstartdate.inputView = datePicker
+           txtenddate.inputView = datePicker_end
+          
           
            datePicker.minimumDate = Date()
+        
+            datePicker_start.minimumDate = Date()
+            datePicker_end.minimumDate = Date()
+
            
        }
     
-       func showTimepPicker(){
+       func showTimepPicker() {
            //Formate Date
+        
            timePicker.datePickerMode = .time
         
         if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
             timePicker.preferredDatePickerStyle = .wheels
-
         } else {
             // Fallback on earlier versions
         }
@@ -421,13 +447,6 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         print("txttime text :- ",txttime.text!)
         
-       /* if txttime.text!.toDate(withFormat: "dd-MM-yyyy") >= Date() {
-            print("Date")
-        }else{
-            print("Time")
-        } */
-        
-        
            //dismiss date picker dialog
            self.view.endEditing(true)
        }
@@ -441,15 +460,44 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
            //For date formate
            let formatter = DateFormatter()
            formatter.dateFormat = "dd-MM-yyyy"
+        
            if(textfield == txtdate)
            {
                txtdate.text = formatter.string(from: datePicker.date)
-               
+            
+                if formatter.string(from: datePicker.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                    timePicker.minimumDate = Date()
+                }else{
+                    timePicker.minimumDate = nil
+                }
            }
+        
+            if(textfield == txtstartdate)
+            {
+                txtstartdate.text = formatter.string(from: datePicker_start.date)
+                date1 = datePicker_start.date
+                
+                if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                    datePickerTime_start.minimumDate = Date()
+                    datePickerTime_end.minimumDate = Date()
+
+                }
+                else if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") {
+                    datePickerTime_start.minimumDate = Date()
+                    datePickerTime_end.minimumDate = Date()
+                }
+                else{
+                    datePickerTime_start.minimumDate = nil
+                    datePickerTime_end.minimumDate = nil
+
+                }
+                
+            }
+        
            if(textfield == txtenddate)
            {
-               txtenddate.text = formatter.string(from: datePicker.date)
-               date2 = datePicker.date
+               txtenddate.text = formatter.string(from: datePicker_end.date)
+               date2 = datePicker_end.date
                let cal = NSCalendar.current
                               
                let components = cal.dateComponents([.day], from: date1, to: date2)
@@ -466,14 +514,23 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                    }))
                    self.present(alert, animated: true, completion: nil)
                }
+            
+                if formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                    datePickerTime_start.minimumDate = Date()
+                    datePickerTime_end.minimumDate = Date()
+                }
+                else if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") {
+                    datePickerTime_start.minimumDate = Date()
+                    datePickerTime_end.minimumDate = Date()
+                }
+                else{
+                    datePickerTime_start.minimumDate = nil
+                    datePickerTime_end.minimumDate = nil
+
+                }
                
            }
-           if(textfield == txtstartdate)
-           {
-               txtstartdate.text = formatter.string(from: datePicker.date)
-               date1 = datePicker.date
-               
-           }
+          
            self.view.endEditing(true)
        }
        

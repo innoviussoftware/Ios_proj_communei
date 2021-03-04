@@ -7288,8 +7288,13 @@ class AcceptedRequestCell: UITableViewCell {
              if lblStatus.text == "RESOLVED" {
                 lblStatus.backgroundColor = AppColor.pollborderSelect
              }else if lblStatus.text == "SENT" {
-                lblStatus.backgroundColor = AppColor.pollborderSelect
+               // lblStatus.backgroundColor = AppColor.pollborderSelect
+                
+                   lblStatus.text = "IN PROGRESS"
+                   lblStatus.backgroundColor = UIColor.systemRed
+                
              }else if lblStatus.text == "IN PROGRESS" {
+                lblStatus.text = "IN PROGRESS"
                 lblStatus.backgroundColor = UIColor.systemRed
              }
              else{
@@ -7392,9 +7397,15 @@ class AcceptedRequestCell: UITableViewCell {
                 if lblStatus.text == "RESOLVED" {
                    lblStatus.backgroundColor = AppColor.pollborderSelect
                 }else if lblStatus.text == "SENT" {
-                   lblStatus.backgroundColor = AppColor.pollborderSelect
-                }else if lblStatus.text == "IN PROGRESS" {
+                    lblStatus.text = "IN PROGRESS"
                     lblStatus.backgroundColor = UIColor.systemRed
+                 
+                  // lblStatus.backgroundColor = AppColor.pollborderSelect
+                }else if lblStatus.text == "IN PROGRESS" {
+                    lblStatus.text = "IN PROGRESS"
+                    lblStatus.backgroundColor = UIColor.systemRed
+                 
+                   // lblStatus.backgroundColor = UIColor.systemRed
                 }else{
                    lblStatus.backgroundColor = UIColor.systemRed
                 }

@@ -279,7 +279,6 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         webservices.sharedInstance.PaddingTextfiled(textfield: txtmanually12)
         webservices.sharedInstance.PaddingTextfiled(textfield: txtRecentally12)
 
-        showTimepPicker()
         showDatePicker()
         
         txtvaildtill.text = hourary[6]
@@ -341,6 +340,12 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         txtstartdate.text = formatter.string(from: datee)
         txtenddate.text = formatter.string(from: datee)
         date = txtdate.text!
+        
+        if txtdate.text?.toDate(withFormat: "dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+            timePicker.minimumDate = Date()
+        }
+        
+        showTimepPicker()
         
         txtdate.text = "Today"
         
@@ -767,7 +772,22 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
         {
             txtdate.text = formatter.string(from: datePicker.date)
             
+            if formatter.string(from: datePicker.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                timePicker.minimumDate = Date()
+            }else{
+                timePicker.minimumDate = nil
+            }
+            
         }
+        
+        if(textfield == txtstartdate)
+        {
+            txtstartdate.text = formatter.string(from: datePicker.date)
+            date1 = datePicker.date
+            
+            
+        }
+        
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker.date)
@@ -790,13 +810,7 @@ class AddguestPopup: BaseVC  , UICollectionViewDelegate , UICollectionViewDataSo
             }
             
         }
-        if(textfield == txtstartdate)
-        {
-            txtstartdate.text = formatter.string(from: datePicker.date)
-            date1 = datePicker.date
-            
-            
-        }
+       
         txtstartdate.resignFirstResponder()
         self.view.endEditing(true)
     }

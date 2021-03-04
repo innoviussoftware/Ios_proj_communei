@@ -1612,6 +1612,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+            
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -1654,6 +1660,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -1725,6 +1737,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+                
                 popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -1774,6 +1792,8 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                 if (arrGuestList[sender.tag].activity?.daysOfWeek != nil) {
                     popOverConfirmVC.daysOfWeek = (arrGuestList[sender.tag].activity?.daysOfWeek)!
                 }
+                
+
                 popOverConfirmVC.multiDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -1808,6 +1828,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -1843,6 +1869,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                  popOverConfirmVC.StrTime = activityInTime!
              }
              
+            if arrGuestList[sender.tag].activity?.validFor != nil {
+                popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+            }else{
+                popOverConfirmVC.validFor = "2 Hr"
+            }
+
             popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
             popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
             popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -1877,6 +1909,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -1961,6 +1999,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2040,6 +2084,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2098,6 +2148,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2135,6 +2191,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2202,6 +2264,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime // activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -2280,6 +2348,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime // activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+            
                 popOverConfirmVC.singleDeliveryCheckGate = (arrGuestList[sender.tag].activity?.leaveAtGate)!
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -2313,6 +2387,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                  popOverConfirmVC.StrTime = strTime // activityInTime!
              }
              
+            if arrGuestList[sender.tag].activity?.validFor != nil {
+                popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+            }else{
+                popOverConfirmVC.validFor = "2 Hr"
+            }
+
             popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
             popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
             popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2346,6 +2426,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime //  activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2423,6 +2509,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
 
                      popOverConfirmVC.StrTime = strTime // activityInTime!
                  }
+                
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
                  
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
@@ -2497,6 +2589,12 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
                      popOverConfirmVC.StrTime = strTime // activityInTime!
                  }
                  
+                if arrGuestList[sender.tag].activity?.validFor != nil {
+                    popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+                }else{
+                    popOverConfirmVC.validFor = "2 Hr"
+                }
+
                 popOverConfirmVC.VisitFlatPreApprovalID = arrGuestList[sender.tag].activity?.visitorPreApprovalID!
                 popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
                 popOverConfirmVC.VisitorEntryTypeID = self.arrGuestList[sender.tag].visitorEntryTypeID! //1
@@ -2537,10 +2635,17 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
              popOverConfirmVC.StrTime = strTime
          }
         
+        
         let dailyHelpPropertyID = (self.arrGuestList[sender.tag].activity?.dailyHelpPropertyID!)
         
         let my_DailyHelpPropertyID = (dailyHelpPropertyID! as NSString).integerValue
 
+        if arrGuestList[sender.tag].activity?.validFor != nil {
+            popOverConfirmVC.validFor = (arrGuestList[sender.tag].activity?.validFor)!
+        }else{
+            popOverConfirmVC.validFor = "2 Hr"
+        }
+        
         popOverConfirmVC.UserActivityID = self.arrGuestList[sender.tag].userActivityID!
         popOverConfirmVC.DailyHelpPropertyID = my_DailyHelpPropertyID
 

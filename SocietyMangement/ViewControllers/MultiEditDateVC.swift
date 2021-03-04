@@ -107,7 +107,6 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
               txtenddate.inputView = datePicker1
               
              
-              
     }
     
     @objc  func donedatePicker(){
@@ -117,6 +116,13 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
         
         formatter.dateFormat = "dd-MM-yyyy" // "dd MMM"
 
+        if(textfield == txtstartdate)
+        {
+            txtstartdate.text = formatter.string(from: datePicker.date)
+            date1 = datePicker.date
+            
+        }
+        
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker1.date)
@@ -143,12 +149,7 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
             }
             
         }
-        if(textfield == txtstartdate)
-        {
-            txtstartdate.text = formatter.string(from: datePicker.date)
-            date1 = datePicker.date
-            
-        }
+       
         self.view.endEditing(true)
     }
     

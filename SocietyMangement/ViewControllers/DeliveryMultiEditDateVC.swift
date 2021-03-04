@@ -130,6 +130,11 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
      
         txtEndTime.text = Msg_Date1
         
+        if (txtstartdate.text?.toDate(withFormat: "dd-MM-yyyy") == txtenddate.text?.toDate(withFormat: "dd-MM-yyyy")) == (Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") != nil) {
+            datePicker_start.minimumDate = Date()
+            datePicker_end.minimumDate = Date()
+        }
+        
         showDatePicker()
         
         showTimepPicker_Multiple()
@@ -206,6 +211,19 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM-yyyy" // "yyyy-MM-dd"
         
+        if(textfield == txtstartdate)
+        {
+            txtstartdate.text = formatter.string(from: datePicker.date)
+            date1 = datePicker.date
+            
+            if formatter.string(from: datePicker.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                timePicker.minimumDate = Date()
+            }else{
+                timePicker.minimumDate = nil
+            }
+            
+        }
+        
         if(textfield == txtenddate)
         {
             txtenddate.text = formatter.string(from: datePicker.date)
@@ -227,13 +245,23 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 self.present(alert, animated: true, completion: nil)
             }
             
-        }
-        if(textfield == txtstartdate)
-        {
-            txtstartdate.text = formatter.string(from: datePicker.date)
-            date1 = datePicker.date
+            if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                datePicker_start.minimumDate = Date()
+                datePicker_end.minimumDate = Date()
+
+            }
+            else if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") {
+                datePicker_start.minimumDate = Date()
+                datePicker_end.minimumDate = Date()
+            }
+            else{
+                datePicker_start.minimumDate = nil
+                datePicker_end.minimumDate = nil
+
+            }
             
         }
+        
         self.view.endEditing(true)
     }
     
@@ -524,7 +552,6 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
                 }
             }
             
-       
     }
     
     @IBAction func btnClose_days(_ sender: Any) {

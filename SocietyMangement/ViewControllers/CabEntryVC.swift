@@ -102,6 +102,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     let datePicker_start = UIDatePicker()
     let datePicker_end = UIDatePicker()
 
+    let datePickerTime_start = UIDatePicker()
+    let datePickerTime_end = UIDatePicker()
+
 
     func isValidVehicle(vehicleStr:String) -> Bool {
         
@@ -200,7 +203,6 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                webservices.sharedInstance.PaddingTextfiled(textfield: txtCabCompanyName)
             webservices.sharedInstance.PaddingTextfiled(textfield: txtVehicleNumber)
 
-        
 
                webservices.sharedInstance.PaddingTextfiled(textfield: txtAllWeek)
                webservices.sharedInstance.PaddingTextfiled(textfield: txtstartdate)
@@ -220,7 +222,7 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                       
                collectionDays.collectionViewLayout = alignedFlowLayout1
                       
-               showTimepPicker()
+              // showTimepPicker()
                showDatePicker()
 
                showTimepPicker_Multiple()
@@ -233,6 +235,19 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                txtstartdate.text = formatter.string(from: datee)
                txtenddate.text = formatter.string(from: datee)
                date = txtdate.text!
+        
+                if txtdate.text?.toDate(withFormat: "dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                    timePicker.minimumDate = Date()
+                }
+                
+        
+                if (txtstartdate.text?.toDate(withFormat: "dd-MM-yyyy") == txtenddate.text?.toDate(withFormat: "dd-MM-yyyy")) == (Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") != nil) {
+                    datePickerTime_start.minimumDate = Date()
+                    datePickerTime_end.minimumDate = Date()
+                }
+        
+                showTimepPicker()
+        
                
                let formatt = DateFormatter()
                formatt.dateFormat = "hh:mm a"
@@ -265,14 +280,17 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     
     func showTimepPicker_Multiple(){
            //Formate Date
-        datePicker_start.datePickerMode = .time
+       
+        datePickerTime_start.datePickerMode = .time
         
-        datePicker_end.datePickerMode = .time
+        datePickerTime_end.datePickerMode = .time
+
         
 
         if #available(iOS 13.4, *) {
-            datePicker_start.preferredDatePickerStyle = .wheels
-            datePicker_end.preferredDatePickerStyle = .wheels
+            datePickerTime_start.preferredDatePickerStyle = .wheels
+            datePickerTime_end.preferredDatePickerStyle = .wheels
+            
         } else {
             // Fallback on earlier versions
         }
@@ -282,19 +300,19 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
            toolbar.sizeToFit()
            
            //done button & cancel button
-           let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(doneTimePicker_Multiple))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action:#selector(doneTimePicker_Multiple))
            let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-           let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action:#selector(cancelTimePicker_Multiple))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action:#selector(cancelTimePicker_Multiple))
            toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
            //timePicker.minimumDate = Date()
            // add toolbar to textField
            txtStartTime.inputAccessoryView = toolbar
            // add datepicker to textField
-           txtStartTime.inputView = datePicker_start
+           txtStartTime.inputView = datePickerTime_start
         
             txtEndTime.inputAccessoryView = toolbar
                   // add datepicker to textField
-            txtEndTime.inputView = datePicker_end
+            txtEndTime.inputView = datePickerTime_end
         
        }
        
@@ -303,9 +321,9 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
               let formatter = DateFormatter()
               formatter.dateFormat = "hh:mm a"
            
-              txtStartTime.text = formatter.string(from: datePicker_start.date)
+              txtStartTime.text = formatter.string(from: datePickerTime_start.date)
               
-              txtEndTime.text = formatter.string(from: datePicker_end.date)
+              txtEndTime.text = formatter.string(from: datePickerTime_end.date)
               
               //dismiss date picker dialog
               self.view.endEditing(true)
@@ -368,42 +386,54 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
        }
        
     func showDatePicker() {
-              //Formate Date
-              datePicker.datePickerMode = .date
+        //Formate Date
+        datePicker.datePickerMode = .date
+
+        datePicker_start.datePickerMode = .date
+        datePicker_end.datePickerMode = .date
+
+     if #available(iOS 13.4, *) {
+         datePicker.preferredDatePickerStyle = .wheels
         
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-        } else {
-            // Fallback on earlier versions
-        }
-              
-              //ToolBar
-              let toolbar = UIToolbar();
-              toolbar.sizeToFit()
-              
-              //done button & cancel button
-              let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(donedatePicker))
-              let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
-              let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(cancelDatePicker))
-              toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
-              
-              // add toolbar to textField
-              txtdate.inputAccessoryView = toolbar
-              // add datepicker to textField
-              txtdate.inputView = datePicker
-              
-              // add toolbar to textField
-              txtenddate.inputAccessoryView = toolbar
-              // add datepicker to textField
-              txtenddate.inputView = datePicker
-              
-              // add toolbar to textField
-              txtstartdate.inputAccessoryView = toolbar
-              // add datepicker to textField
-              txtstartdate.inputView = datePicker
-             
-              datePicker.minimumDate = Date()
-              
+         datePicker_start.preferredDatePickerStyle = .wheels
+         datePicker_end.preferredDatePickerStyle = .wheels
+
+     } else {
+         // Fallback on earlier versions
+     }
+        
+        //ToolBar
+        let toolbar = UIToolbar();
+        toolbar.sizeToFit()
+        
+        //done button & cancel button
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donedatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        toolbar.setItems([cancelButton,spaceButton,doneButton], animated: false)
+        
+        // add toolbar to textField
+        txtdate.inputAccessoryView = toolbar
+        // add datepicker to textField
+        txtdate.inputView = datePicker
+     
+         // add toolbar to textField
+         txtstartdate.inputAccessoryView = toolbar
+         // add datepicker to textField
+         txtstartdate.inputView = datePicker_start
+            
+        // add toolbar to textField
+        txtenddate.inputAccessoryView = toolbar
+        // add datepicker to textField
+        txtenddate.inputView = datePicker_end
+       
+       
+        datePicker.minimumDate = Date()
+     
+         datePicker_start.minimumDate = Date()
+         datePicker_end.minimumDate = Date()
+
+        
     }
     
           func showTimepPicker() {
@@ -448,44 +478,82 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
           }
           
           @objc  func donedatePicker(){
-              //For date formate
-              let formatter = DateFormatter()
-              formatter.dateFormat = "dd-MM-yyyy"
-              if(textfield == txtdate)
-              {
-                  txtdate.text = formatter.string(from: datePicker.date)
-                  
-              }
-              if(textfield == txtenddate)
-              {
-                  txtenddate.text = formatter.string(from: datePicker.date)
-                  date2 = datePicker.date
-                  let cal = NSCalendar.current
-                  
-                  let components = cal.dateComponents([.day], from: date1, to: date2)
-                  
-                  if (components.day! >= 0)
-                  {
-                     // lbldays.text =  (components.day! as NSNumber).stringValue + "days"
-                   //   days = lbldays.text!
-                  }
-                  else{
-                      let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
-                      alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
-                        //  self.txtenddate.text = ""
-                      }))
-                      self.present(alert, animated: true, completion: nil)
-                  }
-                  
-              }
-              if(textfield == txtstartdate)
-              {
-                  txtstartdate.text = formatter.string(from: datePicker.date)
-                  date1 = datePicker.date
-                  
-              }
-              self.view.endEditing(true)
-          }
+            //For date formate
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+         
+            if(textfield == txtdate)
+            {
+                txtdate.text = formatter.string(from: datePicker.date)
+             
+                 if formatter.string(from: datePicker.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                     timePicker.minimumDate = Date()
+                 }else{
+                     timePicker.minimumDate = nil
+                 }
+            }
+         
+             if(textfield == txtstartdate)
+             {
+                 txtstartdate.text = formatter.string(from: datePicker_start.date)
+                 date1 = datePicker_start.date
+                 
+                 if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                     datePickerTime_start.minimumDate = Date()
+                     datePickerTime_end.minimumDate = Date()
+
+                 }
+                 else if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") {
+                     datePickerTime_start.minimumDate = Date()
+                     datePickerTime_end.minimumDate = Date()
+                 }
+                 else{
+                     datePickerTime_start.minimumDate = nil
+                     datePickerTime_end.minimumDate = nil
+
+                 }
+                 
+             }
+         
+            if(textfield == txtenddate)
+            {
+                txtenddate.text = formatter.string(from: datePicker_end.date)
+                date2 = datePicker_end.date
+                let cal = NSCalendar.current
+                               
+                let components = cal.dateComponents([.day], from: date1, to: date2)
+                
+                if (components.day! >= 0)
+                {
+                   // lbldays.text =  (components.day! as NSNumber).stringValue + "days"
+                 //   days = lbldays.text!
+                }
+                else{
+                    let alert = UIAlertController(title: Alert_Titel, message:"Please select end date greater than start date" , preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { alert in
+                       // self.txtenddate.text = ""
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                }
+             
+                 if formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                     datePickerTime_start.minimumDate = Date()
+                     datePickerTime_end.minimumDate = Date()
+                 }
+                 else if formatter.string(from: datePicker_start.date).toDate(withFormat:"dd-MM-yyyy") == formatter.string(from: datePicker_end.date).toDate(withFormat:"dd-MM-yyyy") {
+                     datePickerTime_start.minimumDate = Date()
+                     datePickerTime_end.minimumDate = Date()
+                 }
+                 else{
+                     datePickerTime_start.minimumDate = nil
+                     datePickerTime_end.minimumDate = nil
+
+                 }
+                
+            }
+           
+            self.view.endEditing(true)
+        }
           
        @objc func cancelDatePicker(){
               //cancel button dismiss datepicker dialog

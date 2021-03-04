@@ -39,9 +39,10 @@ class SosAlertVC: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
             self.lblNumber.text = "1"
         }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
             self.apiCallSosAlert()
         }
+        
     }
     
     func apiCallSosAlert() {

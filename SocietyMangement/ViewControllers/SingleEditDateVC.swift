@@ -53,6 +53,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     
     var DailyHelpPropertyID:Int?
 
+    var validFor = "" //"2 Hr"
     
     var singleDeliveryCheckGate = ""
     
@@ -139,9 +140,9 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             let dateFromStr = timeFormat.date(from: StrTime)!
             Msg_Date = timeFormat.string(from: dateFromStr)
             
-            selectedindex = 6
+           // selectedindex = 6
             
-            txtvaildtill.text = hourary[6]
+           // txtvaildtill.text = hourary[6]
 
         }else if isfrom == 4 || isfrom == 33 || isfrom == 22 {
             let timeFormat = DateFormatter()
@@ -149,7 +150,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             let dateFromStr = timeFormat.date(from: StrTime)!
             Msg_Date = timeFormat.string(from: dateFromStr)
             
-            txtvaildtill.text = hourary[0]
+           // txtvaildtill.text = hourary[0]
             
         }
         else{
@@ -160,10 +161,46 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
             dateFormatterPrint.dateFormat = "h:mm a"
             Msg_Date = dateFormatterPrint.string(from: dateFromStr)
             
-            txtvaildtill.text = hourary[0]
+           // txtvaildtill.text = hourary[0]
             
         }
        
+        if txtdate.text?.toDate(withFormat: "dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+            timePicker.minimumDate = Date()
+        }
+        
+        if validFor == "2 Hr" {
+            txtvaildtill.text = hourary[0]
+            selectedindex = 0
+        }
+        else if validFor == "4 Hr" {
+            txtvaildtill.text = hourary[1]
+            selectedindex = 1
+        }
+        else if validFor == "6 Hr" {
+            txtvaildtill.text = hourary[2]
+            selectedindex = 2
+        }
+        else if validFor == "8 Hr" {
+            txtvaildtill.text = hourary[3]
+            selectedindex = 3
+        }
+        else if validFor == "10 Hr" {
+            txtvaildtill.text = hourary[4]
+            selectedindex = 4
+        }
+        else if validFor == "12 Hr" {
+            txtvaildtill.text = hourary[5]
+            selectedindex = 5
+        }
+        else if validFor == "Day End" {
+            txtvaildtill.text = hourary[6]
+            selectedindex = 6
+        }
+        else{
+            txtvaildtill.text = hourary[0]
+            selectedindex = 0
+        }
         
         // // / / / / / ///// // / /
         
@@ -247,6 +284,12 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
         {
             txtdate.text = formatter.string(from: datePicker.date)
            // date1 = datePicker.date
+            
+            if formatter.string(from: datePicker.date).toDate(withFormat:"dd-MM-yyyy") == Date().stringWithFormat(format: "dd-MM-yyyy").toDate(withFormat: "dd-MM-yyyy") {
+                timePicker.minimumDate = Date()
+            }else{
+                timePicker.minimumDate = nil
+            }
         }
         
         self.view.endEditing(true)
@@ -332,7 +375,7 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     
     @IBAction func btnClose_hour(_ sender: UIButton) {
         
-        txtvaildtill.text = hourary[0]
+      //  txtvaildtill.text = hourary[0]
 
         self.viewbottom.isHidden = true
     }
