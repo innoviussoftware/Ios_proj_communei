@@ -1602,7 +1602,7 @@ struct Apicallhandler {
 
     
     
-    //Mark : Api Get R
+    //Mark : Api Get Role
     func ApiGetRole(URL: String, onCompletion: @escaping ((_ response: DataResponse<GetRoleResponse>) -> Void)) {
         var parameter:Parameters = [:]
         

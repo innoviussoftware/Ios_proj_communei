@@ -25,6 +25,9 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
     var arrActivityyy = [ActivityyyDatum]()
 
     var arrInvitationPop = NSMutableArray()
+    
+    var validFor = ""
+
 
     
     @IBAction func backaction(_ sender: Any) {
@@ -188,6 +191,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             
             //            type, contact_array, society_id, start_date, end_date, maxhour, time
             //            date format:- yyyy-mm-dd
+        
             var string = ""
             
             do {
@@ -227,6 +231,8 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             ] */
         
         var after_add_time = ""
+        
+        validFor = validtill
 
         if validtill == "Day End" {
            /* validtill = time
@@ -255,6 +261,7 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
             after_add_time = "11:59 PM" //"23:59:00"
 
         }else{
+            
             validtill.removeLast(3)
             
             let myInt = Int(validtill)!
@@ -296,7 +303,8 @@ class EditGuestVC: BaseVC , UITableViewDelegate , UITableViewDataSource {
                 "VisitStartDate": strDateee,
                 "FromTime": time, // start time
                 "ToTime": after_add_time,  //validtill,  // to time
-                "Visitors": string
+                "Visitors": string,
+                "validFor": validFor
             ]
         }else{
             param  = [

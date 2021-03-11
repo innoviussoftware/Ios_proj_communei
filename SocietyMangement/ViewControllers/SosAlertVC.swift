@@ -9,14 +9,16 @@
 import UIKit
 
 
-
 class SosAlertVC: UIViewController {
     
     @IBOutlet weak var lblNumber: UILabel!
 
+    var isfrom = 1
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        isfrom = 1
             
         self.lblNumber.text = "5"
 
@@ -40,7 +42,9 @@ class SosAlertVC: UIViewController {
             self.lblNumber.text = "1"
         }
          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-            self.apiCallSosAlert()
+            if self.isfrom == 1 {
+                self.apiCallSosAlert()
+            }
         }
         
     }
@@ -129,7 +133,7 @@ class SosAlertVC: UIViewController {
     }
     
     @IBAction func btnStopPressed(_ sender: UIButton) {
-
+        isfrom = 0
         self.navigationController?.popViewController(animated: true)
         
     }

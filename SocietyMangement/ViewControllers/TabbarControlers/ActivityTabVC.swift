@@ -2121,7 +2121,7 @@ extension ActivityTabVC: UICollectionViewDelegate , UICollectionViewDataSource, 
         
         let strTime = formatter.string(from: date as Date)
 
-     print("strTime :- ",strTime)
+        print("strTime :- ",strTime)
         
 
         if self.arrGuestList[sender.tag].activity?.ActivityType! == "Visitor Entry" {

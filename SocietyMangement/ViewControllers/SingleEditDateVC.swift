@@ -368,7 +368,13 @@ class SingleEditDateVC: UIViewController , UITextFieldDelegate ,  UICollectionVi
     
     @IBAction func btnReset(_ sender: UIButton) {
         
-        txtvaildtill.text = hourary[0]
+       // txtvaildtill.text = hourary[0]
+        
+        if isfrom == 1 || isfrom == 11 {
+            txtvaildtill.text = hourary[6]
+            selectedindex = 6
+            collectionHours.reloadData()
+        }
 
         self.viewbottom.isHidden = true
     }

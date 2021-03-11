@@ -451,9 +451,7 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             
         }
         
-        
-        
-        
+                
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "EditGuestVC") as! EditGuestVC
         
@@ -583,8 +581,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
             print("unable to fetch contacts")
         }
         
+       
+        
         pager.addSegmentsWithTitles(segmentTitles: ["Contact", "Recent", "Manual"])
-
         
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Contact", ViewContact),
@@ -593,9 +592,9 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         ])
         
         
-        if(isfrom == "")
+       if(isfrom == "")
         {
-            pager.setSelectedIndex(index: 0, animated: true)
+           pager.setSelectedIndex(index: 0, animated: true)
         }
         if(isfrom == "conatct")
         {
@@ -603,15 +602,15 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
         }
         if(isfrom == "recent")
         {
-            pager.setSelectedIndex(index: 0, animated: true) // 1 // 0
+            pager.setSelectedIndex(index: 1, animated: true) // 1 // 0
         }
         if(isfrom == "manually")
         {
-            pager.setSelectedIndex(index: 0, animated: false) // 2 // 0
+            pager.setSelectedIndex(index: 2, animated: true) // 2 // 0
         }
+            
         
         txtSearchbar.addTarget(self, action: #selector(searchRecordsAsPerText(_ :)), for: .editingChanged)
-        
         
     }
     
@@ -1162,14 +1161,14 @@ class InviteVC: UIViewController , UITableViewDelegate , UITableViewDataSource ,
     // MARK: - ScrollPagerDelegate -
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
-        print("scrollPager index changed: \(changedIndex)")
+        print("scrollPager index changed : \(changedIndex)")
         
         view.endEditing(true)
-        
+
         // pager.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
         
         /* if changedIndex == 0 {
-         pager.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60)
+         pager.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 45)
          }else{
          pager.frame = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: 60)
          } */

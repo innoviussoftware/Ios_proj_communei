@@ -39,113 +39,145 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D8E3A168-3C89-409B-9F16-9F3561541DD0"
+            uuid = "87B946A3-1772-423B-9BC9-E4577818F47C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/EditGuestVC.swift"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
-            landmarkName = "apicallFrequentEntry(id:)"
+            startingLineNumber = "1663"
+            endingLineNumber = "1663"
+            landmarkName = "ApiCallEdit(sender:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "473A1107-5B23-4580-A1E4-28EB58E8B576"
+            uuid = "82C5E894-BD03-4E5F-9567-313E6603E410"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/TabbarControlers/NewHomeVC.swift"
+            filePath = "SocietyMangement/ViewControllers/SingleEditDateVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "longPressed(gesture:)"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B26CCFA9-8ACC-4928-98E3-FDB547B39DA6"
+            uuid = "E357EC2B-3892-4B52-9540-F8C5DB27B603"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/DeliveryEntryVC.swift"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "1592"
+            endingLineNumber = "1592"
+            landmarkName = "ApiCallEdit(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "BD0704F2-72A0-47D7-BEAD-B9DE4A7BBD72"
+            uuid = "AB440E7C-C754-4902-A757-29D664706BA2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/DeliveryEntryVC.swift"
+            filePath = "SocietyMangement/ViewControllers/TabbarControlers/ActivityTabVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "2127"
+            endingLineNumber = "2127"
+            landmarkName = "ApiCallRenew(sender:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C55A2B84-8FAF-4B9C-854C-8A0B3511AD47"
+            uuid = "2A1DD175-0B56-4911-886E-556C74CDB294"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/DeliveryEntryVC.swift"
+            filePath = "SocietyMangement/ViewControllers/InviteVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "469"
-            endingLineNumber = "469"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "595"
+            endingLineNumber = "595"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9FC1C2BF-50CD-42B3-9655-4FA45064C7A8"
+            uuid = "32D8FAA7-C1E7-4CBB-92A7-79D35082233F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/DeliveryEntryVC.swift"
+            filePath = "Pods/ScrollPager/ScrollPager/Source/ScrollPager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "setSelectedIndex(index:animated:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E2D35369-400E-471D-BFE4-7E5221CCDC1F"
+            uuid = "293E954A-81A6-4003-B495-50C1A372D6F5"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SocietyMangement/ViewControllers/DeliveryEntryVC.swift"
+            filePath = "Pods/ScrollPager/ScrollPager/Source/ScrollPager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "moveToIndex(index:animated:moveScrollView:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F76639F1-F777-43DB-B0CB-25C624743657"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/ScrollPager/ScrollPager/Source/ScrollPager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "266"
+            endingLineNumber = "266"
+            landmarkName = "redrawComponents()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "852781E6-8216-4DE2-A643-A7A2EACBCEAF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/ScrollPager/ScrollPager/Source/ScrollPager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "scrollViewDidScroll(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

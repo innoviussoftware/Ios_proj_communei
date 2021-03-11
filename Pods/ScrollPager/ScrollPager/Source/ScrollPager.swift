@@ -38,6 +38,8 @@ import UIKit
 	private let indicatorView = UIView()
 	private var buttons = [UIButton]()
 	private var views = [UIView]()
+    
+    
 	private var animationInProgress = false
 	@IBOutlet public weak var delegate: ScrollPagerDelegate!
 	
@@ -46,6 +48,16 @@ import UIKit
 			scrollView?.delegate = self
 			scrollView?.isPagingEnabled = true
 			scrollView?.showsHorizontalScrollIndicator = false
+            
+            let screenBounds = UIScreen.main.bounds
+            let screen_width = screenBounds.width
+            
+            scrollView?.frame.size.width = screen_width
+            
+            print("screen width",screen_width)
+            
+            print("scrollView width :- ",scrollView?.frame.size.width ?? "0")
+            
 		}
 	}
 	
@@ -107,8 +119,7 @@ import UIKit
     
     private func initialize() {
         #if TARGET_INTERFACE_BUILDER
-        addSegmentsWithTitles(segmentTitles: ["One", "Two"])
-        
+        addSegmentsWithTitles(segmentTitles: ["One", "Two", "Three", "Four"])
         
       //  addSegmentsWithTitles(segmentTitles: ["One", "Two", "Three", "Four"])
         #endif
@@ -209,8 +220,6 @@ import UIKit
             
             guard let strongSelf = self else { return }
             
-            // 19/02/21 temp comment
-
             let width = strongSelf.frame.size.width / CGFloat(strongSelf.buttons.count)
             
                 let button = strongSelf.buttons[index]
@@ -235,6 +244,8 @@ import UIKit
             if let scrollView = strongSelf.scrollView {
                 if moveScrollView {
                     scrollView.contentOffset = CGPoint(x: CGFloat(index) * scrollView.frame.size.width, y: 0)
+                    
+                    // scrollView.frame
                 }
             }
             
