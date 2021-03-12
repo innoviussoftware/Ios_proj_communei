@@ -44,6 +44,8 @@ class SosAlertVC: UIViewController {
          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
             if self.isfrom == 1 {
                 self.apiCallSosAlert()
+            }else{
+                print("Stop")
             }
         }
         

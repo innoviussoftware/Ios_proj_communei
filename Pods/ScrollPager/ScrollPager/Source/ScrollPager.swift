@@ -54,9 +54,9 @@ import UIKit
             
             scrollView?.frame.size.width = screen_width
             
-            print("screen width",screen_width)
+           // print("screen width",screen_width)
             
-            print("scrollView width :- ",scrollView?.frame.size.width ?? "0")
+          //  print("scrollView width :- ",scrollView?.frame.size.width ?? "0")
             
 		}
 	}

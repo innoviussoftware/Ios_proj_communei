@@ -251,6 +251,7 @@ class SidemenuVC: UIViewController  , UITableViewDataSource , UITableViewDelegat
                                            
                                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "BuySellVC") as! BuySellVC
 
+                            nextViewController.isfromStr = "Buy"
 
                                               //    let navController = UINavigationController.init(rootViewController: obj)
                                               //            tabBarController.selectedIndex = 1

@@ -62,21 +62,21 @@ class QuickActionVC: BaseVC ,Invite {
     
     @IBAction func btnDeliveryPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryEntryVC") as! DeliveryEntryVC
-       // vc.isfrom = 1
+        vc.isfrom = "Single"
         self.navigationController?.pushViewController(vc, animated: true)
         print("Delivery")
     }
     
     @IBAction func btnCabPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CabEntryVC") as! CabEntryVC
-        // vc.isfrom = 1
+        vc.isfrom = "Single"
         self.navigationController?.pushViewController(vc, animated: true)
         print("Cab")
     }
     
     @IBAction func btnServiceProviderPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ServiceProviderEntryVC") as! ServiceProviderEntryVC
-        // vc.isfrom = 1
+        vc.isfrom = "Single"
         self.navigationController?.pushViewController(vc, animated: true)
         print("Service Provider")
     }
@@ -94,8 +94,8 @@ class QuickActionVC: BaseVC ,Invite {
 
        let vc = self.storyboard?.instantiateViewController(withIdentifier: "DomesticHelpVC") as! DomesticHelpVC
         vc.isfrom = 1
-       // vc.isfromStr  = "On Demand"
-        vc.isfromStr  = "Daily"
+        vc.isfromStr  = "On Demand"
+        //vc.isfromStr  = "Daily"
         self.navigationController?.pushViewController(vc, animated: true)
         print("On Demand Helper")
     }

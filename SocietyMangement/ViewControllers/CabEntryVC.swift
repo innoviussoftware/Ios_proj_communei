@@ -1209,7 +1209,146 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+                
+            if(textField == txtCabCompanyName)
+                {
+                       let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
+                       popOverConfirmVC.delegate = self
+                        isfrom = "Single"
+                    
+                        popOverConfirmVC.selectedindex = index
+                
+                    popOverConfirmVC.isfrom = "Single"
+
+                    popOverConfirmVC.strTitleName = "Select Your Cab"
+
+                    popOverConfirmVC.api_Company_Selection = "user/vendors/3"
+
+                    popOverConfirmVC.visitorTypeID = 3
+
+                      /* if(txtCabCompanyName.text != "")
+                       {
+                            print("Single Select Your Cab")
+                          // popOverConfirmVC.selectedary = self.selectedary
+                           // popOverConfirmVC.entryary = txtDeliveryCompanyName.text
+                       } */
+                
+                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+                
+                    txtCabCompanyName.resignFirstResponder()
+
+            }
             
+            if (textField == txtCabCompanyName1)
+                {
+                       let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
+                       popOverConfirmVC.delegate = self
+                    isfrom = "Multiple"
+                    
+                        popOverConfirmVC.selectedindex1 = index1
+                   
+                popOverConfirmVC.isfrom = "Multiple"
+
+                popOverConfirmVC.strTitleName = "Select Your Cab"
+
+                popOverConfirmVC.api_Company_Selection = "user/vendors/3"
+                
+                popOverConfirmVC.visitorTypeID = 3
+
+               // popOverConfirmVC. = "user/vendor/add"
+                      /* if(txtCabCompanyName1.text != "")
+                       {
+                            print("Multiple Select Your Cab")
+                           // popOverConfirmVC.alertGuardary = self.nameary
+                       } */
+                
+                    self.navigationController?.pushViewController(popOverConfirmVC, animated: true)
+
+                viewbottom1.isHidden = true
+                
+                txtCabCompanyName1.resignFirstResponder()
+
+
+            }
+            
+            if(textField == txtAllWeek)
+            {
+                textfield = txtAllWeek
+
+                viewbottom1.isHidden = false
+                txtAllWeek.resignFirstResponder()
+                    
+                txtAllWeek.endEditing(true)
+
+                   // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            }
+            
+            if(textField == txtvaildtill)
+            {
+                    
+                textfield = txtvaildtill
+
+                viewbottom.isHidden = false
+                txtvaildtill.resignFirstResponder()
+                
+                txtvaildtill.endEditing(true)
+
+                   // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            }
+                if(textField == txtdate)
+                {
+                    textfield = txtdate
+                    
+                  //  txtdate.endEditing(false)
+                }
+            
+            if(textField == txtStartTime)
+            {
+                textfield = txtStartTime
+                
+              //  txtStartTime.endEditing(false)
+            }
+            
+            if(textField == txttime)
+            {
+                textfield = txttime
+                
+              //  txttime.endEditing(false)
+            }
+            
+            if(textField == txtEndTime)
+            {
+                textfield = txtEndTime
+               // txtEndTime.endEditing(false)
+            }
+            
+                if(textField == txtstartdate)
+                {
+                    //datePicker.minimumDate = Date()
+                    textfield = txtstartdate
+                  //  txtstartdate.endEditing(false)
+                }
+                if(textField == txtenddate)
+                {
+        //            let formatter = DateFormatter()
+        //            if txtstartdate.hasText{
+        //                 datePicker.minimumDate = formatter.date(from: txtstartdate.text!)
+        //            }
+                    
+                    textfield = txtenddate
+                    
+                    let cal = NSCalendar.current
+                    
+                    let components = cal.dateComponents([.day], from: date1, to: date2)
+                  //  lbldays.text =  (components.day! as NSNumber).stringValue
+                 //   txtenddate.endEditing(false)
+                }
+                
+        }
+        
+    
+   /* func textFieldDidBeginEditing(_ textField: UITextField) {
+                
         if(textField == txtCabCompanyName)
             {
                    let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "DeliveryCompanyListVC") as! DeliveryCompanyListVC
@@ -1279,7 +1418,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             textfield = txtAllWeek
 
             viewbottom1.isHidden = false
-            txtAllWeek.resignFirstResponder()
+            
+           // pager.setSelectedIndex(index: 1, animated: false)
+        
+           // txtAllWeek.resignFirstResponder()
                 
             txtAllWeek.endEditing(true)
 
@@ -1292,7 +1434,10 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             textfield = txtvaildtill
 
             viewbottom.isHidden = false
-            txtvaildtill.resignFirstResponder()
+            
+           // pager.setSelectedIndex(index: 0, animated: false)
+
+           // txtvaildtill.resignFirstResponder()
             
             txtvaildtill.endEditing(true)
 
@@ -1302,27 +1447,42 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             {
                 textfield = txtdate
                 
-              //  txtdate.endEditing(false)
+                // pager.setSelectedIndex(index: 0, animated: false)
+
+               // txtdate.resignFirstResponder()
+                
+                txtdate.endEditing(false)
             }
         
         if(textField == txtStartTime)
         {
             textfield = txtStartTime
             
-          //  txtStartTime.endEditing(false)
+           // pager.setSelectedIndex(index: 1, animated: false)
+            
+           // txtStartTime.resignFirstResponder()
+
+            txtStartTime.endEditing(false)
         }
         
         if(textField == txttime)
         {
             textfield = txttime
             
-          //  txttime.endEditing(false)
+           // pager.setSelectedIndex(index: 0, animated: false)
+            
+           // txttime.resignFirstResponder()
+
+            txttime.endEditing(false)
         }
         
         if(textField == txtEndTime)
         {
             textfield = txtEndTime
-           // txtEndTime.endEditing(false)
+            
+           // pager.setSelectedIndex(index: 1, animated: false)
+           // txtEndTime.resignFirstResponder()
+             txtEndTime.endEditing(false)
 
         }
         
@@ -1330,7 +1490,12 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
             {
                 //datePicker.minimumDate = Date()
                 textfield = txtstartdate
-              //  txtstartdate.endEditing(false)
+                
+                //  pager.setSelectedIndex(index: 1, animated: false)
+
+                txtstartdate.endEditing(false)
+                
+               // txtstartdate.resignFirstResponder()
 
             }
             if(textField == txtenddate)
@@ -1345,12 +1510,22 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
                 let cal = NSCalendar.current
                 
                 let components = cal.dateComponents([.day], from: date1, to: date2)
+                
+                print("components :- ",components)
+                
               //  lbldays.text =  (components.day! as NSNumber).stringValue
              //   txtenddate.endEditing(false)
+
+               // pager.setSelectedIndex(index: 1, animated: false)
+                
+               // txtenddate.resignFirstResponder()
+                txtenddate.endEditing(false)
+
 
             }
             
     }
+    */
     
     func setborders(textfield:UITextField)
       {
@@ -1363,6 +1538,8 @@ class CabEntryVC: UIViewController, ScrollPagerDelegate , UITextFieldDelegate,  
       }
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        
+        print("changedIndex : ",changedIndex)
         
         if changedIndex == 0{
             view.endEditing(true)

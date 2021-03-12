@@ -566,10 +566,8 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
         self.viewbottom1.isHidden = true
 
     }
-          
-
     
-       @IBAction func btnReset_days(_ sender: Any) {
+    @IBAction func btnReset_days(_ sender: Any) {
               
         txtAllWeek.text = "" //arrDays[0]
         
@@ -767,8 +765,6 @@ class DeliveryMultiEditDateVC: UIViewController, UITextFieldDelegate , UICollect
             let maxLabelSize: CGSize = CGSize(width: self.view.frame.size.width, height: CGFloat(9999))
             let contentNSString = arrDays[indexPath.row].daysName
             let expectedLabelSize = contentNSString?.boundingRect(with: maxLabelSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: UIFont(name: "Gotham-Book", size: 16)!], context: nil)
-            
-            print("\(String(describing: expectedLabelSize))")
             return CGSize(width:(expectedLabelSize?.size.width)! + 25, height: expectedLabelSize!.size.height + 25)
         
     }

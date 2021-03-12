@@ -55,17 +55,36 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     var strType = "1"
     
     var isfrom = 1
+    
+    var isfromStr = ""
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 13.0, *) {
+            // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
+        }
         
         pager.delegate = self
         
         pager.tintColor  = AppColor.appcolor
         pager.addSegmentsWithTitlesAndViews(segments: [
             ("Buy", viewBuy),("Sell", viewSell)])
+        
+        if(isfromStr == "")
+         {
+            pager.setSelectedIndex(index: 0, animated: true)
+         }
+         if(isfromStr == "Buy")
+         {
+             pager.setSelectedIndex(index: 0, animated: true)
+         }
+         if(isfromStr == "Sell")
+         {
+             pager.setSelectedIndex(index: 1, animated: true) // 1 // 0
+         }
 
         collectionBuyCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
         collectionSellCategory.register(UINib(nibName: "categoryCell", bundle: nil), forCellWithReuseIdentifier: "categoryCell")
@@ -101,17 +120,11 @@ class BuySellVC: BaseVC ,ScrollPagerDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpViewData()
-        pager.setSelectedIndex(index: 0, animated: true)
     }
     
     
     func setUpViewData() {
-        
-        if #available(iOS 13.0, *) {
-            // Always adopt a light interface style.
-            overrideUserInterfaceStyle = .light
-        }
-        
+       
         apiBuySellList()
         
         apiProductListBuy()

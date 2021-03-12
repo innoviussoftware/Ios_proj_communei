@@ -56,6 +56,8 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView, SWRevealViewCon
     var dictHelperData : HelperDetailsData!
     
     var HelperId : Int!
+    var vendorServiceTypeID : Int!
+    var dailyHelpPropertyID : Int!
     var helperRating : Double!
     var userId : Double!
     
@@ -361,16 +363,32 @@ class MaidProfileDetailsVC: UIViewController , updateReviewView, SWRevealViewCon
             let popOverConfirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AddRatingReviewPopUpVC") as! AddRatingReviewPopUpVC
             
             popOverConfirmVC.delegate = self
-
-            popOverConfirmVC.dailyHelperID = self.dictHelperData.dailyHelperID
-
-            popOverConfirmVC.VendorServiceTypeID =  self.dictHelperData.vendorServiceTypeID // self.arrRating[sender.tag].vendorServiceTypeID
+        
+            popOverConfirmVC.dailyHelperID = HelperId
+        
+            popOverConfirmVC.VendorServiceTypeID = vendorServiceTypeID
+        
+//          popOverConfirmVC.VendorServiceTypeID =  self.dictHelperData.vendorServiceTypeID // self.arrRating[sender.tag].vendorServiceTypeID
             
             if isfrom == 1 {
-                popOverConfirmVC.dailyHelpPropertyID = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
+                
+                popOverConfirmVC.isfrom = 1
+                
+                //  popOverConfirmVC.dailyHelpPropertyID = dailyHelpPropertyID
+               // popOverConfirmVC.dailyHelpPropertyID =
+                    
+                popOverConfirmVC.dailyHelpPropertyIDstr = self.arrRating[sender.tag].dailyHelpPropertyID // self.dictHelperData.dailyHelpPropertyID
             }else{
-                popOverConfirmVC.dailyHelpPropertyID =  self.dictHelperData.dailyHelpPropertyID // self.arrRating[sender.tag].dailyHelpPropertyID
+                
+                popOverConfirmVC.isfrom = 2
+
+                popOverConfirmVC.dailyHelpPropertyID = dailyHelpPropertyID
+              //  popOverConfirmVC.dailyHelpPropertyID =  self.dictHelperData.dailyHelpPropertyID // self.arrRating[sender.tag].dailyHelpPropertyID
             }
+        
+        
+            // popOverConfirmVC.dailyHelperID = self.dictHelperData.dailyHelperID
+
             
             self.addChildViewController(popOverConfirmVC)
             popOverConfirmVC.view.frame = self.view.frame

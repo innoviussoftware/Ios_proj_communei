@@ -112,20 +112,20 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
             ("Multiple", ViewMultiple)
         ])
         
-//        if(isfrom == "")
-//        {
-//            pager.setSelectedIndex(index: 0, animated: true)
-//        }
-//
-//        if(isfrom == "Single")
-//        {
-//            pager.setSelectedIndex(index: 0, animated: true)
-//        }
-//
-//        if(isfrom == "Multiple")
-//        {
-//            pager.setSelectedIndex(index: 1, animated: true)
-//        }
+        if(isfrom == "")
+        {
+            pager.setSelectedIndex(index: 0, animated: true)
+        }
+
+        if(isfrom == "Single")
+        {
+            pager.setSelectedIndex(index: 0, animated: true)
+        }
+
+        if(isfrom == "Multiple")
+        {
+            pager.setSelectedIndex(index: 1, animated: true)
+        }
         
         singleDeliveryCheckGate = 0
         

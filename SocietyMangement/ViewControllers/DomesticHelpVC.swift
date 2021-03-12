@@ -86,17 +86,15 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
 
         if(isfromStr == ""){  // Daily
             pager.setSelectedIndex(index: 0, animated: true)
-            pager.frame = CGRect(x: 0, y: 59, width: view.frame.size.width, height: 60)
         }
               
         if(isfromStr == "Daily"){  // Daily
             pager.setSelectedIndex(index: 0, animated: true)
-            pager.frame = CGRect(x: 0, y: 59, width: view.frame.size.width, height: 60)
         }
               
         if(isfromStr == "On Demand"){  // On Demand
             pager.setSelectedIndex(index: 1, animated: true)
-            pager.frame = CGRect(x: view.frame.size.width, y: 59, width: view.frame.size.width, height: 60)
+           // pager.frame = CGRect(x: view.frame.size.width, y: 59, width: view.frame.size.width, height: 60)
         }
         
         if isfrom == 1{
@@ -117,9 +115,9 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
         tblView_OnDemand.separatorStyle = .none
         tblView_OnDemand.frame = CGRect(x: view.frame.size.width, y: 86, width: view.frame.size.width, height: tblView_OnDemand.frame.size.height)
 
-        viewDaily.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: viewDaily.frame.size.height)
+       // viewDaily.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: viewDaily.frame.size.height)
                
-        ViewOnDemand.frame = CGRect(x: view.frame.size.width, y: 0, width: view.frame.size.width, height: ViewOnDemand.frame.size.height)
+      //  ViewOnDemand.frame = CGRect(x: view.frame.size.width, y: 0, width: view.frame.size.width, height: ViewOnDemand.frame.size.height)
         
         
         /*
@@ -224,8 +222,8 @@ class DomesticHelpVC: UIViewController, UITextFieldDelegate , ScrollPagerDelegat
     }
     
     
-    
     //MARK:- ScrollPager delegate
+    
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         
         if changedIndex == 0{//Daily
@@ -629,11 +627,13 @@ extension DomesticHelpVC : UITableViewDelegate,UITableViewDataSource{
         if tableView == tblView {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
             vc.HelperId = arrHelper[indexPath.row].dailyHelperID
+            vc.vendorServiceTypeID = arrHelper[indexPath.row].vendorServiceTypeID
             vc.isfrom = 1
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MaidProfileDetailsVC") as! MaidProfileDetailsVC
             vc.HelperId = arrOnDemandHelper[indexPath.row].dailyHelperID
+            vc.vendorServiceTypeID = arrOnDemandHelper[indexPath.row].vendorServiceTypeID
             vc.isfrom = 2
             self.navigationController?.pushViewController(vc, animated: true)
         }

@@ -42,7 +42,11 @@ class AddRatingReviewPopUpVC: UIViewController {
     
     var VendorServiceTypeID : Int! // = ""
     
-    var dailyHelpPropertyID = ""
+    var dailyHelpPropertyID : Int! // ""
+    
+    var dailyHelpPropertyIDstr =  ""
+    
+    var isfrom = 1
     
     var strRatingsPunctual : Int!
     var strRatingsRegular : Int!
@@ -55,8 +59,8 @@ class AddRatingReviewPopUpVC: UIViewController {
         super.viewDidLoad()
         
         if #available(iOS 13.0, *) {
-                     // Always adopt a light interface style.
-          overrideUserInterfaceStyle = .light
+                // Always adopt a light interface style.
+            overrideUserInterfaceStyle = .light
         }
         
         ratingViewPunctual.delegate = self
@@ -172,8 +176,8 @@ class AddRatingReviewPopUpVC: UIViewController {
                            
                            return
                        }
-                       let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
-                       self.present(alert, animated: true, completion: nil)
+                      // let alert = webservices.sharedInstance.AlertBuilder(title:"", message:err.localizedDescription)
+                      // self.present(alert, animated: true, completion: nil)
                        print(err.asAFError!)
                        
                    }
@@ -235,12 +239,16 @@ class AddRatingReviewPopUpVC: UIViewController {
         
        // let vendor = (VendorServiceTypeID as NSString).integerValue
         
-        let dailyHelp = (dailyHelpPropertyID as NSString).integerValue
+       // let dailyHelp = dailyHelpPropertyID //
+        let dailyHelpstr = (dailyHelpPropertyIDstr as NSString).integerValue
 
-            let param : Parameters = [
+        var param : Parameters = [:]
+        
+        if  isfrom == 1 {
+            param = [
                 "DailyHelperID" : dailyHelperID!,
                 "VendorServiceTypeID" : VendorServiceTypeID!,
-                "DailyHelpPropertyID" : dailyHelp,
+                "DailyHelpPropertyID" : dailyHelpstr,
                 "Punctual" : strRatingsPunctual!,
                 "Regular" : strRatingsRegular!,
                 "Clean" : strRatingsClean!,
@@ -248,7 +256,19 @@ class AddRatingReviewPopUpVC: UIViewController {
                 "Skilled" : strRatingsSkilled!,
                 "Comments" : txtViewComment.text!
             ]
-        
+        }else{
+            param = [
+                "DailyHelperID" : dailyHelperID!,
+                "VendorServiceTypeID" : VendorServiceTypeID!,
+                "DailyHelpPropertyID" : dailyHelpPropertyID, //dailyHelp!,
+                "Punctual" : strRatingsPunctual!,
+                "Regular" : strRatingsRegular!,
+                "Clean" : strRatingsClean!,
+                "Attitude" : strRatingsAttitude!,
+                "Skilled" : strRatingsSkilled!,
+                "Comments" : txtViewComment.text!
+            ]
+        }
         print("param review : ",param)
           
             webservices().StartSpinner()
