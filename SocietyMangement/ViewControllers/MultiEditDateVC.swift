@@ -373,6 +373,7 @@ class MultiEditDateVC: UIViewController, UITextFieldDelegate{
                 let cal = NSCalendar.current
                 
                 let components = cal.dateComponents([.day], from: date1, to: date2)
+                print("components :- ",components)
               //  lbldays.text =  (components.day! as NSNumber).stringValue
                 
             }

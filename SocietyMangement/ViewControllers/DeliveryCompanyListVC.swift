@@ -296,8 +296,22 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
     }
     
     @IBAction func backaction(_ sender: UIButton) {
-         self.navigationController?.popViewController(animated: true)
+         // removeAnimate()
+          self.navigationController?.popViewController(animated: true)
      }
+    
+    func removeAnimate()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                self.view.removeFromSuperview()
+            }
+        });
+    }
     
     @IBAction func btnAddPressed(_ sender: UIButton) {
         if txtOtherName.text == "" {
@@ -510,6 +524,8 @@ class DeliveryCompanyListVC: UIViewController, UICollectionViewDelegate , UIColl
             print("strlbl : ",strlbl)
         } */
         
+       // removeAnimate()
+
         self.navigationController?.popViewController(animated: true)
 
     }

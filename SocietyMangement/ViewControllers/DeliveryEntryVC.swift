@@ -815,12 +815,12 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         if(textField == txtAllWeek)
         {
+            view.endEditing(true)
+
             viewbottom1.isHidden = false
             
             viewbottom.isHidden = true
             
-           // view.endEditing(true)
-
             txtAllWeek.resignFirstResponder()
                     
             // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -828,12 +828,13 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
         
         if(textField == txtvaildtill)
         {
+            
+            view.endEditing(true)
+
             viewbottom.isHidden = false
             
             viewbottom1.isHidden = true
-            
-           // view.endEditing(true)
-            
+                        
             txtvaildtill.resignFirstResponder()
 
                // viewmain.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -870,6 +871,8 @@ class DeliveryEntryVC: UIViewController, ScrollPagerDelegate, UITextFieldDelegat
                 let cal = NSCalendar.current
                 
                 let components = cal.dateComponents([.day], from: date1, to: date2)
+                print("components :- ",components)
+
               //  lbldays.text =  (components.day! as NSNumber).stringValue
                 viewbottom.isHidden = true
                 viewbottom1.isHidden = true

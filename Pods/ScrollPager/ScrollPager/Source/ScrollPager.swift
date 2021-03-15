@@ -48,15 +48,9 @@ import UIKit
 			scrollView?.delegate = self
 			scrollView?.isPagingEnabled = true
 			scrollView?.showsHorizontalScrollIndicator = false
-            
             let screenBounds = UIScreen.main.bounds
             let screen_width = screenBounds.width
-            
             scrollView?.frame.size.width = screen_width
-            
-           // print("screen width",screen_width)
-            
-          //  print("scrollView width :- ",scrollView?.frame.size.width ?? "0")
             
 		}
 	}
@@ -121,7 +115,6 @@ import UIKit
         #if TARGET_INTERFACE_BUILDER
         addSegmentsWithTitles(segmentTitles: ["One", "Two", "Three", "Four"])
         
-      //  addSegmentsWithTitles(segmentTitles: ["One", "Two", "Three", "Four"])
         #endif
     }
     
@@ -130,7 +123,10 @@ import UIKit
     public override func layoutSubviews() {
         super.layoutSubviews()
         
+        // 13/3/21 temp comment
+                
         redrawComponents()
+        
         //moveToIndex(selectedIndex, animated: false, moveScrollView: true)
     }
     
@@ -299,7 +295,7 @@ import UIKit
     }
     
     // MARK: - UIScrollView Delegate -
-
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !animationInProgress {
             var page = scrollView.contentOffset.x / scrollView.frame.size.width
